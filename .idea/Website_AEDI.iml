@@ -137,6 +137,8 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/http-foundation" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/http-client-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/doctrine/data-fixtures" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

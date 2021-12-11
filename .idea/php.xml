@@ -133,6 +133,8 @@
       <path value="$PROJECT_DIR$/Website/vendor/symfony/http-foundation" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/http-client-contracts" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/http-client" />
+      <path value="$PROJECT_DIR$/Website/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/Website/vendor/doctrine/data-fixtures" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2">
