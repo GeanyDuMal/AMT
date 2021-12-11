@@ -1,6 +1,11 @@
 # Liste des commandes Symfony utiles
 
 ## General
+
+### Setup du projet avec des fichiers sources
+
+     composer instal
+
 ### Creer un projet symfony
       
       composer create-project symfony/website-skeleton NOMDUPROJET "X.X.*" //Correspond a la version de Symfony
@@ -11,7 +16,7 @@
 
 ### Creer un controller avec sa template
 <br>Penser a renommer la route de cette maniere : 
-     @Route("/blog", name="blog")
+     @Route("/xxx", name="xxx")
 
       php bin/console make:controller
 
