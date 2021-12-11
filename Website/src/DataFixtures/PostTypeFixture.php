@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class PostTypeFixture extends Fixture implements DependentFixtureInterface
+class PostTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -20,10 +20,5 @@ class PostTypeFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($postType2);
 
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return NULL;
     }
 }
