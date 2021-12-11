@@ -29,15 +29,23 @@
 ##### Pré-requis:
 Installation du certificat HTTPS:
 
-     symfony server:ca:install
+
+
+````shell
+symfony server:ca:install
+````
 
 Ensuite il faut pour lancer :
 
-     symfony serve -d
+````shell
+symfony serve -d
+````
 
 Pour l'arrêter il suffit d'écrire:
 
-     symfony server:stop
+````shell
+symfony server:stop
+````
      
      
 
