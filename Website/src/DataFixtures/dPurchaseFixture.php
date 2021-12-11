@@ -1,0 +1,40 @@
+<?php
+
+namespace App\DataFixtures;
+
+use App\Entity\Client;
+use App\Entity\Purchase;
+use App\Entity\Command;
+use App\Entity\Product;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
+class dPurchaseFixture extends Fixture
+{
+    public function load(ObjectManager $manager): void
+    {
+        $commandRepository = $manager->getRepository(Command::class);
+        $productRepository = $manager->getRepository(Product::class);
+        $clientRepository = $manager ->getRepository(Client::class);
+
+        $purchase = new Purchase();
+        $purchase->setCommand($commandRepository->findOneBy(["client" => $clientRepository->findOneBy(["name" => "NATANELIC"])]))
+                ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
+                ->setQuantity(2);
+        $manager->persist($purchase);
+
+        $purchase2 = new Purchase();
+        $purchase2->setCommand($commandRepository->findOneBy(["client" => $clientRepository->findOneBy(["name" => "NATANELIC"])]))
+                ->setProduct($productRepository->findOneBy(["name" => "Coca Cherry"]))
+                ->setQuantity(1);
+        $manager->persist($purchase2);
+
+        $purchase3 = new Purchase();
+        $purchase3->setCommand($commandRepository->findOneBy(["client" => $clientRepository->findOneBy(["name" => "MULLER"])]))
+                ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
+                ->setQuantity(3);
+        $manager->persist($purchase3);
+
+        $manager->flush();
+    }
+}
