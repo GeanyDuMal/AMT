@@ -4,15 +4,42 @@
 
 ### Setup du projet avec des fichiers sources
 
-     composer instal
+     composer install
 
 ### Creer un projet symfony
+
+#### Avec composer
       
       composer create-project symfony/website-skeleton NOMDUPROJET "X.X.*" //Correspond a la version de Symfony
 
+#### Avec le CLI Symfony
+     
+     symfony new {nom du projet} --version={version} --full
+
+
+
 ### Lancer le serveur pour pouvoir acceder a la page web
-      
-      php -S 127.0.0.1:8000 -t public  
+     
+#### Avec PHP      
+      php -S 127.0.0.1:8000 -t public
+
+
+### Lancer le serveur pour pouvoir acceder a la page web en HTTPS avec Symfony
+
+##### Pré-requis:
+Installation du certificat HTTPS:
+
+     symfony server:ca:install
+
+Ensuite il faut pour lancer :
+
+     symfony serve -d
+
+Pour l'arrêter il suffit d'écrire:
+
+     symfony server:stop
+     
+     
 
 ### Creer un controller avec sa template
 <br>Penser a renommer la route de cette maniere : 
