@@ -1,0 +1,74 @@
+Differentes Parties : Chaque partie pourrais avoir sa partie front et sa partie back
+
+Produit : 
+      Affichage des Produits en ventes et s'ils sont en stock ou non
+
+Blog : 
+      Affichage des Posts
+
+Equipe : 
+      Possibilité de voir l'équipe actuelle
+
+Connexion : 
+      Se connecter ou creer un compte 
+
+(Accessible aux connecté de l'association uniquement)
+Commandes :
+      Edit client (Modifier les informations)
+      Composer la commande avec les differents Produits + Choisir le client + Possibilité de Creer un Client
+      Choix du moyen de Paiement
+      Enregistrement de la commande dans la BD avec les differents achats
+
+(Accessible uniquement Tresorier + President)
+Produits :                          
+      Gestion du Stock + Prix
+      Ajout, Suppression ou Modif produit
+
+(Accessible uniquement au President)
+Gestion du Bureau :
+      Modification de l'Equipe (Suppression ou Edition du compte d'un Membre)
+      Ajout d'un Membre
+      Definir role d'un membre de l'Equipe
+
+(Pour tout le bureau)
+Client :
+      Voir la liste des clients
+      Supprimer un client ???
+
+Autres :
+      Creer les entités de la BD sous Symfony
+      Creer un jeu d'essai
+
+FINAL : 
+      TESTER (pour tout le monde afin de ne rien oublier)
+
+####################################################################################
+
+Tache Bonus une fois que toutes les taches principales seront finis
+
+
+(Accessible au membre du Bureau)
+Statistiques :
+      Statistiques des ventes
+
+Produit : 
+      Permettre au utilisateur de faire une demande d'achat d'un produit pour le bar
+
+
+#####################################################################################
+
+LEANE : 
+      Maquette
+      Affiche / Poster
+
+ROMAIN : 
+      Repartition des taches
+      Creation de la BD
+      Creation des entité sous Symfony
+      Creation du Jeu d'essai avec Fixture
+
+YOUNES : 
+      [A faire en dernier s'il reste du temps] stats des ventes
+      produit [back]
+
+OMAR : 
