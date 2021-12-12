@@ -22,7 +22,7 @@ final class Version20211211221636 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE association (member_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_FD8521CCD60322AC (role_id), PRIMARY KEY(member_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE association_role (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE client (id INT AUTO_INCREMENT NOT NULL, client_type_id INT NULL, name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, login VARCHAR(255) NOT NULL UNIQUE , password VARCHAR(255) NOT NULL, balance NUMERIC(5, 2) NOT NULL, fidelity_point INT NOT NULL, INDEX IDX_C74404559771C8EE (client_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE client (id INT AUTO_INCREMENT NOT NULL, client_type_id INT NULL, name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, login VARCHAR(255) NOT NULL UNIQUE , password VARCHAR(255) NOT NULL, balance NUMERIC(5, 2) NULL DEFAULT "0", fidelity_point INT NULL DEFAULT "0", INDEX IDX_C74404559771C8EE (client_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE client_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE command (id INT AUTO_INCREMENT NOT NULL, client_id INT DEFAULT NULL, payment_type_id INT NOT NULL, ordered_at DATETIME NOT NULL, INDEX IDX_8ECAEAD419EB6921 (client_id), INDEX IDX_8ECAEAD4DC058279 (payment_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE payment_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -68,19 +68,30 @@ final class Version20211211221636 extends AbstractMigration
                             END IF;');
         $this->addSql('CREATE TRIGGER removeQteProductFromPurchase 
                             AFTER INSERT ON `purchase` FOR EACH ROW
-                            UPDATE product SET qteStock = qteStock - NEW.quantity
+                            UPDATE product SET quantity_stock = quantity_stock - NEW.quantity
                             WHERE product.id = NEW.product_id');
 
         //Trigger table Command
         $this->addSql('CREATE TRIGGER verifClientNonNull 
                             BEFORE INSERT ON command FOR EACH ROW
-                            IF (NEW.client_id = null 
-                            && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
-                                SIGNAL SQLSTATE "45000"
-                                SET MESSAGE_TEXT = "Type de paiement incorrect, solde + client inconnu, erreur creation command";
+                            IF (ISNULL(NEW.client_id) && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
+                                    SIGNAL SQLSTATE "45000"
+                                    SET MESSAGE_TEXT = "Type de paiement incorrect, solde + client inconnu, erreur creation command";
                             END IF;');
 
         //Trigger table Client
+        $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
+                            BEGIN
+                                IF(NEW.balance <0) THEN
+                                    SET NEW.balance = 0;
+                                END IF;
+                                
+                                IF(NEW.fidelity_point <> 0) THEN
+                                    SET NEW.fidelity_point = 0;
+                                END IF;
+                                
+                                SET NEW.client_type_id = (SELECT id FROM client_type WHERE name = "Membre");
+                            END;');
         $this->addSql('CREATE TRIGGER verifSoldePositif 
                             BEFORE UPDATE ON client FOR EACH ROW
                             IF(NEW.balance < 0) THEN
