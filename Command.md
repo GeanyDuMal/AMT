@@ -87,3 +87,14 @@ symfony server:stop
 ### Executer l'importation du jeu de données
 
       php bin/console doctrine:fixture:load
+
+
+
+
+## Pour Setup le projet complet avec le jeu d'essai : 
+- composer install 
+- php bin/console doctrine:database:create
+- php bin/console doctrine:migration:migrate
+- composer require orm-fixtures --dev
+- php bin/console doctrine:fixture:load
+
