@@ -29,7 +29,7 @@ class Client
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $login;
 
@@ -39,12 +39,12 @@ class Client
     private $password;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
      */
     private $balance;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
      */
     private $fidelityPoint;
 
