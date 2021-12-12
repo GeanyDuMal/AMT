@@ -60,16 +60,33 @@ final class Version20211211221636 extends AbstractMigration
 				            WHERE client.id = OLD.member_id');
 
         //Trigger table Purchase
-        $this->addSql('CREATE TRIGGER verifDispoProduit BEFORE INSERT ON `purchase` FOR EACH ROW
+        $this->addSql('CREATE TRIGGER verifDispoProduit 
+                            BEFORE INSERT ON `purchase` FOR EACH ROW
                             IF((SELECT quantity_stock FROM product WHERE id = NEW.product_id) < NEW.quantity) THEN
-                                BEGIN
                                     SIGNAL SQLSTATE "45000"
-                                    SET MESSAGE_TEXT = "Stock vide ou insuffisant";
-                                END;
+                                    SET MESSAGE_TEXT = "Stock vide ou insuffisant, erreur creation purchase";
                             END IF;');
-        $this->addSql('CREATE TRIGGER removeQteProductFromPurchase AFTER INSERT ON `purchase` FOR EACH ROW
+        $this->addSql('CREATE TRIGGER removeQteProductFromPurchase 
+                            AFTER INSERT ON `purchase` FOR EACH ROW
                             UPDATE product SET qteStock = qteStock - NEW.quantity
                             WHERE product.id = NEW.product_id');
+
+        //Trigger table Command
+        $this->addSql('CREATE TRIGGER verifClientNonNull 
+                            BEFORE INSERT ON command FOR EACH ROW
+                            IF (NEW.client_id = null 
+                            && (SELECT name FROM paymentType WHERE id = NEW.payment_type_id) = "Solde") THEN
+                                SIGNAL SQLSTATE "45000"
+                                SET MESSAGE_TEXT = "Type de paiement incorrect, solde + client inconnu, erreur creation command";
+                            END IF;');
+
+        //Trigger table Client
+        $this->addSql('CREATE TRIGGER verifSoldePositif 
+                            BEFORE UPDATE ON client FOR EACH ROW
+                            IF(NEW.balance < 0) THEN
+                                SIGNAL SQLSTATE "45000"
+                                SET MESSAGE_TEXT = "Solde negatif, erreur Update";
+                            END IF;');
     }
 
     public function down(Schema $schema): void
@@ -99,5 +116,12 @@ final class Version20211211221636 extends AbstractMigration
         $this->addSql('DROP TABLE product');
         $this->addSql('DROP TABLE product_type');
         $this->addSql('DROP TABLE purchase');
+
+        $this->addSql('DROP TRIGGER db_aedi.modifClientTypeAdd');
+        $this->addSql('DROP TRIGGER db_aedi.modifClientTypeRemove');
+        $this->addSql('DROP TRIGGER db_aedi.verifDispoProduit');
+        $this->addSql('DROP TRIGGER db_aedi.removeQteProductFromPurchase');
+        $this->addSql('DROP TRIGGER db_aedi.verifClientNonNull');
+        $this->addSql('DROP TRIGGER db_aedi.verifSoldePositif');
     }
 }
