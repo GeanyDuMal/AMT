@@ -50,7 +50,7 @@ class Client
 
     /**
      * @ORM\ManyToOne(targetEntity=ClientType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $clientType;
 
