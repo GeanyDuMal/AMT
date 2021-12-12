@@ -44,6 +44,32 @@ final class Version20211211221636 extends AbstractMigration
         $this->addSql('ALTER TABLE product ADD CONSTRAINT FK_D34A04AD14959723 FOREIGN KEY (product_type_id) REFERENCES product_type (id) ON DELETE RESTRICT ON UPDATE CASCADE');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B4584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE RESTRICT ON UPDATE CASCADE');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B33E1689A FOREIGN KEY (command_id) REFERENCES command (id) ON DELETE RESTRICT ON UPDATE CASCADE');
+
+        //Trigger table Association
+        $this->addSql('CREATE TRIGGER modifClientTypeAdd 
+                            AFTER INSERT ON association FOR EACH ROW
+                            UPDATE client SET client_type_id = (SELECT id 
+                                                                FROM client_type
+									                            WHERE name = "Membre")
+				            WHERE client.id = NEW.member_id');
+        $this->addSql('CREATE TRIGGER modifClientTypeRemove 
+                            AFTER DELETE ON association FOR EACH ROW
+                            UPDATE client SET client_type_id = (SELECT id 
+                                                                FROM client_type
+									                            WHERE name = "Etudiant")
+				            WHERE client.id = OLD.member_id');
+
+        //Trigger table Purchase
+        $this->addSql('CREATE TRIGGER verifDispoProduit BEFORE INSERT ON `purchase` FOR EACH ROW
+                            IF((SELECT quantity_stock FROM product WHERE id = NEW.product_id) < NEW.quantity) THEN
+                                BEGIN
+                                    SIGNAL SQLSTATE "45000"
+                                    SET MESSAGE_TEXT = "Stock vide ou insuffisant";
+                                END;
+                            END IF;');
+        $this->addSql('CREATE TRIGGER removeQteProductFromPurchase AFTER INSERT ON `purchase` FOR EACH ROW
+                            UPDATE product SET qteStock = qteStock - NEW.quantity
+                            WHERE product.id = NEW.product_id');
     }
 
     public function down(Schema $schema): void
