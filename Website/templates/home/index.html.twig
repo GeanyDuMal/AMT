@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Titre page web
+	Home
 {% endblock %}
 
 {% block head %}
@@ -9,30 +9,101 @@
 {% endblock %}
 
 {% block body %}
-	{# <style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style> #}
+<style>
+    body {
+      /* font-family: "Lato", sans-serif; */
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      transition: 0.5s;
+      padding-top: 70px;
+    }
+
+    .sidebar a {
+      padding: 0px 0px 0px 1.5%;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: auto;
+      font-size: 36px;
+      margin-left: 0px;
+    }
+
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #111;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+    }
+
+    .openbtn:hover {
+      background-color: #444;
+    }
+
+    #main {
+      transition: margin-left .5s;
+      padding: 16px;
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+      .sidebar {
+        padding-top: 15px;
+      }
+
+      .sidebar a {
+        font-size: 18px;
+      }
+    }
+  </style>
+
+    <script>
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "100%";
+      document.getElementById("main").style.marginLeft = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0";
+    }
+  </script>
 
 
 	{# ---- Navbar ---- #}
 	<div class="pos-f-t"> 
-		<div class="collapse" id="navbarToggleExternalContent">
+		{# <div class="collapse" id="navbarToggleExternalContent">
 			<div class="bg-dark p-4">
 				<h4 class="text-white">Collapsed content</h4>
 				<span class="text-muted">Toggleable via the navbar brand.</span>
 			</div>
-		</div>
+		</div> #}
 		<nav class="navbar navbar-dark bg-dark">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<a href="#">
@@ -43,7 +114,22 @@
 			</a>
 		</nav>
 	</div>
+
+
+	{# hidden menu #}
+		<div id="mySidebar" class="sidebar">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+		<img src="../icons/back_w.png" alt="Arrow" width="auto" height="50">
+		</a>
+		<a href="#">Random text</a>
+		<a href="#">Random text</a>
+		<a href="#">Random text</a>
+		<a href="#">Random text</a>
+	</div>
+	{# end hidden menu #}
 	{# ---- End Navbar ---- #}
+
+	{# Home Page #}
 	<h1>Hello {{ controller_name }}! ✅</h1>This friendly message is coming from:
 	<ul>
 		<li>Your controller at
@@ -57,4 +143,5 @@
 			</code>
 		</li>
 	</ul>	
+	{# End Home Page #}
 {% endblock %}
