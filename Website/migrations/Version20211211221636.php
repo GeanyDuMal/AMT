@@ -45,12 +45,43 @@ final class Version20211211221636 extends AbstractMigration
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B4584665A FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE RESTRICT ON UPDATE CASCADE');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B33E1689A FOREIGN KEY (command_id) REFERENCES command (id) ON DELETE RESTRICT ON UPDATE CASCADE');
 
+    /* Creation des lignes references (Type)
+     * Peuvent etre commenté ici et decommenté dans les fixture
+     * Permet de créer les types obligatoires lors de l'importation de la base de données et pas uniquement avec le jeu de données de test
+     */
+
+        //Type de Payement
+        $this->addSql('INSERT INTO payment_type (name) VALUES ("Carte Bancaire");');
+        $this->addSql('INSERT INTO payment_type (name) VALUES ("Espece");');
+        $this->addSql('INSERT INTO payment_type (name) VALUES ("Solde");');
+
+        //Role de l'association (Ceux obligatoires)
+        $this->addSql('INSERT INTO association_role (name) VALUES ("President");');
+        $this->addSql('INSERT INTO association_role (name) VALUES ("Tresorier");');
+        $this->addSql('INSERT INTO association_role (name) VALUES ("Vice President");');
+        $this->addSql('INSERT INTO association_role (name) VALUES ("Secretaire");');
+        $this->addSql('INSERT INTO association_role (name) VALUES ("Membre");');
+
+        //Type de Client
+        $this->addSql('INSERT INTO client_type (name) VALUES ("Association");');
+        $this->addSql('INSERT INTO client_type (name) VALUES ("Etudiant");');
+
+        //Type de Post
+        $this->addSql('INSERT INTO post_type (name) VALUES ("Event");');
+        $this->addSql('INSERT INTO post_type (name) VALUES ("Autre");');
+
+        //Type de Produit
+        $this->addSql('INSERT INTO product_type (name) VALUES ("Snack");');
+        $this->addSql('INSERT INTO product_type (name) VALUES ("Boisson");');
+
+
+    //Creation des triggers
         //Trigger table Association
         $this->addSql('CREATE TRIGGER modifClientTypeAdd 
                             AFTER INSERT ON association FOR EACH ROW
                             UPDATE client SET client_type_id = (SELECT id 
                                                                 FROM client_type
-									                            WHERE name = "Membre")
+									                            WHERE name = "Association")
 				            WHERE client.id = NEW.member_id');
         $this->addSql('CREATE TRIGGER modifClientTypeRemove 
                             AFTER DELETE ON association FOR EACH ROW
@@ -90,7 +121,7 @@ final class Version20211211221636 extends AbstractMigration
                                     SET NEW.fidelity_point = 0;
                                 END IF;
                                 
-                                SET NEW.client_type_id = (SELECT id FROM client_type WHERE name = "Membre");
+                                SET NEW.client_type_id = (SELECT id FROM client_type WHERE name = "Etudiant");
                             END;');
         $this->addSql('CREATE TRIGGER verifSoldePositif 
                             BEFORE UPDATE ON client FOR EACH ROW
