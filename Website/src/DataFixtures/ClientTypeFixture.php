@@ -11,6 +11,8 @@ class ClientTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        /**  Effectué dans la migration car ce sont des types qui sont obligatoires
+
         $clientType1 = new ClientType();
         $clientType1->setName("Association");
         $manager->persist($clientType1);
@@ -20,5 +22,7 @@ class ClientTypeFixture extends Fixture
         $manager->persist($clientType2);
 
         $manager->flush();
+
+        */
     }
 }

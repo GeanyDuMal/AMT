@@ -11,6 +11,8 @@ class AssociationRoleFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        /** Effectué dans la migration car ce sont des types qui sont obligatoires
+
         $associationRole1 = new AssociationRole();
         $associationRole1->setName("President");
         $manager->persist($associationRole1);
@@ -32,5 +34,7 @@ class AssociationRoleFixture extends Fixture
         $manager->persist($associationRole5);
 
         $manager->flush();
+
+         */
     }
 }
