@@ -24,6 +24,11 @@
       flex-direction: column;
 }
 
+.form_signin div{
+      display: flex;
+      flex-direction: column;
+}
+
 #img_profile{
       width: 25%;
       max-width: 250px;
