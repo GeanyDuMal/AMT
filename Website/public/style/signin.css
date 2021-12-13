@@ -33,3 +33,23 @@
       width: 25%;
       max-width: 250px;
 }
+
+
+
+/* OU */
+
+.form_control{
+      display: flex;
+      flex-direction: column;
+}
+
+.form_control > *{
+      margin: 10px 0; 
+}
+
+.form_control input{
+      width: 100vw;
+      max-width: 750px;
+      height: 50px;
+      font-size: xx-large;
+}
