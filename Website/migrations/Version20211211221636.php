@@ -111,13 +111,14 @@ final class Version20211211221636 extends AbstractMigration
                             END IF;');
 
         //Trigger table Client
+            //Sur ce trigger, setup de balance et fidelity a 0 car le default ne fonctionne pas avec $manager->flush()
         $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
                             BEGIN
-                                IF(NEW.balance <0) THEN
+                                IF(NEW.balance < 0 || ISNULL(NEW.balance)) THEN
                                     SET NEW.balance = 0;
                                 END IF;
                                 
-                                IF(NEW.fidelity_point <> 0) THEN
+                                IF(NEW.fidelity_point <> 0 || ISNULL(NEW.fidelity_point)) THEN
                                     SET NEW.fidelity_point = 0;
                                 END IF;
                                 
