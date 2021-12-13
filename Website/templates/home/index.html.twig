@@ -31,7 +31,7 @@
     }
 
     .sidebar a {
-      padding: 0px 0px 0px 1.5%;
+      padding: 0px 0px 0px 2.5%;
       text-decoration: none;
       font-size: 25px;
       color: #818181;
@@ -47,21 +47,8 @@
       position: absolute;
       top: 0;
       right: auto;
-      font-size: 36px;
+      /* font-size: 36px; */
       margin-left: 0px;
-    }
-
-    .openbtn {
-      font-size: 20px;
-      cursor: pointer;
-      background-color: #111;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-    }
-
-    .openbtn:hover {
-      background-color: #444;
     }
 
     #main {
@@ -95,53 +82,52 @@
 
 
 	{# ---- Navbar ---- #}
-	<div class="pos-f-t"> 
-		{# <div class="collapse" id="navbarToggleExternalContent">
-			<div class="bg-dark p-4">
-				<h4 class="text-white">Collapsed content</h4>
-				<span class="text-muted">Toggleable via the navbar brand.</span>
-			</div>
-		</div> #}
-		<nav class="navbar navbar-dark bg-dark">
-			<button onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<a href="#">
-				<img src="../img/logo_menu.png" width="auto" height="50" alt="logo-menu" border="0"></a>
-				<img src="../icons/user_w.png" width="40" height="40" class="d-inline-block" alt="user" border="0"></a>
-				{# <img src="https://ibb.co/6F2wxCB" width="30" height="30" class="d-inline-block align-top" alt=""> #}
-				{# <img src="{{ '../../../../public/logo_menu.png '}}" width="100%" height="100%" alt="my alt of image" > #}
-			</a>
-		</nav>
-	</div>
+    <div class="pos-f-t"> 
+      <nav class="navbar navbar-dark bg-dark">
+        <button style="margin-left: 0.5rem;" onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a href=" ">
+          <img src="../img/logo_menu.png" width="auto" height="50" alt="logo-menu" border="0"></a>
+          {# <img src="https://ibb.co/6F2wxCB" width="30" height="30" class="d-inline-block align-top" alt=""> #}
+          {# <img src="{{ '../../../../public/logo_menu.png '}}" width="100%" height="100%" alt="my alt of image" > #}
+        </a>
+        <a href="#">
+          <img style="margin-right: 0.5rem;" src="../icons/user_w.png" width="40" height="40" class="d-inline-block" alt="user" border="0"></a>
+        </a>
+      </nav>
+    </div>
 
 
-	{# hidden menu #}
-		<div id="mySidebar" class="sidebar">
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
-		<img src="../icons/back_w.png" alt="Arrow" width="auto" height="50">
-		</a>
-		<a href="#">Random text</a>
-		<a href="#">Random text</a>
-		<a href="#">Random text</a>
-		<a href="#">Random text</a>
-	</div>
-	{# end hidden menu #}
+    {# hidden menu #}
+      <div id="mySidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+      <img src="../icons/back_w.png" alt="Arrow" width="auto" height="50">
+      </a>
+      <div style="margin-right: 1em;">
+        <a href="#">Random</a> 
+        <a href="#">Random</a>
+        <a href="#">Random</a>
+        <a href="#">Random</a>
+        {# Pas de bug si un seul mot #}
+      </div>
+    </div>
+    {# end hidden menu #}
 	{# ---- End Navbar ---- #}
 
 	{# Home Page #}
-	<h1>Hello {{ controller_name }}! ✅</h1>This friendly message is coming from:
-	<ul>
-		<li>Your controller at
-			<code>
-				<a href="{{ 'D:/Github_clones/Website_Association/website/src/Controller/POUETHomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a>
-			</code>
-		</li>
-		<li>Your template at
-			<code>
-				<a href="{{ 'D:/Github_clones/Website_Association/website/templates/pouethome/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a>
-			</code>
-		</li>
-	</ul>	
+    <h1>Hello {{ controller_name }}! ✅</h1>This friendly message is coming from:
+    <ul>
+      <li>Your controller at
+        <code>
+          <a href="{{ 'D:/Github_clones/Website_Association/website/src/Controller/POUETHomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a>
+        </code>
+      </li>
+      <li>Your template at
+        <code>
+          <a href="{{ 'D:/Github_clones/Website_Association/website/templates/pouethome/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a>
+        </code>
+      </li>
+    </ul>	
 	{# End Home Page #}
 {% endblock %}
