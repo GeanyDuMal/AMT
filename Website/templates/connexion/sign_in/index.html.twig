@@ -39,7 +39,18 @@
                   </div>
             </form> #}
 
+            {{ form_start(formCreationClient) }}
+                  <div class="form_control">
+                        {{ form_widget(formCreationClient.name, {'attr': {'placeholder': "Nom"}}) }}
+                        {{ form_widget(formCreationClient.firstName, {'attr': {'placeholder': "Prenom"}}) }}
+                        {{ form_widget(formCreationClient.login, {'attr': {'placeholder': "Login"}}) }}
+                        {{ form_widget(formCreationClient.password, {'attr': {'placeholder': "Mot de passe", "type": "password"}}) }}
+                        
+                        <input type="password" name="confirmPassword" placeholder="Confirmez votre mot de passe">
 
+                        <button type="submit" id="">Valider</button>
+                  </div>
+            {{ form_end(formCreationClient) }}
 
       </div>
 {% endblock %}
