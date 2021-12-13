@@ -39,6 +39,13 @@
                   </div>
             </form> #}
 
+            {% if flush %}
+                  <div>
+                        <h1>TOUT S'EST BIEN PASSE</h1>
+                  </div>                  
+            {% endif %}
+
+
             {{ form_start(formCreationClient) }}
                   <div class="form_control">
                         {{ form_widget(formCreationClient.name, {'attr': {'placeholder': "Nom"}}) }}
