@@ -17,6 +17,11 @@ class SignInController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
+        /** Voir qu'est ce qui doit etre fait dans le controller et dans le manager
+         *  A voir si l'on maintient le form coté symfony ou si l'on passe a un form PHP
+         *  Moins opti mais bcp plus simple et esthetique coté front
+         * 
+         */
         $client = new Client;
         $clientRepository = $manager->getRepository(Client::class);
         $flush = false;
