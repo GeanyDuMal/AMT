@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,19 +23,20 @@ class SignInController extends AbstractController
         $flush = false;
         $verifPassword = "";
 
-        //Permet d'eviter le bug de lka variable null a la premiere entrée sur la page
+        //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
         if (!is_null($inputParameterBag->get("name"))){
-            $client->setName($inputParameterBag->get("name"))
-                    ->setFirstName($inputParameterBag->get("firstName"))
-                    ->setLogin($inputParameterBag->get("login"))
-                    ->setPassword($inputParameterBag->get("password"));
-            $verifPassword = $inputParameterBag->get("confirmPassword");
+            $client->setName(trim($inputParameterBag->get("name")))
+                    ->setFirstName(trim($inputParameterBag->get("firstName")))
+                    ->setLogin(trim($inputParameterBag->get("login")))
+                    ->setPassword(trim($inputParameterBag->get("password")));
+            $verifPassword = trim($inputParameterBag->get("confirmPassword"));
         }
 
         /**
          * Si le form n'est pas vide, que le login n'existe pas et que les infos sont correctes alors on l'insere
          */
-        if (!$clientManager->isEmpty($client) && !$clientManager->loginExists($client) && $clientManager->dataCorrect($client))
+        if (!$clientManager->isEmpty($client) && !$clientManager->loginExists($client)
+            && $clientManager->dataCorrect($client) && $client->getPassword() == $verifPassword)
         {
             $clientManager->persist($client);
             $flush = true;
