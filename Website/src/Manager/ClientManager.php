@@ -7,6 +7,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ClientManager
 {
+      public $manager;
+
+      public function __construct(EntityManagerInterface  $managerController)
+      {
+          $this->manager = $managerController;
+      }
+
       public function isEmpty(?Client $client): bool
       {
             if ($client->getName() == "" && $client->getFirstname() == "" && $client->getLogin() == "" && $client->getPassword() == ""){
@@ -17,18 +24,31 @@ class ClientManager
             }
       }
 
-      public function loginExists(EntityManagerInterface $manager, ?Client $client): bool
+      public function loginExists(?Client $client): bool
       {
-          $clientRepository = $manager->getRepository(Client::class);
+          $clientRepository = $this->manager->getRepository(Client::class);
 
           $dupplicata = $clientRepository->findOneBy(["login" => $client->getLogin()]);
 
           return !is_null($dupplicata);
       }
 
-      public function persist(EntityManagerInterface $manager, ?Client $client)
+      public function dataCorrect(?Client $client): bool
       {
-          $manager->persist($client);
-          $manager->flush();
+          $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
+          $containsRegex = strpbrk($client->getPassword(), $regexSpecial);
+
+          $nameUpperThree = (strlen($client->getName()) >=3);
+          $firstNameUpperThree = (strlen($client->getFirstName()) >=3);
+          $loginUpperFive = (strlen($client->getLogin()) >=5);
+          $passwordUpperFive = (strlen($client->getPassword()) >=5);
+
+          return ($containsRegex && $loginUpperFive && $passwordUpperFive & $firstNameUpperThree && $nameUpperThree);
+      }
+
+      public function persist(?Client $client)
+      {
+          $this->manager->persist($client);
+          $this->manager->flush();
       }
 }
