@@ -17,42 +17,23 @@ class SignInController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
-        /** Voir qu'est ce qui doit etre fait dans le controller et dans le manager
-         *  A voir si l'on maintient le form coté symfony ou si l'on passe a un form PHP
-         *  Moins opti mais bcp plus simple et esthetique coté front
-         */
-        $client = new Client;
-        $clientRepository = $manager->getRepository(Client::class);
-        $flush = false;
+        $inputParameterBag = $request->request;
 
-        $formNewClient = $this->createFormBuilder($client)
-                            ->add("name")
-                            ->add("firstName")
-                            ->add("login")
-                            ->add("password", PasswordType::class)
-                            ->getForm();
+        $client = new Client();
 
-        $formNewClient->handleRequest($request);
-
-        //Verif duplicata
-        $data = $formNewClient->getData();
-
-        $duplicata = $clientRepository->findOneBy(["login" => $data->getLogin()]);
-        dump($duplicata);
-
-        //Faire plus de verif et test que login n'existe pas 
-        //Message dans le cas ou il y a une erreur
-        if($formNewClient->isSubmitted() && $formNewClient->isValid() && $duplicata == NULL){
-            $manager->persist($client);
-            $manager->flush();
-            $flush = true;
-
-            //Redirection ? 
+        //Permet d'eviter le bug de lka variable null a la premiere entrée sur la page
+        if (!is_null($inputParameterBag->get("name"))){
+            $client->setName($inputParameterBag->get("name"))
+                    ->setFirstName($inputParameterBag->get("firstName"))
+                    ->setLogin($inputParameterBag->get("login"))
+                    ->setPassword($inputParameterBag->get("password"));
         }
 
 
+
+        $flush = false;
+
         return $this->render('connexion/sign_in/index.html.twig', [
-            'formCreationClient' => $formNewClient->createView(),
             'flush' => $flush
         ]);
     }
