@@ -9,22 +9,22 @@
       margin: 10px 0;
 }
 
-.form_signin{
+#form_signin{
       display: flex;
-      flex-direction:column;
+      flex-direction: column;
       align-items: center;
 }
 
-.form_signin > *{
+#form_signin > *{
       margin: 10px 0; 
 }
 
-.form_signin div{
+#form_signin div{
       display: flex;
       flex-direction: column;
 }
 
-.form_signin .input_text input{
+#form_signin .input_text input{
       width: 100vw;
       max-width: 750px;
       height: 40px;
