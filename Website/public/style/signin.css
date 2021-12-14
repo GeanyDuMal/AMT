@@ -4,7 +4,7 @@
       align-items: center;
 }
 
-.vertical_centered_menu h1{
+.vertical_centered_menu h3{
       font-size: 5rem;
       margin: 10px 0;
 }
@@ -24,32 +24,15 @@
       flex-direction: column;
 }
 
-.form_signin div{
-      display: flex;
-      flex-direction: column;
+.form_signin .input_text input{
+      width: 100vw;
+      max-width: 750px;
+      height: 40px;
+      font-size: x-large;
 }
 
 #img_profile{
       width: 25%;
-      max-width: 250px;
+      max-width: 200px;
 }
 
-
-
-/* OU */
-
-.form_control{
-      display: flex;
-      flex-direction: column;
-}
-
-.form_control > *{
-      margin: 10px 0; 
-}
-
-.form_control input{
-      width: 100vw;
-      max-width: 750px;
-      height: 50px;
-      font-size: xx-large;
-}
