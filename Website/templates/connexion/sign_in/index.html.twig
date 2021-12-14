@@ -5,14 +5,20 @@
 {% endblock %}
 
 {% block stylesheets %}
-      <link rel="stylesheet" href="../style/signin.css">
+      <link rel="stylesheet" href="/style/signin.css">
 {% endblock %}
 
 {% block body %}
+
+      {% if flush %}
+            <div>
+                  <h2>TOUT S'EST BIEN PASSE</h2>
+            </div>
+      {% endif %}
+
       <div class="vertical_centered_menu">
             <h1>Inscription</h1>
-            <img src="../img/connexion/user.png" alt="" srcset="" id="img_profile">
-            {# Form avec la methode classique php
+            <img src="/img/connexion/user.png" alt="" srcset="" id="img_profile">
             <form action="" method="post" class="form_signin">
                   <div>
                         <label for="">Nom</label>
@@ -37,27 +43,6 @@
                   <div>
                         <button type="submit">Valider</button>   
                   </div>
-            </form> #}
-
-            {% if flush %}
-                  <div>
-                        <h2>TOUT S'EST BIEN PASSE</h2>
-                  </div>                  
-            {% endif %}
-
-
-            {{ form_start(formCreationClient) }}
-                  <div class="form_control">
-                        {{ form_widget(formCreationClient.name, {'attr': {'placeholder': "Nom"}}) }}
-                        {{ form_widget(formCreationClient.firstName, {'attr': {'placeholder': "Prenom"}}) }}
-                        {{ form_widget(formCreationClient.login, {'attr': {'placeholder': "Login"}}) }}
-                        {{ form_widget(formCreationClient.password, {'attr': {'placeholder': "Mot de passe", "type": "password"}}) }}
-                        
-                        <input type="password" name="confirmPassword" placeholder="Confirmez votre mot de passe">
-
-                        <button type="submit" id="">Valider</button>
-                  </div>
-            {{ form_end(formCreationClient) }}
-
+            </form>
       </div>
 {% endblock %}
