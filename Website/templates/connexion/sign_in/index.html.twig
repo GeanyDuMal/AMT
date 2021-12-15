@@ -5,59 +5,44 @@
 {% endblock %}
 
 {% block stylesheets %}
-      <link rel="stylesheet" href="../style/signin.css">
+      <link rel="stylesheet" href="/style/connexion/signin.css">
 {% endblock %}
 
 {% block body %}
+
+      {% if flush %}
+            <div>
+                  <h3>TOUT S'EST BIEN PASSE</h3>
+            </div>
+      {% endif %}
+
       <div class="vertical_centered_menu">
             <h1>Inscription</h1>
-            <img src="../img/connexion/user.png" alt="" srcset="" id="img_profile">
-            {# Form avec la methode classique php
-            <form action="" method="post" class="form_signin">
-                  <div>
+            <img src="/img/connexion/user.png" alt="" srcset="" id="img_profile">
+            <form action="" method="post" id="form_signin">
+                  <div class="input_text">
                         <label for="">Nom</label>
                         <input type="text" name="name">
                   </div> 
-                  <div>
+                  <div class="input_text">
                         <label for="">Prenom</label>
                         <input type="text" name="firstName">
                   </div>
-                  <div>
-                        <label for="">Login</label>
+                  <div class="input_text">
+                        <label for="">Login (au moins 5 caracteres)</label>
                         <input type="text" name="login">
                   </div>
-                  <div>
-                        <label for="">Mot de passe</label>
+                  <div class="input_text">
+                        <label for="">Mot de passe (au moins 5 caracteres et 1 caractere spécial)</label>
                         <input type="password" name="password">
                   </div>
-                  <div>
+                  <div class="input_text">
                         <label for="">Mot de passe (confirmation)</label>
-                        <input type="password" name="confirmPassword">    
+                        <input type="password" name="confirmPassword">
                   </div>
                   <div>
                         <button type="submit">Valider</button>   
                   </div>
-            </form> #}
-
-            {% if flush %}
-                  <div>
-                        <h2>TOUT S'EST BIEN PASSE</h2>
-                  </div>                  
-            {% endif %}
-
-
-            {{ form_start(formCreationClient) }}
-                  <div class="form_control">
-                        {{ form_widget(formCreationClient.name, {'attr': {'placeholder': "Nom"}}) }}
-                        {{ form_widget(formCreationClient.firstName, {'attr': {'placeholder': "Prenom"}}) }}
-                        {{ form_widget(formCreationClient.login, {'attr': {'placeholder': "Login"}}) }}
-                        {{ form_widget(formCreationClient.password, {'attr': {'placeholder': "Mot de passe", "type": "password"}}) }}
-                        
-                        <input type="password" name="confirmPassword" placeholder="Confirmez votre mot de passe">
-
-                        <button type="submit" id="">Valider</button>
-                  </div>
-            {{ form_end(formCreationClient) }}
-
+            </form>
       </div>
 {% endblock %}
