@@ -8,6 +8,10 @@
       <link rel="stylesheet" href="/style/connexion/signin.css">
 {% endblock %}
 
+{% block javascripts %}
+      <script src="/script/connexion/signin.js"></script>
+{% endblock %}
+
 {% block body %}
 
       {% if flush %}
@@ -41,10 +45,9 @@
                         <input type="password" name="confirmPassword">
                   </div>
                   <div>
-                        <button type="submit" class="btn_valider" onclick="return ">Valider</button>   
+                        <button type="submit" class="btn_valider" onclick="return verifyInput()">Valider</button>   
                   </div>
             </form>
-            <hr>
             <div class="text_bottom_signin">
                   Déja Client ? <a href="{{ path('login') }}">Connectez vous</a> 
             </div>
