@@ -1,3 +1,10 @@
+@media screen and(max-width: 600px){
+      
+      #form_signin .input_text input{
+            height: 60px;
+      }      
+}
+
 .vertical_centered_menu{
       display: flex;
       flex-direction:column;
@@ -24,11 +31,11 @@
       flex-direction: column;
 }
 
-#form_signin .input_text input{
+#form_signin .input_text *{
       width: 100vw;
       max-width: 750px;
       height: 40px;
-      font-size: x-large;
+      font-size: 2rem;
 }
 
 #img_profile{
@@ -36,3 +43,6 @@
       max-width: 200px;
 }
 
+.text_bottom_signin{
+      font-size: 300%;
+}
