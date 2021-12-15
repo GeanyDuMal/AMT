@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SignInController extends AbstractController
 {
     /**
-     * @Route("/sign_in", name="sign_in")
+     * @Route("/signin", name="signin")
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
@@ -43,7 +43,7 @@ class SignInController extends AbstractController
         }
 
 
-        return $this->render('connexion/sign_in/index.html.twig', [
+        return $this->render('connexion/signin/index.html.twig', [
             'flush' => $flush
         ]);
     }
