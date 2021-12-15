@@ -1,8 +1,6 @@
-@media screen and(max-width: 600px){
-      
-      #form_signin .input_text input{
-            height: 60px;
-      }      
+:root{
+      --primary: rgb(118, 7, 0);
+      --primary-dark: rgb(76, 13, 0);
 }
 
 .vertical_centered_menu{
@@ -31,30 +29,34 @@
       flex-direction: column;
 }
 
-#form_signin .input_text *{
+
+
+.input_text *{
       width: 100vw;
       max-width: 750px;
-      height: 40px;
+      height: 3vw;
+      /* max-height: 30px; */
       font-size: 2rem;
 }
 
 #img_profile{
       width: 25%;
-      max-width: 200px;
+      max-width: 150px;
 }
 
-#form_signin .input_text input{
-      margin: 15px 0;
+.input_text input{
+      margin-top: 10px;
       padding: 5px;
       border-radius: 5px;
       border: 2px solid rgb(27, 25, 25);
       transition: all 0.2s;
+      background-color: rgba(59, 59, 59, 0.1);
 }
 
 #form_signin .input_text input:focus{
       outline: 0;
-      border-color: rgb(118, 7, 0);
-      box-shadow: 0px 0px 10px rgb(76, 13, 0);
+      border-color: var(--primary);
+      box-shadow: 0px 0px 10px var(--primary-dark);
 }
 
 .btn_valider{
@@ -62,8 +64,38 @@
       font-size: 2rem;
       cursor: pointer;
       border-radius: 10px;
+      border: 2px solid var(--primary);
+      transition: box-shadow 0.2s;
+}
+
+.btn_valider:hover{
+      box-shadow: 0px 0px 10px var(--primary-dark);
 }
 
 .text_bottom_signin{
       font-size: 300%;
+      margin: 0 auto;
+      text-align: center;
+}
+
+@media(max-width: 800px){
+      #form_signin .input_text *{
+            width: 70vw;
+            max-width: 750px;
+            height: 10vw;
+      } 
+
+      #form_signin .input_text label{
+            font-size: 1.5rem;
+            height: fit-content;
+      }
+
+      .input_text{
+            min-height: fit-content;
+            justify-items:end ;
+      }
+
+      .btn_valider{
+            font-size: 1.5rem;
+      }
 }
