@@ -18,10 +18,11 @@ class ClientManager
      * @param Client|null $client
      * @return bool
      * Check if the differents attributes aren't empty
+     * Don't check the attribute balance, fidelityPoint and clientType 
      */
-      public function isEmpty(?Client $client): bool
+      public function isNotFull(?Client $client): bool
       {
-            if ($client->getName() == "" && $client->getFirstname() == "" && $client->getLogin() == "" && $client->getPassword() == ""){
+            if ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" || $client->getPassword() == ""){
                   return true;
             }
             else{

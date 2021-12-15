@@ -35,7 +35,7 @@ class SignInController extends AbstractController
         /**
          * Si le form n'est pas vide, que le login n'existe pas et que les infos sont correctes alors on l'insere
          */
-        if (!$clientManager->isEmpty($client) && !$clientManager->loginExists($client)
+        if (!$clientManager->isNotFull($client) && !$clientManager->loginExists($client)
             && $clientManager->dataCorrect($client) && $client->getPassword() == $verifPassword)
         {
             $clientManager->persist($client);
