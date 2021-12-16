@@ -6,14 +6,14 @@ use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\ClientType;
 use Exception;
-use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  * @method string getUserIdentifier()
  */
-class Client implements UserInterface, \Serializable
+class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -180,32 +180,5 @@ class Client implements UserInterface, \Serializable
     public function __call($name, $arguments)
     {
         // TODO: Implement @method string getUserIdentifier()
-    }
-
-    /**
-     * Serialize Part
-     * Implemented by the Serialize Interface
-     */
-
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->login,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
-        ));
-    }
-
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->login,
-            $this->password,
-            // see section on salt below
-            // $this->salt
-            ) = unserialize($serialized, array('allowed_classes' => false));
     }
 }
