@@ -5,11 +5,15 @@ namespace App\Entity;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\ClientType;
+use Exception;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @method string getUserIdentifier()
  */
-class Client
+class Client implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -141,5 +145,67 @@ class Client
         $this->clientType = $clientType;
 
         return $this;
+    }
+
+    /**
+     * Security Part
+     * Methods implemented by the UserInterface
+     */
+
+    public function getRoles()
+    {
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUsername()
+    {
+        return $this->getLogin();
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
+    }
+
+    /**
+     * Serialize Part
+     * Implemented by the Serialize Interface
+     */
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->login,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->login,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized, array('allowed_classes' => false));
     }
 }

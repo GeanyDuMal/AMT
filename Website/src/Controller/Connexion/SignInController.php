@@ -46,8 +46,7 @@ class SignInController extends AbstractController
             $clientManager->persist($client);
             $flush = true;
 
-            /*$user->setLogin($client->getLogin())
-                ->setPassword($client->getPassword());*/
+            return $this->redirectToRoute('login');
         }
 
 

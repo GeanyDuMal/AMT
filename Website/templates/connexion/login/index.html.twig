@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Inscription
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/connexion/signin.css">
+{% endblock %}
+
+
+{% block body %}
+    <div class="vertical_centered_menu">
+        <h1>Connexion</h1>
+
+        <div class="text_bottom_signin">
+            Déja Client ? <a href="{{ path('login') }}">Connectez vous</a>
+        </div>
+    </div>
+{% endblock %}
