@@ -26,27 +26,36 @@
 
             <form action="" method="post" id="form_signin">
                   <div class="input_text">
-                        <label for="">Nom</label>
+                        <label for="">Nom :</label>
                         <input type="text" name="name">
                   </div> 
                   <div class="input_text">
-                        <label for="">Prenom</label>
+                        <label for="">Prenom :</label>
                         <input type="text" name="firstName">
                   </div>
                   <div class="input_text">
-                        <label for="">Login (au moins 5 caracteres)</label>
+                        <label for="">Login :
+                              <ul class="list_require">
+                                    <li>Au moins 5 caracteres</li>
+                              </ul>
+                        </label>
                         <input type="text" name="login">
                   </div>
                   <div class="input_text">
-                        <label for="">Mot de passe (au moins 5 caracteres et 1 caractere spécial)</label>
+                        <label for="">Mot de passe :
+                              <ul class="list_require">
+                                    <li>Au moins 5 caractères</li>
+                                    <li>Au moins 1 caractère spécial</li>
+                              </ul>
+                        </label>
                         <input type="password" name="password">
                   </div>
                   <div class="input_text">
-                        <label for="">Mot de passe (confirmation)</label>
+                        <label for="">Mot de passe (confirmation) :</label>
                         <input type="password" name="confirmPassword">
                   </div>
                   <div>
-                        <button type="submit" class="btn_valider" onclick="return verifyInput()">Valider</button>   
+                        <button type="submit" class="btn_valider" onclick="return verifyInput()">S'inscrire</button>   
                   </div>
             </form>
             <div class="text_bottom_signin">

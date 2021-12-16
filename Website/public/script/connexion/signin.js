@@ -12,21 +12,21 @@ function verifyInput() {
     var valueConfirm = form.confirmPassword.value;
 
     if (valueName == ""){
-        message += "Nom non renseigné ";
+        message += "Nom non renseigné, ";
     }else if(valueName.length < 3){
-        message += "Nom trop court ";
+        message += "Nom trop court, ";
     }
 
     if (valueFirstName == ""){
-        message += "Prenom non renseigné ";
+        message += "Prenom non renseigné, ";
     }else if(valueFirstName.length < 3){
-        message += "Prenom trop court ";
+        message += "Prenom trop court, ";
     }
 
     if (valueLogin == ""){
-        message += "Login non renseigné ";
+        message += "Login non renseigné, ";
     }else if(valueLogin.length < 5){
-        message += "Login trop court ";
+        message += "Login trop court, ";
     }
 
     if (valuePassword == ""){
