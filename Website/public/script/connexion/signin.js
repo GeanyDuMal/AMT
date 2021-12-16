@@ -1,7 +1,9 @@
 function verifyInput() {
+
     var form = document.querySelector("#form_signin");
     var message = "";
-    var regexCharacter = "#$%^&*()+=-[]';,./{}|:<>?~";
+    var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
 
     var valueName = form.name.value;
     var valueFirstName = form.firstName.value;
@@ -10,50 +12,43 @@ function verifyInput() {
     var valueConfirm = form.confirmPassword.value;
 
     if (valueName == ""){
-        message += "Nom non renseigné\n";
-    }else if(valueName.length() < 3){
-        message += "Nom trop court\n";
+        message += "Nom non renseigné ";
+    }else if(valueName.length < 3){
+        message += "Nom trop court ";
     }
 
     if (valueFirstName == ""){
-        message += "Prenom non renseigné\n";
-    }else if(valueFirstName.length() < 3){
-        message += "Prenom trop court\n";
+        message += "Prenom non renseigné ";
+    }else if(valueFirstName.length < 3){
+        message += "Prenom trop court ";
     }
 
     if (valueLogin == ""){
-        message += "Login non renseigné\n";
-    }else if(valueLogin.length() < 5){
-        message += "Login trop court\n";
+        message += "Login non renseigné ";
+    }else if(valueLogin.length < 5){
+        message += "Login trop court ";
     }
 
     if (valuePassword == ""){
-        message += "Mot de Passe non renseigné\n";
-    }else if(valuePassword.length() < 5){
-        message += "Mot de Passe trop court\n";
-    }else if (regexCharacter.match(valuePassword) == null) {
-        message += "Le mots de passe ne contient pas de caractere spécial\n"
+        message += "Mot de Passe non renseigné ";
+    }else if(valuePassword.length < 5){
+        message += "Mot de Passe trop court ";
+    }else if (regexCharacter.test(valuePassword) == false) {
+        message += "Le mots de passe ne contient pas de caractere spécial "
     }
     else if (valuePassword != valueConfirm) {
-        message += "Les mots de passe ne correspondent pas\n"
+        message += "Les mots de passe ne correspondent pas "
     }
 
-/** DEBUG */
-   
-    console.log(valueName);
-    console.log(valueFirstName);
-    console.log(valueLogin);
-    console.log(valuePassword);
-    console.log(valueConfirm);
-    console.log(message);
-
-/**END DEBUG */
-
     if (message != "") {
-        alert(message);
+        Swal.fire({
+            title: 'Incomplet !',
+            text: message,
+            icon: 'error',
+            confirmButtonText: 'Completer'
+          })
         return false;
     }else{
         return true;
     }
-    
 }
