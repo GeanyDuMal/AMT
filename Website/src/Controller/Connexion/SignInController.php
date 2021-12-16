@@ -4,6 +4,7 @@ namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
+use App\Security\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ class SignInController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
+        $user = new User();
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client();
@@ -43,6 +45,9 @@ class SignInController extends AbstractController
         {
             $clientManager->persist($client);
             $flush = true;
+
+            $user->setLogin($client->getLogin())
+                ->setPassword($client->getPassword());
         }
 
 
