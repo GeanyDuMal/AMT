@@ -18,7 +18,7 @@ class SignInController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
-        $user = new User();
+        /*$user = new User();*/
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client();
@@ -46,8 +46,8 @@ class SignInController extends AbstractController
             $clientManager->persist($client);
             $flush = true;
 
-            $user->setLogin($client->getLogin())
-                ->setPassword($client->getPassword());
+            /*$user->setLogin($client->getLogin())
+                ->setPassword($client->getPassword());*/
         }
 
 
