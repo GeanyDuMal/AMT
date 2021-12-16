@@ -10,19 +10,20 @@
 
 {% block javascripts %}
       <script src="/script/connexion/signin.js"></script>
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
 {% block body %}
-
-      {% if flush %}
-            <div>
-                  <h3>TOUT S'EST BIEN PASSE</h3>
-            </div>
-      {% endif %}
-
       <div class="vertical_centered_menu">
             <h1>Inscription</h1>
             <img src="/img/connexion/user.png" alt="" srcset="" id="img_profile">
+            
+            {% if flush %}
+                  <div>
+                        <h3>TOUT S'EST BIEN PASSE</h3>
+                  </div>
+            {% endif %}
+
             <form action="" method="post" id="form_signin">
                   <div class="input_text">
                         <label for="">Nom</label>
