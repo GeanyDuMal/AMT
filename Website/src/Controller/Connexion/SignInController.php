@@ -46,7 +46,9 @@ class SignInController extends AbstractController
             $clientManager->persist($client);
             $flush = true;
 
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('login',[
+                "flushed" => true
+            ]);
         }
 
 

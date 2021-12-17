@@ -11,24 +11,34 @@ function verifyInput() {
     var valuePassword = form.password.value;
     var valueConfirm = form.confirmPassword.value;
 
+    form.name.style.borderColor = "red";
     if (valueName == ""){
         message += "Nom non renseigné, ";
     }else if(valueName.length < 3){
         message += "Nom trop court, ";
+    }else{
+        form.name.style.borderColor = "black";
     }
 
+    form.firstName.style.borderColor = "red";
     if (valueFirstName == ""){
         message += "Prenom non renseigné, ";
     }else if(valueFirstName.length < 3){
         message += "Prenom trop court, ";
+    }else{
+        form.firstName.style.borderColor = "black";
     }
 
+    form.login.style.borderColor = "red";
     if (valueLogin == ""){
         message += "Login non renseigné, ";
     }else if(valueLogin.length < 5){
         message += "Login trop court, ";
+    }else{
+        form.login.style.borderColor = "black";
     }
 
+    form.password.style.borderColor = "red";
     if (valuePassword == ""){
         message += "Mot de Passe non renseigné ";
     }else if(valuePassword.length < 5){
@@ -38,6 +48,10 @@ function verifyInput() {
     }
     else if (valuePassword != valueConfirm) {
         message += "Les mots de passe ne correspondent pas "
+        form.confirmPassword.style.borderColor = "red";
+    }else{
+        form.password.style.borderColor = "black";
+        form.confirmPassword.style.borderColor = "black";
     }
 
     if (message != "") {
