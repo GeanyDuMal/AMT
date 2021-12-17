@@ -1,0 +1,101 @@
+:root{
+      --primary: rgb(118, 7, 0);
+      --primary-dark: rgb(76, 13, 0);
+}
+
+.vertical_centered_menu{
+      display: flex;
+      flex-direction:column;
+      align-items: center;
+}
+
+.vertical_centered_menu h1{
+      font-size: 3rem;
+      margin: 10px 0;
+}
+
+#form_login{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+#form_login > *{
+      margin-top: 10px; 
+}
+
+#form_login div{
+      display: flex;
+      flex-direction: column;
+}
+
+.input_text *{
+      width: 100vw;
+      max-width: 750px;
+      font-size: 2rem;
+      text-align: justify;
+}
+
+.input_text input{
+      height: 1.5rem;
+      font-size: 1.5rem;
+      margin-top: 5px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 2px solid rgb(27, 25, 25);
+      background-color: rgba(59, 59, 59, 0.1);
+      transition: all 0.2s;
+}
+
+.input_text input:focus{
+      outline: 0;
+      border-color: var(--primary);
+      box-shadow: 0px 0px 10px var(--primary-dark);
+}
+
+.btn_valider{
+      padding: 10px;
+      font-size: 2rem;
+      cursor: pointer;
+      border-radius: 10px;
+      border: 2px solid var(--primary);
+      transition: box-shadow 0.2s;
+}
+
+.btn_valider:hover{
+      box-shadow: 0px 0px 10px var(--primary-dark);
+}
+
+.text_bottom_signin{
+      font-size: 2.5rem;
+      margin-top: 5px;
+      text-align: center;
+}
+
+
+
+@media(max-width: 800px){
+      .input_text{
+            min-height: fit-content;
+            justify-items:end ;
+      }
+      
+      .input_text *{
+            width: 70vw;
+            max-width: 750px;
+            height: 10vw;
+      } 
+
+      .input_text label{
+            font-size: 1.5rem;
+            height: fit-content;
+      }
+
+      .input_text input{
+            font-size: 1.2rem;
+      }
+
+      .btn_valider, .text_bottom_signin{
+            font-size: 1.5rem;
+      }
+}
