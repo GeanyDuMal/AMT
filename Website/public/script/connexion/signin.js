@@ -1,6 +1,6 @@
 function verifyInput() {
 
-    var form = document.querySelector("#form_signin");
+    var form = document.querySelector("#form_login");
     var message = "";
     var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
