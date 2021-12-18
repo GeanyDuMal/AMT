@@ -2,6 +2,8 @@
 
 namespace App\Controller\Connexion;
 
+use App\Entity\Client;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,9 +25,23 @@ class LoginController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $client = $this->getUser();
+
+        dump($client);
+
         return $this->render('connexion/login/index.html.twig', [
             'lastUsername' => $lastUsername,
             'error' => $error,
         ]);
+    }
+
+    /**
+     * @Route("/logout", name="logout", methods={"GET"})
+     * @throws Exception
+     */
+    public function logout(): void
+    {
+        // controller can be blank: it will never be called!
+        throw new Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
