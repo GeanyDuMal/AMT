@@ -58,6 +58,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $clientType;
 
+    private $roles = [];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -152,9 +154,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * Methods implemented by the UserInterface
      */
 
-    public function getRoles()
+    public function getRoles(): array
     {
-
+        $roles[] = $this->roles;
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -167,18 +169,13 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return null;
     }
 
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
-
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->getLogin();
     }
 
-    public function __call($name, $arguments)
+    public function eraseCredentials()
     {
-        // TODO: Implement @method string getUserIdentifier()
+        // TODO: Implement eraseCredentials() method.
     }
 }
