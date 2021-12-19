@@ -3,35 +3,27 @@
       --primary-dark: rgb(76, 13, 0);
 }
 
-.vertical_centered_menu{
+.flex_vertical{
       display: flex;
       flex-direction:column;
-      align-items: center;
 }
 
-.vertical_centered_menu h1{
+form > *{
+      margin-top: 10px;
+}
+
+.flex_vertical h1{
       font-size: 3rem;
       margin: 10px 0;
+}
+
+.centered_flex{
+      align-items: center;
 }
 
 #img_profile{
       width: 25%;
       max-width: 150px;
-}
-
-#form_signin{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-}
-
-#form_signin > *{
-      margin-top: 10px; 
-}
-
-#form_signin div{
-      display: flex;
-      flex-direction: column;
 }
 
 .input_text *{
@@ -67,6 +59,7 @@
 }
 
 .btn_valider{
+      width: fit-content;
       padding: 10px;
       font-size: 2rem;
       cursor: pointer;
@@ -79,7 +72,7 @@
       box-shadow: 0px 0px 10px var(--primary-dark);
 }
 
-.text_bottom_signin{
+.text_bottom{
       font-size: 2.5rem;
       margin-top: 5px;
       text-align: center;
@@ -112,3 +105,6 @@
             font-size: 1.5rem;
       }
 }
+
+
+

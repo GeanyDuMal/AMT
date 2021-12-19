@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-      <link rel="stylesheet" href="/style/connexion/signin.css">
+      {# <link rel="stylesheet" href="/style/connexion/signin.css"> #}
+      <link rel="stylesheet" href="/style/connexion.css">
 {% endblock %}
 
 {% block javascripts %}
@@ -13,20 +14,20 @@
 {% endblock %}
 
 {% block body %}
-      <div class="vertical_centered_menu">
+      <div class="flex_vertical centered_flex">
             <h1>Inscription</h1>
-            <img src="/img/connexion/user.png" alt="" srcset="" id="img_profile">
+            <img src="/img/connexion/user.png" alt="" id="img_profile">
 
-            <form action="" method="post" id="form_signin">
-                  <div class="input_text">
+            <form action="" method="post" class="flex_vertical" id="form_signin">
+                  <div class="input_text flex_vertical">
                         <label for="">Nom :</label>
                         <input type="text" name="name" autofocus>
                   </div> 
-                  <div class="input_text">
+                  <div class="input_text flex_vertical">
                         <label for="">Prénom :</label>
                         <input type="text" name="firstName">
                   </div>
-                  <div class="input_text">
+                  <div class="input_text flex_vertical">
                         <label for="">Login :
                               <ul class="list_require">
                                     <li>Au moins 5 caracteres</li>
@@ -34,7 +35,7 @@
                         </label>
                         <input type="text" name="login">
                   </div>
-                  <div class="input_text">
+                  <div class="input_text flex_vertical">
                         <label for="">Mot de passe :
                               <ul class="list_require">
                                     <li>Au moins 5 caractères</li>
@@ -43,15 +44,15 @@
                         </label>
                         <input type="password" name="password">
                   </div>
-                  <div class="input_text">
+                  <div class="input_text flex_vertical">
                         <label for="">Mot de passe (confirmation) :</label>
                         <input type="password" name="confirmPassword">
                   </div>
-                  <div>
-                        <button type="submit" class="btn_valider" onclick="return verifyInput()">S'inscrire</button>   
+                  <div class="flex_vertical centered_flex">
+                        <button type="submit" class="btn_valider" onclick="return verifyInputSignin()">S'inscrire</button>   
                   </div>
             </form>
-            <div class="text_bottom_signin">
+            <div class="text_bottom">
                   Déja Client ? <a href="{{ path('login') }}">Connectez vous</a> 
             </div>
       </div>

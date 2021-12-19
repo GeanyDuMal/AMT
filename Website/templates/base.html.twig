@@ -22,7 +22,16 @@
         {# End Bootstrap CSS Import #}
         {% endblock %}
 
-            {# Script pour SweetAlert #}
+            
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+    {# Partie Script doit etre chargé apres le code 
+       car le code est generé apres l'appel du JS #}
+
+    {# Script pour SweetAlert #}
             <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         {% block javascripts %}
 
@@ -33,9 +42,4 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
             {# End Bootstrap JS Import #}
         {% endblock %}
-    </head>
-
-    <body>
-        {% block body %}{% endblock %}
-    </body>
 </html>
