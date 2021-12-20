@@ -10,19 +10,20 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/profile", name="profile")
+     * @Route("/profil", name="profil")
      */
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function index(): Response
     {
         if ($this->isGranted('ROLE_USER')){
-            return $this->render('profile/index.html.twig', [
+
+            $this->getUser()->getUsername();
+
+            return $this->render('connexion/profil/index.html.twig', [
+                "name" => $this->getUser()->getUsername(),
                 'controller_name' => 'ProfileController',
             ]);
         }else{
-            $this->redirectToRoute("login");
+            return $this->redirectToRoute("login");
         }
-
-
-
     }
 }
