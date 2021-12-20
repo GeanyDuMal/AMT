@@ -32,7 +32,7 @@ security:
                 default_target_path: home
             logout:
                 path: logout
-                target: profile
+                target: profil
 
 
 
