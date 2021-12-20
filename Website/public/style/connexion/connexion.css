@@ -26,18 +26,6 @@ form > *{
       max-width: 150px;
 }
 
-.table_information{
-      border-collapse : separate;
-      border-spacing : 20px;
-
-}
-
-.table_information tr td, .text_block{
-      font-size: 2rem;
-      width: 50%;
-      padding: 0;
-}
-
 .input_text *{
       width: 100vw;
       max-width: 750px;
