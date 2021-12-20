@@ -26,6 +26,10 @@ form > *{
       max-width: 150px;
 }
 
+.table_row *, .text_block{
+      font-size: 2rem;
+}
+
 .input_text *{
       width: 100vw;
       max-width: 750px;
@@ -90,7 +94,7 @@ form > *{
             width: 70vw;
             max-width: 750px;
             height: 10vw;
-      } 
+      }
 
       .input_text label, .input_text label ul li{
             font-size: 1.5rem;
