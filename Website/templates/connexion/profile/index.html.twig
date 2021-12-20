@@ -22,7 +22,7 @@
         <table class="table_information">
             <tr>
                 <td>Ton solde :</td>
-                <td>{{ user.balance }}</td>
+                <td>{{ user.balance }} €</td>
             </tr>
             <tr>
                 <td>Compteur de fidelité :</td>
@@ -34,15 +34,12 @@
             </tr>
         </table>
         <div class="text_bottom">
-            <div>
+            <div class="btn">
                 <a href="{{ path('logout') }}">Se deconnecter</a>
             </div>
             <div class="btn" onclick="return ">
                 Modifier son mot de passe
             </div>
-        </div>
-        <div class="text_bottom">
-
         </div>
     </div>
 {% endblock %}
