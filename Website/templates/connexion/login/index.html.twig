@@ -22,7 +22,7 @@
         <form action="" class="flex_vertical" method="post" id="form_login">
             <div class="input_text flex_vertical">
                 <label for="username">Login :</label>
-                <input type="text" name="_username" value="{{ lastUsername }}"autofocus>
+                <input type="text" name="_username" value="{{ lastUsername }}" autofocus>
             </div>
             <div class="input_text flex_vertical">
                 <label for="password">Mot de Passe :</label>
@@ -38,9 +38,6 @@
 
         <div class="text_bottom">
             Pas encore Client ? <a href="{{ path('signin') }}">Inscrivez vous</a>
-        </div>
-        <div>
-            <a href="{{ path('logout') }}">Disconnect</a>
         </div>
     </div>
 {% endblock %}
