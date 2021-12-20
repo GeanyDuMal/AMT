@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/connexion.css">
+    <link rel="stylesheet" href="/style/connexion/connexion.css">
+    <link rel="stylesheet" href="/style/connexion/profile.css">
 {% endblock %}
 
 
@@ -15,9 +16,9 @@
         <h1>Profil</h1>
         <img src="/img/connexion/user.png" alt="" id="img_profile">
 
-        <div class="text_block">
+        <h1 class="text_block">
             Bienvenue {{ user.login }}
-        </div>
+        </h1>
         <table class="table_information">
             <tr>
                 <td>Ton solde :</td>
@@ -33,7 +34,15 @@
             </tr>
         </table>
         <div class="text_bottom">
-            <a href="{{ path('logout') }}">Se deconnecter</a>
+            <div>
+                <a href="{{ path('logout') }}">Se deconnecter</a>
+            </div>
+            <div>
+                Modifier son mot de passe
+            </div>
+        </div>
+        <div class="text_bottom">
+
         </div>
     </div>
 {% endblock %}
