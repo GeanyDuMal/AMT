@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Connexion
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/connexion.css">
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="flex_vertical centered_flex">
+        <h1>Profil</h1>
+        <img src="/img/connexion/user.png" alt="" id="img_profile">
+
+        <h2 class="text_block">
+            Bienvenue {{ user.login }}
+        </h2>
+        <table>
+            <tr class="table_row">
+                <td>Ton solde :</td>
+                <td>{{ user.balance }}</td>
+            </tr>
+            <tr class="table_row">
+                <td>Compteur de fidelité :</td>
+                <td>{{ user.fidelityPoint }}</td>
+            </tr>
+            <tr class="table_row">
+                <td>Ton type :</td>
+                <td>{{ user.clientType.name }}</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
