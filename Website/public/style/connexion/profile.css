@@ -1,0 +1,15 @@
+.table_information{
+    border-collapse : separate;
+    border-spacing : 20px;
+
+}
+
+.text_block{
+    text-align: center;
+}
+
+.table_information tr td, .text_block{
+    font-size: 2rem;
+    width: 50%;
+    padding: 0;
+}
