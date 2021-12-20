@@ -2,24 +2,26 @@
 
 namespace App\Controller\Connexion;
 
+use App\Entity\Client;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/profil", name="profil")
+     * @Route("/profile", name="profile")
      */
-    public function index(): Response
+    public function index(EntityManagerInterface $manager): Response
     {
         if ($this->isGranted('ROLE_USER')){
+            $clientRepository = $manager->getRepository(Client::class);
 
-            $this->getUser()->getUsername();
+            $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUsername()]);
 
-            return $this->render('connexion/profil/index.html.twig', [
-                "name" => $this->getUser()->getUsername(),
+            return $this->render('connexion/profile/index.html.twig', [
+                "user" => $client,
                 'controller_name' => 'ProfileController',
             ]);
         }else{
