@@ -152,20 +152,27 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Security Part
-     * Methods implemented by the UserInterface
-     */
-
     public function getRoles(): array
     {
         $roles = $this->roles;
+
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
-
     }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Security Part
+     * Methods implemented by the UserInterface
+     */
 
     public function getSalt()
     {
