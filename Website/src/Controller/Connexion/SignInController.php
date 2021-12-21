@@ -19,6 +19,10 @@ class SignInController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        // Redirige vers le profil si deja connecté
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('profile');
+        }
 
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
@@ -38,19 +42,15 @@ class SignInController extends AbstractController
             $client->setName(trim($inputParameterBag->get("name")))
                     ->setFirstName(trim($inputParameterBag->get("firstName")))
                     ->setLogin(trim($inputParameterBag->get("login")))
-                    ->setPassword($hashedPassword);
+                    ->setPassword($hashedPassword)
+                    ->setRoles(['ROLE_USER']);
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
-
-            dump($hashedPassword);
-            dump($hashedPassword2);
         }
 
-
-
         /**
-         * Si le form n'est pas vide, 
-         * que le login n'existe pas 
-         * et que les infos sont correctes 
+         * Si le form n'est pas vide,
+         * que le login n'existe pas
+         * et que les infos sont correctes
          * alors on l'insere dans la base de donnée
          * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
          */
