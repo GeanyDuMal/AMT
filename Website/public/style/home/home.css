@@ -1,10 +1,10 @@
-/* body {
+body {
     /* font-family: "Lato", sans-serif; */
-    /* padding-top: 4.5rem; 
-} */
+    padding-top: 4.5rem; 
+} 
 
 .navbar {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     width: 100%;
 }
