@@ -1,7 +1,13 @@
+/* Global */
+
 body {
     /* font-family: "Lato", sans-serif; */
     padding-top: 4.5rem; 
 } 
+
+/* End Global */
+
+/* Navbar */
 
 .navbar {
     /* position: fixed; */
@@ -55,6 +61,8 @@ body {
     }
 }
 
+/* End Navbar */
+
 /* Footer */
 
 .social,
@@ -88,10 +96,4 @@ footer.light {
     color: var(--middle-red);
 }
 
-.icon.light:hover {
-    color: var(--middle-red);
-}
-
-.icon.light {
-    color: var(--dark-gray);
-}
+/* End Footer */
