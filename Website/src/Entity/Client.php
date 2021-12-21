@@ -58,6 +58,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $clientType;
 
+    /**
+     * @ORM\Column(type="json")
+     */
     private $roles = [];
 
     public function getId(): ?int
