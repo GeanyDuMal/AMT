@@ -15,14 +15,13 @@ class ProfileController extends AbstractController
      */
     public function index(EntityManagerInterface $manager): Response
     {
-        if ($this->isGranted('ROLE_USER')){
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
             $clientRepository = $manager->getRepository(Client::class);
 
             $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUsername()]);
 
             return $this->render('connexion/profile/index.html.twig', [
                 "user" => $client,
-                'controller_name' => 'ProfileController',
             ]);
         }else{
             return $this->redirectToRoute("login");
