@@ -19,16 +19,16 @@ class LoginController extends AbstractController
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        // Redirige vers le profil si deja connecté
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
+            return $this->redirectToRoute('profile');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        $user = $this->getUser();
-        if ($user){
-            dump($user->getRoles());
-        }
 
         return $this->render('connexion/login/index.html.twig', [
             'lastUsername' => $lastUsername,
