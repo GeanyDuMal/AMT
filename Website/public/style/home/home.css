@@ -1,4 +1,14 @@
 /* Global */
+:root {
+    /* Our Colors // GoInfo */
+    --white: #F2F2F2;
+    --black: #1C1C1C;
+    --dark-gray: #242424;
+    --dark-red: #4C0D00;
+    --middle-red: #760700;
+    /* --light-red: #BE0E00; */
+    /* --white: #E1D9D9; */
+}
 
 body {
     /* font-family: "Lato", sans-serif; */
@@ -68,10 +78,13 @@ body {
 .social,
 .copyright {
     margin: 1rem;
+    text-align:center;
 }
 
 .social li {
     display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 footer {
@@ -83,13 +96,10 @@ footer {
     background-color: var(--black);
 }
 
-footer.light {
-    background: var(--grey-light);
-}
-
 .icon {
-    color: var(--grey-light);
+    color: var(--white);
     font-size: 1.5rem;
+    transition: 0.2s;
 }
 
 .icon:hover {
