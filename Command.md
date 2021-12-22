@@ -21,7 +21,7 @@
 ### Lancer le serveur pour pouvoir acceder a la page web
      
 #### Avec PHP      
-      php -S 127.0.0.1:8000 -t public
+      php -S localhost:8000 -t public
 
 
 ### Lancer le serveur pour pouvoir acceder a la page web en HTTPS avec Symfony
