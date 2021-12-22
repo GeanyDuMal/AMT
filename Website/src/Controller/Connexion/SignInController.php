@@ -35,10 +35,6 @@ class SignInController extends AbstractController
                 $client,
                 trim($inputParameterBag->get("password")));
 
-            $hashedPassword2 = $passwordHasher->hashPassword(
-                $client,
-                trim($inputParameterBag->get("password")));
-
             $client->setName(trim($inputParameterBag->get("name")))
                     ->setFirstName(trim($inputParameterBag->get("firstName")))
                     ->setLogin(trim($inputParameterBag->get("login")))
