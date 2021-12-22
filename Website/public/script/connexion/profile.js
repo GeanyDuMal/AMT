@@ -1,6 +1,6 @@
-function verifyInputEditPassword() {
-    var form = document.querySelector("#form_edit_password");
+var form = document.querySelector("#form_edit_password");
 
+function verifyInputEditPassword() {
     let message = "<ul>";
     const regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
@@ -50,4 +50,8 @@ function verifyInputEditPassword() {
     }else{
         return true;
     }
+}
+
+function openCloseEditForm() {
+    form.classList.toggle("open_menu");
 }
