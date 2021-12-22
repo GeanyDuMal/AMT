@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
- * @method string getUserIdentifier()
  */
 class Client implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -181,7 +180,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return null;
     }
 
-    public function getUsername(): ?string
+    public function getUserIdentifier(): ?string
     {
         return $this->getLogin();
     }
@@ -189,5 +188,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUsername()
+    {
+        return $this->getUserIdentifier();
     }
 }
