@@ -1,19 +1,32 @@
 /* Global */
+
+/* Colors */
+
+// scss
+$white: #ffff;
+$black: #000000;
+$primary: #1b1919;
+$dark-red: #4c0d00;
+$middle-red: #760700;
+$d-bootstrap: #212529;
+
+// css if some of you don't wan't to use scss :))
 :root {
     /* Our Colors // GoInfo */
-    --white: #F2F2F2;
-    --black: #1C1C1C;
+    --white: #f2f2f2;
+    --black: #1c1c1c;
     --dark-gray: #242424;
-    --dark-red: #4C0D00;
+    --dark-red: #4c0d00;
     --middle-red: #760700;
     /* --light-red: #BE0E00; */
     /* --white: #E1D9D9; */
 }
+/* End Colors */
 
 body {
     /* font-family: "Lato", sans-serif; */
-    padding-top: 4.5rem; 
-} 
+    padding-top: 4.5rem;
+}
 
 /* End Global */
 
@@ -78,7 +91,7 @@ body {
 .social,
 .copyright {
     margin: 1rem;
-    text-align:center;
+    text-align: center;
 }
 
 .social li {
@@ -93,17 +106,17 @@ footer {
     width: 100%;
     padding: 1rem 0;
     text-align: center;
-    background-color: var(--black);
+    background-color: $d-bootstrap;
 }
 
 .icon {
-    color: var(--white);
+    color: $white;
     font-size: 1.5rem;
     transition: 0.2s;
 }
 
 .icon:hover {
-    color: var(--middle-red);
+    color: $middle-red;
 }
 
 /* End Footer */
