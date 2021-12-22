@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="/style/connexion/profile.css">
 {% endblock %}
 
-
+{% block javascripts %}
+      <script src="/script/connexion/profile.js"></script>
+{% endblock %}
 
 {% block body %}
 
@@ -38,7 +40,7 @@
             <div class="btn" onclick="return ">
                 Modifier son mot de passe
             </div>
-            <form class="edit_password" method="post">
+            <form class="edit_password" method="post" id="form_edit_password">
                 <div class="input_text flex_vertical">
                         <label for="">Ancien mot de passe</label>
                         <input type="password" name="oldPassword">
@@ -56,7 +58,7 @@
                     <label for="">Nouveau mot de passe (confirmation) :</label>
                     <input type="password" name="confirmPassword">
                 </div>
-                <button type="submit" class="btn">Valider</button>
+                <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
             </form>
             <div class="btn">
                 <a href="{{ path('logout') }}">Se deconnecter</a>
