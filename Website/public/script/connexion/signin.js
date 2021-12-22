@@ -11,7 +11,7 @@ childs.forEach(child => {
 function verifyInputSignin() {
 
     let message = "";
-    var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    const regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
 
     var valueName = form.name.value;
