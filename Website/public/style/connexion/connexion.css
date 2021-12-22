@@ -58,6 +58,10 @@ form > *{
       margin: 0;
 }
 
+.list_require li{
+      font-size: 1.2rem;
+}
+
 .btn{
       width: fit-content;
       padding: 5px;
@@ -95,13 +99,18 @@ form > *{
             height: 10vw;
       }
 
-      .input_text label, .input_text label ul li{
+      .input_text label{
             font-size: 1.5rem;
             height: fit-content;
       }
 
       .input_text input {
             font-size: 1.2rem;
+      }
+
+      .list_require li{
+            font-size: 1.2rem;
+            height: max-content;
       }
 
       .btn, .text_bottom_signin{

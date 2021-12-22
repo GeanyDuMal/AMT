@@ -19,7 +19,6 @@ class ProfileController extends AbstractController
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
             $clientRepository = $manager->getRepository(Client::class);
 
-
             //dd(password_verify('kiki.', '$2y$13$yum1RBAT5kL12Am9jLRvxeaGoj2S4tSd8XBGvQKvTiuDMT3erPt7m'));
             //$this->isCsrfTokenValid()
 
