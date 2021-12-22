@@ -29,10 +29,12 @@
             </h2>
         {% elseif edit %}
             <h2 class="message_information message_correct">
-                Modification effectué avec succès 
+                Modification effectuée avec succès 
             </h2>
         {% endif %}
 
+        {# Client Informations #}
+        <div>
         <table class="table_information">
             <tr>
                 <td>Ton solde :</td>
@@ -43,10 +45,13 @@
                 <td>{{ user.fidelityPoint }}</td>
             </tr>
             <tr>
-                <td>Ton type :</td>
+                <td>Ton statut :</td>
                 <td>{{ user.clientType.name }}</td>
             </tr>
         </table>
+        {# End Client Informations #}
+
+        {# Options #}
         <div class="text_bottom flex_vertical centered_flex">
             <div class="flex_horizontal">
                 <div class="btn" onclick="openCloseEditForm()">
@@ -56,26 +61,32 @@
                     <a href="{{ path('logout') }}">Se deconnecter</a>
                 </div>
             </div>
-            <form class="edit_password" method="post" id="form_edit_password">
-                <div class="input_text flex_vertical">
-                        <label for="">Ancien mot de passe</label>
-                        <input type="password" name="oldPassword">
-                </div>
-                <div class="input_text flex_vertical">
-                        <label for="">Nouveau mot de passe :
-                              <ul class="list_require">
-                                    <li>Au moins 5 caractères</li>
-                                    <li>Au moins 1 caractère spécial</li>
-                              </ul>
-                        </label>
-                        <input type="password" name="newPassword">
-                </div>
-                <div class="input_text flex_vertical">
-                    <label for="">Nouveau mot de passe (confirmation) :</label>
-                    <input type="password" name="confirmPassword">
-                </div>
-                <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
-            </form>
+        {# End Options #}
+
+        {# Edit Password #}
+            <div>
+                <form class="edit_password" method="post" id="form_edit_password">
+                    <div class="input_text flex_vertical">
+                            <label for="">Ancien mot de passe</label>
+                            <input type="password" name="oldPassword">
+                    </div>
+                    <div class="input_text flex_vertical">
+                            <label for="">Nouveau mot de passe :
+                                <ul class="list_require">
+                                        <li>Au moins 5 caractères</li>
+                                        <li>Au moins 1 caractère spécial</li>
+                                </ul>
+                            </label>
+                            <input type="password" name="newPassword">
+                    </div>
+                    <div class="input_text flex_vertical">
+                        <label for="">Nouveau mot de passe (confirmation) :</label>
+                        <input type="password" name="confirmPassword">
+                    </div>
+                    <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
+                </form>
+            </div>
+            {# End Edit Password #}
         </div>
     </div>
 {% endblock %}
