@@ -3,7 +3,7 @@
 /* Colors */
 
 // scss
-$white: #ffff;
+$white: #f2f2f2;
 $black: #000000;
 $primary: #1b1919;
 $dark-red: #4c0d00;
@@ -45,7 +45,7 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #212529;
+    background-color: $d-bootstrap;
     overflow-x: hidden;
     overflow-y: hidden;
     transition: 0.5s;
@@ -62,7 +62,7 @@ body {
 }
 
 .sidebar a:hover {
-    color: #f1f1f1;
+    color: $white;
 }
 
 .sidebar .closebtn {
