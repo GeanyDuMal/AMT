@@ -17,6 +17,7 @@ scrollbar-width: none;  /* Firefox */
 .flex_vertical{
       display: flex;
       flex-direction:column;
+      z-index: 1;
 }
 
 form > *{
@@ -129,5 +130,8 @@ form > *{
       }
 }
 
-
-
+/*Modif du style de SweetAlert*/
+.swal2-html-container ul{
+      width: fit-content;
+      text-align: left;
+}

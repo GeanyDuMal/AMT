@@ -33,13 +33,13 @@
     opacity: 0;
     height: 0;
     overflow: hidden;
-    transition: opacity 0.5s;
+
 }
 
 .open_menu{
     height: fit-content;
-    z-index: 0;
     opacity: 1;
+    animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) ;
 }
 
 .flex_horizontal{
@@ -49,4 +49,17 @@
 
 .flex_horizontal > *{
     margin: 0 10px;
+}
+
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+    z-index: 0;
+  }
 }
