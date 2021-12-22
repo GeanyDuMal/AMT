@@ -10,8 +10,9 @@ body::-webkit-scrollbar {
     
 /* Hide scrollbar for IE, Edge and Firefox */
 body {
--ms-overflow-style: none;  /* IE and Edge */
-scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+      margin: 0;
 }
 
 .message_information{
@@ -90,6 +91,7 @@ form > *{
 }
 
 .btn{
+      text-align: center;
       width: fit-content;
       padding: 5px;
       font-size: 2rem;

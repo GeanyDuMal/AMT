@@ -15,7 +15,7 @@
 
 {% block body %}
 
-    <div class="flex_vertical centered_flex">
+    <div class="flex_vertical centered_flex principal_block">
         <h1>Profil</h1>
         <img src="/img/connexion/user.png" alt="" id="img_profile">
 
@@ -35,24 +35,23 @@
 
         {# Client Informations #}
         <div>
-        <table class="table_information">
-            <tr>
-                <td>Ton solde :</td>
-                <td>{{ user.balance }} €</td>
-            </tr>
-            <tr>
-                <td>Compteur de fidelité :</td>
-                <td>{{ user.fidelityPoint }}</td>
-            </tr>
-            <tr>
-                <td>Ton statut :</td>
-                <td>{{ user.clientType.name }}</td>
-            </tr>
-        </table>
+            <table class="table_information">
+                <tr>
+                    <td>Ton solde :</td>
+                    <td>{{ user.balance }} €</td>
+                </tr>
+                <tr>
+                    <td>Compteur de fidelité :</td>
+                    <td>{{ user.fidelityPoint }}</td>
+                </tr>
+                <tr>
+                    <td>Ton statut :</td>
+                    <td>{{ user.clientType.name }}</td>
+                </tr>
+            </table>
         {# End Client Informations #}
 
         {# Options #}
-        <div class="text_bottom flex_vertical centered_flex">
             <div class="flex_horizontal">
                 <div class="btn" onclick="openCloseEditForm()">
                     Modifier son mot de passe
@@ -62,31 +61,29 @@
                 </div>
             </div>
         {# End Options #}
-
-        {# Edit Password #}
-            <div>
-                <form class="edit_password" method="post" id="form_edit_password">
-                    <div class="input_text flex_vertical">
-                            <label for="">Ancien mot de passe</label>
-                            <input type="password" name="oldPassword">
-                    </div>
-                    <div class="input_text flex_vertical">
-                            <label for="">Nouveau mot de passe :
-                                <ul class="list_require">
-                                        <li>Au moins 5 caractères</li>
-                                        <li>Au moins 1 caractère spécial</li>
-                                </ul>
-                            </label>
-                            <input type="password" name="newPassword">
-                    </div>
-                    <div class="input_text flex_vertical">
-                        <label for="">Nouveau mot de passe (confirmation) :</label>
-                        <input type="password" name="confirmPassword">
-                    </div>
-                    <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
-                </form>
-            </div>
-        {# End Edit Password #}
         </div>
     </div>
+    {# Edit Password #}
+    <form class="edit_password flex_vertical centered_flex secondary_block" method="post" id="form_edit_password">
+        <div class="input_text flex_vertical">
+                <label for="">Ancien mot de passe</label>
+                <input type="password" name="oldPassword">
+        </div>
+        <div class="input_text flex_vertical">
+                <label for="">Nouveau mot de passe :
+                    <ul class="list_require">
+                            <li>Au moins 5 caractères</li>
+                            <li>Au moins 1 caractère spécial</li>
+                    </ul>
+                </label>
+                <input type="password" name="newPassword">
+        </div>
+        <div class="input_text flex_vertical">
+            <label for="">Nouveau mot de passe (confirmation) :</label>
+            <input type="password" name="confirmPassword">
+        </div>
+        <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
+    </form>
+    {# End Edit Password #}
+
 {% endblock %}

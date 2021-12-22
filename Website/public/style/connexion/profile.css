@@ -1,7 +1,7 @@
 .table_information{
     border-collapse : separate;
     border-spacing : 20px;
-
+    margin: 0 auto;
 }
 
 .text_block{
@@ -10,22 +10,8 @@
 
 .table_information tr td, .text_block{
     font-size: 2rem;
-    width: 50%;
+    width: 100%;
     padding: 0;
-}
-
-.edit_password{
-    z-index: -1;
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    
-}
-
-.open_menu{
-    height: fit-content;
-    opacity: 1;
-    animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) ;
 }
 
 .flex_horizontal{
@@ -37,15 +23,37 @@
     margin: 0 10px;
 }
 
+.principal_block{
+    z-index: 2;
+    background-color: white;
+}
 
-@keyframes slide-in-top {
-  0% {
-    transform: translateY(-1000px);
+.secondary_block{
+    z-index: -1;
     opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.open_menu{
     opacity: 1;
-    z-index: 0;
-  }
+    position: relative;
+    height: fit-content;
+    animation: slide-in-top 0.5s cubic-bezier(0, 0, 0, 1);;
+}
+
+/*        KEYFRAME          */
+@keyframes slide-in-top {
+    0% {
+        height: 0;
+        transform: translateY(-1000px);
+    }
+    1%{
+        height: fit-content;
+    }
+    100% {
+        transform: translateY(0px);
+    
+    }
 }
