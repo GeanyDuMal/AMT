@@ -19,6 +19,7 @@ class ProfileController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
+
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
             $clientRepository = $manager->getRepository(Client::class);
 
@@ -28,17 +29,18 @@ class ProfileController extends AbstractController
 
             $inputParameterBag = $request->request;
 
+            $edit = false;
+
             // Verifie que les champs soit bien rempli
             if (!is_null($inputParameterBag->get("oldPassword"))
                 && !is_null($inputParameterBag->get("newPassword"))
-                && trim($inputParameterBag->get("oldPassword")) === trim($inputParameterBag->get("newPassword")))
+                && trim($inputParameterBag->get("newPassword")) === trim($inputParameterBag->get("confirmPassword")))
             {
                 $clientManager = new ClientManager($manager);
 
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
                 if (password_verify(trim($inputParameterBag->get("oldPassword")), $this->getUser()->getPassword())
-                    && $clientManager->verifPassword(trim($inputParameterBag->get("oldPassword"))))
-                {
+                    ) {
                     $hashedPassword = $passwordHasher->hashPassword(
                         $client,
                         trim($inputParameterBag->get("newPassword")));
@@ -46,11 +48,16 @@ class ProfileController extends AbstractController
                     $client->setPassword($hashedPassword);
 
                     $clientManager->persist($client);
+                    $edit = true;
+                }else{
+                    $edit = 'wrong_password';
                 }
             }
 
+
             return $this->render('connexion/profile/index.html.twig', [
                 "user" => $client,
+                "edit" => $edit
             ]);
         }else{
             return $this->redirectToRoute("login");

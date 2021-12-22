@@ -20,8 +20,19 @@
         <img src="/img/connexion/user.png" alt="" id="img_profile">
 
         <h1 class="text_block">
-            Bienvenue {{ user.login }}
+            Bienvenue {{ user.login }} : {{ edit }}
         </h1>
+
+        {% if edit is same as("wrong_password") %}
+            <h2 class="message_information message_correct">
+                Votre mot de passe est incorrect 
+            </h2>
+        {% elseif edit %}
+            <h2 class="message_information message_correct">
+                Modification effectué avec succès 
+            </h2>
+        {% endif %}
+
         <table class="table_information">
             <tr>
                 <td>Ton solde :</td>
