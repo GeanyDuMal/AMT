@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste clients
+{% endblock %}
+{% block stylesheets %}
+	<link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+{% block javascripts %}
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="content">
+		<h1>Liste des client</h1>
+		<br>
+		{% for messages in app.flashes %}
+			{% for message in messages %}
+				<div class="btn btn-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+		<div align="right">
+			<a href="{{path('new_client')}}" class="btn btn-success">Ajouter</a>
+		</div>
+		<br>
+		<table id="client_table" class="table table-striped">
+			<thead bgcolor="#6cd8dc">
+				<tr class="table-primary">
+					<th width="10%">ID</th>
+					<th width="15%">Nom</th>
+					<th width="15%">Prénom</th>
+					<th width="15%">Login</th>
+					<th width="15%">Type du client</th>
+					<th scope="col" width="5%">Modifier</th>
+					<th scope="col" width="5%">Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for client in clients %}
+					<tr>
+						<td>{{ client.id }}</td>
+						<td>{{ client.name }}</td>
+						<td>{{ client.firstname }}</td>
+						<td>{{ client.login }}</td>
+						<td>{{ client.clientType.name }}</td>
+						<td>
+							<a href="{{url('edit_client',{id:client.id})}}" class="btn btn-warning" name="{{client.id}}">Modifier</a>
+						</td>
+						<td>
+							<a href="{{url('delete_client',{id:client.id})}}" class="btn btn-danger" data-id={{client.id}} onclick="return confirm('vous êtes sûr?');">Supprmier</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+{% endblock %}
