@@ -10,7 +10,7 @@ childs.forEach(child => {
 
 function verifyInputSignin() {
 
-    var message = "";
+    let message = "";
     var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
 
