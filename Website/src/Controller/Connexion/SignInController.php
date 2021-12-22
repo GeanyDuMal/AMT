@@ -60,7 +60,7 @@ class SignInController extends AbstractController
         }else if ($clientManager->loginExists($client)) {
             $loginExist = true;
         }
-        return $this->render('connexion/signin/index.html.twig', [
+        return $this->render('connexion/signin.html.twig', [
             "loginExist" => $loginExist
         ]);
     }
