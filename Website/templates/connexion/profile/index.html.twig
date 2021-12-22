@@ -38,10 +38,10 @@
             <div class="btn" onclick="return ">
                 Modifier son mot de passe
             </div>
-            <div class="next_password">
+            <form class="edit_password" method="post">
                 <div class="input_text flex_vertical">
                         <label for="">Ancien mot de passe</label>
-                        <input type="password" name="confirmPassword">
+                        <input type="password" name="oldPassword">
                 </div>
                 <div class="input_text flex_vertical">
                         <label for="">Nouveau mot de passe :
@@ -50,13 +50,14 @@
                                     <li>Au moins 1 caractère spécial</li>
                               </ul>
                         </label>
-                        <input type="password" name="password">
+                        <input type="password" name="newPassword">
                 </div>
                 <div class="input_text flex_vertical">
                     <label for="">Nouveau mot de passe (confirmation) :</label>
                     <input type="password" name="confirmPassword">
                 </div>
-            </div>
+                <button type="submit" class="btn">Valider</button>
+            </form>
             <div class="btn">
                 <a href="{{ path('logout') }}">Se deconnecter</a>
             </div>
