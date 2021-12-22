@@ -7,12 +7,12 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ClientManager
 {
-      public $manager;
+    public $manager;
 
-      public function __construct(EntityManagerInterface  $managerController)
-      {
-          $this->manager = $managerController;
-      }
+    public function __construct(EntityManagerInterface  $managerController)
+    {
+        $this->manager = $managerController;
+    }
 
     /**
      * @param Client|null $client
@@ -35,14 +35,14 @@ class ClientManager
      * @return bool
      * Check if the login is already assign to someone in the Database
      */
-      public function loginExists(?Client $client): bool
-      {
-          $clientRepository = $this->manager->getRepository(Client::class);
+    public function loginExists(?Client $client): bool
+    {
+        $clientRepository = $this->manager->getRepository(Client::class);
 
-          $dupplicata = $clientRepository->findOneBy(["login" => $client->getLogin()]);
+        $dupplicata = $clientRepository->findOneBy(["login" => $client->getLogin()]);
 
-          return !is_null($dupplicata);
-      }
+        return !is_null($dupplicata);
+    }
 
     /**
      * @param Client|null $client
@@ -57,9 +57,9 @@ class ClientManager
           if (!is_null($client)){
               $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-              $containsSpecialPassword = strpbrk($client->getPassword(), $regexSpecial);
-              $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
-              $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
+            $containsSpecialPassword = $this->verifPassword($client->getPassword());
+            $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
+            $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
               $nameUpperThree = (strlen($client->getName()) >=3);
               $firstNameUpperThree = (strlen($client->getFirstName()) >=3);
@@ -83,5 +83,17 @@ class ClientManager
       {
           $this->manager->persist($client);
           $this->manager->flush();
+      }
+
+    /**
+     * @param String password
+     * @return boolean
+     * verify if the password contains regex
+     */
+      public function verifPassword(String $password): bool
+      {
+          $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
+
+          return strpbrk($password, $regexSpecial);
       }
 }

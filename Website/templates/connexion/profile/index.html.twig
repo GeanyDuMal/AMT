@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="/style/connexion/profile.css">
 {% endblock %}
 
-
+{% block javascripts %}
+      <script src="/script/connexion/profile.js"></script>
+{% endblock %}
 
 {% block body %}
 
@@ -20,6 +22,17 @@
         <h1 class="text_block">
             Bienvenue {{ user.login }}
         </h1>
+
+        {% if edit is same as("wrong_password") %}
+            <h2 class="message_information message_incorrect">
+                Votre mot de passe est incorrect 
+            </h2>
+        {% elseif edit %}
+            <h2 class="message_information message_correct">
+                Modification effectué avec succès 
+            </h2>
+        {% endif %}
+
         <table class="table_information">
             <tr>
                 <td>Ton solde :</td>
@@ -35,13 +48,18 @@
             </tr>
         </table>
         <div class="text_bottom flex_vertical centered_flex">
-            <div class="btn" onclick="return ">
-                Modifier son mot de passe
+            <div class="flex_horizontal">
+                <div class="btn" onclick="openCloseEditForm()">
+                    Modifier son mot de passe
+                </div>
+                <div class="btn">
+                    <a href="{{ path('logout') }}">Se deconnecter</a>
+                </div>
             </div>
-            <div class="next_password">
+            <form class="edit_password" method="post" id="form_edit_password">
                 <div class="input_text flex_vertical">
                         <label for="">Ancien mot de passe</label>
-                        <input type="password" name="confirmPassword">
+                        <input type="password" name="oldPassword">
                 </div>
                 <div class="input_text flex_vertical">
                         <label for="">Nouveau mot de passe :
@@ -50,16 +68,14 @@
                                     <li>Au moins 1 caractère spécial</li>
                               </ul>
                         </label>
-                        <input type="password" name="password">
+                        <input type="password" name="newPassword">
                 </div>
                 <div class="input_text flex_vertical">
                     <label for="">Nouveau mot de passe (confirmation) :</label>
                     <input type="password" name="confirmPassword">
                 </div>
-            </div>
-            <div class="btn">
-                <a href="{{ path('logout') }}">Se deconnecter</a>
-            </div>
+                <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
+            </form>
         </div>
     </div>
 {% endblock %}

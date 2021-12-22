@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Nouveau Client
+{% endblock %}
+{%  block javascripts %}
+	<script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+	<form action="" method="post" id='form_addClient'>
+		{% if client is defined%}
+			<input type="text" name="name" placeholder="Nom" value=" {{ client.name }} ">
+		{% endif %}
+		<br>
+		<input type="text" name="fname" placeholder="Prénom">
+		<br>
+		<input type="text" name="login" placeholder="Login">
+		<br>
+		<input type="text" name="pwd" placeholder="Mot de passe">
+		<br>
+		<input type="text" name="confPwd" placeholder="Confirmation Mot de passe">
+		<br>
+		<input type="text" name="balance" placeholder="Balance">
+		<br>
+		<select name="types" id="types">
+			{% for type in types %}
+				<option default>
+					{{type.name}}
+				</option>
+			{% endfor %}
+		</select>
+		<br>
+		<input type="submit" value="Créer" onclick="return verifier()">
+	</form>
+{% endblock %}
