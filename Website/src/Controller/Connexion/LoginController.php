@@ -13,9 +13,6 @@ class LoginController extends AbstractController
 {
     /**
      * @Route("/login", name="login")
-     *
-     * go to :
-     * https://symfony.com/doc/5.4/security.html#authenticating-users
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
