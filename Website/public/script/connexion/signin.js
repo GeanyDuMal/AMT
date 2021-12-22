@@ -1,14 +1,5 @@
-var form = document.querySelector("#form_signin");
-
-// Style
-var childs = form.querySelectorAll("div");
-childs.forEach(child => {
-    child.style.marginTop = "10px";
-    child.classList.add("flex_vertical")
-});
-
-
 function verifyInputSignin() {
+    var form = document.querySelector("#form_signin");
 
     let message = "<ul>";
     const regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
