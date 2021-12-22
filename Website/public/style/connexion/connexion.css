@@ -14,10 +14,28 @@ body {
 scrollbar-width: none;  /* Firefox */
 }
 
+.message_information{
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 1.5rem;
+      margin: 10px;
+} 
+
+.message_correct{
+      background-color: rgba(59, 59, 59, 0.1);
+      color: rgb(58, 189, 79);
+}
+
+.message_incorrect{
+      background-color: rgba(59, 59, 59, 0.1);
+      color: rgb(189, 64, 64);
+}
+
 .flex_vertical{
       display: flex;
       flex-direction:column;
-      z-index: 1;
+      z-index: 0;
 }
 
 form > *{
