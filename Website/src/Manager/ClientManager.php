@@ -57,7 +57,7 @@ class ClientManager
           if (!is_null($client)){
               $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-              $containsSpecialPassword = strpbrk($client->getPassword(), $regexSpecial);
+              $containsSpecialPassword = $this->verifPassword($client->getPassword());
               $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
               $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
@@ -83,5 +83,17 @@ class ClientManager
       {
           $this->manager->persist($client);
           $this->manager->flush();
+      }
+
+    /**
+     * @param String password
+     * @return boolean
+     * verify if the password contains regex
+     */
+      public function verifPassword(String $password): bool
+      {
+          $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
+
+          return strpbrk($password, $regexSpecial);
       }
 }
