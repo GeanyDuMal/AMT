@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ClientController extends AbstractController
 {
     /**
-     * @Route("/client", name="client_list",methods={"GET", "POST"} )
+     * @Route("/admin/client", name="client_list",methods={"GET", "POST"} )
      */
     public function index(): Response
     {
@@ -26,7 +26,7 @@ class ClientController extends AbstractController
         return $this->render('client/index.html.twig', array('clients' => $clients));
     }
     /**
-     * @Route("/client/new", name="new_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
     public function addClientAction(Request $request, EntityManagerInterface $manager): Response
     {
@@ -63,7 +63,7 @@ class ClientController extends AbstractController
         );
     }
     /**
-     * @Route("/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
     public function editClientAction(): Response
     {
@@ -71,7 +71,7 @@ class ClientController extends AbstractController
         return $this->render('client/EditModalClient.html.twig');
     }
     /**
-     * @Route("/client/delete/{id}", name="delete_client", methods="GET" )
+     * @Route("/admin/client/delete/{id}", name="delete_client", methods="GET" )
      */
     public function deleteClientAction($id, EntityManagerInterface $manager): Response
     {
