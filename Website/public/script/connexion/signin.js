@@ -21,7 +21,7 @@ function verifyInputSignin() {
     var valueConfirm = form.confirmPassword.value;
 
     form.name.style.borderColor = "red";
-    if (valueName == ""){
+    if (valueName === ""){
         message += "Nom non renseigné, ";
     }else if(valueName.length < 3){
         message += "Nom trop court, ";
@@ -30,7 +30,7 @@ function verifyInputSignin() {
     }
 
     form.firstName.style.borderColor = "red";
-    if (valueFirstName == ""){
+    if (valueFirstName === ""){
         message += "Prenom non renseigné, ";
     }else if(valueFirstName.length < 3){
         message += "Prenom trop court, ";
@@ -39,7 +39,7 @@ function verifyInputSignin() {
     }
 
     form.login.style.borderColor = "red";
-    if (valueLogin == ""){
+    if (valueLogin === ""){
         message += "Login non renseigné, ";
     }else if(valueLogin.length < 5){
         message += "Login trop court, ";
@@ -48,14 +48,14 @@ function verifyInputSignin() {
     }
 
     form.password.style.borderColor = "red";
-    if (valuePassword == ""){
+    if (valuePassword === ""){
         message += "Mot de Passe non renseigné ";
     }else if(valuePassword.length < 5){
         message += "Mot de Passe trop court ";
-    }else if (regexCharacter.test(valuePassword) == false) {
+    }else if (regexCharacter.test(valuePassword) === false) {
         message += "Le mots de passe ne contient pas de caractere spécial "
     }
-    else if (valuePassword != valueConfirm) {
+    else if (valuePassword !== valueConfirm) {
         message += "Les mots de passe ne correspondent pas "
         form.confirmPassword.style.borderColor = "red";
     }else{
@@ -63,7 +63,7 @@ function verifyInputSignin() {
         form.confirmPassword.style.borderColor = "black";
     }
 
-    if (message != "") {
+    if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',
             text: message,
