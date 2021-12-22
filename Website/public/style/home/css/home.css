@@ -83,7 +83,7 @@ body {
 
 /* line 102, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 footer {
-  position: inherit;
+  position: absolute;
   bottom: 0;
   width: 100%;
   padding: 1rem 0;
