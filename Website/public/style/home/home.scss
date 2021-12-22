@@ -4,22 +4,21 @@
 
 // scss
 $white: #f2f2f2;
-$black: #000000;
-$primary: #1b1919;
+$black: #000;
 $dark-red: #4c0d00;
 $middle-red: #760700;
-$d-bootstrap: #212529;
+$primary: #1B1919; 
+// $dark-gray: #242424; <-- useless here
 
 // css if some of you don't wan't to use scss :))
 :root {
     /* Our Colors // GoInfo */
     --white: #f2f2f2;
-    --black: #1c1c1c;
-    --dark-gray: #242424;
+    --black: #000;
+    --primary: #1B1919; 
     --dark-red: #4c0d00;
     --middle-red: #760700;
-    /* --light-red: #BE0E00; */
-    /* --white: #E1D9D9; */
+    //--d-bootstrap: #212529; == the color of the dark theme of bootstrap, I think I won't use this at all
 }
 /* End Colors */
 
@@ -45,7 +44,7 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: $d-bootstrap;
+    background-color: $primary;
     overflow-x: hidden;
     overflow-y: hidden;
     transition: 0.5s;
@@ -106,7 +105,7 @@ footer {
     width: 100%;
     padding: 1rem 0;
     text-align: center;
-    background-color: $d-bootstrap;
+    background-color: $primary;
 }
 
 .icon {
