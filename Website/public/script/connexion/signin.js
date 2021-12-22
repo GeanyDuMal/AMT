@@ -49,14 +49,14 @@ function verifyInputSignin() {
 
     form.password.style.borderColor = "red";
     if (valuePassword === ""){
-        message += "<li>Mot de Passe non renseigné</li>";
+        message += "<li>Mot de passe non renseigné</li>";
     }else if(valuePassword.length < 5){
-        message += "<li>Mot de Passe trop court</li>";
+        message += "<li>Mot de passe trop court</li>";
     }else if (regexCharacter.test(valuePassword) === false) {
         message += "<li>Le mots de passe ne contient pas de caractere spécial</li>"
     }
     else if (valuePassword !== valueConfirm) {
-        message += "<li>Les mots de passe ne correspondent pas</li>"
+        message += "<li>Les mots de passes ne correspondent pas</li>"
         form.confirmPassword.style.borderColor = "red";
     }else{
         form.password.style.borderColor = "black";
