@@ -40,15 +40,7 @@ class ClientController extends AbstractController
         $types = $clientTypeRepository->findAll();
         $errors="";
         if ($data->count()> 0) {
-            $client->setName($data->get('name'));
-            $client->setFirstName($data->get('fname'));
-            $client->setLogin($data->get('login'));
-            $client->setPassword($data->get('pwd'));
-            $client->setBalance($data->get('balance'));
-            $typeName=$data->get('types');
-            $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
-            $client->setClientType($type);
-            $client->setFidelityPoint(0);
+            $this->setData($client,$request,$clientTypeRepository);
             $errors = $validator->validate($client);
             if($errors->count()==0)
                 if($clientManager->loginExists($client)){
@@ -74,26 +66,17 @@ class ClientController extends AbstractController
      */
     public function editClientAction(Request $request,ClientTypeRepository $clientTypeRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
-        $clientSelected = $clientRepository->find($id);
-        $client = $clientSelected;
+        $client = $clientRepository->find($id);
         $data = $request->request;
         $clientManager = new ClientManager($manager);
         $error = "";
         $types = $clientTypeRepository->findAll();
         $errors="";
         if ($data->count()> 0) {
-            $client->setName($data->get('name'));
-            $client->setFirstName($data->get('fname'));
-            $client->setLogin($data->get('login'));
-            $client->setPassword($data->get('pwd'));
-            $client->setBalance($data->get('balance'));
-            $typeName=$data->get('types');
-            $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
-            $client->setClientType($type);
-            $client->setFidelityPoint(0);
+            $this->setData($client,$request,$clientTypeRepository);
             $errors = $validator->validate($client);
             if($errors->count()==0)
-                if(strcmp($clientSelected->getLogin(),$client->getLogin())!=0 &&
+                if(strcmp($clientRepository->find($id)->getLogin(),$client->getLogin())!=0 &&
                     $clientManager->loginExists($client)){
                     $error="Login Existe déja";
                 }
@@ -122,5 +105,36 @@ class ClientController extends AbstractController
         $manager->flush();
         $this->addFlash('message', 'Client supprimer avec succée');
         return $this->redirectToRoute('client_list');
+    }
+    private function getRoles(string $typeName):array{
+        $role[]="ROLE_USER";
+        switch ($typeName){
+            case "Association":$role[] = "ROLE_ASSOC";break;
+            case "Trésorier":array_push($role,"ROLE_ASSOC","ROLE_TRESORIER");break;
+            case "Président":array_push($role,"ROLE_ASSOC","ROLE_TRESORIER","ROLE_PRESIDENT");break;
+            default:break;
+        }
+        return $role;
+    }
+    private function setData(Client &$client,Request $request,ClientTypeRepository $clientTypeRepository){
+        $data = $request->request;
+        $client->setName($data->get('name'));
+        $client->setFirstName($data->get('fname'));
+        $client->setLogin($data->get('login'));
+        /*
+            if password input exists so it's the add page
+            so we have to initialize the fidelity points
+            and set the password to the chosen one.
+        */
+        if($data->get('pwd')){
+            $client->setPassword($data->get('pwd'));
+            $client->setFidelityPoint(0);
+        }
+        $client->setBalance($data->get('balance'));
+        $typeName=$data->get('types');
+        $role= $this->getRoles($typeName);
+        $client->setRoles($role);
+        $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
+        $client->setClientType($type);
     }
 }

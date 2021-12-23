@@ -5,7 +5,10 @@
 {%  block javascripts %}
 	<script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
 {% endblock %}
-
+{% block stylesheets %}
+	<link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
+	<link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+{% endblock %}
 {% block body %}
 	<div>
 		<ul>
@@ -14,15 +17,18 @@
 				<li>{{ errors.get(i).getMessage() }}</li>
 				{% endfor %}
 			{% endif %}
-			{% if error is defined and error!="" %}
-					<li>{{ error }}</li>
-			{% endif %}
 		</ul>
 	</div>
 	{% set clientExists=client is defined %}
-	<div class="container mt-5">
+	<div class="container mt-5  ">
+	<form action="" method="post" class="row g-2 " id='form_Client'>
+		{% if error is defined and error!="" %}
+			<div class="alert alert-dismissible alert-danger">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				{{ error }}.
+			</div>
+		{% endif %}
 		<h1>Nouveau Client</h1>
-	<form action="" method="post" class="row g-3" id='form_addClient'>
 		<div class="form-floating col-md-6">
 			<input type="text" name="name"  class="form-control" id="floatingInput" placeholder="Nom" value={% if clientExists %}{{ client.name}} {% endif  %}>
 			<label for="floatingInput">Nom</label>

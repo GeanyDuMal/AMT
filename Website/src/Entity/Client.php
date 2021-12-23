@@ -92,7 +92,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
+    public function setID(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
     public function getName(): ?string
     {
         return $this->name;

@@ -1,4 +1,4 @@
-var form = document.querySelector("#form_addClient");
+var form = document.querySelector("#form_Client");
 function verifier() {
     var message = "";
     var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
@@ -29,20 +29,20 @@ function verifier() {
         message += "Mot de Passe non renseigné ";
     } else if (valuePassword.length < 5) {
         message += "Mot de Passe trop court ";
-    } else if (regexCharacter.test(valuePassword) == false) {
+    } else if (regexCharacter.test(valuePassword) === false) {
         message += "Le mots de passe ne contient pas de caractere spécial "
     }
-    else if (valuePassword != valueConfirm) {
+    else if (valuePassword !== valueConfirm) {
         message += "Les mots de passe ne correspondent pas "
     }
 
     balance = parseFloat(valueBalance);
-    if (balance!=0 && !balance && valueBalance != "") {
+    if (balance!==0 && !balance && valueBalance !== "") {
         message += "Balance doit etre un nombre. ";
     } else if (balance < 0) {
         message += "Le balance doit etre >=0. ";
     }
-    if (message != "") {
+    if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',
             text: message,
