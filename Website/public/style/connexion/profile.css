@@ -32,6 +32,25 @@
 }
 /* End "Header" */
 
+/* Edit password */
+
+.edit-password {
+    text-align: center;
+}
+
+.edit-password input {
+    margin-top: 10px;
+}
+
+.edit-password button {
+    margin-top: 10px;
+}
+
+.edit-password li {
+    text-align:left;
+}
+/* End Edit password */
+
 .table_information {
     border-collapse: separate;
     border-spacing: 20px;

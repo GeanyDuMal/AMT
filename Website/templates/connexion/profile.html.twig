@@ -92,7 +92,7 @@
     </div>
     {# Edit Password #}
     <form class="edit_password flex_vertical centered_flex secondary_block" method="post" id="form_edit_password">
-        <div class="input_text flex_vertical">
+        {# <div class="input_text flex_vertical">
                 <label for="">Ancien mot de passe</label>
                 <input type="password" name="oldPassword">
         </div>
@@ -108,8 +108,29 @@
         <div class="input_text flex_vertical">
             <label for="">Nouveau mot de passe (confirmation) :</label>
             <input type="password" name="confirmPassword">
+        </div> #}
+
+        <div class="edit-password">
+            <div class="form-floating">
+                <input type="password" name="oldPassword" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Ancien mot de passe</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="password" name="newPassword" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Nouveau mot de passe</label>
+                <ul class="list_require">
+                    <li>Au moins 5 caractères</li>
+                    <li>Au moins 1 caractère spécial</li>
+                </ul>
+            </div>
+
+            <div class="form-floating">
+                <input type="password" name="confirmPassword" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Confirmation du nouveau mot de passe</label>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="return verifyInputEditPassword()">Valider</button>
         </div>
-        <button type="submit" class="btn" onclick="return verifyInputEditPassword()">Valider</button>
     </form>
     {# End Edit Password #}
 
