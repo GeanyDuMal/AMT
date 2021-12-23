@@ -1,6 +1,11 @@
 :root {
-      --primary: rgb(118, 7, 0);
+      /* --primary: rgb(118, 7, 0); */
       --primary-dark: rgb(76, 13, 0);
+      --white: #f2f2f2;
+      --black: #000;
+      --primary: #1B1919; 
+      --dark-red: #4c0d00;
+      --middle-red: #760700;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -15,6 +20,7 @@ body {
       scrollbar-width: none;
       /* Firefox */
       margin: 0;
+      background: var(--white);
 }
 
 .message_information {
@@ -44,7 +50,7 @@ form>* {
 }
 
 .flex_vertical h1 {
-      font-size: 2rem;
+      /* font-size: 2rem; */
       margin: 10px 0;
 }
 

@@ -1,3 +1,37 @@
+/* Colors */
+:root {
+    /* Our Colors // GoInfo */
+    --white: #f2f2f2;
+    --black: #000;
+    --primary: #212529; 
+    --dark-red: #4c0d00;
+    --middle-red: #760700;
+}
+/* End Colors */
+
+/* "Header" */
+.top {
+    background-color: var(--primary);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 3vw;
+}
+
+.top-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5vw;
+    color: var(--white);
+}
+
+.back-arrow {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 5vw;
+    height: auto;
+}
+/* End "Header" */
+
 .table_information {
     border-collapse: separate;
     border-spacing: 20px;
@@ -9,7 +43,7 @@
 }
 
 .table_information tr td, .text_block {
-    font-size: 2rem;
+    font-size: 1.4rem;
     width: 100%;
     padding: 0;
 }
@@ -25,7 +59,6 @@
 
 .principal_block {
     z-index: 2;
-    background-color: white;
 }
 
 .secondary_block {
