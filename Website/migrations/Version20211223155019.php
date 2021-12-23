@@ -20,7 +20,8 @@ final class Version20211223155019 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
+        $this->addSql('DROP TRIGGER db_aedi.verifCreationClient');
+        $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
                             BEGIN
                                 IF(NEW.balance < 0 || ISNULL(NEW.balance)) THEN
                                     SET NEW.balance = 0;
@@ -29,12 +30,14 @@ final class Version20211223155019 extends AbstractMigration
                                 IF(NEW.fidelity_point <> 0 || ISNULL(NEW.fidelity_point)) THEN
                                     SET NEW.fidelity_point = 0;
                                 END IF;
-                            END;');    }
+                            END;');
+    }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
+        $this->addSql('DROP TRIGGER db_aedi.verifCreationClient');
+        $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
                             BEGIN
                                 IF(NEW.balance < 0 || ISNULL(NEW.balance)) THEN
                                     SET NEW.balance = 0;
