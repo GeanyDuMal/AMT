@@ -16,6 +16,12 @@
       <div class="flex_vertical centered_flex">
             <h1>Inscription</h1>
             <img src="/img/connexion/user.png" alt="" id="img_profile">
+            
+            {% if loginExist %}
+                  <div class="message_information message_incorrect">
+                        Le login que vous avez saisi existe déjà
+                  </div>
+            {% endif %}
 
             <form action="" method="post" class="flex_vertical" id="form_signin">
                   <div class="input_text flex_vertical">

@@ -10,13 +10,30 @@ body::-webkit-scrollbar {
     
 /* Hide scrollbar for IE, Edge and Firefox */
 body {
--ms-overflow-style: none;  /* IE and Edge */
-scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+      margin: 0;
+}
+
+.message_information{
+      padding: 5px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 10px;
+} 
+
+.message_correct{
+      color: rgb(58, 189, 79);
+}
+
+.message_incorrect{
+      color: rgb(189, 64, 64);
 }
 
 .flex_vertical{
       display: flex;
       flex-direction:column;
+      z-index: 0;
 }
 
 form > *{
@@ -74,6 +91,7 @@ form > *{
 }
 
 .btn{
+      text-align: center;
       width: fit-content;
       padding: 5px;
       font-size: 2rem;
@@ -129,5 +147,8 @@ form > *{
       }
 }
 
-
-
+/*Modif du style de SweetAlert*/
+.swal2-html-container ul{
+      width: fit-content;
+      text-align: left;
+}

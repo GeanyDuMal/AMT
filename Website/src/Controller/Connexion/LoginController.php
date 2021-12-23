@@ -2,8 +2,6 @@
 
 namespace App\Controller\Connexion;
 
-use App\Entity\Client;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +11,6 @@ class LoginController extends AbstractController
 {
     /**
      * @Route("/login", name="login")
-     *
-     * go to :
-     * https://symfony.com/doc/5.4/security.html#authenticating-users
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
@@ -30,7 +25,7 @@ class LoginController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('connexion/login/index.html.twig', [
+        return $this->render('connexion/login.html.twig', [
             'lastUsername' => $lastUsername,
             'error' => $error,
         ]);
