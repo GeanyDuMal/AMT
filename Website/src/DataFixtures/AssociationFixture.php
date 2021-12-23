@@ -22,7 +22,8 @@ class AssociationFixture extends Fixture implements DependentFixtureInterface
 
         dd($clientTypeRepository->findOneBy(["name" => "Association"]),
             $clientRepository->findBy(["clientType" => $clientTypeRepository->findOneBy(["name" => "Association"])]),
-            $clientRepository->findAll());
+            $clientRepository->findAll(),
+            $membreAssoc);
 
         $association1 = new Association();
         $association1->setMember($membreAssoc[0])
