@@ -2,6 +2,8 @@
 
 namespace App\Controller\Client;
 
+use App\Repository\ClientRepository;
+use App\Repository\ClientTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,41 +31,86 @@ class ClientController extends AbstractController
     /**
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
-    public function addClientAction(Request $request, EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function addClientAction(Request $request,ClientTypeRepository $clientTypeRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         $data = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client();
         $error = "";
+        $types = $clientTypeRepository->findAll();
+        $errors="";
         if ($data->count()> 0) {
             $client->setName($data->get('name'));
             $client->setFirstName($data->get('fname'));
             $client->setLogin($data->get('login'));
             $client->setPassword($data->get('pwd'));
             $client->setBalance($data->get('balance'));
+            $typeName=$data->get('types');
+            $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
+            $client->setClientType($type);
+            $client->setFidelityPoint(0);
             $errors = $validator->validate($client);
+            if($errors->count()==0)
+                if($clientManager->loginExists($client)){
+                    $error="Login Existe déja";
+                }
+                else{
+                    $clientManager->persist($client);
+                    return $this->redirectToRoute('client_list');
+                }
+            }
 
-            return $this->redirectToRoute('new_client',
-                [
-                    'errors' => $errors
-                ]
-            );
-            return new Response($errors);
-        }
-        $types = $this->getDoctrine()->getRepository(ClientType::class)->findAll();
         return $this->render('client/AddModalClient.html.twig',
             [
-                'types' => $types
+                'types' => $types,
+                'errors' => $errors,
+                'error' => $error,
+                'client' => $client
             ]
         );
     }
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function editClientAction(): Response
+    public function editClientAction(Request $request,ClientTypeRepository $clientTypeRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
-        $client = new Client();
-        return $this->render('client/EditModalClient.html.twig');
+        $clientSelected = $clientRepository->find($id);
+        $client = $clientSelected;
+        $data = $request->request;
+        $clientManager = new ClientManager($manager);
+        $error = "";
+        $types = $clientTypeRepository->findAll();
+        $errors="";
+        if ($data->count()> 0) {
+            $client->setName($data->get('name'));
+            $client->setFirstName($data->get('fname'));
+            $client->setLogin($data->get('login'));
+            $client->setPassword($data->get('pwd'));
+            $client->setBalance($data->get('balance'));
+            $typeName=$data->get('types');
+            $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
+            $client->setClientType($type);
+            $client->setFidelityPoint(0);
+            $errors = $validator->validate($client);
+            if($errors->count()==0)
+                if(strcmp($clientSelected->getLogin(),$client->getLogin())!=0 &&
+                    $clientManager->loginExists($client)){
+                    $error="Login Existe déja";
+                }
+                else{
+                    $clientManager->persist($client);
+                    return $this->redirectToRoute('client_list');
+                }
+        }
+
+        return $this->render('client/EditModalClient.html.twig',
+            [
+                'types' => $types,
+                'errors' => $errors,
+                'error' => $error,
+                'client' => $client
+            ]
+        );
     }
     /**
      * @Route("/admin/client/delete/{id}", name="delete_client", methods="GET" )

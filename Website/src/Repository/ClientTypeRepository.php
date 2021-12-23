@@ -18,14 +18,13 @@ class ClientTypeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ClientType::class);
     }
-
     // /**
     //  * @return ClientType[] Returns an array of ClientType objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('c')
+        return $this->createQueryBuilder("c')
             ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
             ->orderBy('c.id', 'ASC')

@@ -35,8 +35,9 @@ function verifier() {
     else if (valuePassword != valueConfirm) {
         message += "Les mots de passe ne correspondent pas "
     }
+
     balance = parseFloat(valueBalance);
-    if (!balance && valueBalance != "") {
+    if (balance!=0 && !balance && valueBalance != "") {
         message += "Balance doit etre un nombre. ";
     } else if (balance < 0) {
         message += "Le balance doit etre >=0. ";
