@@ -2,6 +2,10 @@
 
 {% block title %}Effectuer une commande{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/bootstrap.css">
+{% endblock %}
+
 {% block body %}
     <div>
         {% for product in productList %}
@@ -12,6 +16,11 @@
                 </div>
                 <div>
                     {{ product.quantityStock }} 
+                </div>
+                <div class="qte_prod">
+                    <div class="btn_gauche"></div>
+                    <div class="compteur_produit">0</div>
+                    <div class="btn_droite"></div>
                 </div>
             </div>
         {% endfor %}
