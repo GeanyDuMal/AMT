@@ -3,7 +3,7 @@
       --primary-dark: rgb(76, 13, 0);
       --white: #f2f2f2;
       --black: #000;
-      --primary: #1B1919; 
+      --primary: #1B1919;
       --dark-red: #4c0d00;
       --middle-red: #760700;
 }
@@ -49,10 +49,10 @@ form>* {
       width: 50vw;
 }
 
-.flex_vertical h1 {
-      /* font-size: 2rem; */
+/* .flex_vertical h1 {
+      /* font-size: 2rem;
       margin: 10px 0;
-}
+} */
 
 .centered_flex {
       align-items: center;
@@ -121,7 +121,7 @@ form>* {
       text-align: center;
 }
 
-.text_bottom > * {
+.text_bottom>* {
       margin: 0 10px;
 }
 

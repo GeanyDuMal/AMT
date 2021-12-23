@@ -33,65 +33,95 @@
 
 {% block body %}
 
-    <div class="flex_vertical centered_flex principal_block">
-    <div class="top">
-        <h1 class="top-text">Profil</h1>
-        <a href="{{ path('home') }}">
-            <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow">
-        </a>
-    </div>
-
-        <img src="/img/connexion/user.png" alt="" id="img_profile">
-
-        <h1 class="text_block">
-            Bienvenue {{ user.login }}
-        </h1>
-
-        {% if edit is same as("wrong_password") %}
-            <h2 class="message_information message_incorrect">
-                Votre mot de passe est incorrect 
-            </h2>
-        {% elseif edit %}
-            <h2 class="message_information message_correct">
-                Modification effectuée avec succès 
-            </h2>
-        {% endif %}
-
-        {# Client Informations #}
-        <div>
-            <table class="table_information">
-                <tr>
-                    <td>Solde :</td>
-                    <td>{{ user.balance }} €</td>
-                </tr>
-                <tr>
-                    <td>Compteur de fidelité :</td>
-                    <td>{{ user.fidelityPoint }}</td>
-                </tr>
-                <tr>
-                    <td>Statut :</td>
-                    <td>{{ user.clientType.name }}</td>
-                </tr>
-            </table>
-        {# End Client Informations #}
-
-        {# Options #}
-            <div class="flex_horizontal">
-                <button class="btn btn-secondary" onclick="openCloseEditForm()">
-                    Modifier le mot de passe
-                </button>
-                <a href="{{ path('logout') }}">
-                <button class="btn btn-primary">
-                    Se déconnecter
-                    {# <a href="{{ path('logout') }}"></a> #}
-                </button>
-                </a> 
+<div class="flex_vertical centered_flex principal_block">
+    <div class="hiding">
+        {# Top bar #}
+        <div class="top">
+            <h1 class="top-text">Profil</h1>
+            <a href="{{ path('home') }}">
+                <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
             </div>
-        {# End Options #}
+            {# End Top bar #}
+
+            <div class="client-info">
+                <img src="/img/connexion/user.png" alt="" id="img_profile">
+
+                    <h1 class="text_block">
+                        Bienvenue
+                        {{ user.login }}
+                    </h1>
+
+                    {% if edit is same as("wrong_password") %}
+                        <h2 class="message_information message_incorrect">
+                            Votre mot de passe est incorrect
+                        </h2>
+                    {% elseif edit %}
+                        <h2 class="message_information message_correct">
+                            Modification effectuée avec succès
+                        </h2>
+                    {% endif %}
+
+                    {# Client Informations #}
+                    <table class="table_information">
+                        <tr>
+                            <td>Solde :</td>
+                            <td>{{ user.balance }}
+                                €</td>
+                        </tr>
+                        <tr>
+                            <td>Compteur de fidelité :</td>
+                            <td>{{ user.fidelityPoint }}</td>
+                        </tr>
+                        <tr>
+                            <td>Statut :</td>
+                            <td>{{ user.clientType.name }}</td>
+                        </tr>
+                    </table>
+                    {# End Client Informations #}
+
+                    {# Options #}
+                    {# <div class="flex_horizontal"> #}
+                        <button class="btn btn-secondary" onclick="openCloseEditForm()">
+                            Modifier le mot de passe
+                        </button>
+                        <a href="{{ path('logout') }}">
+                            <button class="btn btn-primary">
+                                Se déconnecter
+                                {# <a href="{{ path('logout') }}"></a> #}
+                            </button>
+                        </a>
+                    {# </div> #}
+                    {# End Options #}
+                </div>
+            </div>
         </div>
-    </div>
-    {# Edit Password #}
-    <form class="edit_password flex_vertical centered_flex secondary_block" method="post" id="form_edit_password">
+        {# Edit Password #}
+        <form class="edit_password flex_vertical centered_flex secondary_block" method="post" id="form_edit_password">
+
+            <div class="edit-password">
+                <div class="form-floating">
+                    <input type="password" name="oldPassword" class="form-control" id="floatingPassword" placeholder="Password">
+                    <label for="floatingPassword">Ancien mot de passe</label>
+                </div>
+
+                    <div class="form-floating">
+                        <input type="password" name="newPassword" class="form-control" id="floatingPassword" placeholder="Password">
+                        <label for="floatingPassword">Nouveau mot de passe</label>
+                        <ul class="list_require">
+                            <li>Au moins 5 caractères</li>
+                            <li>Au moins 1 caractère spécial</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" name="confirmPassword" class="form-control" id="floatingPassword" placeholder="Password">
+                        <label for="floatingPassword">Confirmation du nouveau mot de passe</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" onclick="return verifyInputEditPassword()">Valider</button>
+                </div>
+            </form>
+
         {# <div class="input_text flex_vertical">
                 <label for="">Ancien mot de passe</label>
                 <input type="password" name="oldPassword">
@@ -109,29 +139,6 @@
             <label for="">Nouveau mot de passe (confirmation) :</label>
             <input type="password" name="confirmPassword">
         </div> #}
-
-        <div class="edit-password">
-            <div class="form-floating">
-                <input type="password" name="oldPassword" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Ancien mot de passe</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="password" name="newPassword" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Nouveau mot de passe</label>
-                <ul class="list_require">
-                    <li>Au moins 5 caractères</li>
-                    <li>Au moins 1 caractère spécial</li>
-                </ul>
-            </div>
-
-            <div class="form-floating">
-                <input type="password" name="confirmPassword" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Confirmation du nouveau mot de passe</label>
-            </div>
-            <button type="submit" class="btn btn-primary" onclick="return verifyInputEditPassword()">Valider</button>
-        </div>
-    </form>
     {# End Edit Password #}
 
 {% endblock %}

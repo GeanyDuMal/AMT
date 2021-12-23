@@ -3,11 +3,22 @@
     /* Our Colors // GoInfo */
     --white: #f2f2f2;
     --black: #000;
-    --primary: #212529; 
+    --primary: #212529;
     --dark-red: #4c0d00;
     --middle-red: #760700;
 }
+
 /* End Colors */
+
+/* Hiding div */
+.hiding {
+    background-color: white;
+    width: 100%;
+    text-align: center;
+    z-index: 4;
+}
+
+/* End Hiding div */
 
 /* "Header" */
 .top {
@@ -15,6 +26,7 @@
     width: 100%;
     text-align: center;
     margin-bottom: 3vh;
+    z-index: 5;
 }
 
 .top-text {
@@ -25,17 +37,26 @@
 
 .back-arrow {
     position: absolute;
-    top: 12px;
-    left: 10px;
+    top: 4px;
+    left: 6px;
     width: 40px;
     height: auto;
 }
+
 /* End "Header" */
 
-/* Edit password */
+/* Client Info */
+.client-info {
+    z-index: 2;
+}
 
+/* End Client Info */
+
+/* Edit password */
 .edit-password {
     text-align: center;
+    z-index: 1;
+    width: 70vw;
 }
 
 .edit-password input {
@@ -47,8 +68,9 @@
 }
 
 .edit-password li {
-    text-align:left;
+    text-align: left;
 }
+
 /* End Edit password */
 
 .table_information {
@@ -58,7 +80,8 @@
     border: solid 3px var(--primary);
     border-radius: 10px;
     margin-bottom: 15px;
-    width: 90%;
+    width: 500px;
+    text-align: left;
     /* border-color: var(--primary); */
 }
 
@@ -68,15 +91,15 @@
 
 .table_information tr td, .text_block {
     font-size: 18px;
-    width: 100%;
+    /* width: 100%; */
     padding: 0;
 }
 
 /* Mobile Version Table Information Responsive */
-@media(max-width: 500px) {
-    .table_information tr td, .text_block {
+@media(max-width: 650px) {
+    .table_information {
         font-size: 4vw;
-        width: 100%;
+        width: 80%;
         padding: 0;
     }
 }
