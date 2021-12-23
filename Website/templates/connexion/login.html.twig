@@ -8,7 +8,7 @@
       <link rel="stylesheet" href="/style/connexion/connexion.css">
 
         {# Bootstrap CSS Import #}
-        <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="/style/bootstrap.min.css" rel="stylesheet"/>
         {# Icons #}
         <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
         {# End Bootstrap CSS Import #}
@@ -37,7 +37,7 @@
         {% endif %}
 
         <form action="" class="flex_vertical" method="post" id="form_login">
-            <div class="input_text flex_vertical">
+            {# <div class="input_text flex_vertical">
                 <label for="username">Login :</label>
                 <input type="text" name="_username" value="{{ lastUsername }}" autofocus>
             </div>
@@ -45,22 +45,22 @@
             <div class="input_text flex_vertical">
                 <label for="password">Mot de Passe :</label>
                 <input type="password" name="_password">
-            </div>
+            </div> #}
 
             {# Form Inputs with floatig label #}
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="text" name="_username" class="form-control" value="{{ lastUsername }}" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Login</label>
             </div>
 
             <div class="form-floating">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="password" name="_password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Mot De Passe</label>
             </div>
             {# End Form Inputs with floatig label #}
 
             <div class="flex_vertical centered_flex">
-                <button type="submit" class="btn" onclick="return verifyInputLogin()">
+                <button type="submit" class="btn btn-primary" onclick="return verifyInputLogin()">
                     Se Connecter
                 </button>
             </div>
