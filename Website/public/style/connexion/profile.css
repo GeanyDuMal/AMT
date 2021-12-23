@@ -14,20 +14,20 @@
     background-color: var(--primary);
     width: 100%;
     text-align: center;
-    margin-bottom: 3vw;
+    margin-bottom: 3vh;
 }
 
 .top-text {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 5vw;
+    font-size: 40px;
     color: var(--white);
 }
 
 .back-arrow {
     position: absolute;
-    top: 10px;
+    top: 12px;
     left: 10px;
-    width: 5vw;
+    width: 40px;
     height: auto;
 }
 /* End "Header" */
@@ -36,6 +36,11 @@
     border-collapse: separate;
     border-spacing: 20px;
     margin: 0 auto;
+    border: solid 3px var(--primary);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    width: 90%;
+    /* border-color: var(--primary); */
 }
 
 .text_block {
@@ -43,9 +48,18 @@
 }
 
 .table_information tr td, .text_block {
-    font-size: 1.4rem;
+    font-size: 18px;
     width: 100%;
     padding: 0;
+}
+
+/* Mobile Version Table Information Responsive */
+@media(max-width: 500px) {
+    .table_information tr td, .text_block {
+        font-size: 4vw;
+        width: 100%;
+        padding: 0;
+    }
 }
 
 .flex_horizontal {
@@ -62,7 +76,7 @@
 }
 
 .secondary_block {
-    z-index: -1;
+    /* z-index: -1; */
     opacity: 0;
     height: 0;
     overflow: hidden;
@@ -77,6 +91,7 @@
 }
 
 /*        KEYFRAME          */
+/*       (Animation)        */
 @keyframes slide-in-top {
     0% {
         height: 0;
