@@ -7,7 +7,7 @@ $white: #f2f2f2;
 $black: #000;
 $dark-red: #4c0d00;
 $middle-red: #760700;
-$primary: #1B1919; 
+$primary: #212529;//#1B1919; 
 // $dark-gray: #242424; <-- useless here
 
 // css if some of you don't wan't to use scss :))
@@ -15,7 +15,7 @@ $primary: #1B1919;
     /* Our Colors // GoInfo */
     --white: #f2f2f2;
     --black: #000;
-    --primary: #1B1919; 
+    --primary: #212529; 
     --dark-red: #4c0d00;
     --middle-red: #760700;
     //--d-bootstrap: #212529; == the color of the dark theme of bootstrap, I think I won't use this at all
@@ -35,6 +35,7 @@ body {
     /* position: fixed; */
     top: 0;
     width: 100%;
+    background-color: $primary;
 }
 
 .sidebar {
