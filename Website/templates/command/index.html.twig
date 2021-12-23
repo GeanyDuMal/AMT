@@ -12,25 +12,31 @@
 {% endblock %}
 
 {% block body %}
-    <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command">
-        <div class="flex_horizontal block_all_product">
+    <form method="POST" class="flex_vertical" id="form_command">
+        <div class="flex_horizontal centered_flex_horizontal block_all_product">
         {% for product in productList %}
-            <div class="product_block">
-                <img src="{{ product.imageLink }}" alt="">
-                <div>
-                    {{ product.name }}
+            <div class="block_product flex_vertical ">
+                <div class="flex_vertical">
+                    <img src="{{ product.imageLink }}" alt="" class="img_product">
+                    <div>
+                        {{ product.name }}
+                    </div>
+                    <div class="quantity_block">
+                        Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</span>
+                    </div>
                 </div>
                 <div>
-                    {{ product.quantityStock }} 
-                </div>
-                <div class="qte_prod flex_horizontal centered_flex_horizontal">
-                    <div class="btn btn_down">-</div>
-                    <input type="number" name="quantity_product_{{ product.id }}" class="compteur_produit" step="1" value="0" min="0">
-                    <div class="btn btn_up">+</div>
+                    <input type="number" name="quantity_product_{{ product.id }}" class="input_quantity" step="1" value="0" min="0">
+                    <div class="block_button">
+                        <div class="btn btn-primary btn_minus">-</div>
+                        <div class="btn btn-primary btn_plus">+</div>
+                    </div>
                 </div>
             </div>
         {% endfor %}
         </div>
-        <button type="submit" class="btn-primary">Valider la commande</button>
+        <div class="flex_vertical centered_flex_vertical">
+            <button type="submit" class="btn-primary">Valider la commande</button>
+        </div>
     </form>
 {% endblock %}
