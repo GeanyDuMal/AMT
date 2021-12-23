@@ -8,10 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CommandController extends AbstractController
+class CreateCommandController extends AbstractController
 {
     /**
-     * @Route("/command", name="commandHome")
+     * @Route("/command/create", name="commandCreate")
      */
     public function index(EntityManagerInterface $manager): Response
     {
@@ -31,7 +31,7 @@ class CommandController extends AbstractController
             }
         }
 
-        return $this->render('command/index.html.twig', [
+        return $this->render('command/create.html.twig', [
             "user" => $user,
             "productList" => $allProductPositiveStock
         ]);
