@@ -21,7 +21,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
                 ->setPassword("hiddenPassword")
                 ->setBalance(0)
                 ->setFidelityPoint(0)
-                ->setClientType($clientTypeRepository->findOneBy(["name" => "Membre"]));
+                ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
         $manager->persist($client1);
 
         $client2 = new Client();
@@ -31,7 +31,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
                 ->setPassword("Ayato")
                 ->setBalance(5)
                 ->setFidelityPoint(0)
-                ->setClientType($clientTypeRepository->findOneBy(["name" => "Membre"]));
+                ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
         $manager->persist($client2);
 
         $client3 = new Client();

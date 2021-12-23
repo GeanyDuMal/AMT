@@ -15,6 +15,7 @@ class CommandFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $clientRepository = $manager->getRepository(Client::class);
+
         $paymentTypeRepository = $manager->getRepository(PaymentType::class);
 
         $command1 = new Command();

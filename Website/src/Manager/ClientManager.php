@@ -9,7 +9,7 @@ class ClientManager
 {
     public $manager;
 
-    public function __construct(EntityManagerInterface  $managerController)
+    public function __construct(EntityManagerInterface $managerController)
     {
         $this->manager = $managerController;
     }
