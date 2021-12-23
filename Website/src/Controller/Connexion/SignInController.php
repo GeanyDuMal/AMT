@@ -3,8 +3,8 @@
 namespace App\Controller\Connexion;
 
 use App\Entity\Client;
+use App\Entity\ClientType;
 use App\Manager\ClientManager;
-use App\Security\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +26,7 @@ class SignInController extends AbstractController
 
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
+        $clientTypeRepository = $manager->getRepository(ClientType::class);
         $client = new Client();
         $verifPassword = "";
         $loginExist = false;
@@ -40,6 +41,7 @@ class SignInController extends AbstractController
                     ->setFirstName(trim($inputParameterBag->get("firstName")))
                     ->setLogin(trim($inputParameterBag->get("login")))
                     ->setPassword($hashedPassword)
+                    ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
                     ->setRoles(['ROLE_USER']);
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
         }

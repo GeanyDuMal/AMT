@@ -1,20 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CommandController!{% endblock %}
+{% block title %}Effectuer une commande{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/Romain/Desktop/Dev/Github/Website_AEDI/Website/src/Controller/CommandController.php'|file_link(0) }}">src/Controller/CommandController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/Romain/Desktop/Dev/Github/Website_AEDI/Website/templates/command/index.html.twig'|file_link(0) }}">templates/command/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div>
+        {% for product in productList %}
+            <div>
+                <img src="{{ product.imageLink }}" alt="">
+                <div>
+                    {{ product.name }}
+                </div>
+                <div>
+                    {{ product.quantityStock }} 
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

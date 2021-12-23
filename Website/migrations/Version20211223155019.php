@@ -19,7 +19,10 @@ final class Version20211223155019 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+    // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE client CHANGE roles roles LONGTEXT DEFAULT \'ROLE_USER\' NOT NULL COMMENT \'(DC2Type:json)\'');
+
+        //EDIT Trigger
         $this->addSql('DROP TRIGGER db_aedi.verifCreationClient');
         $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
                             BEGIN
@@ -35,7 +38,7 @@ final class Version20211223155019 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
+    // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TRIGGER db_aedi.verifCreationClient');
         $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
                             BEGIN
@@ -49,5 +52,8 @@ final class Version20211223155019 extends AbstractMigration
                                 
                                 SET NEW.client_type_id = (SELECT id FROM client_type WHERE name = "Etudiant");
                             END;');
+
+        $this->addSql('ALTER TABLE client CHANGE roles roles LONGTEXT CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci` COMMENT \'
+        Only for the Website on Symfony (DC2Type:json)\'');
     }
 }
