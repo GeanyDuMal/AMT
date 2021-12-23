@@ -8,9 +8,7 @@
 
 {% block body %}
 	<form action="" method="post" id='form_addClient'>
-		{% if client is defined%}
-			<input type="text" name="name" placeholder="Nom" value=" {{ client.name }} ">
-		{% endif %}
+		<input type="text" name="name" placeholder="Nom">
 		<br>
 		<input type="text" name="fname" placeholder="Prénom">
 		<br>
@@ -30,6 +28,6 @@
 			{% endfor %}
 		</select>
 		<br>
-		<input type="submit" value="Créer" onclick="return verifier()">
+		<input type="submit" value="Créer" onclick="">
 	</form>
 {% endblock %}

@@ -14,51 +14,46 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Manager\ClientManager;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ClientController extends AbstractController
 {
     /**
      * @Route("/admin/client", name="client_list",methods={"GET", "POST"} )
      */
-    public function index(): Response
+    public function index(EntityManagerInterface $manager): Response
     {
-        $clients = $this->getDoctrine()->getRepository(Client::class)->findAll();
+        $clients = $manager->getRepository(Client::class)->findAll();
         return $this->render('client/index.html.twig', array('clients' => $clients));
     }
     /**
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
-    public function addClientAction(Request $request, EntityManagerInterface $manager): Response
+    public function addClientAction(Request $request, EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         $data = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client();
         $error = "";
-        if ($data->count() > 0) {
+        if ($data->count()> 0) {
             $client->setName($data->get('name'));
             $client->setFirstName($data->get('fname'));
             $client->setLogin($data->get('login'));
             $client->setPassword($data->get('pwd'));
-            if ($data->get('balance') == "")
-                $client->setBalance(0);
-            else
-                $client->setBalance($data->get('balance'));
-            if (!$clientManager->isNotFull($client)) {
-                $error = "Les champs ne doit pas etre null!";
-            } elseif (!$clientManager->dataCorrect($client)) {
-                $error = "Vérifier vos champs!";
-            } elseif ($clientManager->loginExists($client)) {
-                $error = "Ce login existe déja!";
-            } else if (strcmp($data->get('confPwd'), $client->getPassword()) != 0)
-                $error = "Vérifier la confirmation de votre mot de passe!";
+            $client->setBalance($data->get('balance'));
+            $errors = $validator->validate($client);
+
+            return $this->redirectToRoute('new_client',
+                [
+                    'errors' => $errors
+                ]
+            );
+            return new Response($errors);
         }
-        $this->addFlash("error", $error);
         $types = $this->getDoctrine()->getRepository(ClientType::class)->findAll();
-        return $this->render(
-            'client/AddModalClient.html.twig',
+        return $this->render('client/AddModalClient.html.twig',
             [
-                'types' => $types,
-                'client' => $client
+                'types' => $types
             ]
         );
     }

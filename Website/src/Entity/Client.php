@@ -8,7 +8,7 @@ use App\Entity\ClientType;
 use Exception;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  */
@@ -23,31 +23,58 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 0,
+     *      minMessage = "Votre nom doit comporter au moins {{ limit }} caractères",
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 3,
+     *      minMessage = "Votre prénom doit comporter au moins {{ limit }} caractères",
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(
+     *      min = 5,
+     *      minMessage = "Votre login doit comporter au moins {{ limit }} caractères",
+     *     )
      */
     private $login;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 5,
+     *      minMessage = "Votre mot de passe doit comporter au moins {{ limit }} caractères",
+     *     )
+     * @Assert\Regex(
+     *     pattern="/[*@!#%&()^~{}]+/",
+     *     match=true,
+     *     message="le mot de passe doit contenir au moins un caractére spéciale"
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
+     * @Assert\PositiveOrZero(
+     *     message="Le balance est positive"
+     * )
      */
     private $balance;
 
     /**
      * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
+     * @Assert\PositiveOrZero(
+     *     message="Les points de fidilité sont positive"
+     * )
      */
     private $fidelityPoint;
 
