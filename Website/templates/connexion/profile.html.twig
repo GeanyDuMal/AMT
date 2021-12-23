@@ -37,16 +37,16 @@
         <div>
             <table class="table_information">
                 <tr>
-                    <td>Ton solde :</td>
+                    <td>Statut :</td>
+                    <td>{{ user.clientType.name }}</td>
+                </tr>
+                <tr>
+                    <td>Solde :</td>
                     <td>{{ user.balance }} €</td>
                 </tr>
                 <tr>
                     <td>Compteur de fidelité :</td>
                     <td>{{ user.fidelityPoint }}</td>
-                </tr>
-                <tr>
-                    <td>Ton statut :</td>
-                    <td>{{ user.clientType.name }}</td>
                 </tr>
             </table>
         {# End Client Informations #}
