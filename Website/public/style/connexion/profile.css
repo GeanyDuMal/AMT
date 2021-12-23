@@ -1,3 +1,19 @@
+/* Colors */
+:root {
+    /* Our Colors // GoInfo */
+    --white: #f2f2f2;
+    --black: #000;
+    --primary: #1B1919; 
+    --dark-red: #4c0d00;
+    --middle-red: #760700;
+/* End Colors */
+
+/* "Header" */
+.topheader {
+    background-color: red;
+}
+/* End "Header" */
+
 .table_information {
     border-collapse: separate;
     border-spacing: 20px;
@@ -9,7 +25,7 @@
 }
 
 .table_information tr td, .text_block {
-    font-size: 2rem;
+    font-size: 1.4rem;
     width: 100%;
     padding: 0;
 }
