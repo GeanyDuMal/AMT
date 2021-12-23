@@ -9,12 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandController extends AbstractController
 {
     /**
-     * @Route("/command", name="command")
+     * @Route("/command", name="commandHome")
      */
     public function index(): Response
     {
         return $this->render('command/index.html.twig', [
-            'controller_name' => 'CommandController',
         ]);
     }
 }
