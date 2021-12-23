@@ -111,11 +111,11 @@ form>* {
 .text_bottom {
       display: flex;
       margin-top: 15px;
-      font-size: 1rem;
+      font-size: 2rem;
       text-align: center;
 }
 
-.text_bottom>* {
+.text_bottom > * {
       margin: 0 10px;
 }
 
@@ -145,7 +145,7 @@ form>* {
             height: max-content;
       }
 
-      .btn, .text_bottom_signin {
+      .btn, .text_bottom {
             font-size: 1.5rem;
       }
 }
