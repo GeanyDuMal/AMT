@@ -28,6 +28,7 @@ class ClientController extends AbstractController
         $clients = $manager->getRepository(Client::class)->findAll();
         return $this->render('client/index.html.twig', array('clients' => $clients));
     }
+
     /**
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
@@ -37,8 +38,8 @@ class ClientController extends AbstractController
         $clientManager = new ClientManager($manager);
         $client = new Client();
         $error = "";
-        $types = $clientTypeRepository->findAll();
         $errors="";
+        $types = $clientTypeRepository->findAll();
         if ($data->count()> 0) {
             $this->setData($client,$request,$clientTypeRepository);
             $errors = $validator->validate($client);
@@ -48,7 +49,7 @@ class ClientController extends AbstractController
                 }
                 else{
                     $clientManager->persist($client);
-                    return $this->redirectToRoute('client_list');
+                    return $this->redirectToRoute('client_list_message',["message"=>"Ajout avec succès"]);
                 }
             }
 
@@ -82,7 +83,8 @@ class ClientController extends AbstractController
                 }
                 else{
                     $clientManager->persist($client);
-                    return $this->redirectToRoute('client_list');
+                    $request->query->get("Modification avec succés");
+                    return $this->redirectToRoute('client_list_message',["message"=>"Modification avec succés"]);
                 }
         }
 
@@ -105,6 +107,14 @@ class ClientController extends AbstractController
         $manager->flush();
         $this->addFlash('message', 'Client supprimer avec succée');
         return $this->redirectToRoute('client_list');
+    }
+    /**
+     * @Route("/admin/client/{message}", name="client_list_message",methods={"GET", "POST"} )
+     */
+    public function show($message,EntityManagerInterface $manager): Response
+    {
+        $clients = $manager->getRepository(Client::class)->findAll();
+        return $this->render('client/index.html.twig', array('clients' => $clients,'message'=>$message));
     }
     private function getRoles(string $typeName):array{
         $role[]="ROLE_USER";

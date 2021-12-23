@@ -19,8 +19,14 @@
 	<div class="content">
 		<h1>Liste des client</h1>
 		<br>
+		{% if message is defined %}
+			<div class="alert alert-dismissible alert-success">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>{{ message }}!</strong>
+			</div>
+		 {% endif %}
 		<div align="right">
-			<a href="{{path('new_client')}}" class="btn btn-success">Ajouter</a>
+			<a href="{{ path('new_client') }}" class="btn btn-success">Ajouter</a>
 		</div>
 		<br>
 		<table id="client_table" class="table table-striped">
