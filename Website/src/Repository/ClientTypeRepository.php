@@ -24,7 +24,7 @@ class ClientTypeRepository extends ServiceEntityRepository
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder("c')
+        return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
             ->orderBy('c.id', 'ASC')
