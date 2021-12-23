@@ -35,9 +35,9 @@ security:
                 target: profile
 
     role_hierarchy:
-        ROLE_MEMBER: ROLE_USER
-        ROLE_ADMIN: ROLE_MEMBER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ASSOC: ROLE_USER
+        ROLE_TRESORIER: ROLE_ASSOC
+        ROLE_PRESIDENT: ROLE_TRESORIER
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
