@@ -7,27 +7,76 @@
 {% endblock %}
 
 {% block body %}
-	<form action="" method="post" id='form_addClient'>
-		<input type="text" name="name" placeholder="Nom">
+	<div>
+		<ul>
+			{% if errors is defined and errors!="" %}
+				{% for i in 0..errors.count() %}
+				<li>{{ errors.get(i).getMessage() }}</li>
+				{% endfor %}
+			{% endif %}
+			{% if error is defined and error!="" %}
+					<li>{{ error }}</li>
+			{% endif %}
+		</ul>
+	</div>
+	{% set clientExists=client is defined %}
+	<div class="container mt-5">
+		<h1>Nouveau Client</h1>
+	<form action="" method="post" class="row g-3" id='form_addClient'>
+		<div class="form-floating col-md-6">
+			<input type="text" name="name"  class="form-control" id="floatingInput" placeholder="Nom" value={% if clientExists %}{{ client.name}} {% endif  %}>
+			<label for="floatingInput">Nom</label>
+		</div>
+		<div class="form-floating col-md-6">
+			<input type="text" name="fname"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if clientExists %}{{ client.firstName}} {% endif  %}>
+			<label for="floatingInput">Prénom</label>
+		</div>
 		<br>
-		<input type="text" name="fname" placeholder="Prénom">
+		<div class="form-floating mb-3">
+			<input type="text" name="login" class="form-control" id="floatingInput" name="login" placeholder="Login" value={% if clientExists %}{{ client.login}} {% endif  %}>
+			<label for="floatingInput">Login</label>
+		</div>
 		<br>
-		<input type="text" name="login" placeholder="Login">
+		<div class="form-floating ">
+			<input type="password" name="pwd" class="form-control" id="floatingPassword" placeholder="Mot de passe">
+			<label for="floatingPassword">Mot de passe</label>
+		</div>
+		<div class="col-auto">
+    <span id="passwordHelpInline" class="form-text">
+      <ul>
+		  <li>Au moins 5 caractères</li>
+		  <li>Au moins 1 spéciales</li>
+	  </ul>
+    </span>
+		</div>
 		<br>
-		<input type="text" name="pwd" placeholder="Mot de passe">
+		<div class="form-floating">
+			<input type="password" name="confPwd" class="form-control" id="floatingPassword"  placeholder="Confirmation Mot de passe">
+			<label for="floatingPassword">Confirmation Mot de passe</label>
+		</div>
 		<br>
-		<input type="text" name="confPwd" placeholder="Confirmation Mot de passe">
+
+
+		<div class="form-group col-md-6">
+			<label>Balance</label>
+			<div class="input-group mb-3">
+				<span class="input-group-text">€</span>
+				<input  type="text" name="balance" class="form-control" aria-label="Amount (to the nearest euro)" value={% if clientExists %}{{ client.balance}} {% endif  %}>
+				<span class="input-group-text">.00</span>
+			</div>
+		</div>
+			<div class="form-group col-md-6">
+				<label>Type</label>
+				<select class="form-select" name="types" id="clientType">
+				{% for type in types %}
+					<option>
+						{{type.name}}
+					</option>
+				{% endfor %}
+				</select>
+			</div>
 		<br>
-		<input type="text" name="balance" placeholder="Balance">
-		<br>
-		<select name="types" id="types">
-			{% for type in types %}
-				<option default>
-					{{type.name}}
-				</option>
-			{% endfor %}
-		</select>
-		<br>
-		<input type="submit" value="Créer" onclick="">
+		<input type="submit" class="btn btn-primary" value="Créer" onclick="return verifier()">
 	</form>
+	</div>
 {% endblock %}

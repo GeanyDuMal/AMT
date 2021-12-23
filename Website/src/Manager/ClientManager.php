@@ -96,4 +96,5 @@ class ClientManager
 
           return strpbrk($password, $regexSpecial);
       }
+
 }

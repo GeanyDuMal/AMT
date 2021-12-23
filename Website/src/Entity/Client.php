@@ -55,8 +55,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre mot de passe doit comporter au moins {{ limit }} caractères",
      *     )
      * @Assert\Regex(
-     *     pattern="/[*@!#%&()^~{}]+/",
-     *     match=true,
+     *     pattern="/[^a-zA-Z\d]/",
      *     message="le mot de passe doit contenir au moins un caractére spéciale"
      * )
      */
@@ -126,7 +125,6 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLogin(string $login): self
     {
         $this->login = $login;
-
         return $this;
     }
 
