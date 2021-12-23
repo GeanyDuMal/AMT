@@ -1,4 +1,4 @@
-:root{
+:root {
       --primary: rgb(118, 7, 0);
       --primary-dark: rgb(76, 13, 0);
 }
@@ -6,66 +6,68 @@
 /* Hide scrollbar for Chrome, Safari and Opera */
 body::-webkit-scrollbar {
       display: none;
-    }
-    
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 body {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
       margin: 0;
 }
 
-.message_information{
+.message_information {
       padding: 5px;
       font-size: 1.5rem;
       font-weight: 600;
       margin: 10px;
-} 
+}
 
-.message_correct{
+.message_correct {
       color: rgb(58, 189, 79);
 }
 
-.message_incorrect{
+.message_incorrect {
       color: rgb(189, 64, 64);
 }
 
-.flex_vertical{
+.flex_vertical {
       display: flex;
-      flex-direction:column;
+      flex-direction: column;
       z-index: 0;
 }
 
-form > *{
+form>* {
       margin-top: 10px;
 }
 
-.flex_vertical h1{
+.flex_vertical h1 {
       font-size: 3rem;
       margin: 10px 0;
 }
 
-.centered_flex{
+.centered_flex {
       align-items: center;
 }
 
-#img_profile{
+#img_profile {
       width: 25%;
       max-width: 150px;
 }
 
-.input_text *{
+.input_text * {
       width: 100vw;
       max-width: 750px;
       font-size: 2rem;
       text-align: justify;
 }
 
-.input_text label ul{
+.input_text label ul {
       height: fit-content;
 }
 
-.input_text input{
+.input_text input {
       height: 1.5rem;
       font-size: 1.5rem;
       margin-top: 5px;
@@ -76,21 +78,21 @@ form > *{
       transition: all 0.2s;
 }
 
-.input_text input:focus{
+.input_text input:focus {
       outline: 0;
       border-color: var(--primary);
       box-shadow: 0px 0px 10px var(--primary-dark);
 }
 
-.list_require{
+.list_require {
       margin: 0;
 }
 
-.list_require li{
+.list_require li {
       font-size: 1.2rem;
 }
 
-.btn{
+.btn {
       text-align: center;
       width: fit-content;
       padding: 5px;
@@ -101,34 +103,34 @@ form > *{
       transition: box-shadow 0.2s;
 }
 
-.btn_valider:hover{
+.btn_valider:hover {
       box-shadow: 0px 0px 10px var(--primary-dark);
 }
 
-.text_bottom{
+.text_bottom {
       display: flex;
       margin-top: 15px;
       font-size: 2rem;
       text-align: center;
 }
 
-.text_bottom > *{
+.text_bottom>* {
       margin: 0 10px;
 }
 
-@media(max-width: 800px){
-      .input_text{
+@media(max-width: 800px) {
+      .input_text {
             min-height: fit-content;
-            justify-items:end ;
+            justify-items: end;
       }
-      
-      .input_text *{
+
+      .input_text * {
             width: 70vw;
             max-width: 750px;
             height: 10vw;
       }
 
-      .input_text label{
+      .input_text label {
             font-size: 1.5rem;
             height: fit-content;
       }
@@ -137,18 +139,18 @@ form > *{
             font-size: 1.2rem;
       }
 
-      .list_require li{
+      .list_require li {
             font-size: 1.2rem;
             height: max-content;
       }
 
-      .btn, .text_bottom_signin{
+      .btn, .text_bottom_signin {
             font-size: 1.5rem;
       }
 }
 
 /*Modif du style de SweetAlert*/
-.swal2-html-container ul{
+.swal2-html-container ul {
       width: fit-content;
       text-align: left;
 }
