@@ -2,9 +2,7 @@
 
 namespace App\Controller\Command;
 
-use App\Entity\Client;
 use App\Entity\Product;
-use App\Entity\ProductType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

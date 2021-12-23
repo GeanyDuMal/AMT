@@ -4,12 +4,18 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/bootstrap.css">
+    <link rel="stylesheet" href="/style/commande/commande.css">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/script/commande/commande.js"></script>
 {% endblock %}
 
 {% block body %}
-    <div>
+    <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command">
+        <div class="flex_horizontal block_all_product">
         {% for product in productList %}
-            <div>
+            <div class="product_block">
                 <img src="{{ product.imageLink }}" alt="">
                 <div>
                     {{ product.name }}
@@ -17,12 +23,14 @@
                 <div>
                     {{ product.quantityStock }} 
                 </div>
-                <div class="qte_prod">
-                    <div class="btn_gauche"></div>
-                    <div class="compteur_produit">0</div>
-                    <div class="btn_droite"></div>
+                <div class="qte_prod flex_horizontal centered_flex_horizontal">
+                    <div class="btn btn_down">-</div>
+                    <input type="number" name="quantity_product_{{ product.id }}" class="compteur_produit" step="1" value="0" min="0">
+                    <div class="btn btn_up">+</div>
                 </div>
             </div>
         {% endfor %}
-    </div>
+        </div>
+        <button type="submit" class="btn-primary">Valider la commande</button>
+    </form>
 {% endblock %}

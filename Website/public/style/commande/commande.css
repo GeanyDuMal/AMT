@@ -1,0 +1,40 @@
+.flex_vertical {
+      display: flex;
+      flex-direction: column;
+}
+
+.flex_horizontal {
+      display: flex;
+      flex-direction: row;
+}
+
+
+.centered_flex_vertical {
+      align-items: center;
+}
+
+.centered_flex_horizontal {
+      justify-content: space-around;
+}
+
+.block_all_product{
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 75%;
+      margin: 0 auto;
+}
+
+.btn {
+      text-align: center;
+      width: fit-content;
+      padding: 5px;
+      font-size: 2rem;
+      cursor: pointer;
+      border-radius: 10px;
+      border: 2px solid var(--primary);
+      transition: box-shadow 0.2s;
+}
+
+.product_block{
+      margin: 10px 0;
+}
