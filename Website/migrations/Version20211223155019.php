@@ -14,7 +14,7 @@ final class Version20211223155019 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Modification de roles + modification d\'un trigger';
     }
 
     public function up(Schema $schema): void
