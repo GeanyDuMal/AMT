@@ -78,7 +78,7 @@ CREATE TABLE `client` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commande`
+-- Structure de la table `command`
 --
 
 CREATE TABLE `commande` (
@@ -252,7 +252,7 @@ ALTER TABLE `client`
   ADD PRIMARY KEY (`id_client`);
 
 --
--- Index pour la table `commande`
+-- Index pour la table `command`
 --
 ALTER TABLE `commande`
   ADD PRIMARY KEY (`id_commande`) USING BTREE,
@@ -384,7 +384,7 @@ ALTER TABLE `bureau`
   ADD CONSTRAINT `bureau_ibfk_2` FOREIGN KEY (`id_client`) REFERENCES `client` (`id_client`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `commande`
+-- Contraintes pour la table `command`
 --
 ALTER TABLE `commande`
   ADD CONSTRAINT `commande_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `client` (`id_client`) ON DELETE NO ACTION ON UPDATE CASCADE,
