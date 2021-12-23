@@ -11,8 +11,6 @@ class PostTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        /** Effectué dans la migration car ce sont des types qui sont obligatoires
-
         $postType1 = new PostType();
         $postType1->setName("Event");
         $manager->persist($postType1);
@@ -23,6 +21,5 @@ class PostTypeFixture extends Fixture
 
         $manager->flush();
 
-        */
     }
 }

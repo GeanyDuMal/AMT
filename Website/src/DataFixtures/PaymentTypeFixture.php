@@ -11,7 +11,6 @@ class PaymentTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        /** Effectué dans la migration car ce sont des types qui sont obligatoires
 
         $paymentType1 = new PaymentType();
         $paymentType1->setName("Carte Bancaire");
@@ -27,6 +26,5 @@ class PaymentTypeFixture extends Fixture
 
         $manager->flush();
 
-        */
     }
 }
