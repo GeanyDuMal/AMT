@@ -40,6 +40,7 @@ body {
 
 form>* {
       margin-top: 10px;
+      width: 50vw;
 }
 
 .flex_vertical h1 {
@@ -89,7 +90,7 @@ form>* {
 }
 
 .list_require li {
-      font-size: 1.2rem;
+      font-size: 0.8rem;
 }
 
 .btn {
@@ -140,7 +141,7 @@ form>* {
       }
 
       .list_require li {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             height: max-content;
       }
 
