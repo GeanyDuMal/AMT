@@ -29,12 +29,6 @@
       <div class="flex_vertical centered_flex">
             <h1>Inscription</h1>
             <img src="/img/connexion/user.png" alt="" id="img_profile">
-            
-            {% if loginExist %}
-                  <div class="message_information message_incorrect">
-                        Le login que vous avez saisi existe déjà
-                  </div>
-            {% endif %}
 
             <form action="" method="post" class="flex_vertical" id="form_signin">
             {# Form Start #}
@@ -69,6 +63,12 @@
                   <input type="password" name="confirmPassword" autofocus class="form-control"  id="floatingPassword" placeholder="Password">
                   <label for="floatingPassword">Confirmation Mot De Passe</label>
             </div>
+
+            {% if loginExist %}
+            <div class="alert alert-dismissible alert-primary">
+                  Le login que vous avez saisi existe déjà
+            </div>
+            {% endif %}
 
             <div class="flex_vertical centered_flex">
                   <button type="submit" class="btn btn-primary" onclick="return verifyInputSignin()">S'inscrire</button>
