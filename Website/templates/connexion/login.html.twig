@@ -29,12 +29,6 @@
     <div class="flex_vertical centered_flex">
         <h1>Connexion</h1>
         <img src="/img/connexion/user.png" alt="" id="img_profile">
-        
-        {% if error %}
-            <div class="message_information message_incorrect">
-                Login ou mot de passe incorrect
-            </div>
-        {% endif %}
 
         <form action="" class="flex_vertical" method="post" id="form_login">
         
@@ -61,12 +55,23 @@
             </div>
             {# End Form Inputs with floatig label #}
 
+            {# Print Error/s #}       
+            {% if error %}
+            <div class="alert alert-dismissible alert-primary">
+                {# Message d'erreur ici #}
+                Login ou mot de passe incorrect
+            </div>
+            {# <div class="message_information message_incorrect">
+                Login ou mot de passe incorrect
+            </div> #}
+            {% endif %}
+            {# End print Error/s #}  
+
             <div class="flex_vertical centered_flex">
                 <button type="submit" class="btn btn-primary" onclick="return verifyInputLogin()">
                     Se Connecter
                 </button>
             </div>
-
         </form>
 
         <div class="text_bottom">
