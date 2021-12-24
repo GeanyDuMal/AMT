@@ -1,15 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'home/index.html.twig' %}
 {% block title %}
     Nouveau Client
 {% endblock %}
 {%  block javascripts %}
+    {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
 {% endblock %}
 {% block stylesheets %}
+    {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
 {% block body %}
+    {% block navbar %}{{ parent() }}{% endblock %}
+    {% block sidebar %}{{ parent() }}{% endblock %}
     <div>
         <ul>
             {% if errors is defined and errors!="" %}
@@ -85,4 +89,5 @@
             <input type="submit" class="btn btn-primary" value="Créer" onclick="return verifier()">
         </form>
     </div>
+    {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}

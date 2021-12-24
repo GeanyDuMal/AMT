@@ -98,7 +98,7 @@ class ClientController extends AbstractController
         );
     }
     /**
-     * @Route("/admin/client/delete/{id}", name="delete_client", methods="GET" )
+     * @Route("/admin/client/delete/{id}", name="delete_client", methods={"GET", "DELETE"})
      */
     public function deleteClientAction($id, EntityManagerInterface $manager): Response
     {
