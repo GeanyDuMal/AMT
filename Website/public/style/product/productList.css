@@ -1,0 +1,122 @@
+/* Global */
+:root {
+    /* Our Colors // GoInfo */
+    --white: #F2F2F2;
+    --black: #1C1C1C;
+    --dark-gray: #242424;
+    --dark-red: #4C0D00;
+    --middle-red: #760700;
+    /* --light-red: #BE0E00; */
+    /* --white: #E1D9D9; */
+}
+
+body {
+    /* font-family: "Lato", sans-serif; */
+    padding-top: 4.5rem; 
+} 
+
+/* End Global */
+
+/* Content Wrapper*/
+.content-wrapper{
+    width:90%;
+    margin: auto;
+}
+
+.content-wrapper h1{
+    text-align:  center;
+}
+
+/* End Content Wrapper*/
+
+/* Navbar */
+
+.navbar {
+    /* position: fixed; */
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #212529;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    transition: 0.5s;
+    padding-top: 70px;
+}
+
+.sidebar a {
+    padding: 0 0 0 2.5%;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: auto;
+    /* font-size: 36px; */
+    margin-left: 0;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and(max-height: 450px) {
+    .sidebar {
+        padding-top: 15px;
+    }
+
+    .sidebar a {
+        font-size: 18px;
+    }
+}
+
+/* End Navbar */
+
+/* Footer */
+
+.social,
+.copyright {
+    margin: 1rem;
+    text-align:center;
+}
+
+.social li {
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+footer {
+    position: inherit;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    background-color: var(--black);
+}
+
+.icon {
+    color: var(--white);
+    font-size: 1.5rem;
+    transition: 0.2s;
+}
+
+.icon:hover {
+    color: var(--middle-red);
+}
+
+/* End Footer */

@@ -30,6 +30,7 @@
 
         {% block body %}
 
+            {% block navbar %}
             {# ---- Navbar ---- #}
             <div class="pos-f-t">
                 <nav class="navbar navbar-dark bg-dark position-fixed">
@@ -47,6 +48,7 @@
                 </nav>
             </div>
 
+            {% block sidebar %}
             {# hidden menu #}
             <div id="mySidebar" class="sidebar">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
@@ -60,9 +62,9 @@
                     </div>
                 </div>
                 {# end hidden menu #}
-
+            {% endblock %}
                 {# ---- End Navbar ---- #}
-
+            {% endblock %}
                 {# Home Page #}
                     <h1>
                     Hello
@@ -101,7 +103,7 @@
                             </li>
                     </ul>
                     {# End Home Page #}
-
+                    {% block footer %}
                     {# Footer #}
                     <footer
                         style="background-color: #212529;">
@@ -132,5 +134,6 @@
                             </div>
                         </div>
                     </footer>
+                    {% endblock %}
                     {# End Footer #}
                 {% endblock %}

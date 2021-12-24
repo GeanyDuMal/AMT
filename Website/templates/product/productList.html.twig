@@ -1,0 +1,44 @@
+{% extends 'home/index.html.twig' %}
+{% block stylesheets %}
+    <link
+            href="/style/product/productList.css" rel="stylesheet"/>
+    {# Bootstrap CSS Import #}
+    <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    {# Icons #}
+    <link
+            rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+    {# End Bootstrap CSS Import #}
+{% endblock %}
+{% block title %}Nos Produits{% endblock %}
+
+
+{% block body %}
+    {% block navbar %}{{ parent() }}{% endblock %}
+    {% block sidebar %}{{ parent() }}{% endblock %}
+
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <h1>Nos Produits</h1>
+        </div>
+        {% for product in products %}
+            <div class="card mb-3 mx-auto">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ product.imageLink }}" class="img-fluid rounded-start" alt="">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">Quantité en stock : {{ product.quantityStock }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    {% block footer %}{{ parent() }}{% endblock %}
+{% endblock %}
+
+
