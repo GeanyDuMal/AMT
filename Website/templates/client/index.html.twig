@@ -18,7 +18,7 @@
 	{% block sidebar %}{{ parent() }}{% endblock %}
 	<div class="content">
 		<div class="content-header">
-			<h1>Liste des client</h1>
+			<h1>Liste des clients</h1>
 		</div>
 		<br>
 		{% if message is defined %}
@@ -55,7 +55,7 @@
 						<a href="{{url('edit_client',{id:client.id})}}" class="btn btn-warning" name="{{client.id}}">Modifier</a>
 					</td>
 					<td>
-						<a id="toDelete" class="btn btn-danger" onclick="deleteClient();" data-id={{client.id}} >Supprmier</a>
+						<a id="toDelete" class="btn btn-danger" onclick="deleteClient();" data-id={{client.id}} >Supprimer</a>
 					</td>
 				</tr>
 			{% endfor %}
