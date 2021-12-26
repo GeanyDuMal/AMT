@@ -102,7 +102,7 @@ final class Version20211221201549 extends AbstractMigration
                             UPDATE product SET quantity_stock = quantity_stock - NEW.quantity
                             WHERE product.id = NEW.product_id');
 
-        //Trigger table Command
+        //Trigger table Order
         $this->addSql('CREATE TRIGGER verifClientNonNull 
                             BEFORE INSERT ON command FOR EACH ROW
                             IF (ISNULL(NEW.client_id) && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
