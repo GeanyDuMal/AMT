@@ -59,7 +59,7 @@ $primary: #212529; //#1B1919;
 }
 
 .search_input {
-    color: white;
+    color: $white;
     border: 0;
     outline: 0;
     background: none;
@@ -78,7 +78,7 @@ $primary: #212529; //#1B1919;
 
 .searchbar:hover > .search_icon {
     background: $white;
-    color: $dark-red;
+    color: $middle-red;
 }
 
 .search_icon {
