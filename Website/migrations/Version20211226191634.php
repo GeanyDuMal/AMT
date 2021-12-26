@@ -29,6 +29,14 @@ final class Version20211226191634 extends AbstractMigration
         $this->addSql('ALTER TABLE purchase CHANGE command_id order_id INT NOT NULL');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B8D9F6D38 FOREIGN KEY (order_id) REFERENCES `order` (id)');
         $this->addSql('CREATE INDEX IDX_6117D13B8D9F6D38 ON purchase (order_id)');
+
+        //Trigger table Order
+        $this->addSql('CREATE TRIGGER verifClientNonNull 
+                            BEFORE INSERT ON order FOR EACH ROW
+                            IF (ISNULL(NEW.client_id) && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
+                                    SIGNAL SQLSTATE "45000"
+                                    SET MESSAGE_TEXT = "Type de paiement incorrect, solde + client inconnu, erreur creation commande";
+                            END IF;');
     }
 
     public function down(Schema $schema): void
@@ -43,5 +51,7 @@ final class Version20211226191634 extends AbstractMigration
         $this->addSql('ALTER TABLE purchase CHANGE order_id command_id INT NOT NULL');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B33E1689A FOREIGN KEY (command_id) REFERENCES command (id)');
         $this->addSql('CREATE INDEX IDX_6117D13B33E1689A ON purchase (command_id)');
+
+        $this->addSql('DROP TRIGGER db_aedi.verifClientNonNull');
     }
 }

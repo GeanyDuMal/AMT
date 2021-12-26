@@ -102,14 +102,6 @@ final class Version20211221201549 extends AbstractMigration
                             UPDATE product SET quantity_stock = quantity_stock - NEW.quantity
                             WHERE product.id = NEW.product_id');
 
-        //Trigger table Order
-        $this->addSql('CREATE TRIGGER verifClientNonNull 
-                            BEFORE INSERT ON command FOR EACH ROW
-                            IF (ISNULL(NEW.client_id) && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
-                                    SIGNAL SQLSTATE "45000"
-                                    SET MESSAGE_TEXT = "Type de paiement incorrect, solde + client inconnu, erreur creation command";
-                            END IF;');
-
         //Trigger table Client
         //Sur ce trigger, setup de balance et fidelity a 0 car le default ne fonctionne pas avec $manager->flush()
         $this->addSql('CREATE TRIGGER verifCreationClient BEFORE INSERT ON client FOR EACH ROW
@@ -164,7 +156,6 @@ final class Version20211221201549 extends AbstractMigration
         $this->addSql('DROP TRIGGER db_aedi.modifClientTypeRemove');
         $this->addSql('DROP TRIGGER db_aedi.verifDispoProduit');
         $this->addSql('DROP TRIGGER db_aedi.removeQteProductFromPurchase');
-        $this->addSql('DROP TRIGGER db_aedi.verifClientNonNull');
         $this->addSql('DROP TRIGGER db_aedi.verifSoldePositif');
     }
 }
