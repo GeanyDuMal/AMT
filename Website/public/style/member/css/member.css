@@ -10,21 +10,24 @@
 
 /* End Colors */
 /* line 23, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
-.m-icon {
-  width: 20px;
-  height: auto; }
+.menu__icon {
+  width: 25px;
+  height: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px; }
 
-/* line 28, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
-.menu-icon {
+/* line 31, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
+.member-management {
   width: 100%;
-  background-color: red; }
+  display: block; }
 
-/* line 35, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
+/* line 41, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
 .flex-horizontal {
   display: flex;
   flex-direction: row; }
 
-/* line 41, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
+/* line 47, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
 .center {
   text-align: center; }
 

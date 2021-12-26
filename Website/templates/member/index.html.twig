@@ -29,10 +29,16 @@
 	{% block sidebar %}{{ parent() }}{% endblock %}
 
     {# Menu with Icons start #}
-    <div class="flex-horizontal menu-icon">
-        <img class="m-icon" src="\img\icons\plus.png" alt="add">
-        <img class="m-icon" src="\img\icons\edit.png" alt="edit">
-        <img class="m-icon" src="\img\icons\delete.png" alt="delete">
+    <div class="d-flex justify-content-center member-management">
+        <a href="#">
+            <img class="menu__icon" src="\img\icons\plus.png" alt="add">
+        </a>
+
+        <img class="menu__icon" src="\img\icons\edit.png" alt="edit">
+
+        <a href="#">
+            <img class="menu__icon" src="\img\icons\delete.png" alt="delete">
+        </a>
     </div>
     {# End Menu with Icons #}
     {% block footer %}{{ parent() }}{% endblock %}

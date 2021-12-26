@@ -20,14 +20,20 @@ $primary: #212529; //#1B1919;
 /* End Colors */
 
 // Icons Menu Start
-.m-icon {
-    width: 20px;
+.menu__icon {
+    width: 25px;
     height: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
 }
 
-.menu-icon {
+.member-management {
     width: 100%;
-    background-color: red;
+    // background-color: red;
+    display: block;
+    // margin-left: 42%;
+    // text-align: center;
 }
 // End Icons Menu
 
