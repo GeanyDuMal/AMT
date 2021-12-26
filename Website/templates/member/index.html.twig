@@ -5,7 +5,8 @@
     <link href="/style/home/css/home.css" rel="stylesheet"/>
     <link href="/style/member/css/member.css" rel="stylesheet"/>
     {# Bootstrap CSS Import #}
-    <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    {# <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/> #}
+    <link href="/style/bootstrap.css" rel="stylesheet"/>
     {# Icons #}
     <link
         rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
@@ -41,5 +42,16 @@
         </a>
     </div>
     {# End Menu with Icons #}
+
+    {# Search Bar #}
+    <div class="container h-100">
+      <div class="d-flex justify-content-center h-100">
+        <div class="searchbar">
+          <input class="search_input" type="text" name="" placeholder="Search...">
+          <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+        </div>
+      </div>
+    </div>
+    {# End Search Bar #}
     {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}
