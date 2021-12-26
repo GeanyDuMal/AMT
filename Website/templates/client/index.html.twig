@@ -5,11 +5,14 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+	<link rel='stylesheet' href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 {% endblock %}
 {% block javascripts %}
 	{{ parent() }}
 	<script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('script/client/ajax.js') }}"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 {% endblock %}
 
 {% block body %}

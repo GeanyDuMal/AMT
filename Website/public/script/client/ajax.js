@@ -11,3 +11,6 @@ function deleteClient(){
 
     }
 }
+$(document).ready( function () {
+    $('#client_table').DataTable();
+} );

@@ -116,6 +116,7 @@ class ClientController extends AbstractController
         $clients = $manager->getRepository(Client::class)->findAll();
         return $this->render('client/index.html.twig', array('clients' => $clients,'message'=>$message));
     }
+
     private function getRoles(string $typeName):array{
         $role[]="ROLE_USER";
         switch ($typeName){
