@@ -5,7 +5,6 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
-	<link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
 {% endblock %}
 {% block javascripts %}
 	{{ parent() }}
@@ -21,16 +20,17 @@
 			<h1>Liste des clients</h1>
 		</div>
 		<br>
+		<div align="right">
+			<a href="{{ path('new_client') }}" class="btn btn-success">Ajouter</a>
+		</div>
 		{% if message is defined %}
 			<div class="alert alert-dismissible alert-success">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				<strong>{{ message }}!</strong>
 			</div>
 		{% endif %}
-		<div align="right">
-			<a href="{{ path('new_client') }}" class="btn btn-success">Ajouter</a>
-		</div>
 		<br>
+		{% if clients|length>0 %}
 		<table id="client_table" class="table table-striped">
 			<thead bgcolor="#6cd8dc">
 			<tr class="table-primary">
@@ -61,6 +61,12 @@
 			{% endfor %}
 			</tbody>
 		</table>
+			{% else %}
+				<div class="alert alert-info alert-dismissible fade show">
+					<strong>Info!</strong> il n y a pas encore des clients.
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+		{% endif %}
 	</div>
 	{% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}

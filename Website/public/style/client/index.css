@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 .content {
     max-width: 1000px;
     margin: auto;
@@ -10,4 +12,33 @@ h1 {
 
 .container {
     width: 50%;
+}
+div{
+    margin-bottom: 1%;
+}
+
+h1{
+    font-family: 'Bebas Neue', serif;
+}
+.navbar{
+    z-index: 1;
+}
+footer {
+    position: fixed;
+    bottom: 0px;
+    height:155px;
+}
+body {
+    min-height: 400px;
+    margin-bottom: 100px;
+    clear: both;
+}
+#form_Client{
+    margin-bottom: 5%;
+
+}
+form{
+    border: #dbdbdb solid 2px;
+    border-radius: 10px;
+    padding: 5px;
 }

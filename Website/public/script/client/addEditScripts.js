@@ -1,3 +1,16 @@
+var types=document.querySelector("#clientType");
+window.onload = function() {
+    if(document.querySelector('#clientType').value!=="Membre"){
+        document.querySelector("#roles").style.visibility="hidden";
+    }
+
+}
+types.onchange=function (){
+    var selectedOption = this[this.selectedIndex];
+    var selectedText = selectedOption.text;
+    var roles=document.querySelector("#roles");
+    roles.style.visibility =selectedText==="Client"? "hidden":"visible";
+}
 var form = document.querySelector("#form_Client");
 function verifier() {
     var message = "";
@@ -15,9 +28,9 @@ function verifier() {
     }
 
     if (!valueFirstName.trim()) {
-        message += "Prénom non renseigné, ";
+        message += "Prenom non renseigné, ";
     } else if (valueFirstName.length < 3) {
-        message += "Prénom trop court, ";
+        message += "Prenom trop court, ";
     }
     if (!valueLogin.trim()) {
         message += "Login non renseigné, ";
@@ -30,7 +43,7 @@ function verifier() {
     } else if (valuePassword.length < 5) {
         message += "Mot de Passe trop court ";
     } else if (regexCharacter.test(valuePassword) === false) {
-        message += "Le mot de passe ne contient pas de caractère spécial "
+        message += "Le mots de passe ne contient pas de caractere spécial "
     }
     else if (valuePassword !== valueConfirm) {
         message += "Les mots de passe ne correspondent pas "
@@ -40,14 +53,14 @@ function verifier() {
     if (balance!==0 && !balance && valueBalance !== "") {
         message += "Balance doit etre un nombre. ";
     } else if (balance < 0) {
-        message += "Le balance doit etre >=0 ";
+        message += "Le balance doit etre >=0. ";
     }
     if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',
             text: message,
             icon: 'error',
-            confirmButtonText: 'Compléter'
+            confirmButtonText: 'Completer'
         })
         return false;
     } else {
