@@ -10,8 +10,22 @@
 
 /* End Colors */
 /* line 23, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
-.icon {
+.m-icon {
   width: 20px;
   height: auto; }
+
+/* line 28, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
+.menu-icon {
+  width: 100%;
+  background-color: red; }
+
+/* line 35, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
+.flex-horizontal {
+  display: flex;
+  flex-direction: row; }
+
+/* line 41, ../../Github_clones/Website_AEDI/Website/public/style/member/scss/member.scss */
+.center {
+  text-align: center; }
 
 /*# sourceMappingURL=member.css.map */

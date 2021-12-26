@@ -5,14 +5,14 @@ $white: #f2f2f2;
 $black: #000;
 $dark-red: #4c0d00;
 $middle-red: #760700;
-$primary: #212529;//#1B1919; 
+$primary: #212529; //#1B1919;
 
 // css if some of you don't wan't to use scss :))
 :root {
     /* Our Colors // GoInfo */
     --white: #f2f2f2;
     --black: #000;
-    --primary: #212529; 
+    --primary: #212529;
     --dark-red: #4c0d00;
     --middle-red: #760700;
     //--d-bootstrap: #212529; == the color of the dark theme of bootstrap, I think I won't use this at all
@@ -20,8 +20,24 @@ $primary: #212529;//#1B1919;
 /* End Colors */
 
 // Icons Menu Start
-.icon {
+.m-icon {
     width: 20px;
     height: auto;
 }
+
+.menu-icon {
+    width: 100%;
+    background-color: red;
+}
 // End Icons Menu
+
+// Flex
+.flex-horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+// Center
+.center {
+    text-align: center;
+}
