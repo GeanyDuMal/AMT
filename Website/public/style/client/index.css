@@ -1,12 +1,13 @@
-.content{
+.content {
     max-width: 1000px;
     margin: auto;
 }
 
-h1{
+h1 {
     text-align: center;
-    padding-bottom: 60px;
+    padding-bottom: 10px;
 }
-.container{
+
+.container {
     width: 50%;
 }

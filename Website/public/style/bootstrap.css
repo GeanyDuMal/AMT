@@ -11422,6 +11422,7 @@ fieldset:disabled .btn {
 
 .navbar.bg-dark {
   border-color: #303234 !important;
+  z-index: 100;
 }
 
 .navbar.bg-light {

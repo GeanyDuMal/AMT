@@ -15,9 +15,9 @@ function verifier() {
     }
 
     if (!valueFirstName.trim()) {
-        message += "Prenom non renseigné, ";
+        message += "Prénom non renseigné, ";
     } else if (valueFirstName.length < 3) {
-        message += "Prenom trop court, ";
+        message += "Prénom trop court, ";
     }
     if (!valueLogin.trim()) {
         message += "Login non renseigné, ";
@@ -30,7 +30,7 @@ function verifier() {
     } else if (valuePassword.length < 5) {
         message += "Mot de Passe trop court ";
     } else if (regexCharacter.test(valuePassword) === false) {
-        message += "Le mots de passe ne contient pas de caractere spécial "
+        message += "Le mot de passe ne contient pas de caractère spécial "
     }
     else if (valuePassword !== valueConfirm) {
         message += "Les mots de passe ne correspondent pas "
@@ -40,14 +40,14 @@ function verifier() {
     if (balance!==0 && !balance && valueBalance !== "") {
         message += "Balance doit etre un nombre. ";
     } else if (balance < 0) {
-        message += "Le balance doit etre >=0. ";
+        message += "Le balance doit etre >=0 ";
     }
     if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',
             text: message,
             icon: 'error',
-            confirmButtonText: 'Completer'
+            confirmButtonText: 'Compléter'
         })
         return false;
     } else {
