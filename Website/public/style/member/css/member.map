@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "member.css",
+	"sources": [
+		"../scss/member.scss"
+	],
+	"sourcesContent": [
+		"/* Colors */\r\n\r\n// scss\r\n$white: #f2f2f2;\r\n$black: #000;\r\n$dark-red: #4c0d00;\r\n$middle-red: #760700;\r\n$primary: #212529;//#1B1919; \r\n\r\n// css if some of you don't wan't to use scss :))\r\n:root {\r\n    /* Our Colors // GoInfo */\r\n    --white: #f2f2f2;\r\n    --black: #000;\r\n    --primary: #212529; \r\n    --dark-red: #4c0d00;\r\n    --middle-red: #760700;\r\n    //--d-bootstrap: #212529; == the color of the dark theme of bootstrap, I think I won't use this at all\r\n}\r\n/* End Colors */"
+	],
+	"names": [],
+	"mappings": "AAAA,YAAY;;AAUZ,AAAA,KAAK,CAAC;EACF,0BAA0B;EAC1B,OAAO,CAAA,QAAC;EACR,OAAO,CAAA,KAAC;EACR,SAAS,CAAA,QAAC;EACV,UAAU,CAAA,QAAC;EACX,YAAY,CAAA,QAAC,GAEhB;;AACD,gBAAgB"
+}
