@@ -141,7 +141,9 @@ class ClientController extends AbstractController
             $client->setFidelityPoint(0);
         }
         $client->setBalance($data->get('balance'));
-        $typeName=$data->get('types');
+        $typeAssos=$data->get('types');
+        $typeClient=$data->get('clientType');
+        $typeName= strcmp($typeClient,"Client")==0?$typeClient:$typeAssos;
         $role= $this->getRoles($typeName);
         $client->setRoles($role);
         $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);

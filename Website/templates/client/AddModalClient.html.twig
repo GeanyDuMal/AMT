@@ -4,7 +4,7 @@
 {% endblock %}
 {%  block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/client/addEditScripts.js') }}"></script>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -17,14 +17,14 @@
     <div>
         <ul>
             {% if errors is defined and errors!="" %}
-                {% for i in 0..errors.count() %}
-                    <li>{{ errors.get(i).getMessage() }}</li>
+                {% for i in 0..errors.count()-1 %}
+                    <li>{{ errors[i].message }}</li>
                 {% endfor %}
             {% endif %}
         </ul>
     </div>
     {% set clientExists=client is defined %}
-    <div class="container mt-5  ">
+    <div class="container mt-5 ">
         <form action="" method="post" class="row g-2 " id='form_Client'>
             {% if error is defined and error!="" %}
                 <div class="alert alert-dismissible alert-danger">
@@ -71,13 +71,25 @@
                 <label>Balance</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text">€</span>
-                    <input  type="text" name="balance" class="form-control" aria-label="Amount (to the nearest euro)" value={% if clientExists %}{{ client.balance}} {% endif  %}>
+                    <input value="0" type="text" name="balance" class="form-control" aria-label="Amount (to the nearest euro)" value={% if clientExists %}{{ client.balance}} {% endif  %}>
                     <span class="input-group-text">.00</span>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <label>Type</label>
-                <select class="form-select" name="types" id="clientType">
+                <select class="form-select" name="clientType" id="clientType" data-target="assosRoles"
+                    data-source="path">
+                        <option>
+                            Client
+                        </option>
+                    <option id="member">
+                        Membre
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-12" id="roles">
+                <label>Role</label>
+                <select id="assosRoles" class="form-control linked-select" name="types" id="clientType">
                     {% for type in types %}
                         <option>
                             {{ type.name }}

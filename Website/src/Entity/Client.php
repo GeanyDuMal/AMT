@@ -24,21 +24,19 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(
-     *      min = 0,
+     *      min = 3,
      *      minMessage = "Votre nom doit comporter au moins {{ limit }} caractères",
      * )
      */
     private $name;
-
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(
      *      min = 3,
      *      minMessage = "Votre prénom doit comporter au moins {{ limit }} caractères",
-     * )
+     *)
      */
     private $firstName;
-
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(
@@ -47,28 +45,36 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *     )
      */
     private $login;
-
     /**
      * @ORM\Column(type="string", length=255)
+
+     */
+    /*
+     *     * @Assert\All
+     * ({
      * @Assert\Length(
      *      min = 5,
      *      minMessage = "Votre mot de passe doit comporter au moins {{ limit }} caractères",
-     *     )
+     *     ),
      * @Assert\Regex(
      *     pattern="/[^a-zA-Z\d]/",
-     *     message="le mot de passe doit contenir au moins un caractére spéciale"
+     *     message="le mot de passe doit contenir au moins un caractére spéciale",
      * )
-     */
+     * })
+     * */
     private $password;
-
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
-     * @Assert\PositiveOrZero(
-     *     message="Le balance est positive"
-     * )
      */
+    /*
+     *      * /@Assert\All({
+     *      @Assert\NotBlank,
+     *      @Assert\PositiveOrZero(
+     *       message="Le balance est positive"
+     *      )
+     * })
+     * */
     private $balance;
-
     /**
      * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
      * @Assert\PositiveOrZero(
