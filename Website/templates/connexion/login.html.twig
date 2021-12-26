@@ -12,6 +12,12 @@
         {# Icons #}
         <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
         {# End Bootstrap CSS Import #}
+
+        {# Google Fonts #}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+        {# End Google Fonts #}
 {% endblock %}
 
 {% block javascripts %}
@@ -26,7 +32,14 @@
 
 {% block body %}
     <div class="flex_vertical centered_flex">
-        <h1>Connexion</h1>
+        {# <h1>Connexion</h1> #}
+        {# Top bar #}
+            <div class="top">
+                  <h1 class="top-text">Connexion</h1>
+                  <a href="{{ path('home') }}">
+                  <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
+            </div>
+            {# End Top bar #}
         <img src="/img/connexion/user.png" alt="" id="img_profile">
 
         <form action="" class="flex_vertical" method="post" id="form_login">

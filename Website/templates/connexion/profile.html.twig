@@ -32,17 +32,16 @@
 {% endblock %}
 
 {% block body %}
-
 <div class="flex_vertical centered_flex principal_block">
-    <div class="hiding">
         {# Top bar #}
         <div class="top">
             <h1 class="top-text">Profil</h1>
             <a href="{{ path('home') }}">
-                <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
-            </div>
-            {# End Top bar #}
+            <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
+        </div>
+        {# End Top bar #}
 
+    <div class="hiding">
             <div class="client-info">
                 <img src="/img/connexion/user.png" alt="" id="img_profile">
 
@@ -140,5 +139,4 @@
             <input type="password" name="confirmPassword">
         </div> #}
     {# End Edit Password #}
-
 {% endblock %}
