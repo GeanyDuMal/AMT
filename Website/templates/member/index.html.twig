@@ -2,6 +2,7 @@
 {% extends 'home/index.html.twig' %}
 
 {% block stylesheets %}
+    <link href="/style/home/css/home.css" rel="stylesheet"/>
     <link href="/style/member/css/member.css" rel="stylesheet"/>
     {# Bootstrap CSS Import #}
     <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -27,7 +28,12 @@
 	{% block navbar %}{{ parent() }}{% endblock %}
 	{% block sidebar %}{{ parent() }}{% endblock %}
 
+    {# Menu with Icons start #}
     <div>
+        <img class="icon" src="\img\icons\plus.png" alt="add">
+        <img class="icon" src="\img\icons\edit.png" alt="edit">
+        <img class="icon" src="\img\icons\delete.png" alt="delete">
     </div>
+    {# End Menu with Icons #}
     {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}
