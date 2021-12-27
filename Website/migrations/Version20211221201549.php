@@ -122,6 +122,14 @@ final class Version20211221201549 extends AbstractMigration
                                 SIGNAL SQLSTATE "45000"
                                 SET MESSAGE_TEXT = "Solde negatif, erreur Update";
                             END IF;');
+
+        //Table Commande
+        $this->addSql('CREATE TRIGGER verifClientNonNull 
+                            BEFORE INSERT ON command FOR EACH ROW
+                            IF (ISNULL(NEW.client_id) && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
+                                    SIGNAL SQLSTATE "45000"
+                                    SET MESSAGE_TEXT = "Type de paiement incorrect, solde + client inconnu, erreur creation commande";
+                            END IF;');
     }
 
     public function down(Schema $schema): void

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Command;
 use App\Entity\Order;
 use App\Entity\Client;
 use App\Entity\PaymentType;
@@ -10,24 +11,24 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class OrderFixture extends Fixture implements DependentFixtureInterface
+class CommandFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $clientRepository = $manager->getRepository(Client::class);
         $paymentTypeRepository = $manager->getRepository(PaymentType::class);
 
-        $order1 = new Order();
-        $order1->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
+        $command1 = new Command();
+        $command1->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
                 ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]))
                 ->setOrderedAt(new DateTime("now"));
-        $manager->persist($order1);
+        $manager->persist($command1);
 
-        $order2 = new Order();
-        $order2->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
+        $command2 = new Command();
+        $command2->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
                 ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Espece"]))
                 ->setOrderedAt(new DateTime("now"));
-        $manager->persist($order2);
+        $manager->persist($command2);
 
         $manager->flush();
     }

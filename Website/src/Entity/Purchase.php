@@ -29,10 +29,10 @@ class Purchase
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class)
+     * @ORM\ManyToOne(targetEntity=Command::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $order;
+    private $command;
 
     public function getId(): ?int
     {
@@ -63,14 +63,14 @@ class Purchase
         return $this;
     }
 
-    public function getOrder(): ?Order
+    public function getCommand(): ?Command
     {
-        return $this->order;
+        return $this->command;
     }
 
-    public function setOrder(?Order $order): self
+    public function setCommand(?Command $command): self
     {
-        $this->order = $order;
+        $this->command = $command;
 
         return $this;
     }
