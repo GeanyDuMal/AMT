@@ -26,12 +26,9 @@ class CreateOrderController extends AbstractController
         $user = $this->getUser();
         $productRepository = $manager->getRepository(Product::class);
         $clientRepository = $manager->getRepository(Client::class);
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
-        $priceRepository = $manager->getRepository(Price::class);
         $allProductPositiveStock = [];
         $inputParameterBag = $request->request;
         $productOrdered = [];
-        $quantityOrdered = [];
 
         $allProduct = $productRepository->findAll();
         foreach ($allProduct as $product){
@@ -44,33 +41,25 @@ class CreateOrderController extends AbstractController
         foreach ($allProductPositiveStock as $product){
             $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
             if ($quantity != 0 ){
-                  $productOrdered[] = $product;
-                  $quantityOrdered = $quantityOrdered + [$product->getId() => $quantity];
+                  $productOrdered = $productOrdered + [$product->getId() => $quantity];
             }
         }
 
         //Si l'on a commandé au moins 1 produits
         if ($productOrdered){
             $clientCommande = null;
-            $typeClient = $clientTypeRepository->findBy(["name" => "Etudiant"]);
-            $montant = 0;
+            $idClient = -1;
 
             if($inputParameterBag->get("client_commande") != null){
                 $clientCommande = $clientRepository->find($inputParameterBag->get("client_commande"));
             }
             if ($clientCommande){
-                $typeClient = $clientCommande->getClientType();
-            }
-            foreach ($productOrdered as $product){
-
-                $montant = $montant + $priceRepository->findOneBy(["product" => $product,
-                                        "clientType" => $typeClient])->getPrice()*$quantityOrdered[$product->getId()];
+                $idClient = $clientCommande->getId();
             }
 
-            return $this->render('command/payement.html.twig', [
-                "product" => $productOrdered,
-                "quantity" => $quantityOrdered,
-                "montant" => $montant
+            return $this->redirectToRoute("command_payment", [
+                "productOrderedSerialized" => serialize($productOrdered),
+                "idClient" => $idClient
             ]);
         }
 
