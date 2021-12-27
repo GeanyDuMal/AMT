@@ -24,6 +24,7 @@
         </ul>
     </div>
     {% set clientExists=client is defined %}
+    {% set memberExists=member is not null %}
     <div class="container mt-5">
 
         <form action="" method="post" class="row g-3" id='form_Client'>
@@ -74,11 +75,13 @@
             <div class="form-group col-md-12" id="roles">
                 <label>Role</label>
                 <select id="assosRoles" class="form-control linked-select" name="types" id="clientType">
-                    {% if clientExists %}
-                        {% set typeName=client.clientType.name %}
+                    {% if memberExists %}
+                        {% set memberRoleName=member.role.name %}
+                        {% else %}
+                        {% set memberRoleName=null %}
                     {% endif %}
                     {% for type in types %}
-                        <option {% if type.name==typeName %} selected {% endif %} >
+                        <option {% if type.name==memberRoleName %} selected {% endif %} >
                             {{type.name}}
                         </option>
                     {% endfor %}

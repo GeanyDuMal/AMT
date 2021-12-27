@@ -130,8 +130,8 @@ class ClientManager
         $typeName=!$isStudent?"Association":$typeClient;
         $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
         $client->setClientType($type);
-        if(!$isStudent){
-
+        if($isStudent){
+            $client->setRoles(["ROLE_USER"]);
         }
     }
 

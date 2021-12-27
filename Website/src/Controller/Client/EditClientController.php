@@ -2,6 +2,7 @@
 
 namespace App\Controller\Client;
 use App\Manager\ClientManager;
+use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
@@ -18,7 +19,7 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,ClientTypeRepository $clientTypeRepository,AssociationRoleRepository $associationRoleRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index(UserPasswordHasherInterface $passwordHasher,AssociationRepository $associationRepository,Request $request,ClientTypeRepository $clientTypeRepository,AssociationRoleRepository $associationRoleRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
@@ -43,13 +44,14 @@ class EditClientController extends AbstractController
                     return $this->redirectToRoute('client_list_message',["message"=>"Modification avec succés"]);
                 }
         }
-
+        $member=$associationRepository->findOneBy(["member"=>$client]);
         return $this->render('client/EditModalClient.html.twig',
             [
                 'types' => $types,
                 'errors' => $errors,
                 'error' => $error,
-                'client' => $client
+                'client' => $client,
+                'member' => $member
             ]
         );
     }
