@@ -2,6 +2,12 @@
 
 {% block title %}Paiement{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/bootstrap.css">
+    <link rel="stylesheet" href="/style/command/create.css">
+    <link rel="stylesheet" href="/style/command/payment.css">
+{% endblock %}
+
 {% block body %}
     {% for product in listProduct %}
             <div>

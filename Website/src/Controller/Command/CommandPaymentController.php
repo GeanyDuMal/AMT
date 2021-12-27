@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandPaymentController extends AbstractController
 {
     /**
-     * @Route("/command/payment/{productOrderedSerialized}{idClient}", name="command_payment")
+     * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="command_payment")
      */
     public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager): Response
     {
@@ -26,10 +26,9 @@ class CommandPaymentController extends AbstractController
         $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
         $listProduct = [];
 
-dd($idClient);
         $productOrderedIdTab = unserialize($productOrderedSerialized);
 
-        if ($idClient != null){
+        if ($idClient != "null"){
             $clientOrder = $clientRepository->find($idClient);
             $clientType = $clientOrder->getClientType();
         }
@@ -42,7 +41,7 @@ dd($idClient);
 
 
             $montantProduct = $montantProduct + [$idProduct => $priceRepository->findOneBy(['product' => $product,
-                'clientType' => $clientType])->getPrice() *$quantity];
+                'clientType' => $clientType])->getPrice() * $quantity];
 
             $montantTotal = $montantTotal + $montantProduct[$idProduct];
         }
