@@ -225,7 +225,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->getUserIdentifier();
     }
