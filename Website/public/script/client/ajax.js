@@ -9,6 +9,11 @@ $("#client_table").on("click", "#toDelete", function() {
         const id=$(this).data("id");
         fetch('/admin/client/delete/'+id, {method: 'DELETE'})
             .then(function (resp) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Noice',
+                    text: 'Suppression avec succée',
+                })
                 tr.remove();
             });
     }

@@ -77,7 +77,7 @@
                 <select id="assosRoles" class="form-control linked-select" name="types" id="clientType">
                     {% if memberExists %}
                         {% set memberRoleName=member.role.name %}
-                        {% else %}
+                    {% else %}
                         {% set memberRoleName=null %}
                     {% endif %}
                     {% for type in types %}
