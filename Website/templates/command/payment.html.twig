@@ -2,6 +2,26 @@
 
 {% block title %}Paiement{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/bootstrap.css">
+    <link rel="stylesheet" href="/style/command/create.css">
+    <link rel="stylesheet" href="/style/command/payment.css">
+{% endblock %}
 
+{% block body %}
+    {% for product in listProduct %}
+            <div>
+                  <div>
+                        Nom du produit : {{ product.name }}
+                  </div>
+                  <div>
+                        Quantity : {{ productQuantity[product.id] }}
+                  </div>
+                  <div>
+                        Price : {{ montantProduct[product.id] }}€
+                  </div>
+            </div>
+    {% endfor %}
+
+    Montant total : {{ montantTotal }}€
 {% endblock %}

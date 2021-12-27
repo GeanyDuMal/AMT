@@ -59,7 +59,7 @@ class CreateOrderController extends AbstractController
 
             return $this->redirectToRoute("command_payment", [
                 "productOrderedSerialized" => serialize($productOrdered),
-                "idClient" => $idClient
+                "idClient" => $inputParameterBag->get("client_commande")
             ]);
         }
 
