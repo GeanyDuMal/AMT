@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Order;
+namespace App\Controller\Command;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateOrderController extends AbstractController
 {
     /**
-     * @Route("/order/create", name="orderCreate")
+     * @Route("/command/create", name="commandCreate")
      */
     public function index(EntityManagerInterface $manager): Response
     {
@@ -31,7 +31,7 @@ class CreateOrderController extends AbstractController
             }
         }
 
-        return $this->render('order/create.html.twig', [
+        return $this->render('command/create.html.twig', [
             "user" => $user,
             "productList" => $allProductPositiveStock
         ]);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Order;
+namespace App\Controller\Command;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
