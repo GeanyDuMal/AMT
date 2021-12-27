@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Manager;
+
+use App\Entity\Product;
+use App\Entity\Purchase;
+use Doctrine\ORM\EntityManagerInterface;
+
+class PurchaseManager
+{
+    public $manager;
+
+    public function __construct(EntityManagerInterface $managerController)
+    {
+        $this->manager = $managerController;
+    }
+
+    public function verifyDisponibilityProduct(Purchase $purchase): bool{
+        $product = $purchase->getProduct();
+
+        return ($product->getQuantityStock() >= $purchase->getQuantity());
+    }
+}
