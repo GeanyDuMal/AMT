@@ -1,53 +1,101 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        {% block title %}
-            Welcome!
-        {% endblock %}
-    </title>
-    <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"/>
-    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-        {# Bootstrap CSS Import #}
-        <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-        {# Icons #}
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block title %}
+                Welcome!
+            {% endblock %}
+        </title>
+        <link
+        rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"/>
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            {# Bootstrap CSS Import #}
+            <link
+            href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+            {# Icons #}
+            <link
+            rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
         {# End Bootstrap CSS Import #}
-    {% endblock %}
+        {% endblock %}
 
 
-</head>
+    </head>
 
-<body>
-{% block body %}
+    <body>
+        {% block body %}
+
+            {# ---- Navbar ---- #}
+            {% block navbar %}
+                <div class="pos-f-t">
+                    <nav class="navbar navbar-dark position-fixed">
+                        <button style="margin-left: 0.5rem;" onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a href="{{ path("home") }}">
+                            <img src="/img/logo_menu.png" width="auto" height="50" alt="logo-menu" border="0"></a>
+                        {# <img src="https://ibb.co/6F2wxCB" width="30" height="30" class="d-inline-block align-top" alt=""> #}
+                        {# <img src="{{ '../../../../public/logo_menu.png '}}" width="100%" height="100%" alt="my alt of image" > #}
+                    </a>
+                    <a href="{{ path("profile") }}">
+                        <img style="margin-right: 0.5rem;" src="/img/icons/user_w.png" width="40" height="40" class="d-inline-block" alt="user" border="0"></a>
+                </a>
+            </body>
+        </html>
+    </nav>
+</div>
+
+{% block sidebar %}
+    {# hidden menu #}
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+            <img style="margin-top: 1rem;" src="/img/icons/back_w.png" alt="Arrow" width="auto" height="50"></a>
+        <div style="margin-right: 1em;">
+            <a href="#">Random</a>
+            <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
+            <a href="#">Random</a>
+            <a href="#">Random</a>
+            {# Pas de bug si un seul mot #}
+            {# &nbsp <-- solution #}
+        </div>
+    </div>
+    {# end hidden menu #}
 {% endblock %}
-</body>
-{# Partie Script doit etre chargé apres le code
-       car le code est generé apres l'appel du JS #}
+{# ---- End Navbar ---- #}
 
-{# Script pour SweetAlert #}
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{% block javascripts %}
 
-    {{ encore_entry_script_tags('app') }}
-    {# Bootstrap JS Import #}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    {# End Bootstrap JS Import #}
-{% endblock %}
-
-</html>
+{# Footer #}
+<footer
+    style="background-color: #212529;">
+    {# /!\ REMOVE STYLE HERE /!\ #}
+    <div class="container">
+        <div class="grid">
+            <div class="column-xs-12">
+                <ul class="social">
+                    <li>
+                        <a href="https://www.linkedin.com/company/go-info/" target="_blank" rel="noopener noreferrer">
+                            <span class="fab fa-linkedin-in icon icon-red"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://discord.gg/RFCFkWPvsU" target="_blank" rel="noopener noreferrer">
+                            <span class="fab fa-discord icon"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/GeanyDuMal/Website_AEDI" target="_blank" rel="noopener noreferrer">
+                            <span class="fab fa-github icon"></span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright" style="color: white; padding-left:1.5rem;">&copy 2021 Copyright</p>
+                <!-- &copy; pour le c entouré de copyright -->
+            </div>
+        </div>
+    </div>
+</footer>{% endblock %}{# End Footer #}{% endblock %}</body>{# Partie Script doit etre chargé apres le code
+           car le code est generé apres l'appel du JS #}{# Script pour SweetAlert #}<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>{% block javascripts %}{{ encore_entry_script_tags('app') }}{# Bootstrap JS Import #}<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>{# End Bootstrap JS Import #}{% block footer %}{% endblock %}</html>
