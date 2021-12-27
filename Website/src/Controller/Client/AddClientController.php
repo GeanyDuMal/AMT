@@ -2,8 +2,10 @@
 
 namespace App\Controller\Client;
 
+use App\Entity\Association;
 use App\Entity\Client;
 use App\Manager\ClientManager;
+use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +19,7 @@ class AddClientController extends AbstractController
     /**
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
-    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,ClientTypeRepository $clientTypeRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,AssociationRoleRepository $associationRoleRepository,ClientTypeRepository $clientTypeRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
@@ -27,7 +29,7 @@ class AddClientController extends AbstractController
         $client = new Client();
         $error = "";
         $errors="";
-        $types = $clientTypeRepository->findAll();
+        $types = $associationRoleRepository->findAll();
         if ($data->count()> 0) {
             $clientManager->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $errors = $validator->validate($client);
@@ -37,6 +39,14 @@ class AddClientController extends AbstractController
                 }
                 else{
                     $clientManager->persist($client);
+                    if($client->getClientType()->getName()=="Association"){
+                        $newMember=new Association();
+                        $newMember->setMember($client);
+                        $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('types')]));
+                        $manager->persist($newMember);
+                        $manager->flush();
+                    }
+
                     return $this->redirectToRoute('client_list_message',["message"=>"Ajout avec succès"]);
                 }
         }

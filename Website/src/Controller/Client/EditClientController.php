@@ -2,6 +2,7 @@
 
 namespace App\Controller\Client;
 use App\Manager\ClientManager;
+use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,7 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,ClientTypeRepository $clientTypeRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,ClientTypeRepository $clientTypeRepository,AssociationRoleRepository $associationRoleRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
@@ -26,7 +27,7 @@ class EditClientController extends AbstractController
         $data = $request->request;
         $clientManager = new ClientManager($manager);
         $error = "";
-        $types = $clientTypeRepository->findAll();
+        $types = $associationRoleRepository->findAll();
         $errors="";
         if ($data->count()> 0) {
             $clientManager->setData($client,$request,$clientTypeRepository,$passwordHasher);

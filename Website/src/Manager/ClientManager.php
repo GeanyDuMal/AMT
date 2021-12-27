@@ -2,6 +2,8 @@
 
 namespace App\Manager;
 
+use App\Entity\Association;
+use App\Entity\AssociationRole;
 use App\Entity\Client;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -100,16 +102,7 @@ class ClientManager
 
           return strpbrk($password, $regexSpecial);
       }
-    public function getRoles(string $typeName):array{
-        $role=array();
-        switch ($typeName){
-            case "Membre":$role[]="ROLE_USER";break;
-            case "Trésorier":$role[] = "ROLE_TRESORIER";break;
-            case "Président":$role[] = "ROLE_PRESIDENT";break;
-            default:$role[] = "ROLE_ASSOC";break;
-        }
-        return $role;
-    }
+
     public function setData(Client &$client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
         $data = $request->request;
 
@@ -129,11 +122,35 @@ class ClientManager
         $client->setBalance(trim($data->get('balance')));
         $typeAssos=$data->get('types');
         $typeClient=$data->get('clientType');
-        $typeName= strcmp($typeClient,"Etudiant")==0?$typeClient:$typeAssos;
-        $role= $this->getRoles($typeName);
+        $isStudent=strcmp($typeClient,"Etudiant")==0;
+        $typeName= $isStudent?$typeClient:$typeAssos;
+        $role= $this->getRoleFromType($typeName);
         $client->setRoles($role);
+        //this variable is only used to pick a type of the client
+        $typeName=!$isStudent?"Association":$typeClient;
         $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
         $client->setClientType($type);
+        if(!$isStudent){
+
+        }
     }
 
+    public function getRoleFromType(string $typeName):array{
+        $role=array();
+        switch ($typeName){
+            case "Tresorier":$role[] = "ROLE_TRESORIER";break;
+            case "President":$role[] = "ROLE_PRESIDENT";break;
+            default:$role[] = "ROLE_ASSOC";break;
+        }
+        return $role;
+    }
+    public function getTypeFromRole(array $role):string{
+        $type="";
+        switch ($role[0]){
+            case "ROLE_TRESORIER":$type = "Tresorier";break;
+            case "ROLE_PRESIDENT":$type = "President";break;
+            default:$type = "Membre";break;
+        }
+        return $type;
+    }
 }

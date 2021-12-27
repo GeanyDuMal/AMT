@@ -9,7 +9,7 @@ types.onchange=function (){
     var selectedOption = this[this.selectedIndex];
     var selectedText = selectedOption.text;
     var roles=document.querySelector("#roles");
-    roles.style.visibility =selectedText==="Client"? "hidden":"visible";
+    roles.style.visibility =selectedText==="Etudiant"? "hidden":"visible";
 }
 var form = document.querySelector("#form_Client");
 function verifier() {
