@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,7 +17,7 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index(Request $request,ClientTypeRepository $clientTypeRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,ClientTypeRepository $clientTypeRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
@@ -28,7 +29,7 @@ class EditClientController extends AbstractController
         $types = $clientTypeRepository->findAll();
         $errors="";
         if ($data->count()> 0) {
-            $clientManager->setData($client,$request,$clientTypeRepository);
+            $clientManager->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $errors = $validator->validate($client);
             if($errors->count()==0)
                 if(strcmp($clientRepository->find($id)->getLogin(),$client->getLogin())!=0 &&

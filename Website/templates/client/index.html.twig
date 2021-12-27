@@ -49,6 +49,7 @@
 			</thead>
 			<tbody>
 			{% for client in clients %}
+				{% if app.user.login!=client.login %}
 				<tr id="data">
 					<td>{{ client.id }}</td>
 					<td>{{ client.name }}</td>
@@ -62,6 +63,7 @@
 						<a id="toDelete" class="btn btn-danger" onclick="deleteClient();" data-id={{client.id}} >Supprimer</a>
 					</td>
 				</tr>
+				{% endif %}
 			{% endfor %}
 			</tbody>
 		</table>
