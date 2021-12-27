@@ -2,7 +2,6 @@
 
 namespace App\Manager;
 
-use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 

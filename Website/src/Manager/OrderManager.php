@@ -3,6 +3,9 @@
 namespace App\Manager;
 
 use App\Entity\Command;
+use App\Entity\PaymentType;
+use App\Entity\Price;
+use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderManager
@@ -14,15 +17,31 @@ class OrderManager
         $this->manager = $managerController;
     }
 
+    public function reduceBalanceIfNecessary(Command $order): void{
+        $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
+        if ($order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"])
+            && $order->getClient() != null){
+            $purchaseRepository = $this->manager->getRepository(Purchase::class);
+            $priceRepository = $this->manager->getRepository(Price::class);
+            $montantTotal = 0;
 
+            $allOrderPurchase = $purchaseRepository->findBy(["command" => $order]);
 
-    public function verifyOrder(Command $order): bool
-    {
+            foreach ($allOrderPurchase as $purchase){
+                $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
+                        "clientType" => $order->getClient()->getClientType()]);
+            }
+
+            //Check if it works
+            $order->getClient()->setBalance($order->getClient()->getBalance() - $montantTotal);
+        }
+    }
+
+    public function verifyOrder(Command $order): bool{
         return ($order->getOrderedAt() != null && $order->getPaymentType() != null);
     }
 
-    public function persist(Command $order): void
-    {
+    public function persist(Command $order): void{
         if ($this->verifyOrder($order)){
             $this->manager->persist($order);
             $this->manager->flush();
