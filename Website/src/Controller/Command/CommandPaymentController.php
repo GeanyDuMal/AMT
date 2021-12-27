@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Command;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +13,6 @@ class CommandPaymentController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('command_payment/index.html.twig', [
-            'controller_name' => 'CommandPaymentController',
-        ]);
+        $this->redirectToRoute("home");
     }
 }
