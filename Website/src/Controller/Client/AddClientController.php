@@ -40,9 +40,7 @@ class AddClientController extends AbstractController
                 else{
                     $clientManager->persist($client);
                     if($client->getClientType()->getName()=="Association"){
-                        $newMember=new Association();
-                        $newMember->setMember($client);
-                        $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('types')]));
+                        $newMember=$clientManager->makeMember($client,$associationRoleRepository,$request);
                         $manager->persist($newMember);
                         $manager->flush();
                     }

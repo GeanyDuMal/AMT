@@ -40,6 +40,25 @@ class EditClientController extends AbstractController
                 }
                 else{
                     $clientManager->persist($client);
+                    $existeDansAssos=$associationRepository->findOneBy(['member'=>$client]);
+                    if($client->getClientType()->getName()=="Etudiant"){
+                        if($existeDansAssos){
+                            $id=$client->getId();
+                            $query=$manager->createQuery(
+                                "DELETE App:Association a where a.member=:id")
+                                ->setParameter("id",$id);
+                            $query->execute();
+                        }
+                    }else{
+                        if($existeDansAssos){
+                            $existeDansAssos->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('types')]));
+                        }
+                        else{
+                            $existeDansAssos=$clientManager->makeMember($client,$associationRoleRepository,$request);
+                        }
+                        $manager->persist($existeDansAssos);
+                        $manager->flush();
+                    }
                     $request->query->get("Modification avec succés");
                     return $this->redirectToRoute('client_list_message',["message"=>"Modification avec succés"]);
                 }

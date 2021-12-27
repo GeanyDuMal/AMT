@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Association;
 use App\Entity\AssociationRole;
 use App\Entity\Client;
+use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -152,5 +153,12 @@ class ClientManager
             default:$type = "Membre";break;
         }
         return $type;
+    }
+    public function makeMember(Client $client,AssociationRoleRepository $associationRoleRepository,Request $request):Association{
+        $data = $request->request;
+        $newMember=new Association();
+        $newMember->setMember($client);
+        $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('types')]));
+        return $newMember;
     }
 }
