@@ -1,15 +1,18 @@
 function deleteClient(){
-    const tr=document.querySelector("#data");
+    $(this).closest("tr").remove();
     const btn=tr.querySelector("#toDelete");
-    if (confirm('Voulez-vous supprimer l\'utilisateur ? ')) {
-        const id=btn.getAttribute("data-id");
-            fetch('/admin/client/delete/'+id, {method: 'DELETE'})
-                .then(function (resp) {
-                    tr.parentElement.removeChild(tr);
-                });
 
-    }
 }
+$("#client_table").on("click", "#toDelete", function() {
+   var tr= $(this).closest("tr");
+    if (confirm('Voulez-vous supprimer l\'utilisateur ? ')) {
+        const id=$(this).data("id");
+        fetch('/admin/client/delete/'+id, {method: 'DELETE'})
+            .then(function (resp) {
+                tr.remove();
+            });
+    }
+});
 $(document).ready( function () {
     $('#client_table').DataTable(
         {

@@ -3,7 +3,11 @@
 namespace App\Manager;
 
 use App\Entity\Client;
+use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ClientManager
 {
@@ -96,5 +100,40 @@ class ClientManager
 
           return strpbrk($password, $regexSpecial);
       }
+    public function getRoles(string $typeName):array{
+        $role=array();
+        switch ($typeName){
+            case "Membre":$role[]="ROLE_USER";break;
+            case "Trésorier":$role[] = "ROLE_TRESORIER";break;
+            case "Président":$role[] = "ROLE_PRESIDENT";break;
+            default:$role[] = "ROLE_ASSOC";break;
+        }
+        return $role;
+    }
+    public function setData(Client &$client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
+        $data = $request->request;
+
+        $client->setName(trim($data->get('name')));
+        $client->setFirstName(trim($data->get('fname')));
+        $client->setLogin(trim($data->get('login')));
+        /*
+            if password input exists so it's the add page
+            so we have to initialize the fidelity points
+            and set the password to the chosen one.
+        */
+        if($data->get('pwd')){
+            $hashedPassword=$passwordHasher->hashPassword($client,trim($data->get('pwd')));
+            $client->setPassword($hashedPassword);
+            $client->setFidelityPoint(0);
+        }
+        $client->setBalance(trim($data->get('balance')));
+        $typeAssos=$data->get('types');
+        $typeClient=$data->get('clientType');
+        $typeName= strcmp($typeClient,"Etudiant")==0?$typeClient:$typeAssos;
+        $role= $this->getRoles($typeName);
+        $client->setRoles($role);
+        $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
+        $client->setClientType($type);
+    }
 
 }

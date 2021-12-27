@@ -62,10 +62,10 @@
                 <select class="form-select" name="clientType" id="clientType" data-target="assosRoles"
                         data-source="path">
                     {% if clientExists %}
-                    <option {% if 1==client.roles|length %} selected {% endif %} >
-                        Client
+                    <option {% if client.roles[0]=="ROLE_USER" %} selected {% endif %} >
+                        Etudiant
                     </option>
-                    <option {% if 1<client.roles|length %} selected {% endif %} id="member">
+                    <option {% if client.roles[0]!="ROLE_USER" %} selected {% endif %} id="member">
                         Membre
                     </option>
                     {% endif %}
