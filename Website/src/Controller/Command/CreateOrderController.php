@@ -44,8 +44,7 @@ class CreateOrderController extends AbstractController
         foreach ($allProductPositiveStock as $product){
             $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
             if ($quantity != 0 ){
-                  $productOrdered[] = $product;
-                  $quantityOrdered = $quantityOrdered + [$product->getId() => $quantity];
+                  $productOrdered = $productOrdered + [$product->getId() => $quantity];
             }
         }
 
@@ -61,17 +60,8 @@ class CreateOrderController extends AbstractController
             if ($clientCommande){
                 $typeClient = $clientCommande->getClientType();
             }
-            foreach ($productOrdered as $product){
 
-                $montant = $montant + $priceRepository->findOneBy(["product" => $product,
-                                        "clientType" => $typeClient])->getPrice()*$quantityOrdered[$product->getId()];
-            }
-
-            return $this->render('command/payement.html.twig', [
-                "product" => $productOrdered,
-                "quantity" => $quantityOrdered,
-                "montant" => $montant
-            ]);
+            return $this->redirectToRoute();
         }
 
 
