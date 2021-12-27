@@ -3,5 +3,19 @@
 {% block title %}Paiement{% endblock %}
 
 {% block body %}
+    {% for product in listProduct %}
+            <div>
+                  <div>
+                        Nom du produit : {{ product.name }}
+                  </div>
+                  <div>
+                        Quantity : {{ productQuantity[product.id] }}
+                  </div>
+                  <div>
+                        Price : {{ montantProduct[product.id] }}€
+                  </div>
+            </div>
+    {% endfor %}
 
+    Montant total : {{ montantTotal }}€
 {% endblock %}
