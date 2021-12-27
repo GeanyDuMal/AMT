@@ -97,6 +97,7 @@ final class Version20211221201549 extends AbstractMigration
                                     SIGNAL SQLSTATE "45000"
                                     SET MESSAGE_TEXT = "Stock vide ou insuffisant, erreur creation purchase";
                             END IF;');
+
         $this->addSql('CREATE TRIGGER removeQteProductFromPurchase 
                             AFTER INSERT ON `purchase` FOR EACH ROW
                             UPDATE product SET quantity_stock = quantity_stock - NEW.quantity
