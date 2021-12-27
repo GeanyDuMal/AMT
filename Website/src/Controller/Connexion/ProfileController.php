@@ -39,8 +39,7 @@ class ProfileController extends AbstractController
                 $clientManager = new ClientManager($manager);
 
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
-                if (password_verify(trim($inputParameterBag->get("oldPassword")), $this->getUser()->getPassword())
-                    ) {
+                if (password_verify(trim($inputParameterBag->get("oldPassword")), $this->getUser()->getPassword())) {
                     $hashedPassword = $passwordHasher->hashPassword(
                         $client,
                         trim($inputParameterBag->get("newPassword")));

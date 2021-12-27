@@ -26,12 +26,9 @@ class CreateOrderController extends AbstractController
         $user = $this->getUser();
         $productRepository = $manager->getRepository(Product::class);
         $clientRepository = $manager->getRepository(Client::class);
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
-        $priceRepository = $manager->getRepository(Price::class);
         $allProductPositiveStock = [];
         $inputParameterBag = $request->request;
         $productOrdered = [];
-        $quantityOrdered = [];
 
         $allProduct = $productRepository->findAll();
         foreach ($allProduct as $product){
@@ -51,17 +48,19 @@ class CreateOrderController extends AbstractController
         //Si l'on a commandé au moins 1 produits
         if ($productOrdered){
             $clientCommande = null;
-            $typeClient = $clientTypeRepository->findBy(["name" => "Etudiant"]);
-            $montant = 0;
+            $idClient = -1;
 
             if($inputParameterBag->get("client_commande") != null){
                 $clientCommande = $clientRepository->find($inputParameterBag->get("client_commande"));
             }
             if ($clientCommande){
-                $typeClient = $clientCommande->getClientType();
+                $idClient = $clientCommande->getId();
             }
 
-            return $this->redirectToRoute();
+            return $this->redirectToRoute("command_payment", [
+                "productOrderedSerialized" => serialize($productOrdered),
+                "idClient" => $idClient
+            ]);
         }
 
 
