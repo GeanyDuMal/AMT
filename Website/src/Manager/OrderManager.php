@@ -23,7 +23,6 @@ class OrderManager
             && $order->getClient() != null){
             $montantTotal = $this->montantTotal($order);
 
-            //Check if it works
             $order->getClient()->setBalance($order->getClient()->getBalance() - $montantTotal);
         }
     }

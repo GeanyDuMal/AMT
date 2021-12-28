@@ -171,7 +171,8 @@ class ClientManager
         return $newMember;
     }
 
-    public function addFidelityPoint(int $amountOrder, Client $client): void{
+    public function addFidelityPoint(float $amountOrder, Client $client): void{
           $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
+          $this->persist($client);
     }
 }
