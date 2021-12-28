@@ -14,7 +14,7 @@
 }
 
 .centered_flex_horizontal {
-      justify-content: space-around;
+      justify-content: center;
 }
 
 .btn {
@@ -32,7 +32,7 @@
 .block_all_product{
       flex-wrap: wrap;
       max-width: 100%;
-      margin: 0 auto;
+      margin: 10px auto;
 }
 
 .block_product{
@@ -41,6 +41,7 @@
       border: solid 3px black;
       border-radius: 10px;
       justify-content: space-between;
+      background-color: rgba(0, 0, 0, 0.1)
 }
 
 .input_quantity{
@@ -57,7 +58,7 @@ select{
       margin: 15px;
 }
 
-@media(max-width: 800px) {
+@media(max-width: 600px) {
       .img_product{
             max-width: 40vw;
             align-self: center;
@@ -65,6 +66,6 @@ select{
       
       .block_product{
             width: fit-content;
-            max-width: 45vw;
+            width: 85vw;
       }
 }
