@@ -44,8 +44,12 @@ class OrderManager
 
     public function addFidelityToClient(Command $order):void{
         if ($order->getClient() != null){
+            $montant = $this->montantTotal($order);
             $clientManager = new ClientManager($this->manager);
-            $clientManager->addFidelityPoint($this->montantTotal($order), $order->getClient());
+
+            if ($montant >= 1){
+                $clientManager->addFidelityPoint($montant, $order->getClient());
+            }
         }
     }
 
