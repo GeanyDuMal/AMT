@@ -3,32 +3,50 @@
 {% block title %}Paiement{% endblock %}
 
 {% block stylesheets %}
-      <link rel="stylesheet" href="/style/bootstrap.css">
-      <link rel="stylesheet" href="/style/command/create.css">
-      <link rel="stylesheet" href="/style/command/payment.css">
+    <link rel="stylesheet" href="/style/bootstrap.css">
+    <link rel="stylesheet" href="/style/command/create.css">
 {% endblock %}
 
 {% block body %}
-      {% for product in listProduct %}
-            <div>
+      <div class="flex_vertical centered_flex_vertical">
+            {% if client %}
                   <div>
-                        Nom du produit : {{ product.name }}
+                        <div>
+                              Client : {{ client.name }} {{ client.firstName }} / {{ client.login }}
+                        </div>
+                        <div>
+                              Point de Fidelité : {{ client.fidelityPoint }}
+                        </div>
+                        <div>
+                        Solde : {{ client.balance }}
+                        </div>
                   </div>
-                  <div>
-                        Quantity : {{ productQuantity[product.id] }}
+            {% endif %}
+            
+            <div class="block_all_product flex_horizontal centered_flex_horizontal">
+            {% for product in listProduct %}
+                  <div class="block_product">
+                        <h2>
+                              {{ product.name }}
+                        </h2>
+                        <div>
+                              Quantité : {{ productQuantity[product.id] }}
+                        </div>
+                        <div>
+                              Prix Unitaire : {{ montantProduct[product.id]/productQuantity[product.id] }}€
+                        </div>
                   </div>
-                  <div>
-                        Price : {{ montantProduct[product.id] }}€
-                  </div>
-            </div>
-      {% endfor %}
-
-      Montant total : {{ montantTotal }}€
-      <form method="post">
-            {% for paymentType in paymentTypeList %}
-                  <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn-primary">
-                        {{ paymentType.name }}
-                  </button>
             {% endfor %}
-      </form>
+            </div>
+            <div>
+                  Montant total : {{ montantTotal }}€
+            </div>
+            <form method="post" >
+                  {% for paymentType in paymentTypeList %}
+                        <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn-primary">
+                              {{ paymentType.name }}
+                        </button>
+                  {% endfor %}
+            </form>
+      </div>
 {% endblock %}
