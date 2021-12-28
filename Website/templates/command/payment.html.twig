@@ -11,10 +11,10 @@
 {% block body %}
       <div class="flex_vertical centered_flex_vertical">
             {% if client %}
-                  <div>
-                        <div>
-                              Client : {{ client.name }} {{ client.firstName }} / {{ client.login }}
-                        </div>
+                  <div class="block_client">
+                        <h2>
+                              {{ client.name }} {{ client.firstName }} / {{ client.login }}
+                        </h2>
                         <div>
                               Point de Fidelité : {{ client.fidelityPoint }}
                         </div>
