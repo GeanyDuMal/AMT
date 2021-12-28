@@ -11,15 +11,15 @@
     <script src="/script/command/createCommand.js"></script>
 {% endblock %}
 
-{% block body %}
-    <form method="POST" class="flex_vertical" id="form_command">
+{% block body %}    
+    <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command">
         <div class="flex_horizontal centered_flex_horizontal block_all_product">
         {% for product in productList %}
             <div class="block_product flex_vertical ">
                 <div class="flex_vertical">
-                    <div>
+                    <h3>
                         {{ product.name }}
-                    </div>
+                    </h3>
                     <div class="quantity_block">
                         Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</span>
                     </div>
@@ -34,17 +34,17 @@
             </div>
         {% endfor %}
         </div>
-        <div>
-            
-        </div>
-        <div class="flex_vertical centered_flex_vertical">
+        <div class="flex_vertical centered_flex_vertical block_bottom_create">
             <select name="client_commande" id="">
                 <option value="null">Choisir un Client</option>
                 {% for client in clientList %}
                     <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }} / {{ client.login }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn-primary" >Valider la commande</button>
+            <button type="submit" class="btn btn-primary" >Valider la commande</button>
         </div>
+        <a href="{{ path("orderMenu") }}">
+            <img src="/img/icons/back.png" class="img" alt="" srcset="">    
+        </a>
     </form>
 {% endblock %}

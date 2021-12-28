@@ -19,4 +19,11 @@ class PurchaseManager
 
         return ($product->getQuantityStock() >= $purchase->getQuantity());
     }
+
+    public function persist(Purchase $purchase): void{
+        if ($this->verifyDisponibilityProduct($purchase)){
+            $this->manager->persist($purchase);
+            $this->manager->flush();
+        }
+    }
 }

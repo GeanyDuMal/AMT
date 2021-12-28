@@ -21,10 +21,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandPaymentController extends AbstractController
 {
     /**
-     * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="command_payment")
+     * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="orderPayment")
      */
     public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request): Response
     {
+        if (!$this->isGranted('ROLE_ASSOC')){
+            return $this->redirectToRoute('home');
+        }
+
         $clientRepository = $manager->getRepository(Client::class);
         $clientTypeRepository = $manager->getRepository(ClientType::class);
         $priceRepository = $manager->getRepository(Price::class);
@@ -35,7 +39,6 @@ class CommandPaymentController extends AbstractController
         $inputParameterBag = $request->request;
         $listProduct = [];
         $productOrderedIdTab = unserialize($productOrderedSerialized);
-
 
         //Si l'on a select un client, alors on conserve celui ci + son type
         if ($idClient != "null"){
@@ -78,23 +81,25 @@ class CommandPaymentController extends AbstractController
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
                     ->setPaymentType($paymentTypeChose);
+            $orderManager->persist($order);
 
-
-            foreach ($montantProduct as $productId => $quantity){
+            foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
 
                 $purchase = new Purchase();
                 $purchase->setProduct($product)
-                        ->setCommand($order)
-                        ->setQuantity($quantity);
+                    ->setCommand($order)
+                    ->setQuantity($quantity);
 
-                $purchaseManager->verifyDisponibilityProduct($purchase);
-
-                //Maybe faire une verif
-                $orderManager->reduceBalanceIfNecessary($order);
-                $orderManager->addFidelityToClient($order);
-                //rediriger ailleurs
+                if ($purchaseManager->verifyDisponibilityProduct($purchase)){
+                    $purchaseManager->persist($purchase);
+                }
             }
+
+            $orderManager->reduceBalanceIfNecessary($order);
+            $orderManager->addFidelityToClient($order);
+        //rediriger ailleurs
+            return $this->redirectToRoute("orderCreate", ["succes" => 1]);
         }
 
         return $this->render('command/payment.html.twig', [

@@ -31,7 +31,7 @@ final class Version20211228103603 extends AbstractMigration
                                     END IF;
                                     IF(NEW.fidelity_point >= 200)THEN
                                         BEGIN
-                                            SET NEW.fidelity_point = NEW.fidelity_point - 200;
+                                            SET NEW.fidelity_point = NEW.fidelity_point - 150;
                                             SET NEW.balance = NEW.balance + 0.8; 
                                         END;
                                     END IF;

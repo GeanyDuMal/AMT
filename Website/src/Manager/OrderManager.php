@@ -19,12 +19,13 @@ class OrderManager
 
     public function reduceBalanceIfNecessary(Command $order): void{
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
+        $clientManager = new ClientManager($this->manager);
         if ($order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"])
             && $order->getClient() != null){
             $montantTotal = $this->montantTotal($order);
 
-            //Check if it works
             $order->getClient()->setBalance($order->getClient()->getBalance() - $montantTotal);
+            $clientManager->persist($order->getClient());
         }
     }
 
@@ -45,8 +46,12 @@ class OrderManager
 
     public function addFidelityToClient(Command $order):void{
         if ($order->getClient() != null){
+            $montant = $this->montantTotal($order);
             $clientManager = new ClientManager($this->manager);
-            $clientManager->addFidelityPoint($this->montantTotal($order), $order->getClient());
+
+            if ($montant >= 1){
+                $clientManager->addFidelityPoint($montant, $order->getClient());
+            }
         }
     }
 
