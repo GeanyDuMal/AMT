@@ -2,7 +2,7 @@
 {# {% extends 'home/index.html.twig' %} #}
 
 {% block stylesheets %}
-    <link href="/style/home/css/home.css" rel="stylesheet"/>
+    <link href="/style/base/css/base.css" rel="stylesheet"/>
     <link href="/style/blog/css/blog.css" rel="stylesheet"/>
     {# Bootstrap CSS Import #}
     {# <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/> #}
@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/script/home/home.js"></script>
+    <script src="/script/base/base.js"></script>
     {# Bootstrap JS Import #}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -31,8 +31,6 @@
 {% block title %}Blog{% endblock %}
 
 {% block body %}
-	{% block navbar %}{{ parent() }}{% endblock %}
-	{% block sidebar %}{{ parent() }}{% endblock %}
 
     {# Title Of The Page #}
     <h1 class="page__title d-flex justify-content-center">Posts & Events</h1>
@@ -77,6 +75,4 @@
         </div>
     </div>
     {# End Article #}
-
-    {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}
