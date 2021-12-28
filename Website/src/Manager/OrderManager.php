@@ -21,16 +21,7 @@ class OrderManager
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
         if ($order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"])
             && $order->getClient() != null){
-            $purchaseRepository = $this->manager->getRepository(Purchase::class);
-            $priceRepository = $this->manager->getRepository(Price::class);
-            $montantTotal = 0;
-
-            $allOrderPurchase = $purchaseRepository->findBy(["command" => $order]);
-
-            foreach ($allOrderPurchase as $purchase){
-                $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
-                        "clientType" => $order->getClient()->getClientType()]);
-            }
+            $montantTotal = $this->montantTotal($order);
 
             //Check if it works
             $order->getClient()->setBalance($order->getClient()->getBalance() - $montantTotal);
