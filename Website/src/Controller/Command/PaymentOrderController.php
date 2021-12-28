@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CommandPaymentController extends AbstractController
+class PaymentOrderController extends AbstractController
 {
     /**
      * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="orderPayment")
