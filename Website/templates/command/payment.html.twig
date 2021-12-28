@@ -31,10 +31,10 @@
                               {{ product.name }}
                         </h2>
                         <div>
-                              Quantité : {{ productQuantity[product.id] }}
+                              Quantité : {{ productQuantity[product.id] }} | Prix Unitaire : {{ montantProduct[product.id]/productQuantity[product.id] }}€
                         </div>
                         <div>
-                              Prix Unitaire : {{ montantProduct[product.id]/productQuantity[product.id] }}€
+                              
                         </div>
                   </div>
             {% endfor %}
@@ -49,5 +49,8 @@
                         </button>
                   {% endfor %}
             </form>
+            <a href="{{ path("orderCreate") }}">
+                  <img src="/img/icons/back.png" class="img" alt="" srcset="">    
+            </a>
       </div>
 {% endblock %}
