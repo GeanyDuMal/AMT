@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Entity\ClientType;
 use App\Entity\Command;
 use App\Entity\PaymentType;
 use App\Entity\Price;
@@ -37,8 +38,14 @@ class OrderManager
         $allOrderPurchase = $purchaseRepository->findBy(["command" => $order]);
 
         foreach ($allOrderPurchase as $purchase){
+            $clientTypeRepository = $this->manager->getRepository(ClientType::class);
+            $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+            if ($order->getClient() != null){
+                $clientType = $order->getClient()->getClientType();
+            }
+
             $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
-                    "clientType" => $order->getClient()->getClientType()])->getPrice();
+                    "clientType" => $clientType])->getPrice();
         }
 
         return $montantTotal;

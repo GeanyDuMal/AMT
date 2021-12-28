@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/style/command/menu.css">
 {% endblock %}
 
+{% block javascripts %}
+	<script src="/script/command/menuCommand.js"></script>
+{% endblock %}
+
 {% block body %}
     	<div class="content">
 		<div class="content-header">
@@ -27,7 +31,7 @@
 					<th width="15%">Date</th>
 					<th width="15%">Montant</th>
 					<th width="15%">Login Client</th>
-					<th width="15%">Type du client</th>
+					<th width="10%">Type du client</th>
 					<th scope="col" width="5%">Supprimer</th>
 				</tr>
 			</thead>
@@ -41,7 +45,7 @@
 						{{ order.orderedAt|date('d-m-Y') }}
 					</td>
 					<td>
-						{{ order.id }}
+						{{ montantOrder[order.id] }}€
 					</td>
 					{% if order.client %}
 						<td>

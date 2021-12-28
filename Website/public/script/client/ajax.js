@@ -9,8 +9,8 @@ $("#client_table").on("click", "#toDelete", function() {
             .then(function (resp) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Noice',
-                    text: 'Suppression avec succée',
+                    title: 'Nice',
+                    text: 'Suppression avec succèes',
                 })
                 tr.remove();
             });

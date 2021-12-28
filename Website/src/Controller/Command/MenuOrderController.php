@@ -3,6 +3,7 @@
 namespace App\Controller\Command;
 
 use App\Entity\Command;
+use App\Manager\OrderManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,17 @@ class MenuOrderController extends AbstractController
     public function index(EntityManagerInterface $manager, Request $request): Response
     {
         $commandeRepository = $manager->getRepository(Command::class);
+        $orderManager = new OrderManager($manager);
 
         $allOrder = $commandeRepository->findBy([], ["orderedAt" => "DESC"]);
+        $montantId = [];
+        foreach ($allOrder as $order){
+            $montantId = $montantId + [$order->getId() => $orderManager->montantTotal($order)];
+        }
+
         return $this->render('command/menu.html.twig', [
-            "orderList" => $allOrder
+            "orderList" => $allOrder,
+            "montantOrder" => $montantId
         ]);
     }
 }
