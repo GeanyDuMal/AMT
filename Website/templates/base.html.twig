@@ -11,14 +11,14 @@
     </title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"/>
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
+    {# Bootstrap CSS Import #}
+    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
+    {# Icons #}
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+    {# End Bootstrap CSS Import #}
+    <link href="/style/base/css/base.css" rel="stylesheet"/>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
-
-        {# Cette feuille de style n'est pas prise par la base à importer #}
-        <link href="/style/base/css/base.css" rel="stylesheet"/>
-        {# Cette feuille de style n'est pas prise par la base à importer #}
 
         {# Bootstrap CSS Import #}
         {# Icons #}
@@ -120,12 +120,10 @@
 
 {# Script pour SweetAlert #}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{# Sidebar Script Import #}
+<script src="/script/base/base.js"></script>
+{# End Sidebar Script Import #}
 {% block javascripts %}
-
-    {# Sidebar Script Import #}
-    <script src="/script/base/base.js"></script>
-    {# End Sidebar Script Import #}
-
     {{ encore_entry_script_tags('app') }}
     {# Bootstrap JS Import #}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

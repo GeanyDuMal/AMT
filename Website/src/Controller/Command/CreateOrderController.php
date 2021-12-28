@@ -3,8 +3,6 @@
 namespace App\Controller\Command;
 
 use App\Entity\Client;
-use App\Entity\ClientType;
-use App\Entity\Price;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,7 +54,7 @@ class CreateOrderController extends AbstractController
 
 
 
-        $allClient = $clientRepository->findAll();
+        $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
         return $this->render('command/create.html.twig', [
             "user" => $user,

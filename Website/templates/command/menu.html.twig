@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CommandMenuController!{% endblock %}
+{% block title %}Menu Commande{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
-    <h1>Hello</h1>
-
-
-</div>
+    <div class="content">
+		<div class="content-header">
+			<h1>Liste des commandes</h1>
+		</div>
+		{% if message is defined %}
+			<div class="alert alert-dismissible alert-success">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				<strong>{{ message }}!</strong>
+			</div>
+		{% endif %}
+		
+		
+	</div>
 {% endblock %}
