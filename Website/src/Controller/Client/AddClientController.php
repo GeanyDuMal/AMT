@@ -24,23 +24,27 @@ class AddClientController extends AbstractController
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
+        $commonFunctions=new CommonFunctions();
         $data = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client();
-        $error = "";
-        $errors="";
-        $types = $associationRoleRepository->findAll();
+        $errorLoginExist = "";
+        $validationErrors="";
+        $assosRoles = $associationRoleRepository->findAll();
         if ($data->count()> 0) {
-            $clientManager->setData($client,$request,$clientTypeRepository,$passwordHasher);
-            $errors = $validator->validate($client);
-            if($errors->count()==0)
+            $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
+            $validationErrors = $validator->validate($client);
+            if($validationErrors->count()==0)
                 if($clientManager->loginExists($client)){
-                    $error="Login Existe déja";
+                    $errorLoginExist="Login Existe déja";
                 }
                 else{
                     $clientManager->persist($client);
+                    /*
+                     * if the client added is a member, we have to add him in association table too.
+                     * */
                     if($client->getClientType()->getName()=="Association"){
-                        $newMember=$clientManager->makeMember($client,$associationRoleRepository,$request);
+                        $newMember=$commonFunctions->makeMember($client,$associationRoleRepository,$request);
                         $manager->persist($newMember);
                         $manager->flush();
                     }
@@ -51,9 +55,9 @@ class AddClientController extends AbstractController
 
         return $this->render('client/AddModalClient.html.twig',
             [
-                'types' => $types,
-                'errors' => $errors,
-                'error' => $error,
+                'assosRoles' => $assosRoles,
+                'validationErrors' => $validationErrors,
+                'errorLoginExist' => $errorLoginExist,
                 'client' => $client
             ]
         );

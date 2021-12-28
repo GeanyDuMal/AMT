@@ -1,35 +1,42 @@
 {% extends 'home/index.html.twig' %}
+
 {% block title %}
     Nouveau Client
 {% endblock %}
+
 {%  block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/client/addEditScripts.js') }}"></script>
 {% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
+
 {% block body %}
     {% block navbar %}{{ parent() }}{% endblock %}
     {% block sidebar %}{{ parent() }}{% endblock %}
+
     <div>
         <ul>
-            {% if errors is defined and errors!="" %}
-                {% for i in 0..errors.count()-1 %}
-                    <li>{{ errors[i].message }}</li>
+            {% if validationErrors is defined and validationErrors!="" %}
+                {% for i in 0..validationErrors.count()-1 %}
+                    <li>{{ validationErrors[i].message }}</li>
                 {% endfor %}
             {% endif %}
         </ul>
     </div>
+
     {% set clientExists=client is defined %}
+
     <div class="container mt-5 ">
         <form action="" method="post" class="row g-2 " id='form_Client'>
-            {% if error is defined and error!="" %}
+            {% if errorLoginExist is defined and errorLoginExist!="" %}
                 <div class="alert alert-dismissible alert-danger">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ error }}.
+                    {{ errorLoginExist }}.
                 </div>
             {% endif %}
             <h1>Nouveau Client</h1>
@@ -38,7 +45,7 @@
                 <label for="floatingInput">Nom</label>
             </div>
             <div class="form-floating col-md-6">
-                <input type="text" name="fname"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if clientExists %}{{ client.firstName}} {% endif  %}>
+                <input type="text" name="firstName"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if clientExists %}{{ client.firstName}} {% endif  %}>
                 <label for="floatingInput">Prénom</label>
             </div>
             <br>
@@ -48,7 +55,7 @@
             </div>
             <br>
             <div class="form-floating ">
-                <input type="password" name="pwd" class="form-control" id="floatingPassword" placeholder="Mot de passe">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Mot de passe">
                 <label for="floatingPassword">Mot de passe</label>
             </div>
             <div class="col-auto">
@@ -61,7 +68,7 @@
             </div>
             <br>
             <div class="form-floating">
-                <input type="password" name="confPwd" class="form-control" id="floatingPassword"  placeholder="Confirmation Mot de passe">
+                <input type="password" name="confirmPassword" class="form-control" id="floatingPassword"  placeholder="Confirmation Mot de passe">
                 <label for="floatingPassword">Confirmation Mot de passe</label>
             </div>
             <br>
@@ -82,23 +89,24 @@
                             Etudiant
                         </option>
                     <option id="member">
-                        Membre
+                        Association
                     </option>
                 </select>
             </div>
             <div class="form-group col-md-12" id="roles">
                 <label>Role</label>
-                <select id="assosRoles" class="form-control linked-select" name="types" id="clientType">
-                    {% for type in types %}
+                <select name="assosRoles" id="assosRoles" class="form-control linked-select">
+                    {% for assosRole in assosRoles %}
                         <option>
-                            {{ type.name }}
+                            {{ assosRole.name }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
             <br>
-            <input type="submit" class="btn btn-primary" value="Créer" onclick="return verifier()">
+            <input type="submit" class="btn btn-primary" value="Créer" onclick="return verifyAdd()">
         </form>
     </div>
+
     {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}

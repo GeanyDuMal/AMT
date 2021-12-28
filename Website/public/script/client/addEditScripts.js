@@ -1,64 +1,94 @@
-var types=document.querySelector("#clientType");
+var clientType=document.querySelector("#clientType");
+var assosRoles=document.querySelector("#roles");
+var form = document.querySelector("#form_Client");
+/**
+ * hide the combobox of association roles if it's not a member
+ */
 window.onload = function() {
-    if(document.querySelector('#clientType').value!=="Membre"){
-        document.querySelector("#roles").style.visibility="hidden";
+    if(clientType.value!=="Association"){
+        assosRoles.style.visibility="hidden";
     }
-
 }
-types.onchange=function (){
+/**
+ * same thing as above but when the admin change it's value
+ */
+clientType.onchange=function (){
     var selectedOption = this[this.selectedIndex];
     var selectedText = selectedOption.text;
-    var roles=document.querySelector("#roles");
-    roles.style.visibility =selectedText==="Etudiant"? "hidden":"visible";
+    assosRoles.style.visibility =selectedText==="Etudiant"? "hidden":"visible";
 }
-var form = document.querySelector("#form_Client");
-function verifier() {
+
+/**
+ * To verify if the data entered is valid or not
+ * @returns {boolean}
+ */
+function communVerify(){
     var message = "";
-    var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     var valueName = form.name.value;
-    var valueFirstName = form.fname.value;
+    var valueFirstName = form.firstName.value;
     var valueLogin = form.login.value;
-    var valuePassword = form.pwd.value;
-    var valueConfirm = form.confPwd.value;
     var valueBalance = form.balance.value;
     if (!valueName.trim()) {
-        message += "Nom non renseigné,";
+        message += "Nom non renseigné\n";
     } else if (valueName.length < 3) {
-        message += "Nom trop court, ";
+        message += "Nom trop court\n";
     }
 
     if (!valueFirstName.trim()) {
-        message += "Prenom non renseigné, ";
+        message += "Prenom non renseigné\n";
     } else if (valueFirstName.length < 3) {
-        message += "Prenom trop court, ";
+        message += "Prenom trop court\n";
     }
     if (!valueLogin.trim()) {
-        message += "Login non renseigné, ";
+        message += "Login non renseigné\n";
     } else if (valueLogin.length < 5) {
-        message += "Login trop court, ";
-    }
-
-    if (!valuePassword.trim()) {
-        message += "Mot de Passe non renseigné ";
-    } else if (valuePassword.length < 5) {
-        message += "Mot de Passe trop court ";
-    } else if (regexCharacter.test(valuePassword) === false) {
-        message += "Le mots de passe ne contient pas de caractere spécial "
-    }
-    else if (valuePassword !== valueConfirm) {
-        message += "Les mots de passe ne correspondent pas "
+        message += "Login trop court\n";
     }
 
     balance = parseFloat(valueBalance);
     if (balance!==0 && !balance && valueBalance !== "") {
         message += "Balance doit etre un nombre. ";
     } else if (balance < 0) {
-        message += "Le balance doit etre >=0. ";
+        message += "Le solde doit être positif. ";
+    }
+  return message;
+}
+function verifyEdit(){
+    var message = "";
+    message=communVerify();
+    if (message !== "") {
+        Swal.fire({
+            title: 'Incomplet !',
+            html: '<pre>' + message + '</pre>',
+            icon: 'error',
+            confirmButtonText: 'Completer'
+        })
+        return false;
+    } else {
+        return true;
+    }
+}
+function verifyAdd() {
+    var message = "";
+    message=communVerify();
+    var regexCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    var valuePassword = form.password.value;
+    var valueConfirm = form.confirmPassword.value;
+
+    if (!valuePassword.trim()) {
+        message += "Mot de Passe non renseigné\n";
+    } else if (valuePassword.length < 5) {
+        message += "Mot de Passe trop court\n";
+    } else if (regexCharacter.test(valuePassword) === false) {
+        message += "Le mots de passe ne contient pas de caractere spécial\n";
+    }
+    else if (valuePassword !== valueConfirm) {
+        message += "Les mots de passe ne correspondent pas\n";
     }
     if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',
-            text: message,
+            html: '<pre>' + message + '</pre>',
             icon: 'error',
             confirmButtonText: 'Completer'
         })

@@ -16,9 +16,9 @@
     {% block sidebar %}{{ parent() }}{% endblock %}
     <div>
         <ul>
-            {% if errors is defined and errors!="" %}
-                {% for i in 0..errors.count()-1 %}
-                    <li>{{ errors[i].message }}</li>
+            {% if validationErrors is defined and validationErrors!="" %}
+                {% for i in 0..validationErrors.count()-1 %}
+                    <li>{{ validationErrors[i].message }}</li>
                 {% endfor %}
             {% endif %}
         </ul>
@@ -28,10 +28,10 @@
     <div class="container mt-5">
 
         <form action="" method="post" class="row g-3" id='form_Client'>
-            {% if error is defined and error!="" %}
+            {% if errorLoginExist is defined and errorLoginExist!="" %}
                 <div class="alert alert-dismissible alert-danger">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ error }}.
+                    {{ errorLoginExist }}.
                 </div>
             {% endif %}
             <h1>Modification</h1>
@@ -40,7 +40,7 @@
                 <label for="floatingInput">Nom</label>
             </div>
             <div class="form-floating col-md-6">
-                <input type="text" name="fname"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if clientExists %}{{ client.firstName}} {% endif  %}>
+                <input type="text" name="firstName"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if clientExists %}{{ client.firstName}} {% endif  %}>
                 <label for="floatingInput">Prénom</label>
             </div>
             <br>
@@ -66,28 +66,28 @@
                         Etudiant
                     </option>
                     <option {% if client.roles[0]!="ROLE_USER" %} selected {% endif %} id="member">
-                        Membre
+                        Association
                     </option>
                     {% endif %}
                 </select>
             </div>
             <div class="form-group col-md-12" id="roles">
                 <label>Role</label>
-                <select id="assosRoles" class="form-control linked-select" name="types" id="clientType">
+                <select name="assosRoles" id="assosRoles" class="form-control linked-select"  id="clientType">
                     {% if memberExists %}
                         {% set memberRoleName=member.role.name %}
                     {% else %}
                         {% set memberRoleName=null %}
                     {% endif %}
-                    {% for type in types %}
-                        <option {% if type.name==memberRoleName %} selected {% endif %} >
-                            {{type.name}}
+                    {% for assosRole in assosRoles %}
+                        <option {% if assosRole.name==memberRoleName %} selected {% endif %} >
+                            {{assosRole.name}}
                         </option>
                     {% endfor %}
                 </select>
             </div>
             <br>
-            <input type="submit" class="btn btn-primary" value="Enregistrer" onclick="return verifier()" style="margin-bottom: 25px;">
+            <input type="submit" class="btn btn-primary" value="Enregistrer" onclick="return verifyEdit()" style="margin-bottom: 25px;">
         </form>
     </div>
     {% block footer %}{{ parent() }}{% endblock %}

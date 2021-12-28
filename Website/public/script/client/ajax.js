@@ -1,8 +1,6 @@
-function deleteClient(){
-    $(this).closest("tr").remove();
-    const btn=tr.querySelector("#toDelete");
-
-}
+/**
+ * delete a client/member using jquery-ajax
+ */
 $("#client_table").on("click", "#toDelete", function() {
    var tr= $(this).closest("tr");
     if (confirm('Voulez-vous supprimer l\'utilisateur ? ')) {
@@ -18,6 +16,13 @@ $("#client_table").on("click", "#toDelete", function() {
             });
     }
 });
+
+/**
+ * To apply the plugin DataTables (he makes the table so cool :3 )
+ * pagination
+ * search bar
+ * sorting per column
+ */
 $(document).ready( function () {
     $('#client_table').DataTable(
         {

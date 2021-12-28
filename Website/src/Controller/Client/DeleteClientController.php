@@ -20,11 +20,16 @@ class DeleteClientController extends AbstractController
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
-        $query=$manager->createQuery(
-            "DELETE App:Association a where a.member=:id")
-            ->setParameter("id",$id);
-        $query->execute();
+        /*
+         * when we delete a client
+         * we delete if from association too
+         */
         $client = $manager->getRepository('App:Client')->find($id);
+        $existeDansAssos=$associationRepository->findOneBy(['member'=>$client]);
+        if($existeDansAssos){
+            $manager->remove($existeDansAssos);
+            $manager->flush();
+        }
         $manager->remove($client);
         $manager->flush();
 
