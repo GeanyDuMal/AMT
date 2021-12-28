@@ -5,6 +5,7 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/bootstrap.css">
     <link rel="stylesheet" href="/style/command/create.css">
+    <link rel="stylesheet" href="/style/command/payment.css">
 {% endblock %}
 
 {% block body %}
@@ -38,12 +39,12 @@
                   </div>
             {% endfor %}
             </div>
-            <div>
+            <h2>
                   Montant total : {{ montantTotal }}€
-            </div>
-            <form method="post" >
+            </h2>
+            <form method="post" class="block_button_payment">
                   {% for paymentType in paymentTypeList %}
-                        <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn-primary">
+                        <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn btn-primary">
                               {{ paymentType.name }}
                         </button>
                   {% endfor %}
