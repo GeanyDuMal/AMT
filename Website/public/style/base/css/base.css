@@ -22,7 +22,8 @@ body {
   /* position: fixed; */
   top: 0;
   width: 100%;
-  background-color: #212529; }
+  background-color: #212529; 
+  z-index: 100;}
 
 /* line 41, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar {
