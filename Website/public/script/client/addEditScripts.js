@@ -20,14 +20,14 @@ clientType.onchange=function (){
 
 /**
  * To verify if the data entered is valid or not
- * @returns {boolean}
+ * @returns {string}
  */
 function communVerify(){
-    var message = "";
-    var valueName = form.name.value;
-    var valueFirstName = form.firstName.value;
-    var valueLogin = form.login.value;
-    var valueBalance = form.balance.value;
+    let message = "";
+    const valueName = form.name.value;
+    const valueFirstName = form.firstName.value;
+    const valueLogin = form.login.value;
+    const valueBalance = form.balance.value;
     if (!valueName.trim()) {
         message += "Nom non renseigné\n";
     } else if (valueName.length < 3) {
@@ -47,7 +47,7 @@ function communVerify(){
 
     balance = parseFloat(valueBalance);
     if (balance!==0 && !balance && valueBalance !== "") {
-        message += "Balance doit etre un nombre. ";
+        message += "Balance doit être un nombre. ";
     } else if (balance < 0) {
         message += "Le solde doit être positif. ";
     }

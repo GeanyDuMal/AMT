@@ -12,7 +12,7 @@ class CommonProductMethods
         $data = $request->request;
         $productType=$data->get('productType');
         $type=$productTypeRepository->findOneBy(["name"=>$productType]);
-        $productName=$data->get("ProductName");
+        $productName=$data->get("productName");
         $productStock=$data->get("productStock");
         $imageLink=$data->get("imageLink");
         //
