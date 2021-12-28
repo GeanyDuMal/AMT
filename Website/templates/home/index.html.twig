@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="/style/home/css/home.css" rel="stylesheet"/>
+    {# <link href="/style/home/css/home.css" rel="stylesheet"/> #}
+    <link href="/style/base/css/base.css" rel="stylesheet"/>
     {# Bootstrap CSS Import #}
     <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     {# Icons #}
@@ -28,12 +29,6 @@
     {% endblock %}
 
     {% block body %}
-        {% block navbar %}
-            {{ parent() }}
-        {% endblock %}
-        {% block sidebar %}
-            {{ parent() }}
-        {% endblock %}
         {# Home Page #}
         <h1>
             Hello
@@ -71,9 +66,5 @@
 
             </li>
         </ul>
-        {# End Home Page #}
-        {% block footer %}
-            {{ parent() }}
-        {% endblock %}
     {% endblock %}
 

@@ -1,0 +1,122 @@
+/* Global */
+
+/* Colors */
+
+// scss
+$white: #f2f2f2;
+$black: #000;
+$dark-red: #4c0d00;
+$middle-red: #760700;
+$primary: #212529;//#1B1919; 
+// $dark-gray: #242424; <-- useless here
+
+// css if some of you don't wan't to use scss :))
+:root {
+    /* Our Colors // GoInfo */
+    --white: #f2f2f2;
+    --black: #000;
+    --primary: #212529; 
+    --dark-red: #4c0d00;
+    --middle-red: #760700;
+    //--d-bootstrap: #212529; == the color of the dark theme of bootstrap, I think I won't use this at all
+}
+/* End Colors */
+
+body {
+    /* font-family: "Lato", sans-serif; */
+    padding-top: 4.5rem;
+}
+
+/* End Global */
+
+/* Navbar */
+
+.navbar {
+    /* position: fixed; */
+    top: 0;
+    width: 100%;
+    background-color: $primary;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    background-color: $primary;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    transition: 0.5s;
+    padding-top: 70px;
+}
+
+.sidebar a {
+    padding: 0 0 0 2.5%;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    color: $white;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: auto;
+    /* font-size: 36px; */
+    margin-left: 0;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and(max-height: 450px) {
+    .sidebar {
+        padding-top: 15px;
+    }
+
+    .sidebar a {
+        font-size: 18px;
+    }
+}
+
+/* End Navbar */
+
+/* Footer */
+
+.social,
+.copyright {
+    margin: 1rem;
+    text-align: center;
+}
+
+.social li {
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    background-color: $primary;
+}
+
+.icon {
+    color: $white;
+    font-size: 1.5rem;
+    transition: 0.2s;
+}
+
+.icon:hover {
+    color: $middle-red;
+}
+
+/* End Footer */
