@@ -1,24 +1,33 @@
 {% extends 'home/index.html.twig' %}
+
 {% block stylesheets %}
-    <link
-            href="/style/product/productList.css" rel="stylesheet"/>
+    {# Style Base Import #}
+    <link href="/style/base/css/base.css" rel="stylesheet"/>
+    {# End Style Base Import #}
+
+    <link href="/style/product/productList.css" rel="stylesheet"/>
+
     {# Bootstrap CSS Import #}
     <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     {# Icons #}
     <link
             rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
     {# End Bootstrap CSS Import #}
+
+    {# Google Fonts #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    {# End Google Fonts #}
 {% endblock %}
+
 {% block title %}Nos Produits{% endblock %}
 
 
 {% block body %}
-    {% block navbar %}{{ parent() }}{% endblock %}
-    {% block sidebar %}{{ parent() }}{% endblock %}
-
-
     <div class="content-wrapper">
-        <div class="content-header">
+        <div class="content-header d-flex justify-content-center">
+        {# d-flex justify-content-center : pour centrer à l'aide de bootstrap ;) #}
             <h1>Nos Produits</h1>
         </div>
         {% for product in products %}
@@ -38,7 +47,4 @@
         {% endfor %}
 
     </div>
-    {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}
-
-
