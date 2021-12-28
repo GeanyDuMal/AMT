@@ -18,7 +18,7 @@
 }
 
 .btn {
-      width: 50%;
+      width: 10vw;
       font-weight: 700;
 }
 
@@ -48,14 +48,19 @@
       width: 100%;
 }
 
-.img_product{
-      max-width: 200px;
+.img{
+      max-width: 100px;
       height: auto;
 
 }
 
 select{
-      margin: 15px;
+      margin: 10px;
+}
+
+.flex_vertical.block_bottom_create{
+      flex-direction: row;
+      justify-content: center;
 }
 
 @media(max-width: 600px) {
@@ -67,5 +72,10 @@ select{
       .block_product{
             width: fit-content;
             width: 85vw;
+      }
+
+      .btn {
+            width: 50%;
+            font-weight: 700;
       }
 }
