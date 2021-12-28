@@ -2,8 +2,13 @@
 
 {% block title %}Menu Commande{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/bootstrap.css">
+    <link rel="stylesheet" href="/style/command/menu.css">
+{% endblock %}
+
 {% block body %}
-    <div class="content">
+    	<div class="content">
 		<div class="content-header">
 			<h1>Liste des commandes</h1>
 		</div>
@@ -14,6 +19,57 @@
 			</div>
 		{% endif %}
 		
-		
+		{% if orderList|length > 0 %}
+		<table id="order_table" class="table table-striped">
+			<thead bgcolor="#6cd8dc">
+				<tr class="table-primary">
+					<th width="10%">ID</th>
+					<th width="15%">Date</th>
+					<th width="15%">Montant</th>
+					<th width="15%">Login Client</th>
+					<th width="15%">Type du client</th>
+					<th scope="col" width="5%">Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for order in orderList %}
+				<tr>
+					<td>
+						{{ order.id }}
+					</td>
+					<td>
+						{{ order.orderedAt|date('d-m-Y') }}
+					</td>
+					<td>
+						{{ order.id }}
+					</td>
+					{% if order.client %}
+						<td>
+							{{ order.client.login }}
+						</td>
+						<td>
+							{{ order.client.clientType.name }}
+						</td>
+					{% else %}
+						<td>
+							Client non renseigné
+						</td>
+						<td>
+						</td>
+					{% endif %}
+					<td>
+						<a id="toDelete" class="btn btn-danger">Supprimer</a>
+					</td>
+				</tr>
+			{% endfor %}
+			
+			</tbody>
+		</table>
+		{% else %}
+			<div class="alert alert-info alert-dismissible fade show">
+				<strong>Info!</strong> il n y a pas encore des Commandes.
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			</div>
+		{% endif %}
 	</div>
 {% endblock %}
