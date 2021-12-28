@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateOrderController extends AbstractController
 {
     /**
-     * @Route("/command/create", name="commandCreate")
+     * @Route("/command/create", name="orderCreate")
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
