@@ -53,6 +53,10 @@
 
 }
 
+select{
+      margin: 15px;
+}
+
 @media(max-width: 800px) {
       .img_product{
             max-width: 40vw;
