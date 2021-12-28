@@ -92,6 +92,7 @@ class CommandPaymentController extends AbstractController
 
                 //Maybe faire une verif
                 $orderManager->reduceBalanceIfNecessary($order);
+                $orderManager->addFidelityToClient($order);
                 //rediriger ailleurs
             }
         }
