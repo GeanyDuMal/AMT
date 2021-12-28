@@ -47,17 +47,7 @@ class CreateOrderController extends AbstractController
 
         //Si l'on a commandé au moins 1 produits
         if ($productOrdered){
-            $clientCommande = null;
-            $idClient = -1;
-
-            if($inputParameterBag->get("client_commande") != null){
-                $clientCommande = $clientRepository->find($inputParameterBag->get("client_commande"));
-            }
-            if ($clientCommande){
-                $idClient = $clientCommande->getId();
-            }
-
-            return $this->redirectToRoute("command_payment", [
+            return $this->redirectToRoute("commandPayment", [
                 "productOrderedSerialized" => serialize($productOrdered),
                 "idClient" => $inputParameterBag->get("client_commande")
             ]);

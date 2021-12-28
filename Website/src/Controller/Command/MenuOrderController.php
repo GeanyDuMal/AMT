@@ -9,11 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class MenuOrderController extends AbstractController
 {
     /**
-     * @Route("/order/menu", name="orderMenu")
+     * @Route("/command/menu", name="orderMenu")
      */
     public function index(): Response
     {
-        return $this->render('order/menu.html.twig', [
+        return $this->render('command/menu.html.twig', [
         ]);
     }
 }
