@@ -21,13 +21,13 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index(UserPasswordHasherInterface $passwordHasher,AssociationRepository $associationRepository,Request $request,ClientTypeRepository $clientTypeRepository,AssociationRoleRepository $associationRoleRepository,ClientRepository $clientRepository,$id,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index($id,UserPasswordHasherInterface $passwordHasher,AssociationRepository $associationRepository,Request $request,ClientTypeRepository $clientTypeRepository,AssociationRoleRepository $associationRoleRepository,ClientRepository $clientRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
         $data = $request->request;
-        $commonFunctions=new CommonFunctions();
+        $commonFunctions=new CommonClientMethods();
         $client = $clientRepository->find($id);
 
         $clientManager = new ClientManager($manager);
@@ -71,10 +71,10 @@ class EditClientController extends AbstractController
      * @param Client $client
      * @param Request $request
      * @param EntityManagerInterface $manager
-     * @param CommonFunctions $commonFunctions
+     * @param CommonClientMethods $commonFunctions
      * @return void
      */
-    private function manageMember(AssociationRepository $associationRepository, AssociationRoleRepository $associationRoleRepository, Client $client, Request $request, EntityManagerInterface $manager, CommonFunctions $commonFunctions)
+    private function manageMember(AssociationRepository $associationRepository, AssociationRoleRepository $associationRoleRepository, Client $client, Request $request, EntityManagerInterface $manager, CommonClientMethods $commonFunctions)
     {
         $data=$request->request;
         $existeDansAssos=$associationRepository->findOneBy(['member'=>$client]);

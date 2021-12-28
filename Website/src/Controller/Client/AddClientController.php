@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
+
 class AddClientController extends AbstractController
 {
     /**
@@ -24,7 +25,7 @@ class AddClientController extends AbstractController
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
-        $commonFunctions=new CommonFunctions();
+        $commonFunctions=new CommonClientMethods();
         $data = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client();

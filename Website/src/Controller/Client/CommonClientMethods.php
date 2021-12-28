@@ -8,7 +8,7 @@ use App\Repository\ClientTypeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class CommonFunctions{
+class CommonClientMethods{
     /**
      * @param Client $client
      * @param Request $request
