@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandPaymentController extends AbstractController
 {
     /**
-     * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="commandPayment")
+     * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="orderPayment")
      */
     public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request): Response
     {
