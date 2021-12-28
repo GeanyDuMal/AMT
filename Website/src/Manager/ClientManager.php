@@ -3,13 +3,11 @@
 namespace App\Manager;
 
 use App\Entity\Association;
-use App\Entity\AssociationRole;
 use App\Entity\Client;
 use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ClientManager
@@ -64,9 +62,9 @@ class ClientManager
           if (!is_null($client)){
               $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-            $containsSpecialPassword = $this->verifPassword($client->getPassword());
-            $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
-            $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
+              $containsSpecialPassword = $this->verifPassword($client->getPassword());
+              $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
+              $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
               $nameUpperThree = (strlen($client->getName()) >=3);
               $firstNameUpperThree = (strlen($client->getFirstName()) >=3);
@@ -171,5 +169,9 @@ class ClientManager
         $newMember->setMember($client);
         $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('types')]));
         return $newMember;
+    }
+
+    public function addFidelityPoint(int $amountOrder, Client $client): void{
+          $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
     }
 }

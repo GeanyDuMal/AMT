@@ -52,11 +52,11 @@ class OrderManager
         return $montantTotal;
     }
 
-    public function addFidelity(Command $order): void{
-        $montantOrder = $this->montantTotal($order);
-        $clientOrder = $order->getClient();
-
-        $clientOrder->
+    public function addFidelityToClient(Command $order):void{
+        if ($order->getClient() != null){
+            $clientManager = new ClientManager($this->manager);
+            $clientManager->addFidelityPoint($this->montantTotal($order), $order->getClient());
+        }
     }
 
     public function verifyOrder(Command $order): bool{
