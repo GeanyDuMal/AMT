@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% block body %}
+    {% block navbar %}{{ parent() }}{% endblock %}
+    {% block sidebar %}{{ parent() }}{% endblock %}
+    
     <form method="POST" class="flex_vertical" id="form_command">
         <div class="flex_horizontal centered_flex_horizontal block_all_product">
         {% for product in productList %}
