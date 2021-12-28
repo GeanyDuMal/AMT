@@ -37,6 +37,28 @@ class OrderManager
         }
     }
 
+    public function montantTotal(Command $order): float{
+        $purchaseRepository = $this->manager->getRepository(Purchase::class);
+        $priceRepository = $this->manager->getRepository(Price::class);
+        $montantTotal = 0;
+
+        $allOrderPurchase = $purchaseRepository->findBy(["command" => $order]);
+
+        foreach ($allOrderPurchase as $purchase){
+            $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
+                    "clientType" => $order->getClient()->getClientType()])->getPrice();
+        }
+
+        return $montantTotal;
+    }
+
+    public function addFidelity(Command $order): void{
+        $montantOrder = $this->montantTotal($order);
+        $clientOrder = $order->getClient();
+
+        $clientOrder->
+    }
+
     public function verifyOrder(Command $order): bool{
         return ($order->getOrderedAt() != null && $order->getPaymentType() != null);
     }

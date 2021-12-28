@@ -104,7 +104,7 @@ class ClientManager
           return strpbrk($password, $regexSpecial);
       }
 
-    public function setData(Client &$client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
+    public function setData(Client $client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
         $data = $request->request;
 
         $client->setName(trim($data->get('name')));
@@ -128,7 +128,7 @@ class ClientManager
         $role= $this->getRoleFromType($typeName);
         $client->setRoles($role);
         //this variable is only used to pick a type of the client
-        $typeName=!$isStudent?"Association":$typeClient;
+        $typeName = !$isStudent?"Association":$typeClient;
         $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
         $client->setClientType($type);
         if($isStudent){
@@ -137,20 +137,31 @@ class ClientManager
     }
 
     public function getRoleFromType(string $typeName):array{
-        $role=array();
+        $role=[];
         switch ($typeName){
-            case "Tresorier":$role[] = "ROLE_TRESORIER";break;
-            case "President":$role[] = "ROLE_PRESIDENT";break;
-            default:$role[] = "ROLE_ASSOC";break;
+            case "Tresorier":
+                $role[] = "ROLE_TRESORIER";
+                break;
+            case "President":
+                $role[] = "ROLE_PRESIDENT";
+                break;
+            default:
+                $role[] = "ROLE_ASSOC";
+                break;
         }
         return $role;
     }
     public function getTypeFromRole(array $role):string{
-        $type="";
         switch ($role[0]){
-            case "ROLE_TRESORIER":$type = "Tresorier";break;
-            case "ROLE_PRESIDENT":$type = "President";break;
-            default:$type = "Membre";break;
+            case "ROLE_TRESORIER":
+                $type = "Tresorier";
+                break;
+            case "ROLE_PRESIDENT":
+                $type = "President";
+                break;
+            default:
+                $type = "Membre";
+                break;
         }
         return $type;
     }
