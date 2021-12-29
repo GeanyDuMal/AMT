@@ -29,7 +29,9 @@ class ShowClientController extends AbstractController
             return $this->redirectToRoute('home');
         }
         $clients = $manager->getRepository(Client::class)->findAll();
-        return $this->render('client/index.html.twig', array('clients' => $clients));
+        return $this->render('client/index.html.twig', [
+            'clients' => $clients
+        ]);
     }
     /**
      * @Route("/admin/client/{message}", name="client_list_message",methods={"GET", "POST"} )
@@ -40,7 +42,10 @@ class ShowClientController extends AbstractController
             return $this->redirectToRoute('home');
         }
         $clients = $manager->getRepository(Client::class)->findAll();
-        return $this->render('client/index.html.twig', array('clients' => $clients,'message'=>$message));
+        return $this->render('client/index.html.twig', [
+            'clients' => $clients,
+            'message'=>$message
+        ]);
     }
 
 }

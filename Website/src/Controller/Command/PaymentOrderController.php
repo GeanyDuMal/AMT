@@ -99,7 +99,7 @@ class PaymentOrderController extends AbstractController
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);
         //rediriger ailleurs
-            return $this->redirectToRoute("orderCreate", ["succes" => 1]);
+            return $this->redirectToRoute("orderMenu", ["message" => "Commande effectuée avec succes"]);
         }
 
         return $this->render('command/payment.html.twig', [

@@ -1,4 +1,21 @@
 .content{
-      width: 80vw;
+      width:fit-content;
+      min-width: 80vw;
       margin: 0 auto;
+}
+
+th{
+      width: fit-content;
+}
+
+@media(max-width: 600px) {
+      .content{
+            min-width: 0;
+      }
+      #order_table{
+            font-size: 0.6rem;;
+      }
+      .phone_hidden{
+            display: none;
+      }
 }

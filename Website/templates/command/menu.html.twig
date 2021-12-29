@@ -5,9 +5,12 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/bootstrap.css">
     <link rel="stylesheet" href="/style/command/menu.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 {% endblock %}
 
 {% block javascripts %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script src="/script/command/menuCommand.js"></script>
 {% endblock %}
 
@@ -15,6 +18,9 @@
     	<div class="content">
 		<div class="content-header">
 			<h1>Liste des commandes</h1>
+		</div>
+		<div align="left" style="margin:5px">
+			<a href="{{ path('orderCreate') }}" class="btn btn-success">Ajouter</a>
 		</div>
 		{% if message is defined %}
 			<div class="alert alert-dismissible alert-success">
@@ -27,12 +33,13 @@
 		<table id="order_table" class="table table-striped">
 			<thead bgcolor="#6cd8dc">
 				<tr class="table-primary">
-					<th width="10%">ID</th>
-					<th width="15%">Date</th>
-					<th width="15%">Montant</th>
-					<th width="15%">Login Client</th>
-					<th width="10%">Type du client</th>
-					<th scope="col" width="5%">Supprimer</th>
+					<th>ID</th>
+					<th>Date et Heure</th>
+					<th>Nom Client</th>
+					<th class="phone_hidden">Login</th>
+					<th class="phone_hidden">Type Client</th>
+					<th>Montant</th>
+					<th>Supprimer</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -42,27 +49,30 @@
 						{{ order.id }}
 					</td>
 					<td>
-						{{ order.orderedAt|date('d-m-Y') }}
-					</td>
-					<td>
-						{{ montantOrder[order.id] }}€
+						{{ order.orderedAt|date('d/m/Y à H:i:s') }}
 					</td>
 					{% if order.client %}
 						<td>
+							{{ order.client.name }} {{ order.client.firstName }}
+						</td>
+						<td class="phone_hidden">
 							{{ order.client.login }}
 						</td>
-						<td>
+						<td class="phone_hidden">
 							{{ order.client.clientType.name }}
 						</td>
 					{% else %}
 						<td>
 							Client non renseigné
 						</td>
-						<td>
-						</td>
+						<td class="phone_hidden"></td>
+						<td class="phone_hidden"></td>
 					{% endif %}
 					<td>
-						<a id="toDelete" class="btn btn-danger">Supprimer</a>
+						{{ montantOrder[order.id] }}€
+					</td>
+					<td>
+						<a id="toDelete" class="btn btn-danger">x</a>
 					</td>
 				</tr>
 			{% endfor %}

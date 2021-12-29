@@ -15,7 +15,7 @@ class MenuOrderController extends AbstractController
     /**
      * @Route("/command/menu", name="orderMenu")
      */
-    public function index(EntityManagerInterface $manager, Request $request): Response
+    public function menu(EntityManagerInterface $manager, Request $request): Response
     {
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
@@ -27,6 +27,27 @@ class MenuOrderController extends AbstractController
         }
 
         return $this->render('command/menu.html.twig', [
+            "orderList" => $allOrder,
+            "montantOrder" => $montantId
+        ]);
+    }
+
+    /**
+     * @Route("/command/menu{message}", name="orderMenu")
+     */
+    public function menuWithMessage($message ,EntityManagerInterface $manager, Request $request): Response
+    {
+        $commandeRepository = $manager->getRepository(Command::class);
+        $orderManager = new OrderManager($manager);
+
+        $allOrder = $commandeRepository->findBy([], ["orderedAt" => "DESC"]);
+        $montantId = [];
+        foreach ($allOrder as $order){
+            $montantId = $montantId + [$order->getId() => $orderManager->montantTotal($order)];
+        }
+
+        return $this->render('command/menu.html.twig', [
+            "message" => $message,
             "orderList" => $allOrder,
             "montantOrder" => $montantId
         ]);
