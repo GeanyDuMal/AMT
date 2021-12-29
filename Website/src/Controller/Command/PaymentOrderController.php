@@ -75,8 +75,6 @@ class PaymentOrderController extends AbstractController
             $orderManager = new OrderManager($manager);
             $paymentTypeChose = $paymentTypeRepository->find($inputParameterBag->get('payement_type'));
 
-            //Verif si Solde
-
             $order = new Command();
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
@@ -98,8 +96,8 @@ class PaymentOrderController extends AbstractController
 
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);
-        //rediriger ailleurs
-            return $this->redirectToRoute("orderMenu", ["message" => "Commande effectuée avec succes"]);
+            //rediriger ver l'accueil
+            return $this->redirectToRoute("orderMenuMessage", ["message" => "Commande effectuée avec succes"]);
         }
 
         return $this->render('command/payment.html.twig', [

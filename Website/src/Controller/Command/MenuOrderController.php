@@ -33,7 +33,7 @@ class MenuOrderController extends AbstractController
     }
 
     /**
-     * @Route("/command/menu{message}", name="orderMenu")
+     * @Route("/command/menu{message}", name="orderMenuMessage")
      */
     public function menuWithMessage($message ,EntityManagerInterface $manager, Request $request): Response
     {

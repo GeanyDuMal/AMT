@@ -3,13 +3,12 @@
 {% block title %}Menu Commande{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/bootstrap.css">
     <link rel="stylesheet" href="/style/command/menu.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 {% endblock %}
 
 {% block javascripts %}
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script src="/script/command/menuCommand.js"></script>
 {% endblock %}
@@ -23,7 +22,7 @@
 			<a href="{{ path('orderCreate') }}" class="btn btn-success">Ajouter</a>
 		</div>
 		{% if message is defined %}
-			<div class="alert alert-dismissible alert-success">
+			<div class="alert alert-dismissible alert-success fade show">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				<strong>{{ message }}!</strong>
 			</div>
