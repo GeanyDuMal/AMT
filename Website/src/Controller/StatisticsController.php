@@ -28,7 +28,11 @@ class StatisticsController extends AbstractController
         $salesRevenueOverAll=$purchaseRepository->salesRevunueOverAll()["revunue"];
         $salesRevenueThisMonth=$purchaseRepository->salesRevenueThisMonth()["revunue"];
         $salesRevenueThisWeek=$purchaseRepository->salesRevenueThisWeek()["revunue"];
-        $averagePerStudent=number_format($salesRevenueThisWeek/$countThisWeeksCommands,2);
+        if($countThisWeeksCommands==0){
+            $averagePerStudent=0;
+        }else {
+            $averagePerStudent = number_format($salesRevenueThisWeek / $countThisWeeksCommands, 2);
+        }
         $postsNumber=count($postRepository->findAll());
         $noStock=[];
         //we send the name of the product and number of quantity bought for each one to the template associated
