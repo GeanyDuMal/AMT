@@ -26,45 +26,66 @@
 
 {% block head %}
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% endblock %}
+{% endblock %}
 
-    {% block body %}
-        {# Home Page #}
-        <h1>
-            Hello
-            {{ controller_name }}
-            ! ✅
-        </h1>
-        This friendly message is coming from:
-        <ul>
-            <li>Your template at
+{% block body %}
+    {# Home Page #}
 
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
+    {# Map #}
+    {# <div class="mapouter">
+        <div class="gmap_canvas">
+            <iframe width="100%" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=iut%20metz%20saulcy&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        </div>
+    </div> #}
+    {# End Map #}
 
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
+    {# Accordion #}
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Accordion Item #1
+            </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                <div class="accordion-body">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae ut ea autem voluptates cupiditate libero doloribus illo, facere beatae qui optio inventore eum minus quae omnis a dignissimos accusamus deserunt. 
+                </div>
+            </div>
+        </div>
 
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Accordion Item #2
+            </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
+            <div class="accordion-body">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis velit cumque aliquam perspiciatis maiores quasi voluptates, doloremque minima unde culpa, ad qui quas eum ea! Eaque ratione accusamus unde aliquid.            </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                Notre Adresse
+            </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
+            <div class="accordion-body">
+                
+            <div class="mapouter">
+                <div class="gmap_canvas">
+                    <iframe width="100%" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=iut%20metz%20saulcy&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </div>
+            </div>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illum corrupti dolores ab, repudiandae odio facere voluptatibus. Eveniet sunt maxime, sint ab voluptatem minus rem quidem quas! Ratione quia ipsam autem!
+            </div>
+        </div>
+    </div>
+    {# End Accordion #}
 
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem, delectus assumenda rem ex iure totam. Nostrum doloribus labore repellat, dolores voluptatibus fugiat, tempore ut modi delectus vitae laborum hic architecto!</p>
-
-
-            </li>
-        </ul>
-    {% endblock %}
+    {# End Home Page #}
+{% endblock %}
 
