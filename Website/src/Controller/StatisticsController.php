@@ -23,7 +23,7 @@ class StatisticsController extends AbstractController
             $productSum[]=$purchaseRepository->getQuantityByProduct($product)[0]["somme"];
         }
         //
-        $orders=$commandRepository->CountByDate();
+        $orders=$commandRepository->countByDate();
         $thisWeek[]=$this->thisWeek();
         $orderDate=[];
         $orderCount=[];
