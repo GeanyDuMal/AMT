@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Client;
+use App\Entity\ClientType;
 use App\Entity\Command;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,14 +21,26 @@ class CommandRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Command::class);
     }
-    public function CountByDate()
+
+
+    public function countByDate()
     {
         return $this->createQueryBuilder('a')
             ->select("SUBSTRING(a.orderedAt,1,10) as orderDate,count(a) as count")
             ->groupBy('orderDate')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
+    }
+
+    public function findAllOrderAndClientAndClientType()
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.client', 'c')
+            ->leftjoin('c.clientType', 't')
+            ->addSelect('c')
+            ->addSelect('t')
+            ->getQuery()
+            ->getResult();
     }
     public function thisWeeksCommands()
     {
