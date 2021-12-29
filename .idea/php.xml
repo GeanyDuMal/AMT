@@ -136,9 +136,10 @@
       <path value="$PROJECT_DIR$/Website/vendor/doctrine/doctrine-fixtures-bundle" />
       <path value="$PROJECT_DIR$/Website/vendor/doctrine/data-fixtures" />
       <path value="$PROJECT_DIR$/Website/vendor/twbs/bootstrap" />
+      <path value="$PROJECT_DIR$/Website/vendor/symfony/webpack-encore-bundle" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.2">
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.4">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpUnit">

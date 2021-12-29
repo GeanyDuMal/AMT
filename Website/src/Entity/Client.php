@@ -47,7 +47,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private $login;
     /**
      * @ORM\Column(type="string", length=255)
-
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/[^a-zA-Z\d]/",
+     *     message="le mot de passe doit contenir au moins un caractére spéciale",
+     * )
      */
     /*
      *     * @Assert\All

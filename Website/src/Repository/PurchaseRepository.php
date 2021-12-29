@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,7 +19,16 @@ class PurchaseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Purchase::class);
     }
-
+    public function getQuantityByProduct(Product $product)
+    {
+        return $this->createQueryBuilder('a')
+            ->select("SUM( a.quantity ) as somme")
+            ->andWhere("a.product=:id")
+            ->setParameter('id',$product->getId())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Purchase[] Returns an array of Purchase objects
     //  */
