@@ -32,7 +32,7 @@ class AddProductController extends AbstractController
             $validationErrors = $validator->validate($produit);
             if($validationErrors->count()==0){
                 if($productRepository->findBy(['name'=>$produit->getName()]))
-                    $productExistsError="Produit existe déja";
+                    $productExistsError="Le produit existe déjà";
                 else{
                     $manager->persist($produit);
                     $manager->flush();

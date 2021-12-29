@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Controller\Blog;
+
+use App\Entity\Post;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class ShowBlogController extends AbstractController
+{
+    /**
+     * @Route("/blog", name="blog")
+     */
+    public function index(EntityManagerInterface $manager): Response
+    {
+
+        $blogs=$manager->getRepository(Post::class)->findAll();
+        return $this->render('blog/AddModalBlog.html.twig', array('blogs'=>$blogs));
+    }
+}
