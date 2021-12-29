@@ -27,6 +27,18 @@ class CommandRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function thisWeeksCommands()
+    {
+        $thisWeek =date('W');
+        return $this->createQueryBuilder('a')
+            ->select("count(a) as number")
+            ->where("WEEK(a.orderedAt)=:thisWeek")
+            ->setParameter("thisWeek",$thisWeek)
+            ->getQuery()
+            ->getResult()[0]
+            ;
+
+    }
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */
@@ -55,5 +67,6 @@ class CommandRepository extends ServiceEntityRepository
         ;
     }
     */
+
 
 }

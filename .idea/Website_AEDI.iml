@@ -140,6 +140,7 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/doctrine/doctrine-fixtures-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/doctrine/data-fixtures" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/twbs/bootstrap" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/beberlei/doctrineextensions" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\ClientRepository;
 use App\Repository\CommandRepository;
+use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,22 +16,34 @@ class StatisticsController extends AbstractController
     /**
      * @Route("/statistics", name="statistics",methods={"GET", "POST"} )
      */
-    public function index(ProductRepository $productRepository,PurchaseRepository $purchaseRepository,CommandRepository $commandRepository):Response{
+    public function index(ProductRepository $productRepository,PostRepository $postRepository,PurchaseRepository $purchaseRepository,CommandRepository $commandRepository,ClientRepository $clientRepository):Response{
+        if (!$this->isGranted('ROLE_TRESORIER')){
+            return $this->redirectToRoute('home');
+        }
+
         $products=$productRepository->findAll();
         $productSum=$productName=array();
+        $countClients=count($clientRepository->findAll());
+        $countThisWeeksCommands=$commandRepository->thisWeeksCommands()["number"];
+        $salesRevenueOverAll=$purchaseRepository->salesRevunueOverAll()["revunue"];
+        $salesRevenueThisMonth=$purchaseRepository->salesRevenueThisMonth()["revunue"];
+        $salesRevenueThisWeek=$purchaseRepository->salesRevenueThisWeek()["revunue"];
+        $averagePerStudent=number_format($salesRevenueThisWeek/$countThisWeeksCommands,2);
+        $postsNumber=count($postRepository->findAll());
+        $noStock=[];
         //we send the name of the product and number of quantity bought for each one to the template associated
         foreach($products as $product){
+            if($product->getQuantityStock()<=10)
+                $noStock[]=$product;
             $productName[]=$product->getName();
             $productSum[]=$purchaseRepository->getQuantityByProduct($product)[0]["somme"];
         }
         //
         $orders=$commandRepository->countByDate();
         $thisWeek[]=$this->thisWeek();
-        $orderDate=[];
         $orderCount=[];
         for($i=0;$i<count($thisWeek[0]);$i++){
             $count=$this->existIn($thisWeek[0][$i],$orders);
-            $orderDate[]=$thisWeek[0][$i];
             if($count>0)
                 $orderCount[]=$count;
             else
@@ -41,8 +55,13 @@ class StatisticsController extends AbstractController
             "productSum"=>json_encode($productSum),
             "productName"=>json_encode($productName),
             "orderCount"=>json_encode($orderCount),
-            "orderDate"=>json_encode($orderDate),
-            "thisWeek"=>json_encode($thisWeek[0])
+            "thisWeek"=>json_encode($thisWeek[0]),
+            "countClients"=>json_encode($countClients),
+            "noStock"=>$noStock,
+            "salesRevenueOverAll"=>$salesRevenueOverAll,
+            "salesRevenueThisMonth"=>$salesRevenueThisMonth,
+            "averagePerStudent"=>$averagePerStudent,
+            "postsNumber"=>$postsNumber
         ]);
     }
 

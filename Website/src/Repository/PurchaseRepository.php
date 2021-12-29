@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Price;
 
 /**
  * @method Purchase|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,6 +29,40 @@ class PurchaseRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+    public function salesRevunueOverAll()
+    {
+        $purchase=$this->getEntityManager()->createQuery("
+            SELECT SUM(Price.price*Purchase.quantity) as revunue
+            FROM App\Entity\Price Price,App\Entity\Purchase Purchase
+            WHERE Purchase.product=Price.product
+        ");
+        return $purchase->getResult()[0];
+    }
+
+    public function salesRevenueThisWeek()
+    {
+        $thisWeek =date('W');
+        $purchase=$this->getEntityManager()->createQuery("
+            SELECT SUM(Price.price*Purchase.quantity) as revunue,WEEK(Command.orderedAt) week
+            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Command Command
+            WHERE Purchase.product=Price.product
+            AND WEEK(Command.orderedAt)=$thisWeek
+            AND Command=Purchase.command
+        ");
+        return $purchase->getResult()[0];
+    }
+    public function salesRevenueThisMonth()
+    {
+        $thisMonth =date('m');
+        $purchase=$this->getEntityManager()->createQuery("
+            SELECT SUM(Price.price*Purchase.quantity) as revunue
+            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Command Command
+            WHERE Purchase.product=Price.product
+            AND MONTH(Command.orderedAt)=$thisMonth
+            AND Command=Purchase.command
+        ");
+        return $purchase->getResult()[0];
     }
     // /**
     //  * @return Purchase[] Returns an array of Purchase objects
@@ -57,4 +92,6 @@ class PurchaseRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
 }
