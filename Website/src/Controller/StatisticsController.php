@@ -37,7 +37,7 @@ class StatisticsController extends AbstractController
 
         }
 
-        return $this->render("statisticsModalPage.html.twig",[
+        return $this->render("statistics/statisticsModalPage.html.twig",[
             "productSum"=>json_encode($productSum),
             "productName"=>json_encode($productName),
             "orderCount"=>json_encode($orderCount),
