@@ -18,7 +18,15 @@ class CommandRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Command::class);
     }
-
+    public function CountByDate()
+    {
+        return $this->createQueryBuilder('a')
+            ->select("SUBSTRING(a.orderedAt,1,10) as orderDate,count(a) as count")
+            ->groupBy('orderDate')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */
@@ -47,4 +55,5 @@ class CommandRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

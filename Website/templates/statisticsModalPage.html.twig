@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Statistiques
+{% endblock %}
+
+
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+     <div class="container">
+             <div class="row">
+                 <h1 class='text-center'>Quantité acheté par produit</h1>
+                 <div>
+                     <canvas id="MostBoughtProduct" width="500" ></canvas>
+                 </div>
+                 <h1 class='text-center'>Nombre de commande par jour</h1>
+                 <div>
+                     <canvas id="everydayPurchase" ></canvas>
+                 </div>
+
+             </div>
+     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let MostBoughtProduct = document.getElementById('MostBoughtProduct').getContext('2d');
+        let myChart = new Chart(MostBoughtProduct, {
+            type: 'pie',
+            data: {
+                labels: {{ productName|raw }},
+                datasets: [{
+                    label: '# Commandes',
+                    data: {{ productSum|raw }},
+                    backgroundColor: [
+                        '#760700',
+                        '#8d2918',
+                        '#a4432d',
+                        '#bb5c44',
+                        '#d2755b',
+                        '#e88f74'
+                    ],
+                }]
+            },
+            options:{
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+        let everydayPurchase = document.getElementById('everydayPurchase');
+        let everydayPurchaseChart=new Chart(everydayPurchase,{
+            type: "bar",
+            data:{
+                labels: {{ thisWeek|raw }},
+                datasets: [{
+                    data: {{ orderCount|raw }},
+                    backgroundColor:  [
+                        '#760700',
+                        '#8d2918',
+                        '#a4432d',
+                        '#bb5c44',
+                        '#d2755b',
+                        '#e88f74'
+                    ],
+                }],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+
+            }
+
+        )
+    </script>
+{% endblock %}

@@ -26,9 +26,9 @@ h1{
     z-index: 1;
 }
 html{
-     position:relative;
-     min-height: 100%;
- }
+    position:relative;
+    min-height: 100%;
+}
 footer {
     position: absolute;
     bottom: 0;
@@ -50,6 +50,18 @@ form{
     border-radius: 10px;
     padding: 5px;
 }
+#client_table thead th{
+    color: white;
+    border-color: inherit;
+    background-color: #760700;
+}
+.btn-danger:hover{
+    border-color: inherit;
+    background-color: #760700;
+}
+td,th {
+    text-align: center;
+}
 .btn-warning{
     color: white;
     border-color: inherit;
@@ -59,13 +71,4 @@ form{
     background-color: black;
     color: white;
     border-color: inherit;
-}
-#client_table thead th{
-    color: white;
-    border-color: inherit;
-    background-color: #760700;
-}
-.btn-danger:hover{
-    border-color: inherit;
-    background-color: #760700;
 }
