@@ -10,15 +10,8 @@
     {# Bootstrap CSS Import #}
     <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     {# Icons #}
-    <link
-            rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
     {# End Bootstrap CSS Import #}
-
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    {# End Google Fonts #}
 {% endblock %}
 
 {% block title %}Nos Produits{% endblock %}
@@ -28,7 +21,7 @@
     <div class="content-wrapper">
         <div class="content-header d-flex justify-content-center">
         {# d-flex justify-content-center : pour centrer à l'aide de bootstrap ;) #}
-            <h1>Nos Produits</h1>
+            <h1 class="top-text">Nos Produits</h1>
         </div>
         {% for product in products %}
             <div class="card mb-3 mx-auto">
