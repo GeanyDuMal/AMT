@@ -17,7 +17,7 @@ class MenuOrderController extends AbstractController
     /**
      * @Route("/command/menu", name="orderMenu")
      */
-    public function menu(EntityManagerInterface $manager, Request $request): Response
+    public function menu(EntityManagerInterface $manager): Response
     {
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
@@ -37,7 +37,7 @@ class MenuOrderController extends AbstractController
     /**
      * @Route("/command/menu{message}", name="orderMenuMessage")
      */
-    public function menuWithMessage($message ,EntityManagerInterface $manager, Request $request): Response
+    public function menuWithMessage($message ,EntityManagerInterface $manager): Response
     {
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
