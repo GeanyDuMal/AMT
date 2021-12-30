@@ -29,11 +29,11 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 function warningDelete(){
     swalWithBootstrapButtons.fire({
-        title: 'Supprilmer la commande',
+        title: 'Supprimer la commande',
         text: "Etes vous sur de vouloir supprimer la commande",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Suopprimer',
+        confirmButtonText: 'Supprimer',
         cancelButtonText: 'Annuler',
         reverseButtons: true
     }).then((result) => {
