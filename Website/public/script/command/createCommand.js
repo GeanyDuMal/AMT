@@ -58,12 +58,6 @@ function checkQuantityInput() {
 }
 
 function preventPayment() {
-      // La reponse sera stocké dans result
-      Swal.fire({
-            title: 'Do you want to save the changes?',
-            showCancelButton: true,
-            confirmButtonText: 'Save',
-      }).then((result) => {
-            return result;
-      })
+      return confirm("Attention, toute commande effectuée ne pourras etre remboursée, etes vous sûr des elements que vous " +
+          "avez saisi ?")
 }
