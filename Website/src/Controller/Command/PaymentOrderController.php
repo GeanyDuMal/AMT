@@ -75,6 +75,17 @@ class PaymentOrderController extends AbstractController
             $orderManager = new OrderManager($manager);
             $paymentTypeChose = $paymentTypeRepository->find($inputParameterBag->get('payement_type'));
 
+            /*
+             * Permet de verifier si le produit commander est en stock
+             * Prevent si l'utilisateur clique plusieurs fois sur le bouton valider
+             */
+            foreach ($productOrderedIdTab as $productId => $quantity) {
+                $product = $productRepository->find($productId);
+                if ($product->getQuantityStock() == 0){
+                    return $this->redirectToRoute("menuOrder");
+                }
+            }
+
             $order = new Command();
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
