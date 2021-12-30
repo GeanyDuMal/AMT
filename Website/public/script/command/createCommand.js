@@ -1,3 +1,9 @@
+/**
+ * Permet de bloquer les compteurs
+ * avec 0 pour minimum
+ * avec la valeur dispo max a l'initialisation de la page
+ *    prevent si un utilisateur modifie cette valeur manuellement
+ */
 var blocksProduct = document.querySelectorAll(".block_product");
 
 blocksProduct.forEach(block => {
@@ -26,9 +32,27 @@ blocksProduct.forEach(block => {
       })
 });
 
+
 /**
- * Permet de bloquer les compteurs
- * avec 0 pour minimum
- * avec la valeur dispo max a l'initialisation de la page
- *    prevent si un utilisateur modifie cette valeur manuellement
+ * Permet de verifier lorsqu'on clique sur le bouton "valider la commande"
+ * qu'il y a au moins un input superieur a 0
  */
+function checkQuantityInput() {
+      var notEmpty = false;
+      var allInput = document.querySelectorAll(".input_quantity");
+      allInput.forEach(input =>{
+            if (!notEmpty){
+                  if (input.value > 0){
+                        notEmpty = true;
+                  }
+            }
+      })
+      if (!notEmpty){
+            Swal.fire({
+                  icon: 'error',
+                  title: 'Aucun produit',
+                  text: 'Merci de selectionner un produit pour valider une commande',
+            })
+      }
+      return notEmpty;
+}

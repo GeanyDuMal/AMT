@@ -45,7 +45,7 @@
                     <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }} / {{ client.login }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary" >Valider la commande</button>
+            <button type="submit" class="btn btn-primary" onclick="return checkQuantityInput()">Valider la commande</button>
         </div>
         <a href="{{ path("orderMenu") }}">
             <img src="/img/icons/back.png" class="img" alt="" srcset="">    
