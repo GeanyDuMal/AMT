@@ -56,3 +56,14 @@ function checkQuantityInput() {
       }
       return notEmpty;
 }
+
+function preventPayment() {
+      // La reponse sera stocké dans result
+      Swal.fire({
+            title: 'Do you want to save the changes?',
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+      }).then((result) => {
+            return result;
+      })
+}
