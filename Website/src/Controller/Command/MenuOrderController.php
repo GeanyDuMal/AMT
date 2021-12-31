@@ -15,33 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class MenuOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu", name="orderMenu")
+     * @Route("/command/menu{message}", name="orderMenu")
      */
-    public function menu(EntityManagerInterface $manager): Response
-    {
-        $commandeRepository = $manager->getRepository(Command::class);
-        $orderManager = new OrderManager($manager);
-        $montantIdOrder = [];
-
-        /**
-         * Recuperer toute les commandes avec leurs clients et leurs types
-         * Tout faire en une seule requetes, plus opti
-         */
-        $allOrder = $commandeRepository->findAllOrderAndClientAndClientType();
-        foreach ($allOrder as $order){
-            $montantIdOrder = $montantIdOrder + [$order->getId() => $orderManager->montantTotal($order)];
-        }
-
-        return $this->render('command/menu.html.twig', [
-            "orderList" => $allOrder,
-            "montantOrder" => $montantIdOrder
-        ]);
-    }
-
-    /**
-     * @Route("/command/menu{message}", name="orderMenuMessage")
-     */
-    public function menuWithMessage($message ,EntityManagerInterface $manager): Response
+    public function menu(string $message = null ,EntityManagerInterface $manager): Response
     {
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
