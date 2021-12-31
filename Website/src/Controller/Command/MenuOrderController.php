@@ -23,6 +23,10 @@ class MenuOrderController extends AbstractController
         $orderManager = new OrderManager($manager);
         $montantIdOrder = [];
 
+        /**
+         * Recuperer toute les commandes avec leurs clients et leurs types
+         * Tout faire en une seule requetes, plus opti
+         */
         $allOrder = $commandeRepository->findAllOrderAndClientAndClientType();
         foreach ($allOrder as $order){
             $montantIdOrder = $montantIdOrder + [$order->getId() => $orderManager->montantTotal($order)];
@@ -41,18 +45,22 @@ class MenuOrderController extends AbstractController
     {
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
+        $montantIdOrder = [];
 
-        $allOrder = $commandeRepository->findBy([], ["orderedAt" => "DESC"]);
-        $montantId = [];
+        /**
+         * Recuperer toute les commandes avec leurs clients et leurs types
+         * Tout faire en une seule requetes, plus opti
+         */
+        $allOrder = $commandeRepository->findAllOrderAndClientAndClientType();
         foreach ($allOrder as $order){
-            $montantId = $montantId + [$order->getId() => $orderManager->montantTotal($order)];
+            $montantIdOrder = $montantIdOrder + [$order->getId() => $orderManager->montantTotal($order)];
         }
 
 
         return $this->render('command/menu.html.twig', [
             "message" => $message,
             "orderList" => $allOrder,
-            "montantOrder" => $montantId
+            "montantOrder" => $montantIdOrder
         ]);
     }
 }
