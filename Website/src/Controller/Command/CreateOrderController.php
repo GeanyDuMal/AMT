@@ -28,6 +28,7 @@ class CreateOrderController extends AbstractController
         $inputParameterBag = $request->request;
         $productOrdered = [];
 
+        //Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProduct = $productRepository->findAll();
         foreach ($allProduct as $product){
             if ($product->getQuantityStock() >0){
@@ -50,9 +51,6 @@ class CreateOrderController extends AbstractController
                 "idClient" => $inputParameterBag->get("client_commande")
             ]);
         }
-
-
-
 
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
