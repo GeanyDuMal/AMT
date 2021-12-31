@@ -46,7 +46,10 @@ class PaymentOrderController extends AbstractController
             $clientType = $clientOrder->getClientType();
         }
 
-        //Definir le montant pour chaque produit + montant total
+        /**
+         * Definir le montant pour chaque produit + montant total
+         * tout ca dans un tableau
+         */
         $montantProduct = [];
         $montantTotal = 0;
         foreach ($productOrderedIdTab as $idProduct => $quantity){
