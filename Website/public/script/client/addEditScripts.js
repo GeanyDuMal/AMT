@@ -46,11 +46,14 @@ function communVerify(){
     }
 
     balance = parseFloat(valueBalance);
-    if (balance!==0 && !balance && valueBalance !== "") {
-        message += "Balance doit être un nombre. ";
-    } else if (balance < 0) {
-        message += "Le solde doit être positif. ";
+    if(valueBalance === "")
+        message += "Le solde ne doit pas être vide.\n ";
+    else if (balance < 0)
+        message += "Le solde doit être positif.\n ";
+    else if(Number.isNaN(balance)){
+        message += "Le solde doit être un nombre. ";
     }
+
   return message;
 }
 function verifyEdit(){

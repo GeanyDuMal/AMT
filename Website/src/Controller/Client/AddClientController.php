@@ -43,6 +43,9 @@ class AddClientController extends AbstractController
                     $clientManager->persist($client);
                     /*
                      * if the client added is a member, we have to add him in association table too.
+                     *
+                     * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
+                     *   so we have to get it from the data variable.
                      * */
                     if($client->getClientType()->getName()=="Association"){
                         $newMember=$commonFunctions->makeMember($client,$associationRoleRepository,$request);

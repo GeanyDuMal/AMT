@@ -29,7 +29,7 @@ class ProductType
 
     public function getName(): ?string
     {
-        return $this->typeName;
+        return $this->name;
     }
 
     public function setName(string $name): self

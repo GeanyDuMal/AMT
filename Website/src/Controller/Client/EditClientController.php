@@ -40,6 +40,12 @@ class EditClientController extends AbstractController
             $validationErrors = $validator->validate($client);
             if($validationErrors->count()==0){
                 $ChosenClientID=$clientRepository->find($id)->getLogin();
+                /*
+                 *  if admin changed the role of a member to another role
+                 *  we have to change it too in association table
+                 * -> if admin changed the type of a member to student it is manipulated by a trigger
+                 *    called deleteFromAssosIfChangedToStudent
+                 */
                 $this->manageMember($associationRepository,$associationRoleRepository,$client,$request,$manager,$commonFunctions);
                 if(strcmp($ChosenClientID,$client->getLogin())!=0 &&
                     $clientManager->loginExists($client)){
@@ -78,18 +84,6 @@ class EditClientController extends AbstractController
     {
         $data=$request->request;
         $existeDansAssos=$associationRepository->findOneBy(['member'=>$client]);
-        /*
-         * if the admin changed the type of the client from association to etudiant
-         * then we have to remove this client from association
-         * else if he only changed his role
-         * we have to change it too in association table
-         * */
-        if($client->getClientType()->getName()=="Etudiant"){
-            if($existeDansAssos){
-                $manager->remove($existeDansAssos);
-                $manager->flush();
-            }
-        }else{
             if($existeDansAssos){
                 $existeDansAssos->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('assosRoles')]));
             }
@@ -98,6 +92,6 @@ class EditClientController extends AbstractController
             }
             $manager->persist($existeDansAssos);
             $manager->flush();
-        }
+
     }
 }

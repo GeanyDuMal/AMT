@@ -86,6 +86,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\ManyToOne(targetEntity=ClientType::class)
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $clientType;
 

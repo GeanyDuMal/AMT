@@ -2,7 +2,10 @@
 
 namespace App\Controller\Product;
 
+use App\Entity\Price;
 use App\Entity\Product;
+use App\Repository\ClientTypeRepository;
+use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,43 +20,60 @@ class EditProductController extends AbstractController
     /**
      * @Route("/product/edit/{id}", name="edit_product")
      */
-    public function index($id,ProductRepository $productRepository,ValidatorInterface $validator,Request $request,EntityManagerInterface $manager,ProductTypeRepository $productTypeRepository): Response
+    public function index($id,ProductRepository $productRepository,ValidatorInterface $validator,Request $request,EntityManagerInterface $manager,ProductTypeRepository $productTypeRepository,ClientTypeRepository $clientTypeRepository,PriceRepository $priceRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
         $data = $request->request;
-        $produit=$productRepository->find($id);
+        $product=$productRepository->find($id);
         $productTypes=$productTypeRepository->findAll();
-
+        $typeMember=$clientTypeRepository->findBy(["name"=>"Association"]);
+        $typeStudent=$clientTypeRepository->findBy(["name"=>"Etudiant"]);
+        $memberPrice=$priceRepository->findBy(["product"=>$product,"clientType"=>$typeMember])[0];
+        $studentPrice=$priceRepository->findBy(["product"=>$product,"clientType"=>$typeStudent])[0];
+        //
         $validationErrors="";
         $productExistsError="";
 
         if($data->count()>0){
             $commonMethods=new CommonProductMethods();
-            $commonMethods->setData($produit,$request,$productTypeRepository);
-            $validationErrors = $validator->validate($produit);
+            $commonMethods->setDataForProduct($product,$request,$productTypeRepository);
+            $validationErrors = $validator->validate($product);
             if($validationErrors->count()==0){
                 $ChosenProductName=$productRepository->find($id)->getName();
-                $newProductName=$produit->getName();
+                $newProductName=$product->getName();
                 if(
                     strcmp($ChosenProductName,$newProductName)!=0 &&
                     $productRepository->findOneBy(['name'=>$newProductName])
                 )
                     $productExistsError="Produit existe déja";
                 else{
-                    $manager->persist($produit);
-                    $manager->flush();
-                    return $this->redirectToRoute('product_list_message',["message"=>"Modification avec succès"]);
+                    $commonMethods->setDataForPrice($memberPrice,$studentPrice,$product,$request,$clientTypeRepository);
+                    $validationErrors=$validator->validate($memberPrice);
+                    if($validationErrors->count()==0){
+                        $validationErrors=$validator->validate($studentPrice);
+                        if($validationErrors->count()==0) {
+                            $manager->persist($product);
+                            $manager->flush();
+                            $manager->persist($memberPrice);
+                            $manager->flush();
+                            $manager->persist($studentPrice);
+                            $manager->flush();
+                            return $this->redirectToRoute('product_list_message', ["message" => "Modification avec succès"]);
+                        }
+                    }
                 }
             }
         }
-        return $this->render('product/AddModalProduct.html.twig',
+        return $this->render('product/EditModalProduct.html.twig',
             [
                 'productTypes' => $productTypes,
                 'validationErrors' => $validationErrors,
                 'productExistsError' => $productExistsError,
-                'produit' => $produit
+                'product' => $product,
+                'studentPrice'=>$studentPrice->getPrice(),
+                'memberPrice'=>$memberPrice->getPrice()
             ]
         );
     }

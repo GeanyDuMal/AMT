@@ -13,18 +13,25 @@
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
     {# End Bootstrap CSS Import #}
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('script/product/deleteScript.js') }}"></script>
+{% endblock %}
 {% block title %}Nos Produits{% endblock %}
 
 
 {% block body %}
-    <div class="content-wrapper">
+    {% if message is defined %}
+            <p>{{ message }}!</p>
+    {% endif %}
+    <a href="{{ path('add_product') }}">Ajouter</a>
+    <div class="content-wrapper" id="products" >
         <div class="content-header d-flex justify-content-center">
         {# d-flex justify-content-center : pour centrer à l'aide de bootstrap ;) #}
             <h1 class="top-text">Nos Produits</h1>
         </div>
         {% for product in products %}
-            <div class="card mb-3 mx-auto">
+            <div id="product_block" class="card mb-3 mx-auto">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="{{ product.imageLink }}" class="img-fluid rounded-start" alt="">
@@ -33,6 +40,8 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text">Quantité en stock : {{ product.quantityStock }}</p>
+                            <a href="{{url('edit_product',{id:product.id})}}" class="btn btn-warning">Modifier</a>
+                            <a id="toDelete" class="btn btn-danger" data-id={{product.id}} >Supprimer</a>
                         </div>
                     </div>
                 </div>

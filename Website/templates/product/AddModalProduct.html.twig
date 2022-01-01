@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{%  block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('script/product/addEditVerifications.js') }}"></script>
+{% endblock %}
+{% block body %}
+    <div>
+        <ul>
+            {% if validationErrors is defined and validationErrors!="" %}
+                {% for i in 0..validationErrors.count()-1 %}
+                    <li>{{ validationErrors[i].message }}</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    <form id="product_form" action="" method="post">
+        <input type="text" name="productName" placeholder="nom"> <br>
+        <input type="text" name="productStock" placeholder="stock"> <br>
+        <input type="text" name="imageLink" placeholder="image"> <br>
+        <select name="productType">
+            {% for productType in productTypes %}
+                <option> {{ productType.name }} </option>
+            {% endfor %}
+        </select> <br>
+        <input type="text" name="memberPrice" placeholder="memberPrice"> <br>
+        <input type="text" name="studentPrice" placeholder="studentPrice"> <br>
+        <input type="submit" onclick="return verifyProduct()">
+    </form>
+{% endblock %}

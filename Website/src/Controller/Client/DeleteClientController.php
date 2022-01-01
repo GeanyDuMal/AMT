@@ -23,13 +23,9 @@ class DeleteClientController extends AbstractController
         /*
          * when we delete a client
          * we delete if from association too
+         * -> manipulated by a trigger called : deleteFromAssosIfMemberDeleted
          */
         $client = $manager->getRepository('App:Client')->find($id);
-        $existeDansAssos=$associationRepository->findOneBy(['member'=>$client]);
-        if($existeDansAssos){
-            $manager->remove($existeDansAssos);
-            $manager->flush();
-        }
         $manager->remove($client);
         $manager->flush();
 
