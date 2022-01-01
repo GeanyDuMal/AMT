@@ -9,14 +9,18 @@ th{
 }
 
 
-
-@media(max-width: 750px) and (min-width: 600px) {
+/* Corrige le probleme du footer qui n'a pas la bonne dimension*/
+@media(max-width: 750px){
       html{
             width: fit-content;
       }
 }
 
 @media(max-width: 600px) {
+      
+      .btn {
+            font-size: inherit;
+      }
       .content{
             min-width: 0;
       }
