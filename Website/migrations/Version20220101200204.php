@@ -37,8 +37,8 @@ final class Version20220101200204 extends AbstractMigration
         $this->addSql('ALTER TABLE command DROP FOREIGN KEY FK_8ECAEAD419EB6921');
         $this->addSql('ALTER TABLE command ADD CONSTRAINT FK_8ECAEAD419EB6921 FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE SET NULL');
         //
-        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'modifClientTypeRemove'");
-        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'deleteFromAssosIfChangedToStudent'");
+        $this->addSql("DROP TRIGGER IF EXISTS modifClientTypeRemove");
+        $this->addSql("DROP TRIGGER IF EXISTS deleteFromAssosIfChangedToStudent");
         $this->addSql("CREATE TRIGGER deleteFromAssosIfChangedToStudent
                                 AFTER UPDATE ON client
                                 FOR EACH ROW
@@ -75,8 +75,8 @@ final class Version20220101200204 extends AbstractMigration
         $this->addSql('ALTER TABLE command DROP FOREIGN KEY FK_8ECAEAD419EB6921');
         $this->addSql('ALTER TABLE command ADD CONSTRAINT FK_8ECAEAD419EB6921 FOREIGN KEY (client_id) REFERENCES client (id)');
 
-        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'deleteFromAssosIfChangedToStudent'");
-        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'modifClientTypeRemove'");
+        $this->addSql("DROP TRIGGER IF EXISTS deleteFromAssosIfChangedToStudent");
+        $this->addSql("DROP TRIGGER IF EXISTS modifClientTypeRemove");
         $this->addSql('CREATE TRIGGER modifClientTypeRemove 
                             AFTER DELETE ON association FOR EACH ROW
                             UPDATE client SET client_type_id = (SELECT id 
