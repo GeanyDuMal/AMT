@@ -8,8 +8,12 @@ th{
       width: fit-content;
 }
 
-html{
-      width: fit-content;
+
+
+@media(max-width: 750px) and (min-width: 600px) {
+      html{
+            width: fit-content;
+      }
 }
 
 @media(max-width: 600px) {
