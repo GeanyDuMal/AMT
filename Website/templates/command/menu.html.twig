@@ -10,7 +10,7 @@
 {% block javascripts %}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-	<script src="/script/command/menuCommand.js"></script>
+	<script src="/script/command/ajaxMenuCommand.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -40,7 +40,7 @@
 					<th>Nom Client</th>
 					<th class="phone_hidden">Login</th>
 					<th class="phone_hidden">Type Client</th>
-					<th>Montant</th>
+					<th width="5%">Montant</th>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<th>Supprimer</th>
 					{% else %}
@@ -77,9 +77,16 @@
 					<td>
 						{{ montantOrder[order.id] }}€
 					</td>
-					<td>
-						<a id="toDelete" class="btn btn-danger" onclick="return warningDelete()">x</a>
-					</td>
+					{% if is_granted("ROLE_TRESORIER") %}
+						<td>
+							<a id="toDelete" class="btn btn-danger" onclick="return warningDelete()">x</a>
+						</td>
+					{% else %}
+						<td>
+							<a id="toDelete" class="btn btn-danger">Demande Suppression</a>
+						</td>
+					{% endif %}
+					
 				</tr>
 			{% endfor %}
 			
