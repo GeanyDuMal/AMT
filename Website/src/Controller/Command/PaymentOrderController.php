@@ -46,7 +46,10 @@ class PaymentOrderController extends AbstractController
             $clientType = $clientOrder->getClientType();
         }
 
-        //Definir le montant pour chaque produit + montant total
+        /**
+         * Definir le montant pour chaque produit + montant total
+         * tout ca dans un tableau
+         */
         $montantProduct = [];
         $montantTotal = 0;
         foreach ($productOrderedIdTab as $idProduct => $quantity){
@@ -75,6 +78,17 @@ class PaymentOrderController extends AbstractController
             $orderManager = new OrderManager($manager);
             $paymentTypeChose = $paymentTypeRepository->find($inputParameterBag->get('payement_type'));
 
+            /*
+             * Permet de verifier si le produit commander est en stock
+             * Prevent si l'utilisateur clique plusieurs fois sur le bouton valider
+             */
+            foreach ($productOrderedIdTab as $productId => $quantity) {
+                $product = $productRepository->find($productId);
+                if ($product->getQuantityStock() == 0){
+                    return $this->redirectToRoute("menuOrder");
+                }
+            }
+
             $order = new Command();
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
@@ -97,7 +111,7 @@ class PaymentOrderController extends AbstractController
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);
             //rediriger ver l'accueil
-            return $this->redirectToRoute("orderMenuMessage", ["message" => "Commande effectuée avec succes"]);
+            return $this->redirectToRoute("orderMenuMessage", ["message" => "Commande effectuée avec succès"]);
         }
 
         return $this->render('command/payment.html.twig', [

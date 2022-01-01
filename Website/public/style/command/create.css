@@ -18,8 +18,9 @@
 }
 
 .btn {
-      width: 10vw;
+      width: 50%;
       font-weight: 700;
+      padding: 3px;
 }
 
 /*Specifique*/

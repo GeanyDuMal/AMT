@@ -17,11 +17,14 @@
     	<div class="content">
 		<div class="content-header">
 			<h1>Liste des commandes</h1>
+			{% if is_granted("ROLE_TRESORIER") %}
+				{{ user.roles[0] }}
+			{% endif %}
 		</div>
-		<div align="left" style="margin:5px">
+		<div style="margin:5px">
 			<a href="{{ path('orderCreate') }}" class="btn btn-success">Ajouter</a>
 		</div>
-		{% if message is defined %}
+		{% if message %}
 			<div class="alert alert-dismissible alert-success fade show">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				<strong>{{ message }}!</strong>
@@ -38,7 +41,11 @@
 					<th class="phone_hidden">Login</th>
 					<th class="phone_hidden">Type Client</th>
 					<th>Montant</th>
-					<th>Supprimer</th>
+					{% if is_granted("ROLE_TRESORIER") %}
+						<th>Supprimer</th>
+					{% else %}
+						<th>Demande Suppression</th>
+					{% endif %}
 				</tr>
 			</thead>
 			<tbody>

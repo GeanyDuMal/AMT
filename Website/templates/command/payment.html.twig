@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/style/command/payment.css">
 {% endblock %}
 
+{% block javascripts %}
+    <script src="/script/command/createCommand.js"></script>
+{% endblock %}
+
 {% block body %}
       <div class="flex_vertical centered_flex_vertical">
             {% if client %}
@@ -43,8 +47,9 @@
                   Montant total : {{ montantTotal }}€
             </h2>
             <form method="post" class="block_button_payment">
+
                   {% for paymentType in paymentTypeList %}
-                        <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn btn-primary">
+                        <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn btn-primary" onclick="return preventPayment()">
                               {{ paymentType.name }}
                         </button>
                   {% endfor %}

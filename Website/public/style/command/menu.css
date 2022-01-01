@@ -8,6 +8,10 @@ th{
       width: fit-content;
 }
 
+html{
+      width: fit-content;
+}
+
 @media(max-width: 600px) {
       .content{
             min-width: 0;
