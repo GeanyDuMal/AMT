@@ -37,29 +37,27 @@ final class Version20220101200204 extends AbstractMigration
         $this->addSql('ALTER TABLE command DROP FOREIGN KEY FK_8ECAEAD419EB6921');
         $this->addSql('ALTER TABLE command ADD CONSTRAINT FK_8ECAEAD419EB6921 FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE SET NULL');
         //
-        $this->addSql("DROP TRIGGER IF EXISTS `db_aedi`.`modifClientTypeRemove`");
-        $this->addSql(" 
-        DROP TRIGGER IF EXISTS `db_aedi`.`deleteFromAssosIfChangedToStudent`;
-        CREATE trigger deleteFromAssosIfChangedToStudent
-                AFTER UPDATE
-                on client
-                for EACH ROW
-            BEGIN
-                DECLARE memberID integer;
-                DECLARE memberType integer;
-                
-                select id into memberType
-                from client_type
-                where name='Association';
-                
-                select member_id into memberID
-                from association a
-                where a.member_id=NEW.id;
-        
-                if(NEW.client_type_id!=memberType)THEN
-                        DELETE FROM association WHERE member_id=memberID;
-                END IF;
-            END");
+        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'modifClientTypeRemove'");
+        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'deleteFromAssosIfChangedToStudent'");
+        $this->addSql("CREATE TRIGGER deleteFromAssosIfChangedToStudent
+                                AFTER UPDATE ON client
+                                FOR EACH ROW
+                                BEGIN
+                                    DECLARE memberID INTEGER;
+                                    DECLARE memberType INTEGER;
+                                
+                                    SELECT id INTO memberType
+                                    FROM client_type
+                                    WHERE name='Association';
+                                
+                                    SELECT member_id into memberID
+                                    FROM association a
+                                    WHERE a.member_id=NEW.id;
+                        
+                                    IF(NEW.client_type_id!=memberType)THEN
+                                        DELETE FROM association WHERE member_id=memberID;
+                                    END IF;
+                                END");
     }
 
     public function down(Schema $schema): void
@@ -76,5 +74,14 @@ final class Version20220101200204 extends AbstractMigration
 
         $this->addSql('ALTER TABLE command DROP FOREIGN KEY FK_8ECAEAD419EB6921');
         $this->addSql('ALTER TABLE command ADD CONSTRAINT FK_8ECAEAD419EB6921 FOREIGN KEY (client_id) REFERENCES client (id)');
+
+        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'deleteFromAssosIfChangedToStudent'");
+        $this->addSql("DROP TRIGGER IF EXISTS 'db_aedi'.'modifClientTypeRemove'");
+        $this->addSql('CREATE TRIGGER modifClientTypeRemove 
+                            AFTER DELETE ON association FOR EACH ROW
+                            UPDATE client SET client_type_id = (SELECT id 
+                                                                FROM client_type
+									                            WHERE name = "Etudiant")
+				            WHERE client.id = OLD.member_id');
     }
 }
