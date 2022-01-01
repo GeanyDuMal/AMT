@@ -31,6 +31,7 @@ class MenuOrderController extends AbstractController
 
 
         return $this->render('command/menu.html.twig', [
+            "user" => $this->getUser(),
             "message" => $message,
             "orderList" => $allOrder,
             "montantOrder" => $montantIdOrder
