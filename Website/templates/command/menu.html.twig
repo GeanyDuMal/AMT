@@ -10,6 +10,7 @@
 {% block javascripts %}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script src="/script/command/menuOrder.js"></script>
 	<script src="/script/command/ajaxMenuCommand.js"></script>
 {% endblock %}
 
@@ -17,9 +18,6 @@
     	<div class="content">
 		<div class="content-header">
 			<h1>Liste des commandes</h1>
-			{% if is_granted("ROLE_TRESORIER") %}
-				{{ user.roles[0] }}
-			{% endif %}
 		</div>
 		<div style="margin:5px">
 			<a href="{{ path('orderCreate') }}" class="btn btn-success">Ajouter</a>
@@ -40,7 +38,7 @@
 					<th>Nom Client</th>
 					<th class="phone_hidden">Login</th>
 					<th class="phone_hidden">Type Client</th>
-					<th width="5%">Montant</th>
+					<th>Montant</th>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<th>Supprimer</th>
 					{% else %}
@@ -94,7 +92,12 @@
 		</table>
 		{% else %}
 			<div class="alert alert-info alert-dismissible fade show">
-				<strong>Info!</strong> il n y a pas encore des Commandes.
+				<p>
+					<strong>Info!</strong>
+				</p> 
+				<p>
+					Il n'y a pas encore des Commandes.
+				</p> 
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 			</div>
 		{% endif %}
