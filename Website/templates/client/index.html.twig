@@ -7,6 +7,7 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel='stylesheet' href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
 	<link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
 
@@ -16,11 +17,11 @@
 	<script type="text/javascript" src="{{ asset('script/client/ajax.js') }}"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
 {% endblock %}
 
 {% block body %}
-	{% block navbar %}{{ parent() }}{% endblock %}
-	{% block sidebar %}{{ parent() }}{% endblock %}
 	<div class="content">
 		<div class="content-header">
 			<h1>Liste des clients</h1>
@@ -59,10 +60,10 @@
 					<td>{{ client.login }}</td>
 					<td>{{ client.clientType.name }}</td>
 					<td>
-						<a href="{{url('edit_client',{id:client.id})}}" class="btn btn-warning" name="{{client.id}}">Modifier</a>
+						<a href="{{url('edit_client',{id:client.id})}}" class="btn btn-warning bg-warning" name="{{client.id}}">Modifier</a>
 					</td>
 					<td>
-						<a id="toDelete" class="btn btn-danger" data-id={{client.id}} >Supprimer</a>
+						<a id="toDelete" id="wtf" class="btn btn-danger bg-danger" data-id={{client.id}} >Supprimer</a>
 					</td>
 				</tr>
 				{% endif %}
@@ -76,5 +77,4 @@
 				</div>
 		{% endif %}
 	</div>
-	{% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}

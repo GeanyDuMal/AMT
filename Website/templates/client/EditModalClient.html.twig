@@ -12,8 +12,6 @@
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
 {% block body %}
-    {% block navbar %}{{ parent() }}{% endblock %}
-    {% block sidebar %}{{ parent() }}{% endblock %}
     <div>
         <ul>
             {% if validationErrors is defined and validationErrors!="" %}
@@ -90,5 +88,4 @@
             <input type="submit" class="btn btn-primary" value="Enregistrer" onclick="return verifyEdit()" style="margin-bottom: 25px;">
         </form>
     </div>
-    {% block footer %}{{ parent() }}{% endblock %}
 {% endblock %}
