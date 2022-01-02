@@ -13,3 +13,7 @@ $(document).ready( function () {
         }
     );
 } );
+
+/**
+ * Reglage de la taille du tableau qui n'est pas correcte en mode Smartphone
+ */
