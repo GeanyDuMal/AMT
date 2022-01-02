@@ -8,6 +8,9 @@ th{
       width: fit-content;
 }
 
+#order_table{
+      width: fit-content;
+}
 
 /* Corrige le probleme du footer qui n'a pas la bonne dimension*/
 @media(max-width: 750px){
@@ -17,7 +20,9 @@ th{
 }
 
 @media(max-width: 600px) {
-      
+      .alert{
+        font-size: 0.6rem;    
+      }
       .btn {
             font-size: inherit;
       }
