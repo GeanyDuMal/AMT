@@ -1,5 +1,5 @@
 /**
- * To apply the plugin DataTables (he makes the table so cool :3 )
+ * To apply the plugin DataTables
  * pagination
  * search bar
  * sorting per column
@@ -13,6 +13,18 @@ $(document).ready( function () {
         }
     );
 } );
+
+
+/**
+ * Delete an Order with AJAX
+ */
+$("#order_table").on("click", "#toDelete", function(){
+    var tr = this.parentNode;
+    if (confirm("Voulez vous vraiment supprimer cette commande ?" +
+                "Tout les achats lié a cette commandes seront supprimés")){
+        var id = tr.querySelector("#idCell");
+    }
+});
 
 
 /**

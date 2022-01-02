@@ -51,7 +51,7 @@
 			<tbody>
 			{% for order in orderList %}
 				<tr>
-					<td>
+					<td id="idCell">
 						{{ order.id }}
 					</td>
 					<td>
@@ -74,16 +74,16 @@
 						<td class="phone_hidden"></td>
 						<td class="phone_hidden"></td>
 					{% endif %}
-					<td>
-						{{ montantOrder[order.id] }}€
-					</td>
+						<td>
+							{{ montantOrder[order.id] }}€
+						</td>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<td>
 							<a id="toDelete" class="btn btn-danger" onclick="return warningDelete()">x</a>
 						</td>
 					{% else %}
 						<td>
-							<a id="toDelete" class="btn btn-danger">Demande Suppression</a>
+							<a id="askToDelete" class="btn btn-danger">Demande Suppression</a>
 						</td>
 					{% endif %}
 					
