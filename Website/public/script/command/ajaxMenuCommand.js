@@ -7,27 +7,14 @@ $("#order_table").on("click", "#toDelete", function(){
                 "Tout les achats lié a cette commandes seront supprimés")){
         var id = tr.querySelector("#idCell").innerHTML;
         console.log(id);
-    }
-});
-
-
-/**
- * delete a client/member using jquery-ajax
- */
-/*
-$("#client_table").on("click", "#toDelete", function() {
-    var tr= $(this).closest("tr");
-    if (confirm('Voulez-vous supprimer l\'utilisateur ? ')) {
-        const id=$(this).data("id");
-        fetch('/admin/client/delete/'+id, {method: 'DELETE'})
+        fetch('/command/menu/delete/' + id, {method: 'DELETE'})
             .then(function (resp) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Nice',
-                    text: 'Suppression avec succèes',
+                    title: 'Suppresion',
+                    text: 'Suppression de la commande effectuée avec succès',
                 })
                 tr.remove();
             });
     }
 });
-*/
