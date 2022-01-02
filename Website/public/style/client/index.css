@@ -67,7 +67,7 @@ td,th {
     border-color: inherit;
     background-color:gray;
 }
-.btn-warning:hover{
+.btn.btn-warning:hover{
     background-color: black;
     color: white;
     border-color: inherit;

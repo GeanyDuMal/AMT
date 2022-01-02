@@ -3277,29 +3277,29 @@ fieldset:disabled .btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #9b479f;
-  border-color: #9b479f;
+  background-color: #d9230f;
+  border-color: #d9230f;
 }
 
 .btn-danger:hover {
   color: #fff;
-  background-color: #843c87;
-  border-color: #7c397f;
+  background-color: #d9230f;
+  border-color: #d9230f;
 }
 
 .btn-check:focus + .btn-danger, .btn-danger:focus {
   color: #fff;
-  background-color: #843c87;
-  border-color: #7c397f;
+  background-color: #d9230f;
+  border-color: #d9230f;
   box-shadow: 0 0 0 0.25rem rgba(170, 99, 173, 0.5);
 }
 
 .btn-check:checked + .btn-danger,
 .btn-check:active + .btn-danger, .btn-danger:active, .btn-danger.active,
 .show > .btn-danger.dropdown-toggle {
-  color: #fff;
-  background-color: #7c397f;
-  border-color: #743577;
+  color: #d9230f;
+  background-color: #d9230f;
+  border-color: #d9230f;
 }
 
 .btn-check:checked + .btn-danger:focus,
@@ -3309,9 +3309,10 @@ fieldset:disabled .btn {
 }
 
 .btn-danger:disabled, .btn-danger.disabled {
-  color: #fff;
-  background-color: #9b479f;
-  border-color: #9b479f;
+  color: #d9230f;
+  background-color: #d9230f;
+  border-color: #d9230f
+;
 }
 
 .btn-light {
@@ -3553,14 +3554,14 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-danger {
-  color: #9b479f;
-  border-color: #9b479f;
+  color: #d9230f;
+  border-color: #d9230f;
 }
 
 .btn-outline-danger:hover {
   color: #fff;
-  background-color: #9b479f;
-  border-color: #9b479f;
+  background-color: #d9230f;
+  border-color: #d9230f;
 }
 
 .btn-check:focus + .btn-outline-danger, .btn-outline-danger:focus {
@@ -3570,8 +3571,8 @@ fieldset:disabled .btn {
 .btn-check:checked + .btn-outline-danger,
 .btn-check:active + .btn-outline-danger, .btn-outline-danger:active, .btn-outline-danger.active, .btn-outline-danger.dropdown-toggle.show {
   color: #fff;
-  background-color: #9b479f;
-  border-color: #9b479f;
+  background-color: #d9230f;
+  border-color: #d9230f;
 }
 
 .btn-check:checked + .btn-outline-danger:focus,
@@ -3580,7 +3581,7 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-danger:disabled, .btn-outline-danger.disabled {
-  color: #9b479f;
+  color: #d9230f;
   background-color: transparent;
 }
 
@@ -5393,13 +5394,13 @@ fieldset:disabled .btn {
 }
 
 .alert-danger {
-  color: #5d2b5f;
+  color: #d9230f;
   background-color: #ebdaec;
   border-color: #e1c8e2;
 }
 
 .alert-danger .alert-link {
-  color: #4a224c;
+  color: #d9230f;
 }
 
 .alert-light {
@@ -5814,19 +5815,19 @@ fieldset:disabled .btn {
 }
 
 .list-group-item-danger {
-  color: #5d2b5f;
+  color: #d9230f;
   background-color: #ebdaec;
 }
 
 .list-group-item-danger.list-group-item-action:hover, .list-group-item-danger.list-group-item-action:focus {
-  color: #5d2b5f;
+  color: #d9230f;
   background-color: #d4c4d4;
 }
 
 .list-group-item-danger.list-group-item-action.active {
   color: #fff;
-  background-color: #5d2b5f;
-  border-color: #5d2b5f;
+  background-color: #d9230f;
+  border-color: #d9230f;
 }
 
 .list-group-item-light {
@@ -7069,11 +7070,12 @@ fieldset:disabled .btn {
 }
 
 .link-danger {
-  color: #9b479f;
+  color: #d9230f
+;
 }
 
 .link-danger:hover, .link-danger:focus {
-  color: #7c397f;
+  color: #d9230f;
 }
 
 .link-light {
@@ -7531,7 +7533,7 @@ fieldset:disabled .btn {
 }
 
 .border-danger {
-  border-color: #9b479f !important;
+  border-color: #d9230f !important;
 }
 
 .border-light {
@@ -11477,10 +11479,10 @@ fieldset:disabled .btn {
 
 .btn-danger,
 .btn-danger:hover {
-  background-image: linear-gradient(#a152a5, #9b479f 6%, #924395);
+  background-image: linear-gradient(#d9230f, #d9230f 6%, #d9230f);
   -webkit-filter: none;
   filter: none;
-  border: 1px solid #873e8a;
+  border: 1px solid #d9230f;
 }
 
 .btn-dark,
