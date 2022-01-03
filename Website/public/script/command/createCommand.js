@@ -32,7 +32,6 @@ blocksProduct.forEach(block => {
       })
 });
 
-
 /**
  * Permet de verifier lorsqu'on clique sur le bouton "valider la commande"
  * qu'il y a au moins un input superieur a 0
