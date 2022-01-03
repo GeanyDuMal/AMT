@@ -2,21 +2,59 @@
 
 namespace App\Manager;
 
+use App\Entity\Client;
 use App\Entity\ClientType;
 use App\Entity\Command;
 use App\Entity\PaymentType;
 use App\Entity\Price;
+use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderManager
 {
-    public $manager;
+    public EntityManagerInterface $manager;
 
     public function __construct(EntityManagerInterface $managerController)
     {
         $this->manager = $managerController;
     }
+
+    public function persist(Command $order): void{
+        if ($this->verifyOrder($order)){
+            $this->manager->persist($order);
+            $this->manager->flush();
+        }
+    }
+
+    public function removeWithRestore(Command $order): void{
+        $purchaseManager = new PurchaseManager($this->manager);
+        $purchaseRepository = $this->manager->getRepository(Purchase::class);
+        $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
+        $montant = $this->montantTotal($order);
+
+        $purchaseList = $purchaseRepository->findBy(["command" => $order]);
+
+        /*
+         * Permet de restore le client s'il est mentionné dans la commande
+         * Et qu'il a payé avec son solde
+         */
+        if ($order->getClient() != null &&
+            $order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"]))
+        {
+            $order->getClient()->setBalance($order->getClient()->getBalance() + $montant);
+            //Ajouter la partie pour enlever de son fidelity
+        }
+
+        //Supprimer de la base de données
+        foreach ($purchaseList as $purchase){
+            $purchaseManager->removeWithRestore($purchase);
+        }
+        $this->manager->remove($order);
+        $this->manager->flush();
+    }
+
+
 
     public function reduceBalanceIfNecessary(Command $order): void{
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
@@ -34,12 +72,12 @@ class OrderManager
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
         $priceRepository = $this->manager->getRepository(Price::class);
         $montantTotal = 0;
-
         $allOrderPurchase = $purchaseRepository->findBy(["command" => $order]);
 
         foreach ($allOrderPurchase as $purchase){
             $clientTypeRepository = $this->manager->getRepository(ClientType::class);
             $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+
             if ($order->getClient() != null){
                 $clientType = $order->getClient()->getClientType();
             }
@@ -47,7 +85,6 @@ class OrderManager
             $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
                     "clientType" => $clientType])->getPrice();
         }
-
         return $montantTotal;
     }
 
@@ -62,14 +99,53 @@ class OrderManager
         }
     }
 
-    public function verifyOrder(Command $order): bool{
-        return ($order->getOrderedAt() != null && $order->getPaymentType() != null);
+    /**
+     * @param $purchaseList [productId => quantity]
+     * @param Client|null $client Client
+     * @return array[PaymentType] $paymentTypeList
+     */
+    public function getAllowedPaymentType($purchaseList, Client $client = null): array
+    {
+        $clientTypeRepository = $this->manager->getRepository(ClientType::class);
+        if ($client != null) {
+            $clientType = $client->getClientType();
+        }else{
+            $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+        }
+
+        $montant = 0;
+        $productRepository = $this->manager->getRepository(Product::class);
+        $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
+        $priceRepository = $this->manager->getRepository(Price::class);
+
+        foreach ($purchaseList as $productId => $quantity){
+            $product = $productRepository->find($productId);
+            $montant = $montant + $priceRepository->findOneBy(["product" => $product, "clientType" => $clientType])
+                    ->getPrice() * $quantity;
+        }
+
+        $paymentTypeList = $paymentTypeRepository->findAll();
+
+        foreach ($paymentTypeList as $paymentType){
+            switch ($paymentType->getName()){
+                case "Solde" :{
+                    if ($client == null || $client->getBalance() < $montant){
+                        unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
+                    }
+                    break;
+                }
+                case "Carte Bancaire" :{
+                    if ($montant < 1){
+                        unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
+                    }
+                    break;
+                }
+            }
+        }
+        return $paymentTypeList;
     }
 
-    public function persist(Command $order): void{
-        if ($this->verifyOrder($order)){
-            $this->manager->persist($order);
-            $this->manager->flush();
-        }
+    public function verifyOrder(Command $order): bool{
+        return ($order->getOrderedAt() != null && $order->getPaymentType() != null);
     }
 }
