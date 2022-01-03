@@ -21,6 +21,17 @@ class ClientManager
 
     /**
      * @param Client|null $client
+     * @return void
+     * Insert the Client in the Database
+     */
+    public function persist(?Client $client)
+    {
+        $this->manager->persist($client);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Client|null $client
      * @return bool
      * Check if the differents attributes aren't empty
      * Don't check the attribute balance, fidelityPoint and clientType 
@@ -80,17 +91,6 @@ class ClientManager
       }
 
     /**
-     * @param Client|null $client
-     * @return void
-     * Insert the Client in the Database
-     */
-      public function persist(?Client $client)
-      {
-          $this->manager->persist($client);
-          $this->manager->flush();
-      }
-
-    /**
      * @param String password
      * @return boolean
      * verify if the password contains regex
@@ -102,7 +102,13 @@ class ClientManager
           return strpbrk($password, $regexSpecial);
       }
 
-    public function setData(Client $client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
+
+    /**
+     * To remove
+     * N'est pas coherente car requiert une requete + le nom des champs ce qui rend la methode trop specifique a un cas particulier
+     * @Omar if you can do it
+     */
+      public function setData(Client $client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
         $data = $request->request;
 
         $client->setName(trim($data->get('name')));
