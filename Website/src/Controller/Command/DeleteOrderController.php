@@ -12,10 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu/delete/{id}", name="orderDelete", methods={"GET" ,"DELETE"})
+     * @Route("/command/menu/delete/{id}", name="orderDelete", methods={"GET", "DELETE"})
      */
-    public function delete($id, EntityManagerInterface $manager): JsonResponse
-    {
+    public function delete($id, EntityManagerInterface $manager){
         if (!$this->isGranted('ROLE_TRESORIER')){
             return new JsonResponse(false);
         }
