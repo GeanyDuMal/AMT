@@ -65,7 +65,7 @@ class PaymentOrderController extends AbstractController
         }
 
         //Recuperer les moyens de paiement possible
-        $paymentTypeList = $purchaseManager->getAllowedPaymentType($productOrderedIdTab, $clientOrder);
+        $paymentTypeList = $orderManager->getAllowedPaymentType($productOrderedIdTab, $clientOrder);
 
 
         //Si l'on a cliqué sur un bouton sur la page Payment
