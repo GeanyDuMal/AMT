@@ -32,7 +32,7 @@ class MaillingOrderController extends AbstractController
         try {
             $mailer->send($email);
         } catch (TransportExceptionInterface $e) {
-            dd($e);
+            dd($mailer, $e);
             // some error prevented the email sending; display an
             // error message or try to resend the message
         }
