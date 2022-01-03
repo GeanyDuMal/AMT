@@ -9,12 +9,20 @@ $("#order_table").on("click", "#toDelete", function(){
         console.log(id);
         fetch('/command/menu/delete/' + id, {method: 'DELETE'})
             .then(function (resp) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Suppresion',
-                    text: 'Suppression de la commande effectuée avec succès',
-                })
-                tr.remove();
+                if (resp) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Suppresion',
+                        text: 'Suppression de la commande effectuée avec succès',
+                    })
+                    tr.remove();
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Suppresion',
+                        text: 'Il y a eu une erreur',
+                    })
+                }
             });
     }
 });
