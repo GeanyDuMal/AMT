@@ -26,9 +26,12 @@ class PurchaseManager
         }
     }
 
-    public function remove(Purchase $purchase): void{
+    public function removeWithRestore(Purchase $purchase): void{
         $product = $purchase->getProduct();
+        $productManager = new ProductManager($this->manager);
 
+        //Restock le produit de la quantity
+        $productManager->restockProduct($product, $purchase->getQuantity());
 
         $this->manager->remove($purchase);
         $this->manager->flush();
