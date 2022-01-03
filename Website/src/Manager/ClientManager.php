@@ -12,7 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ClientManager
 {
-    public $manager;
+    public EntityManagerInterface $manager;
 
     public function __construct(EntityManagerInterface $managerController)
     {
