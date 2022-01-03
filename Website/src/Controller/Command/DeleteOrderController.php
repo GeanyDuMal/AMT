@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu/delete/{id}", name="orderDelete", methods={"GET", "DELETE"})
+     * @Route("/command/menu/delete/{id}", name="orderDelete", methods={"GET" ,"DELETE"})
      */
     public function delete($id, EntityManagerInterface $manager): JsonResponse
     {
