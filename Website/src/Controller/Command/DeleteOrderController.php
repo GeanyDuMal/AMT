@@ -21,11 +21,11 @@ class DeleteOrderController extends AbstractController
         /**
          * Delete an order will delete all the purchase linked
          */
-        $orderManager = $manager->getRepository(Command::class);
-        $purchaseManager = $manager->getRepository(Purchase::class);
+        $orderRepository = $manager->getRepository(Command::class);
+        $purchaseRepository = $manager->getRepository(Purchase::class);
 
-        $order = $orderManager->find($id);
-        $purchaseList = $purchaseManager->findBy(["command" => $order]);
+        $order = $orderRepository->find($id);
+        $purchaseList = $purchaseRepository->findBy(["command" => $order]);
 
         foreach ($purchaseList as $purchase){
             $manager->remove($purchase);
