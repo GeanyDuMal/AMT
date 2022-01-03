@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AddBlogController extends AbstractController
 {
     /**
-     * @Route("/add/blog", name="add_blog")
+     * @Route("/blog/add", name="add_blog")
      * @param EntityManagerInterface $manager
      * @param PostRepository $postRepository
      * @param Request $request
@@ -49,7 +49,7 @@ class AddBlogController extends AbstractController
             }
         }
 
-        return $this->render('add_blog/AddModalBlog.html.twig', [
+        return $this->render('blog/AddModalBlog.html.twig', [
             'postTypes'=>$postTypes,
             'validationErrors'=>$validationErrors,
             'postExistsError'=>$postExistsError,
