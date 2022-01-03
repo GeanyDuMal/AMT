@@ -34,6 +34,8 @@ class PaymentOrderController extends AbstractController
         $priceRepository = $manager->getRepository(Price::class);
         $paymentTypeRepository = $manager->getRepository(PaymentType::class);
         $productRepository = $manager->getRepository(Product::class);
+        $purchaseManager = new PurchaseManager($manager);
+        $orderManager = new OrderManager($manager);
         $clientOrder = null;
         $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
         $inputParameterBag = $request->request;
@@ -46,7 +48,7 @@ class PaymentOrderController extends AbstractController
             $clientType = $clientOrder->getClientType();
         }
 
-        /**
+        /*
          * Definir le montant pour chaque produit + montant total
          * tout ca dans un tableau
          */
@@ -63,19 +65,11 @@ class PaymentOrderController extends AbstractController
         }
 
         //Recuperer les moyens de paiement possible
-        $paymentTypeDispo = $paymentTypeRepository->findAll();
-        if ($clientOrder == null || $clientOrder->getBalance() < $montantTotal){
-            foreach ($paymentTypeDispo as $paymentType){
-                if ($paymentType->getName() == "Solde"){
-                    unset($paymentTypeDispo[array_search($paymentType, $paymentTypeDispo, true)]);
-                }
-            }
-        }
+        $paymentTypeList = $purchaseManager->getAllowedPaymentType($productOrderedIdTab, $clientOrder);
+
 
         //Si l'on a cliqué sur un bouton sur la page Payment
         if ($inputParameterBag->get('payement_type')){
-            $purchaseManager = new PurchaseManager($manager);
-            $orderManager = new OrderManager($manager);
             $paymentTypeChose = $paymentTypeRepository->find($inputParameterBag->get('payement_type'));
 
             /*
@@ -89,12 +83,14 @@ class PaymentOrderController extends AbstractController
                 }
             }
 
+            //Creer la commande
             $order = new Command();
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
                     ->setPaymentType($paymentTypeChose);
             $orderManager->persist($order);
 
+            //Creer tout les achats
             foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
 
@@ -120,7 +116,7 @@ class PaymentOrderController extends AbstractController
             'montantProduct' => $montantProduct,
             'montantTotal' => $montantTotal,
             'client' => $clientOrder,
-            "paymentTypeList" => $paymentTypeDispo
+            "paymentTypeList" => $paymentTypeList
         ]);
     }
 }
