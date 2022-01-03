@@ -4,6 +4,7 @@ namespace App\Controller\Command;
 
 use App\Entity\Command;
 use App\Entity\Purchase;
+use App\Manager\OrderManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,22 +19,20 @@ class DeleteOrderController extends AbstractController
         if (!$this->isGranted('ROLE_TRESORIER')){
             return new JsonResponse(false);
         }
+
         /**
-         * Delete an order will delete all the purchase linked
+         * Delete an order will :
+         * delete all the purchase linked
+         * restore the quantity of the product
+         * restore the balance of the client if he paid with
+         * remove the fidelityPoint earned
          */
         $orderRepository = $manager->getRepository(Command::class);
-        $purchaseRepository = $manager->getRepository(Purchase::class);
-
+        $orderManager = new OrderManager($manager);
         $order = $orderRepository->find($id);
-        $purchaseList = $purchaseRepository->findBy(["command" => $order]);
 
-        foreach ($purchaseList as $purchase){
-            $manager->remove($purchase);
-        }
-        $manager->flush();
+        $orderManager->removeWithRestore($order);
 
-        $manager->remove($order);
-        $manager->flush();
         return new JsonResponse(true);
     }
 }
