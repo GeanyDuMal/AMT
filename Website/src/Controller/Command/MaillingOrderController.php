@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MaillingOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu/mailling/{id}", name="orderDelete", methods={"GET", "DELETE"})
+     * @Route("/command/menu/mailling/{id}", name="orderDeleteMailing")
      */
     public function sendEmail($id, MailerInterface $mailer){
         if ($this->isGranted('ROLE_TRESORIER') || !$this->isGranted('ROLE_ASSOC')){
@@ -20,8 +20,8 @@ class MaillingOrderController extends AbstractController
         }
         $email = new Email();
         $email->from('hello@example.com')
-            ->to('you@example.com')
-            ->cc('cc@example.com')
+            ->to('natanelicromain@gmail.com')
+            //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
@@ -32,6 +32,7 @@ class MaillingOrderController extends AbstractController
         try {
             $mailer->send($email);
         } catch (TransportExceptionInterface $e) {
+            dd($e);
             // some error prevented the email sending; display an
             // error message or try to resend the message
         }
