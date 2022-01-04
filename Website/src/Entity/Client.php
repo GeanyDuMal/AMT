@@ -42,7 +42,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(
-     *      min = 5,
+     *      min = 6,
      *      minMessage = "Votre login doit comporter au moins {{ limit }} caractères",
      *     )
      * login is the email of the client
