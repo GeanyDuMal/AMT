@@ -30,6 +30,10 @@ security:
                 login_path: login
                 check_path: login
                 default_target_path: home
+                username_parameter: login
+                password_parameter: password
+
+
             logout:
                 path: logout
                 target: profile
