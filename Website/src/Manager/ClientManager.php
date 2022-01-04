@@ -36,15 +36,15 @@ class ClientManager
      * Check if the differents attributes aren't empty
      * Don't check the attribute balance, fidelityPoint and clientType 
      */
-      public function isNotFull(?Client $client): bool
-      {
-            if ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" || $client->getPassword() == ""){
-                  return true;
-            }
-            else{
-                  return false;
-            }
-      }
+    public function isNotFull(?Client $client): bool
+    {
+        if ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" || $client->getPassword() == ""){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     /**
      * @param Client|null $client
@@ -68,78 +68,47 @@ class ClientManager
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
      */
-      public function dataCorrect(?Client $client): bool
-      {
-          if (!is_null($client)){
-              $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
+    public function dataCorrect(?Client $client): bool
+    {
+        if (!is_null($client)){
+            $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-              $containsSpecialPassword = $this->verifPassword($client->getPassword());
-              $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
-              $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
+            $loginIsMail = $this->isMail($client->getLogin());
+            $containsSpecialPassword = $this->verifPassword($client->getPassword());
+            $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
+            $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
-              $nameUpperThree = (strlen($client->getName()) >=3);
-              $firstNameUpperThree = (strlen($client->getFirstName()) >=3);
-              $loginUpperFive = (strlen($client->getLogin()) >=5);
-              $passwordUpperFive = (strlen($client->getPassword()) >=5);
+            $nameUpperThree = (strlen($client->getName()) >=3);
+            $firstNameUpperThree = (strlen($client->getFirstName()) >=3);
+            $loginUpperSix = (strlen($client->getLogin()) >=6);
+            $passwordUpperFive = (strlen($client->getPassword()) >=5);
 
-              return ($containsSpecialPassword && $loginUpperFive && $passwordUpperFive && $firstNameUpperThree
-                  && $nameUpperThree && !$containsSpecialName && !$containsSpecialFirstName);
-          }
-          else{
-              return false;
-          }
-      }
+            return ($containsSpecialPassword && $loginIsMail && $loginUpperSix && $passwordUpperFive && $firstNameUpperThree
+                && $nameUpperThree && !$containsSpecialName && !$containsSpecialFirstName);
+        }
+        else{
+            return false;
+        }
+    }
 
     /**
      * @param String password
      * @return boolean
-     * verify if the password contains regex
+     * verify if the password contains regex and have the good size
      */
-      public function verifPassword(String $password): bool
-      {
-          $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
+    public function verifPassword(String $password): bool
+    {
+        $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-          return strpbrk($password, $regexSpecial);
-      }
-
-
-    /**
-     * To remove
-     * N'est pas coherente car requiert une requete + le nom des champs ce qui rend la methode trop specifique a un cas particulier
-     * @Omar if you can do it
-     */
-      public function setData(Client $client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
-        $data = $request->request;
-
-        $client->setName(trim($data->get('name')));
-        $client->setFirstName(trim($data->get('fname')));
-        $client->setLogin(trim($data->get('login')));
-        /*
-            if password input exists so it's the add page
-            so we have to initialize the fidelity points
-            and set the password to the chosen one.
-        */
-        if($data->get('pwd')){
-            $hashedPassword=$passwordHasher->hashPassword($client,trim($data->get('pwd')));
-            $client->setPassword($hashedPassword);
-            $client->setFidelityPoint(0);
-        }
-        $client->setBalance(trim($data->get('balance')));
-        $typeAssos=$data->get('types');
-        $typeClient=$data->get('clientType');
-        $isStudent=strcmp($typeClient,"Etudiant")==0;
-        $typeName= $isStudent?$typeClient:$typeAssos;
-        $role= $this->getRoleFromType($typeName);
-        $client->setRoles($role);
-        //this variable is only used to pick a type of the client
-        $typeName = !$isStudent?"Association":$typeClient;
-        $type=$clientTypeRepository->findOneBy(["name"=>$typeName]);
-        $client->setClientType($type);
-        if($isStudent){
-            $client->setRoles(["ROLE_USER"]);
-        }
+        return (strpbrk($password, $regexSpecial) && strlen($password) >= 5);
     }
 
+    public function isMail(String $login): bool
+    {
+        //Fonction existante qui verifie si le string correspond bine à un mail
+        return filter_var($login, FILTER_VALIDATE_EMAIL);
+    }
+    
     public function getRoleFromType(string $typeName):array{
         $role=[];
         switch ($typeName){
@@ -169,16 +138,9 @@ class ClientManager
         }
         return $type;
     }
-    public function makeMember(Client $client,AssociationRoleRepository $associationRoleRepository,Request $request):Association{
-        $data = $request->request;
-        $newMember=new Association();
-        $newMember->setMember($client);
-        $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('types')]));
-        return $newMember;
-    }
 
-    public function addFidelityPoint(float $amountOrder, Client $client): void{
-          $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
-          $this->persist($client);
-    }
+        public function addFidelityPoint(float $amountOrder, Client $client): void{
+              $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
+              $this->persist($client);
+        }
 }
