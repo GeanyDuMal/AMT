@@ -105,10 +105,10 @@ class ClientManager
 
     public function isMail(String $login): bool
     {
-        //Fonction existante qui verifie si le string correspond bine à un mail
+        //Fonction existante qui verifie si le string correspond bien à un mail
         return filter_var($login, FILTER_VALIDATE_EMAIL);
     }
-    
+
     public function getRoleFromType(string $typeName):array{
         $role=[];
         switch ($typeName){
