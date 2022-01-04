@@ -22,7 +22,7 @@ class CommonBlogMethods
         $postTitle=$data->get("postTitle");
         $postDescription=$data->get('postDescription');
         $imageLink=$data->get('imageLink');
-//
+
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
         $post->setImageLink($imageLink);
