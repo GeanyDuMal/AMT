@@ -1,8 +1,9 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
-{# {% block title %}
+
+{% block title %}
     Connexion
-{% endblock %} #}
+{% endblock %}
 
 {% block stylesheets %}
       <link rel="stylesheet" href="/style/connexion/connexion.css">
@@ -32,33 +33,25 @@
 
 {% block body %}
     <div class="flex_vertical centered_flex">
-        {# <h1>Connexion</h1> #}
+        {% block navbar %}{% endblock %}
+
         {# Top bar #}
-            <div class="top">
-                  <h1 class="top-text">Connexion</h1>
-                  <a href="{{ path('home') }}">
-                  <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
-            </div>
-            {# End Top bar #}
+        <div class="top">
+            <h1 class="top-text">Connexion</h1>
+            <a href="{{ path('home') }}">
+            <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
+        </div>
+        {# End Top bar #}
+
         <img src="/img/connexion/user.png" alt="" id="img_profile">
 
         <form action="" class="flex_vertical" method="post" id="form_login">
-        
-            {# <div class="input_text flex_vertical">
-                <label for="username">Login :</label>
-                <input type="text" name="_username" value="{{ lastUsername }}" autofocus>
-            </div>
-
-            <div class="input_text flex_vertical">
-                <label for="password">Mot de Passe :</label>
-                <input type="password" name="_password">
-            </div> #}
 
             {# Form Inputs with floatig label #}
 
             <div class="form-floating">
-                <input type="text" name="_username" class="form-control" value="{{ lastUsername }}" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Login</label>
+                <input type="text" name="_username" class="form-control" value="{{ lastLogin }}" id="floatingPassword" placeholder="Email">
+                <label for="floatingPassword">Email</label>
             </div>
 
             <div class="form-floating">
@@ -67,17 +60,13 @@
             </div>
             {# End Form Inputs with floatig label #}
 
-            {# Print Error/s #}       
+            {# Message d'erreur #}
             {% if error %}
-            <div class="alert alert-dismissible alert-primary">
-                {# Message d'erreur ici #}
-                Login ou mot de passe incorrect
-            </div>
-            {# <div class="message_information message_incorrect">
-                Login ou mot de passe incorrect
-            </div> #}
+                <div class="alert alert-dismissible alert-primary">
+                    Login ou mot de passe incorrect
+                </div>
             {% endif %}
-            {# End print Error/s #}  
+            {# End erreur #}
 
             <div class="flex_vertical centered_flex">
                 <button type="submit" class="btn btn-primary" onclick="return verifyInputLogin()">
