@@ -13,12 +13,11 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $clientTypeRepository = $manager->getRepository(ClientType::class);
-        $clientRepository = $manager->getRepository(Client::class);
 
         $client1 = new Client();
         $client1->setName("NATANELIC")
                 ->setFirstName("Romain")
-                ->setLogin("log123")
+                ->setLogin("natanelic@etu.univ-loraine")
                 ->setPassword("hiddenPassword")
                 ->setBalance(0)
                 ->setFidelityPoint(0)
@@ -29,7 +28,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
         $client2 = new Client();
         $client2->setName("MULLER")
                 ->setFirstName("Leane")
-                ->setLogin("monLogin")
+                ->setLogin("leane@hotmail.fr")
                 ->setPassword("Ayato")
                 ->setBalance(5)
                 ->setFidelityPoint(0)
@@ -40,26 +39,13 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
         $client3 = new Client();
         $client3->setName("LASALLE")
                 ->setFirstName("Jean")
-                ->setLogin("grospif")
-                ->setPassword("petiteCochonne")
+                ->setLogin("laSalle@MonEmail.eu")
+                ->setPassword("PetiteCochonne")
                 ->setBalance(0)
                 ->setFidelityPoint(0)
                 ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
                 ->setRoles(["ROLE_USER"]);
         $manager->persist($client3);
-
-        $manager->flush();
-
-        //Permet de mettre les bon roles
-        $listClient = $clientRepository->findAll();
-
-        $client1 = $listClient[0];
-        $client1->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
-        $manager->persist($client1);
-
-        $client2 = $listClient[1];
-        $client2->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
-        $manager->persist($client2);
 
         $manager->flush();
     }
