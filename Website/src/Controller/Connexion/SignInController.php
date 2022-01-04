@@ -62,7 +62,6 @@ class SignInController extends AbstractController
             }
         }
 
-
         return $this->render('connexion/signin.html.twig', [
             "loginExist" => $loginExist
         ]);
