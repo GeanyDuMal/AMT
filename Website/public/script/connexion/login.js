@@ -4,10 +4,10 @@ function verifyInputLogin() {
       var valueLogin = form._username.value;
       var valuePassword = form._password.value;
   
-      if (valueLogin === "" || valuePassword === "") {
+      if (valueLogin === "" || valuePassword === "" || valuePassword.length < 5 || !emailIsValid(valueLogin)) {
           Swal.fire({
               title: 'Incomplet !',
-              html: "Merci de completer tout les champs afin de se connecter",
+              html: "Merci de completer correctement tout les champs afin de vous connecter",
               icon: 'error',
               confirmButtonText: 'Completer'
             })
@@ -15,4 +15,8 @@ function verifyInputLogin() {
       }else{
           return true;
       }
+}
+
+function emailIsValid (email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
