@@ -29,6 +29,7 @@ class OrderManager
 
     public function removeWithRestore(Command $order): void{
         $purchaseManager = new PurchaseManager($this->manager);
+        $clientManager = new ClientManager($this->manager);
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
         $montant = $this->montantTotal($order);
@@ -42,8 +43,14 @@ class OrderManager
         if ($order->getClient() != null &&
             $order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"]))
         {
-            $order->getClient()->setBalance($order->getClient()->getBalance() + $montant);
-            //Ajouter la partie pour enlever de son fidelity
+            $client = $order->getClient();
+
+            $client->setBalance($client->getBalance() + $montant);
+            if ($montant > 1){
+                $client->setFidelityPoint($client->getFidelityPoint() - $montant*10);
+            }
+
+            $clientManager->persist($client);
         }
 
         //Supprimer de la base de données
