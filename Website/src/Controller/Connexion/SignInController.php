@@ -27,8 +27,7 @@ class SignInController extends AbstractController
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $clientTypeRepository = $manager->getRepository(ClientType::class);
-        $client = new Client();
-        $verifPassword = "";
+        $client = new Client;
         $loginExist = false;
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
@@ -44,24 +43,26 @@ class SignInController extends AbstractController
                     ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
                     ->setRoles(['ROLE_USER']);
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
+
+            /**
+             * Si le form n'est pas vide,
+             * que le login n'existe pas
+             * et que les infos sont correctes
+             * alors on l'insere dans la base de donnée
+             * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
+             */
+            if (!$clientManager->isNotFull($client) && !$clientManager->loginExists($client)
+                && $clientManager->dataCorrect($client) && (trim($inputParameterBag->get("password")) == $verifPassword))
+            {
+                $clientManager->persist($client);
+
+                return $this->redirectToRoute('login');
+            }else if ($clientManager->loginExists($client)) {
+                $loginExist = true;
+            }
         }
 
-        /**
-         * Si le form n'est pas vide,
-         * que le login n'existe pas
-         * et que les infos sont correctes
-         * alors on l'insere dans la base de donnée
-         * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
-         */
-        if (!$clientManager->isNotFull($client) && !$clientManager->loginExists($client)
-            && $clientManager->dataCorrect($client) && (trim($inputParameterBag->get("password")) == $verifPassword))
-        {
-            $clientManager->persist($client);
 
-            return $this->redirectToRoute('login');
-        }else if ($clientManager->loginExists($client)) {
-            $loginExist = true;
-        }
         return $this->render('connexion/signin.html.twig', [
             "loginExist" => $loginExist
         ]);
