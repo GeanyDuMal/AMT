@@ -20,6 +20,10 @@ $("#order_table").on("click", "#toDelete", function(){
     }
 });
 
+
+//Stand By
+//A voir si on l'utiliseras plus tard
+
 /**
  * Delete an Order with AJAX
  */
