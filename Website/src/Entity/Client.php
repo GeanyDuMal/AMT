@@ -19,7 +19,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -28,7 +28,8 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre nom doit comporter au moins {{ limit }} caractères",
      * )
      */
-    private $name;
+    private ?string $name;
+
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(
@@ -36,64 +37,54 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre prénom doit comporter au moins {{ limit }} caractères",
      *)
      */
-    private $firstName;
+    private ?string $firstName;
+
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(
      *      min = 5,
      *      minMessage = "Votre login doit comporter au moins {{ limit }} caractères",
      *     )
+     * login is the email of the client
      */
-    private $login;
+    private ?string $login;
+
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    /*
-     *     * @Assert\All
-     * ({
      * @Assert\Length(
      *      min = 5,
-     *      minMessage = "Votre mot de passe doit comporter au moins {{ limit }} caractères",
-     *     ),
-     * @Assert\Regex(
-     *     pattern="/[^a-zA-Z\d]/",
-     *     message="le mot de passe doit contenir au moins un caractére spéciale",
-     * )
-     * })
-     * */
-    private $password;
+     *      minMessage = "Votre password doit comporter au moins {{ limit }} caractères",
+     *     )
+     */
+    private ?string $password;
+
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
+     * @Assert\PositiveOrZero(
+     *     message="Les points de fidilité sont positive"
+     * )
      */
-    /*
-     *      * /@Assert\All({
-     *      @Assert\NotBlank,
-     *      @Assert\PositiveOrZero(
-     *       message="Le balance est positive"
-     *      )
-     * })
-     * */
-    private $balance;
+    private ?string $balance;
+
     /**
      * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
      * @Assert\PositiveOrZero(
      *     message="Les points de fidilité sont positive"
      * )
      */
-    private $fidelityPoint;
+    private ?int $fidelityPoint;
 
     /**
      * @ORM\ManyToOne(targetEntity=ClientType::class)
      * @ORM\JoinColumn(nullable=false)
      *
      */
-    private $clientType;
+    private ?\App\Entity\ClientType $clientType;
 
     /**
      * @ORM\Column(type="json",options={"default" = "ROLE_USER"})
      */
-    private $roles = [];
+    private array $roles = [];
 
     public function getId(): ?int
     {
