@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MaillingOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu/mailling/{id}", name="orderDeleteMailing")
+     * @Route("/order/menu/mailling/{id}", name="orderDeleteMailing")
      */
     public function sendEmail($id, MailerInterface $mailer){
         if ($this->isGranted('ROLE_TRESORIER') || !$this->isGranted('ROLE_ASSOC')){

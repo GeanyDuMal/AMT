@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MenuOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu{message}", name="orderMenu")
+     * @Route("/order/menu{message}", name="orderMenu")
      */
     public function menu(string $message = null ,EntityManagerInterface $manager): Response
     {
@@ -30,7 +30,7 @@ class MenuOrderController extends AbstractController
         }
 
 
-        return $this->render('command/menu.html.twig', [
+        return $this->render('order/menu.html.twig', [
             "user" => $this->getUser(),
             "message" => $message,
             "orderList" => $allOrder,

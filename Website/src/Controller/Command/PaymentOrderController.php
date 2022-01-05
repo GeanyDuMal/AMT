@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaymentOrderController extends AbstractController
 {
     /**
-     * @Route("/command/payment/{productOrderedSerialized}&{idClient}", name="orderPayment")
+     * @Route("/order/payment/{productOrderedSerialized}&{idClient}", name="orderPayment")
      */
     public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request): Response
     {
@@ -110,7 +110,7 @@ class PaymentOrderController extends AbstractController
             return $this->redirectToRoute("orderMenu", ["message" => "Commande effectuée avec succès"]);
         }
 
-        return $this->render('command/payment.html.twig', [
+        return $this->render('order/payment.html.twig', [
             'listProduct' => $listProduct,
             'productQuantity' => $productOrderedIdTab,
             'montantProduct' => $montantProduct,

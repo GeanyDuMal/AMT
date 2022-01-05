@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteOrderController extends AbstractController
 {
     /**
-     * @Route("/command/menu/delete/{id}", name="orderDelete", methods={"GET", "DELETE"})
+     * @Route("/order/menu/delete/{id}", name="orderDelete", methods={"GET", "DELETE"})
      */
     public function delete($id, EntityManagerInterface $manager){
         if (!$this->isGranted('ROLE_TRESORIER')){

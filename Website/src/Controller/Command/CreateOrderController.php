@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateOrderController extends AbstractController
 {
     /**
-     * @Route("/command/create", name="orderCreate")
+     * @Route("/order/create", name="orderCreate")
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
@@ -54,7 +54,7 @@ class CreateOrderController extends AbstractController
 
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
-        return $this->render('command/create.html.twig', [
+        return $this->render('order/create.html.twig', [
             "user" => $user,
             "productList" => $allProductPositiveStock,
             "clientList" => $allClient
