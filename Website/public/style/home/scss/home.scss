@@ -1,13 +1,11 @@
 /* Global */
-
 /* Colors */
-
 // scss
 $white: #f2f2f2;
 $black: #000;
 $dark-red: #4c0d00;
 $middle-red: #760700;
-$primary: #212529;//#1B1919; 
+$primary: #212529; //#1B1919;
 // $dark-gray: #242424; <-- useless here
 
 // css if some of you don't wan't to use scss :))
@@ -15,7 +13,7 @@ $primary: #212529;//#1B1919;
     /* Our Colors // GoInfo */
     --white: #f2f2f2;
     --black: #000;
-    --primary: #212529; 
+    --primary: #212529;
     --dark-red: #4c0d00;
     --middle-red: #760700;
     //--d-bootstrap: #212529; == the color of the dark theme of bootstrap, I think I won't use this at all
@@ -26,11 +24,9 @@ body {
     /* font-family: "Lato", sans-serif; */
     padding-top: 4.5rem;
 }
-
 /* End Global */
 
 /* Navbar */
-
 .navbar {
     /* position: fixed; */
     top: 0;
@@ -83,11 +79,9 @@ body {
         font-size: 18px;
     }
 }
-
 /* End Navbar */
 
 /* Footer */
-
 .social,
 .copyright {
     margin: 1rem;
@@ -118,5 +112,4 @@ footer {
 .icon:hover {
     color: $middle-red;
 }
-
 /* End Footer */
