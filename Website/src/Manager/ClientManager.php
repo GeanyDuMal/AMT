@@ -92,6 +92,16 @@ class ClientManager
     }
 
     /**
+     * @return boolean
+     * verify if there is more than one client in the database
+     */
+    public function checkMoreOneClient(): bool
+    {
+        // ToDo 
+        return true;
+    }
+
+    /**
      * @param String password
      * @return boolean
      * verify if the password contains regex and have the good size
