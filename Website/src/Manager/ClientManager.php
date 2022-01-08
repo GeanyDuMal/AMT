@@ -97,6 +97,7 @@ class ClientManager
      */
     public function checkMoreOneClient(): bool
     {
+        $clientRepository = $this->manager->getRepository();
         // ToDo 
         return true;
     }
