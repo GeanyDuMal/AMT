@@ -26,6 +26,12 @@ class ClientManager
      */
     public function persist(?Client $client)
     {
+        if (!$this->checkMoreOneClient())
+        {
+            $clientTypeRepository = $this->manager->getRepository(ClientTypeRepository::class);
+            $client->setRoles(["ROLE_PRESIDENT"])
+                ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
+        }
         $this->manager->persist($client);
         $this->manager->flush();
     }
@@ -150,8 +156,8 @@ class ClientManager
         return $type;
     }
 
-        public function addFidelityPoint(float $amountOrder, Client $client): void{
-              $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
-              $this->persist($client);
-        }
+    public function addFidelityPoint(float $amountOrder, Client $client): void{
+          $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
+          $this->persist($client);
+    }
 }
