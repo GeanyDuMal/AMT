@@ -2,13 +2,9 @@
 
 namespace App\Manager;
 
-use App\Entity\Association;
 use App\Entity\Client;
-use App\Repository\AssociationRoleRepository;
-use App\Repository\ClientTypeRepository;
+use App\Entity\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ClientManager
 {
@@ -28,7 +24,7 @@ class ClientManager
     {
         if (!$this->checkMoreOneClient())
         {
-            $clientTypeRepository = $this->manager->getRepository(ClientTypeRepository::class);
+            $clientTypeRepository = $this->manager->getRepository(ClientType::class);
             $client->setRoles(["ROLE_PRESIDENT"])
                 ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
         }
@@ -105,7 +101,7 @@ class ClientManager
     {
         //à verifier mais normalement correct
         $clientRepository = $this->manager->getRepository(Client::class);
-        return $clientRepository->findAll()->count()>0;
+        return sizeof($clientRepository->findAll()) > 0;
     }
 
     /**
