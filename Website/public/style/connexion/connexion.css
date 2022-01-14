@@ -15,24 +15,24 @@
       text-align: center;
       margin-bottom: 3vh;
       z-index: 5;
-  }
-  
+}
+
 .top-text {
-font-family: 'Bebas Neue', sans-serif;
-font-size: 40px;
-color: var(--white);
-margin-top: 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      color: var(--white);
+      margin-top: 10px;
 }
 
 .back-arrow {
-position: absolute;
-top: 12px;
-left: 6px;
-width: 40px;
-height: auto;
+      position: absolute;
+      top: 12px;
+      left: 6px;
+      width: 40px;
+      height: auto;
 }
-  
-  /* End "Header" */
+
+/* End "Header" */
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 body::-webkit-scrollbar {

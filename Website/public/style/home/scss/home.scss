@@ -81,7 +81,18 @@ body {
 }
 /* End Navbar */
 
+/* Page Title */
+.top-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3em;
+    color: $primary;
+    margin-top: 10px;
+    text-align: center;
+}
+/* End Page Title */
+
 /* Img Iut */
+
 .carousel img {
     width: auto;
     // max-height: 500px;
