@@ -1,30 +1,49 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>404 Page</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,300,700,900'>
+  <title>404</title>
   <link rel="stylesheet" href="./style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
 </head>
 
 <body>
+  <div class="box">
+    <div class="box__ghost">
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
 
-  <div class="page">
-    <div class="content">
-      <div class="text">
-        <h1>404</h1>
-        <h2>Page non trouvée</h2>
-        <p>Félicitations ! Essayez encore...</p>
+      <div class="box__ghost-container">
+        <div class="box__ghost-eyes">
+          <div class="box__eye-left"></div>
+          <div class="box__eye-right"></div>
+        </div>
+        <div class="box__ghost-bottom">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
-      <a href="#">Retour à l'accueil</a>
+      <div class="box__ghost-shadow"></div>
     </div>
-    <img
-      src="https://images.pexels.com/photos/5984863/pexels-photo-5984863.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
-      <!-- Chaussure chewing gum ? https://images.pexels.com/photos/2882/man-person-street-shoes.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940 -->
+
+    <div class="box__description">
+      <div class="box__description-container">
+        <div class="box__description-title">Ooooops!</div>
+        <div class="box__description-text">Il semble que nous n'ayons pas pu trouver la page que vous cherchiez.</div>
+      </div>
+
+      <a href="javascript:history.go(-1)" target="_blank" class="box__button">Retour</a>
+
+    </div>
+
   </div>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
   <script src="./script.js"></script>

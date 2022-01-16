@@ -1,31 +1,20 @@
-var lFollowX = 0,
-    lFollowY = 0,
-    x = 0,
-    y = 0,
-    friction = 1 / 30;
+//based on https://dribbble.com/shots/3913847-404-page
 
-function animate() {
-  x += (lFollowX - x) * friction;
-  y += (lFollowY - y) * friction;
-  
-  translate = 'translate(' + x + 'px, ' + y + 'px) scale(1.1)';
+var pageX = $(document).width();
+var pageY = $(document).height();
+var mouseY = 0;
+var mouseX = 0;
 
-  $('img').css({
-    '-webit-transform': translate,
-    '-moz-transform': translate,
-    'transform': translate
-  });
+$(document).mousemove(function (event) {
+  //verticalAxis
+  mouseY = event.pageY;
+  yAxis = (pageY / 2 - mouseY) / pageY * 300;
+  //horizontalAxis
+  mouseX = event.pageX / -pageX;
+  xAxis = -mouseX * 100 - 100;
 
-  window.requestAnimationFrame(animate);
-}
+  $('.box__ghost-eyes').css({ 'transform': 'translate(' + xAxis + '%,-' + yAxis + '%)' });
 
-$(window).on('mousemove click', function(e) {
-
-  var lMouseX = Math.max(-100, Math.min(100, $(window).width() / 2 - e.clientX));
-  var lMouseY = Math.max(-100, Math.min(100, $(window).height() / 2 - e.clientY));
-  lFollowX = (20 * lMouseX) / 100; // 100 : 12 = lMouxeX : lFollow
-  lFollowY = (10 * lMouseY) / 100;
+  //console.log('X: ' + xAxis);
 
 });
-
-animate();
