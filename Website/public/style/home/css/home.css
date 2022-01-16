@@ -83,13 +83,18 @@ body {
   text-align: center;
   font-size: 1.5em; }
 
+/* line 98, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+.body__text {
+  margin-top: 3vw;
+  text-align: center; }
+
 /* End Page Title */
 /* Img Iut */
-/* line 101, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 106, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .carousel img {
   width: auto; }
 
-/* line 106, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 111, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .carousel-fade .carousel-inner .item {
   opacity: 0;
   -webkit-transition-property: opacity;
@@ -97,51 +102,51 @@ body {
   -o-transition-property: opacity;
   transition-property: opacity; }
 
-/* line 114, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 119, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .carousel-fade .carousel-inner .active {
   opacity: 1; }
 
-/* line 118, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 123, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .carousel-fade .carousel-inner .active.left,
 .carousel-fade .carousel-inner .active.right {
   left: 0;
   opacity: 0;
   z-index: 1; }
 
-/* line 124, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 129, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .carousel-fade .carousel-inner .next.left,
 .carousel-fade .carousel-inner .prev.right {
   opacity: 1; }
 
-/* line 129, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 134, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .carousel-fade .carousel-control {
   z-index: 2; }
 
-/* line 133, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 138, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .imgiut {
   width: 100%;
   height: auto; }
 
 @media only screen and (min-width: 600px) {
-  /* line 139, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+  /* line 144, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
   .carousel {
     display: none; } }
 
 /* Img Iut */
 /* Footer */
-/* line 147, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 152, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .social,
 .copyright {
   margin: 1rem;
   text-align: center; }
 
-/* line 153, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 158, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .social li {
   display: inline-block;
   padding-right: 10px;
   padding-left: 10px; }
 
-/* line 159, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 164, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 footer {
   position: relative;
   bottom: 0;
@@ -150,13 +155,13 @@ footer {
   text-align: center;
   background-color: #212529; }
 
-/* line 168, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 173, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .icon {
   color: #f2f2f2;
   font-size: 1.5rem;
   transition: 0.2s; }
 
-/* line 174, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 179, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .icon:hover {
   color: #760700; }
 
