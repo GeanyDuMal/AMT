@@ -20,7 +20,7 @@ class Order
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?\DateTimeInterface $orderedAt;
+    private ?\DateTime $orderedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
@@ -44,7 +44,7 @@ class Order
         return $this->orderedAt;
     }
 
-    public function setOrderedAt(\DateTimeInterface $orderedAt): self
+    public function setOrderedAt(\DateTime $orderedAt): self
     {
         $this->orderedAt = $orderedAt;
 
