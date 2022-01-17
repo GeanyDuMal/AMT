@@ -21,25 +21,3 @@ $("#order_table").on("click", "#toDelete", function(){
 });
 
 
-//Stand By
-//A voir si on l'utiliseras plus tard
-
-/**
- * Delete an Order with AJAX
- */
-$("#order_table").on("click", "#askToDelete", function(){
-    var tr = this.parentNode.parentNode;
-    if (confirm("Voulez vous vraiment supprimer cette commande ?" +
-        "Tout les achats lié a cette commandes seront supprimés")){
-        var id = tr.querySelector("#idCell").innerHTML;
-        console.log(id);
-        fetch('/command/menu/mailling/' + id)
-            .then(function (resp) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Demande de suppresion',
-                    text: 'La suppression de la commande ' + id + " a été envoyé au Président et Tresorier",
-                })
-            });
-    }
-});
