@@ -30,7 +30,7 @@
 		<div align="right">
 			<a href="{{ path('new_client') }}" class="btn btn-success">Ajouter</a>
 		</div>
-		{% if message is defined %}
+		{% if message %}
 			<div class="alert alert-dismissible alert-success">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				<strong>{{ message }}!</strong>
@@ -63,7 +63,7 @@
 						<a href="{{url('edit_client',{id:client.id})}}" class="btn btn-warning bg-warning" name="{{client.id}}">Modifier</a>
 					</td>
 					<td>
-						<a id="toDelete" id="wtf" class="btn btn-danger bg-danger" data-id={{client.id}} >Supprimer</a>
+						<a id="toDelete" class="btn btn-danger bg-danger" data-id={{client.id}} >Supprimer</a>
 					</td>
 				</tr>
 				{% endif %}

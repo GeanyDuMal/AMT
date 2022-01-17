@@ -4,12 +4,14 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/order/menu.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 {% endblock %}
 
 {% block javascripts %}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 	<script src="/script/order/menuOrder.js"></script>
 	<script src="/script/order/ajaxMenuCommand.js"></script>
 {% endblock %}
@@ -31,18 +33,16 @@
 		
 		{% if orderList|length > 0 %}
 		<table id="order_table" class="table table-striped">
-			<thead bgcolor="#6cd8dc">
+			<thead>
 				<tr class="table-primary">
 					<th>ID</th>
 					<th>Date et Heure</th>
 					<th>Nom Client</th>
-					<th class="phone_hidden">Login</th>
-					<th class="phone_hidden">Type Client</th>
+					<th>Login</th>
+					<th>Type Client</th>
 					<th>Montant</th>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<th>Supprimer</th>
-					{% else %}
-						<th>Demande Suppression</th>
 					{% endif %}
 				</tr>
 			</thead>
@@ -59,18 +59,18 @@
 						<td>
 							{{ order.client.name }} {{ order.client.firstName }}
 						</td>
-						<td class="phone_hidden">
+						<td >
 							{{ order.client.login }}
 						</td>
-						<td class="phone_hidden">
+						<td>
 							{{ order.client.clientType.name }}
 						</td>
 					{% else %}
 						<td>
 							Client non renseigné
 						</td>
-						<td class="phone_hidden"></td>
-						<td class="phone_hidden"></td>
+						<td></td>
+						<td></td>
 					{% endif %}
 						<td>
 							{{ montantOrder[order.id] }}€
@@ -78,10 +78,6 @@
 					{% if is_granted("ROLE_TRESORIER") %}
 						<td>
 							<a id="toDelete" class="btn btn-danger">X</a>
-						</td>
-					{% else %}
-						<td>
-							<a id="askToDelete" class="btn btn-danger">Demande Suppression</a>
 						</td>
 					{% endif %}
 					

@@ -18,9 +18,6 @@ th{
 }
 
 @media(max-width: 600px) {
-      #order_table{
-            width: fit-content;
-      }
       .alert{
         font-size: 0.6rem;    
       }
@@ -29,9 +26,6 @@ th{
       }
       .content{
             min-width: 0;
-      }
-      #order_table{
-            font-size: 0.6rem;;
       }
       .phone_hidden{
             display: none;
