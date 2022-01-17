@@ -3,7 +3,6 @@
 namespace App\Controller\Command;
 
 use App\Entity\Command;
-use App\Entity\Purchase;
 use App\Manager\OrderManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
