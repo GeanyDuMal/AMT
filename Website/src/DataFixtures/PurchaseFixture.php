@@ -42,7 +42,7 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return[
-            CommandFixture::class,
+            OrderFixture::class,
             ProductFixture::class
         ];
     }
