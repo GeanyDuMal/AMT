@@ -22,7 +22,7 @@ final class Version20211228103603 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE client CHANGE client_type_id client_type_id INT NOT NULL');
 
-        $this->addSql('DROP TRIGGER IF EXISTS `db_aedi`.`verifSoldePositif`;
+        $this->addSql('DROP TRIGGER IF EXISTS verifSoldePositif;
                             CREATE TRIGGER verifSoldeAndFidelity 
                                 BEFORE UPDATE ON client FOR EACH ROW
                                 BEGIN
