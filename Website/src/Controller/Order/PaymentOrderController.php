@@ -4,7 +4,7 @@ namespace App\Controller\Order;
 
 use App\Entity\Client;
 use App\Entity\ClientType;
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Entity\PaymentType;
 use App\Entity\Price;
 use App\Entity\Product;
@@ -84,7 +84,7 @@ class PaymentOrderController extends AbstractController
             }
 
             //Creer la commande
-            $order = new Command();
+            $order = new Order();
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
                     ->setPaymentType($paymentTypeChose);

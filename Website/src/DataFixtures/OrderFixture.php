@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Entity\Order;
 use App\Entity\Client;
 use App\Entity\PaymentType;
@@ -18,13 +18,13 @@ class OrderFixture extends Fixture implements DependentFixtureInterface
         $clientRepository = $manager->getRepository(Client::class);
         $paymentTypeRepository = $manager->getRepository(PaymentType::class);
 
-        $command1 = new Command();
+        $command1 = new Order();
         $command1->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
                 ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]))
                 ->setOrderedAt(new DateTime("now"));
         $manager->persist($command1);
 
-        $command2 = new Command();
+        $command2 = new Order();
         $command2->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
                 ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Espece"]))
                 ->setOrderedAt(new DateTime("now"));

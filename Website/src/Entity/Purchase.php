@@ -15,24 +15,24 @@ class Purchase
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private ?Product $product;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantity;
+    private ?int $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Command::class)
+     * @ORM\ManyToOne(targetEntity=Order::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $command;
+    private ?Order $order;
 
     public function getId(): ?int
     {
@@ -63,14 +63,14 @@ class Purchase
         return $this;
     }
 
-    public function getCommand(): ?Command
+    public function getCommand(): ?Order
     {
-        return $this->command;
+        return $this->order;
     }
 
-    public function setCommand(?Command $command): self
+    public function setCommand(?Order $command): self
     {
-        $this->command = $command;
+        $this->order = $command;
 
         return $this;
     }

@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Client;
 use App\Entity\ClientType;
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Entity\PaymentType;
 use App\Entity\Price;
 use App\Entity\Product;
@@ -20,14 +20,14 @@ class OrderManager
         $this->manager = $managerController;
     }
 
-    public function persist(Command $order): void{
+    public function persist(Order $order): void{
         if ($this->verifyOrder($order)){
             $this->manager->persist($order);
             $this->manager->flush();
         }
     }
 
-    public function removeWithRestore(Command $order): void{
+    public function removeWithRestore(Order $order): void{
         $purchaseManager = new PurchaseManager($this->manager);
         $clientManager = new ClientManager($this->manager);
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
@@ -63,7 +63,7 @@ class OrderManager
 
 
 
-    public function reduceBalanceIfNecessary(Command $order): void{
+    public function reduceBalanceIfNecessary(Order $order): void{
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
         $clientManager = new ClientManager($this->manager);
         if ($order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"])
@@ -75,7 +75,7 @@ class OrderManager
         }
     }
 
-    public function montantTotal(Command $order): float{
+    public function montantTotal(Order $order): float{
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
         $priceRepository = $this->manager->getRepository(Price::class);
         $montantTotal = 0;
@@ -95,7 +95,7 @@ class OrderManager
         return $montantTotal;
     }
 
-    public function addFidelityToClient(Command $order):void{
+    public function addFidelityToClient(Order $order):void{
         if ($order->getClient() != null){
             $montant = $this->montantTotal($order);
             $clientManager = new ClientManager($this->manager);
@@ -152,7 +152,7 @@ class OrderManager
         return $paymentTypeList;
     }
 
-    public function verifyOrder(Command $order): bool{
+    public function verifyOrder(Order $order): bool{
         return ($order->getOrderedAt() != null && $order->getPaymentType() != null);
     }
 }

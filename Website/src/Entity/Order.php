@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandRepository;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CommandRepository::class)
+ * @ORM\Entity(repositoryClass=OrderRepository::class)
  */
-class Command
+class Order
 {
     /**
      * @ORM\Id

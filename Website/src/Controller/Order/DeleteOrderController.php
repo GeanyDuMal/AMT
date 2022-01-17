@@ -2,7 +2,7 @@
 
 namespace App\Controller\Order;
 
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Manager\OrderManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class DeleteOrderController extends AbstractController
          * restore the balance of the client if he paid with
          * remove the fidelityPoint earned
          */
-        $orderRepository = $manager->getRepository(Command::class);
+        $orderRepository = $manager->getRepository(Order::class);
         $orderManager = new OrderManager($manager);
         $order = $orderRepository->find($id);
 

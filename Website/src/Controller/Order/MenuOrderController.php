@@ -2,7 +2,7 @@
 
 namespace App\Controller\Order;
 
-use App\Entity\Command;
+use App\Entity\Order;
 use App\Manager\OrderManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +16,7 @@ class MenuOrderController extends AbstractController
      */
     public function menu(string $message = null ,EntityManagerInterface $manager): Response
     {
-        $commandeRepository = $manager->getRepository(Command::class);
+        $commandeRepository = $manager->getRepository(Order::class);
         $orderManager = new OrderManager($manager);
         $montantIdOrder = [];
 
