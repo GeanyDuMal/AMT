@@ -31,3 +31,7 @@ Les objectifs de ce site vont être biensur :
 * Contraintes :  
   - Realiser le projet en Web avec Symfony
   - Utiliser une base de données MySQL
+
+
+Lien poster : 
+https://www.canva.com/design/DAE1nZKEhL8/kkicE3HD_o1dCTlX45ydZg/watch?utm_content=DAE1nZKEhL8&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton
