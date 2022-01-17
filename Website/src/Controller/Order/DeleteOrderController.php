@@ -14,7 +14,8 @@ class DeleteOrderController extends AbstractController
     /**
      * @Route("/order/menu/delete/{id}", name="orderDelete", methods={"GET", "DELETE"})
      */
-    public function delete($id, EntityManagerInterface $manager){
+    public function delete($id, EntityManagerInterface $manager): JsonResponse
+    {
         if (!$this->isGranted('ROLE_TRESORIER')){
             return new JsonResponse(false);
         }

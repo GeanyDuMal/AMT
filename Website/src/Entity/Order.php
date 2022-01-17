@@ -20,19 +20,19 @@ class Order
     /**
      * @ORM\Column(type="datetime")
      */
-    private $orderedAt;
+    private ?\DateTimeInterface $orderedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
      * @ORM\JoinColumn(nullable=true)
      */
-    private $client;
+    private ?Client $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=PaymentType::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $paymentType;
+    private ?PaymentType $paymentType;
 
     public function getId(): ?int
     {

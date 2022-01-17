@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Order;
-use App\Entity\Order;
 use App\Entity\Client;
 use App\Entity\PaymentType;
 use DateTime;
