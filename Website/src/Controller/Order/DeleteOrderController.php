@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Command;
+namespace App\Controller\Order;
 
 use App\Entity\Command;
 use App\Manager\OrderManager;
