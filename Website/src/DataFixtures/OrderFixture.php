@@ -19,14 +19,15 @@ class OrderFixture extends Fixture implements DependentFixtureInterface
 
         $command1 = new Order();
         $command1->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
-                ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]))
-                ->setOrderedAt(new DateTime("now"));
+            ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]))
+            ->setOrderedAt(new DateTime());
+
         $manager->persist($command1);
 
         $command2 = new Order();
         $command2->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
-                ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Espece"]))
-                ->setOrderedAt(new DateTime("now"));
+            ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Espece"]))
+            ->setOrderedAt(new DateTime());
         $manager->persist($command2);
 
         $manager->flush();

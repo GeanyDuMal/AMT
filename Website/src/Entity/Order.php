@@ -20,7 +20,7 @@ class Order
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?\DateTime $orderedAt;
+    private ?\DateTimeInterface $orderedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
