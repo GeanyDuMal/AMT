@@ -18,8 +18,11 @@
 
 
 {% block body %}
-    {% if message is defined %}
-        <p>{{ message }}!</p>
+    {% if message %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ message }}!</strong>
+        </div>
     {% endif %}
 
     <div class="content-wrapper" id="products">
