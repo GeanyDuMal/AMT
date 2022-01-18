@@ -16,6 +16,10 @@ class MenuOrderController extends AbstractController
      */
     public function menu(string $message = null ,EntityManagerInterface $manager): Response
     {
+        if (!$this->isGranted('ROLE_ASSOC')){
+            return $this->redirectToRoute('home');
+        }
+        
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
         $montantIdOrder = [];
