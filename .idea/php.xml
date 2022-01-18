@@ -144,7 +144,7 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/Website/vendor/autoload.php" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/Website/vendor/autoload.php" phpunit_phar_path="$PROJECT_DIR$/Website/phpunit.xml.dist" />
     </phpunit_settings>
   </component>
 </project>
