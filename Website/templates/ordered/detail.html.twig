@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/bootstrap.css">
+    <link rel="stylesheet" href="/style/order/detail.css">
+{% endblock %}
+
+{% block javascripts %}
+	<script src="/script/order/detailOrder.js"></script>
+{% endblock %}
+
+{% block title %}Detail de la commande{% endblock %}
+
+{% block body %}
+      <div class="flex_vertical centered_flex_vertical">
+            <h3>
+                  Commande n° {{ order.id}} réalisé par {{ order.client.name }} {{ order.client.firstName }} 
+            </h3>
+            <div class="flex_horizontal centered_flex_horizontal block_all_purchase">
+                  {% for purchase in purchaseList %}
+                        <div class="block_product flex_vertical">
+                              <h3>
+                                    Produit : {{ purchase.product.name }}
+                              </h3>
+                              <div>
+                                    Quantité : {{ purchase.quantity }}
+                              </div>
+                              <div>
+                                    Prix unitaire : {{priceList[purchase.product.id].price }}€
+                              </div>
+                              <div>
+                                    Prix total : {{priceList[purchase.product.id].price * purchase.quantity }}€
+                              </div>
+                        </div>
+                  {% endfor %}
+            </div>
+            <h4>
+                  Montant total : {{ montantTotal }}€
+            </h4>
+            <div class="block_button flex_horizontal centered_flex_vertical">
+                  <a href="{{ path("orderMenu") }}">
+                        <img src="/img/icons/back.png" class="img">    
+                  </a>
+                  {% if is_granted("ROLE_TRESORIER") %}
+                        <a class="btn btn-danger" onclick="return confirmDelete()">Supprimer</a>
+                  {% endif %}
+            </div>
+      </div>
+{% endblock %}
