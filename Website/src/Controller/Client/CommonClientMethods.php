@@ -3,10 +3,14 @@ namespace App\Controller\Client;
 
 use App\Entity\Association;
 use App\Entity\Client;
+use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
+use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function PHPUnit\Framework\equalTo;
 
 class CommonClientMethods{
     /**
@@ -67,5 +71,21 @@ class CommonClientMethods{
         $newMember->setMember($client);
         $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('assosRoles')]));
         return $newMember;
+    }
+
+    public function removeOtherPresitents(EntityManagerInterface $manager, Association $member,ClientTypeRepository $clientTypeRepository, AssociationRepository $associationtRepository,ClientRepository $clientRepository)
+    {
+        $members=$associationtRepository->findAll();
+        foreach ($members as $otherMember){
+            if($member->getMember() !== $otherMember->getMember()){
+                if($otherMember->getRole()->getName()=="President"){
+                    $client=$clientRepository->findOneBy(['id'=>$otherMember->getMember()]);
+                    $client->setClientType($clientTypeRepository->findOneBy(['name'=>'Etudiant']));
+                    $client->setRoles(["ROLE_USER"]);
+                    $manager->persist($client);
+                    $manager->flush();
+                }
+            }
+        }
     }
 }
