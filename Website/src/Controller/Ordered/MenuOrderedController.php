@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Controller\Order;
+namespace App\Controller\Ordered;
 
-use App\Entity\Order;
-use App\Manager\OrderManager;
+use App\Entity\Ordered;
+use App\Manager\OrderedManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MenuOrderController extends AbstractController
+class MenuOrderedController extends AbstractController
 {
     /**
-     * @Route("/order/menu{message}", name="orderMenu")
+     * @Route("/ordered/menu{message}", name="orderedMenu")
      */
     public function menu(string $message = null ,EntityManagerInterface $manager): Response
     {
-        $commandeRepository = $manager->getRepository(Order::class);
-        $orderManager = new OrderManager($manager);
+        if (!$this->isGranted('ROLE_ASSOC')){
+            return $this->redirectToRoute('home');
+        }
+
+        $commandeRepository = $manager->getRepository(Ordered::class);
+        $orderManager = new OrderedManager($manager);
         $montantIdOrder = [];
 
         /**
@@ -30,11 +34,11 @@ class MenuOrderController extends AbstractController
         }
 
 
-        return $this->render('order/menu.html.twig', [
+        return $this->render('ordered/menu.html.twig', [
             "user" => $this->getUser(),
             "message" => $message,
-            "orderList" => $allOrder,
-            "montantOrder" => $montantIdOrder
+            "orderedList" => $allOrder,
+            "montantOrdered" => $montantIdOrder
         ]);
     }
 }

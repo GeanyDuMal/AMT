@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller\Order;
+namespace App\Controller\Ordered;
 
-use App\Entity\Order;
-use App\Manager\OrderManager;
+use App\Entity\Ordered;
+use App\Manager\OrderedManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DeleteOrderController extends AbstractController
+class DeleteOrderedController extends AbstractController
 {
     /**
-     * @Route("/order/menu/delete/{id}", name="orderDelete", methods={"GET", "DELETE"})
+     * @Route("/ordered/menu/delete/{id}", name="orderedDelete", methods={"GET", "DELETE"})
      */
     public function delete($id, EntityManagerInterface $manager): JsonResponse
     {
@@ -27,8 +27,8 @@ class DeleteOrderController extends AbstractController
          * restore the balance of the client if he paid with
          * remove the fidelityPoint earned
          */
-        $orderRepository = $manager->getRepository(Order::class);
-        $orderManager = new OrderManager($manager);
+        $orderRepository = $manager->getRepository(Ordered::class);
+        $orderManager = new OrderedManager($manager);
         $order = $orderRepository->find($id);
 
         $orderManager->removeWithRestore($order);

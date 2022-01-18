@@ -4,13 +4,13 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/bootstrap.css">
-    <link rel="stylesheet" href="/style/order/create.css">
-    <link rel="stylesheet" href="/style/order/payment.css">
+    <link rel="stylesheet" href="/style/ordered/create.css">
+    <link rel="stylesheet" href="/style/ordered/payment.css">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/script/order/createCommand.js"></script>
-    <script src="/script/order/paymentOrder.js"></script>
+    <script src="/script/ordered/createOrdered.js"></script>
+    <script src="/script/ordered/paymentOrdered.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -55,7 +55,7 @@
                         </button>
                   {% endfor %}
             </form>
-            <a href="{{ path("orderCreate") }}">
+            <a href="{{ path("orderedCreate") }}">
                   <img src="/img/icons/back.png" class="img" alt="" srcset="">    
             </a>
       </div>

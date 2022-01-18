@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Order;
+namespace App\Controller\Ordered;
 
 use App\Entity\Client;
 use App\Entity\Product;
@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CreateOrderController extends AbstractController
+class CreateOrderedController extends AbstractController
 {
     /**
-     * @Route("/order/create", name="orderCreate")
+     * @Route("/ordered/create", name="orderedCreate")
      */
     public function index(Request $request, EntityManagerInterface $manager): Response
     {
@@ -46,7 +46,7 @@ class CreateOrderController extends AbstractController
 
         //Si l'on a commandé au moins 1 produits
         if ($productOrdered){
-            return $this->redirectToRoute("orderPayment", [
+            return $this->redirectToRoute("orderedPayment", [
                 "productOrderedSerialized" => serialize($productOrdered),
                 "idClient" => $inputParameterBag->get("client_commande")
             ]);
@@ -54,7 +54,7 @@ class CreateOrderController extends AbstractController
 
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
-        return $this->render('order/create.html.twig', [
+        return $this->render('ordered/create.html.twig', [
             "user" => $user,
             "productList" => $allProductPositiveStock,
             "clientList" => $allClient
