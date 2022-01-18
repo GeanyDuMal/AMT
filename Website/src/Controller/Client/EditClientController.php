@@ -34,7 +34,7 @@ class EditClientController extends AbstractController
         $assosRoles = $associationRoleRepository->findAll();
         $validationErrors="";
         $errorLoginExist= "";
-
+        $member=$associationRepository->findOneBy(["member"=>$client]);
         if ($data->count()> 0) {
             $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $validationErrors = $validator->validate($client);
@@ -53,13 +53,19 @@ class EditClientController extends AbstractController
                 }
                 else{
                     $clientManager->persist($client);
+                    if($client->getClientType()->getName()=="Association"){
+                        $member=$associationRepository->findOneBy(["member"=>$client]);
+                            if($member->getRole()->getName()=="President"){
+                                $commonFunctions->removeOtherPresitents($manager,$member,$clientTypeRepository,$associationRepository,$clientRepository);
+                        }
+                    }
                     $request->query->get("Modification avec succés");
                     return $this->redirectToRoute('client_list_message',["message"=>"Modification avec succés"]);
 
                 }
             }
         }
-        $member=$associationRepository->findOneBy(["member"=>$client]);
+
         return $this->render('client/EditModalClient.html.twig',
             [
                 'assosRoles' => $assosRoles,
