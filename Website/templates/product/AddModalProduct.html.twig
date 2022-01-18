@@ -9,7 +9,7 @@
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
     {# End Bootstrap CSS Import #}
 {% endblock %}
-{%  block javascripts %}
+{% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/product/addEditVerifications.js') }}"></script>
 {% endblock %}
@@ -26,9 +26,14 @@
 
     <form id="product_form" action="" method="post">
         <ul class="form-style-1">
-            <li><label>Nom du produit <span class="required">*</span></label><input type="text" name="productName" class="field-long" placeholder="nom"/></li>
-            <li><label>Quantité en stock <span class="required">*</span></label><input type="text" name="productStock" class="field-long" placeholder="stock"/></li>
-            <li><label>Lien de l'image </label><input type="text" name="imageLink" class="field-long" placeholder="image"/></li>
+            <li><label>Nom du produit <span class="required">*</span></label><input type="text" name="productName"
+                                                                                    class="field-long"
+                                                                                    placeholder="nom"/></li>
+            <li><label>Quantité en stock <span class="required">*</span></label><input type="text" name="productStock"
+                                                                                       class="field-long"
+                                                                                       placeholder="stock"/></li>
+            <li><label>Lien de l'image </label><input type="text" name="imageLink" class="field-long"
+                                                      placeholder="image"/></li>
             <li>
                 <label>Type de produits</label>
                 <select name="productType" class="field-select">
@@ -37,7 +42,10 @@
                     {% endfor %}
                 </select>
             </li>
-            <li><label>Tarification <span class="required">*</span></label><input type="text" name="memberPrice" class="field-divided" placeholder="Prix Membres" /> <input type="text" name="studentPrice" class="field-divided" placeholder="Prix Etudiant" /></li>
+            <li><label>Tarification <span class="required">*</span></label><input type="text" name="memberPrice"
+                                                                                  class="field-divided"
+                                                                                  placeholder="Prix Membres"/> <input
+                        type="text" name="studentPrice" class="field-divided" placeholder="Prix Etudiant"/></li>
             <li>
                 <input class="btn-primary" type="submit" onclick="return verifyProduct()">
             </li>

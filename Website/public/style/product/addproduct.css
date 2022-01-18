@@ -1,29 +1,32 @@
 
 .form-style-1 {
-    margin:10px auto;
+    margin: 10px auto;
     max-width: 400px;
     padding: 20px 12px 10px 20px;
 }
+
 .form-style-1 li {
     padding: 0;
     display: block;
     list-style: none;
     margin: 10px 0 0 0;
 }
-.form-style-1 label{
-    margin:0 0 3px 0;
-    padding:0px;
-    display:block;
+
+.form-style-1 label {
+    margin: 0 0 3px 0;
+    padding: 0px;
+    display: block;
     font-weight: bold;
 }
+
 textarea,
-select{
+select {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    border:1px solid #BEBEBE;
+    border: 1px solid #BEBEBE;
     padding: 7px;
-    margin:0px;
+    margin: 0px;
     -webkit-transition: all 0.30s ease-in-out;
     -moz-transition: all 0.30s ease-in-out;
     -ms-transition: all 0.30s ease-in-out;
@@ -31,16 +34,18 @@ select{
     outline: none;
 }
 
-.form-style-1 .field-divided{
+.form-style-1 .field-divided {
     width: 49%;
 }
 
-.form-style-1 .field-long{
+.form-style-1 .field-long {
     width: 100%;
 }
-.form-style-1 .field-select{
+
+.form-style-1 .field-select {
     width: 100%;
 }
-.form-style-1 .required{
-    color:red;
+
+.form-style-1 .required {
+    color: red;
 }
