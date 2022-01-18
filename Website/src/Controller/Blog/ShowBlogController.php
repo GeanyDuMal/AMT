@@ -11,12 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/{message}", name="blog")
+     * @Route("/blog{message}", name="blog")
      */
-    public function index(EntityManagerInterface $manager): Response
+    public function index(string $message = null , EntityManagerInterface $manager): Response
     {
 
         $blogs=$manager->getRepository(Post::class)->findAll();
-        return $this->render('blog/index.html.twig', array('blogs'=>$blogs));
+        return $this->render('blog/index.html.twig',['blogs'=>$blogs,"message"=>$message]);
     }
 }
