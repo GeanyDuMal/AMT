@@ -58,10 +58,19 @@
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
                     <img style="margin-top: 1rem;" src="/img/icons/back_w.png" alt="Arrow" width="auto" height="50"></a>
                     <div style="margin-right: 1em;">
-                        <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
+
                         {# Lien à modif #}
                         <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
-                        <a href="{{ path("member") }}">Notre&nbspEquipe</a>
+                        {% if is_granted('ROLE_ASSOC') %}
+                            <a href="{{ path("orderedCreate") }}">Commander</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_PRESIDENT') %}
+                            <a href="{{ path("client_list_message") }}">Clients</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_TRESORIER') %}
+                            <a href="{{ path("statistics") }}">Statistiques</a>
+                            <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
+                        {% endif %}
                         {# <a href="#">Random</a> #}
                         {# Pas de bug si un seul mot #}
                         {# &nbsp <-- solution #}
