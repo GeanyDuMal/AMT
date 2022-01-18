@@ -82,7 +82,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\App\Entity\ClientType $clientType;
 
     /**
-     * @ORM\Column(type="json",options={"default" = "ROLE_USER"})
+     * @ORM\Column(type="json",options={"default" = "['ROLE_USER']"})
      */
     private array $roles = [];
 
