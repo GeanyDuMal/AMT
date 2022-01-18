@@ -19,7 +19,7 @@ class MenuOrderController extends AbstractController
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
-        
+
         $commandeRepository = $manager->getRepository(Command::class);
         $orderManager = new OrderManager($manager);
         $montantIdOrder = [];

@@ -90,7 +90,7 @@ class OrderManager
             }
 
             $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
-                    "clientType" => $clientType])->getPrice();
+                    "clientType" => $clientType])->getPrice()*$purchase->getQuantity();
         }
         return $montantTotal;
     }

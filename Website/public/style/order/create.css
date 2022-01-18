@@ -30,7 +30,7 @@
       justify-content: space-around;
 }
 
-.block_all_product{
+.block_all_product, .block_button{
       flex-wrap: wrap;
       max-width: 100%;
       margin: 10px auto;
