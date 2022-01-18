@@ -31,9 +31,9 @@ function verifyInputSignin() {
 
     form.login.style.borderColor = "red";
     if (valueLogin === ""){
-        message += "<li>Email non renseigné</li>";
-    }else if(!emailIsValid(valueLogin) || valueLogin.length < 6){
-        message += "<li>Veuillez saisir une adresse mail valide</li>";
+        message += "<li>Login non renseigné</li>";
+    }else if(valueLogin.length < 5){
+        message += "<li>Veuillez saisir un login valide</li>";
     }else{
         form.login.style.borderColor = "black";
     }
@@ -67,8 +67,4 @@ function verifyInputSignin() {
     }else{
         return true;
     }
-}
-
-function emailIsValid (email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }

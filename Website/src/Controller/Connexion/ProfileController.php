@@ -23,8 +23,6 @@ class ProfileController extends AbstractController
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
             $clientRepository = $manager->getRepository(Client::class);
 
-            //$this->isCsrfTokenValid()
-
             $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
 
             $inputParameterBag = $request->request;
@@ -52,7 +50,6 @@ class ProfileController extends AbstractController
                     $edit = 'wrong_password';
                 }
             }
-
 
             return $this->render('connexion/profile.html.twig', [
                 "user" => $client,

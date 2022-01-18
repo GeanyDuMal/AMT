@@ -26,7 +26,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(
      *      min = 3,
      *      minMessage = "Votre nom doit comporter au moins {{ limit }} caractères",
-     * )
+     *      )
      */
     private ?string $name;
 
@@ -35,17 +35,16 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Length(
      *      min = 3,
      *      minMessage = "Votre prénom doit comporter au moins {{ limit }} caractères",
-     *)
+     *      )
      */
     private ?string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(
-     *      min = 6,
+     *      min = 5,
      *      minMessage = "Votre login doit comporter au moins {{ limit }} caractères",
      *     )
-     * login is the email of the client
      */
     private ?string $login;
 
@@ -61,23 +60,22 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
      * @Assert\PositiveOrZero(
-     *     message="Les points de fidilité sont positive"
-     * )
+     *      message="Les points de fidilité sont positive"
+     *      )
      */
     private ?string $balance;
 
     /**
      * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
      * @Assert\PositiveOrZero(
-     *     message="Les points de fidilité sont positive"
-     * )
+     *      message="Les points de fidilité sont positive"
+     *      )
      */
     private ?int $fidelityPoint;
 
     /**
      * @ORM\ManyToOne(targetEntity=ClientType::class)
      * @ORM\JoinColumn(nullable=false)
-     *
      */
     private ?\App\Entity\ClientType $clientType;
 

@@ -4,7 +4,7 @@ function verifyInputLogin() {
       var valueLogin = form._username.value;
       var valuePassword = form._password.value;
   
-      if (valueLogin === "" || valuePassword === "" || valuePassword.length < 5 || !emailIsValid(valueLogin)) {
+      if (valueLogin === "" || valuePassword === "" || valuePassword.length < 5) {
           Swal.fire({
               title: 'Incomplet !',
               html: "Merci de completer correctement tout les champs afin de vous connecter",
@@ -17,6 +17,3 @@ function verifyInputLogin() {
       }
 }
 
-function emailIsValid (email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}

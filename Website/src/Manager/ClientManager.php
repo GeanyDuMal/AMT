@@ -26,7 +26,7 @@ class ClientManager
         {
             $clientTypeRepository = $this->manager->getRepository(ClientType::class);
             $client->setRoles(["ROLE_PRESIDENT"])
-                ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
+                   ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
         }
         $this->manager->persist($client);
         $this->manager->flush();
@@ -75,18 +75,17 @@ class ClientManager
         if (!is_null($client)){
             $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-            $loginIsMail = $this->isMail($client->getLogin());
             $containsSpecialPassword = $this->verifPassword($client->getPassword());
             $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
             $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
-            $nameUpperThree = (strlen($client->getName()) >=3);
-            $firstNameUpperThree = (strlen($client->getFirstName()) >=3);
-            $loginUpperSix = (strlen($client->getLogin()) >=6);
-            $passwordUpperFive = (strlen($client->getPassword()) >=5);
+            $nameUpperTwo = (strlen($client->getName()) > 2);
+            $firstNameUpperTwo = (strlen($client->getFirstName()) > 2);
+            $loginUpperFour = (strlen($client->getLogin()) > 4);
+            $passwordUpperFour = (strlen($client->getPassword()) > 4);
 
-            return ($containsSpecialPassword && $loginIsMail && $loginUpperSix && $passwordUpperFive && $firstNameUpperThree
-                && $nameUpperThree && !$containsSpecialName && !$containsSpecialFirstName);
+            return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
+                && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName);
         }
         else{
             return false;
@@ -114,12 +113,6 @@ class ClientManager
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
         return (strpbrk($password, $regexSpecial) && strlen($password) >= 5);
-    }
-
-    public function isMail(String $login): bool
-    {
-        //Fonction existante qui verifie si le string correspond bien à un mail
-        return filter_var($login, FILTER_VALIDATE_EMAIL);
     }
 
     public function getRoleFromType(string $typeName):array{
