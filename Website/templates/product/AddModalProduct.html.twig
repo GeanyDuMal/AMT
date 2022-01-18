@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
-{%  block javascripts %}
+{% block stylesheets %}
+
+    <link href="/style/product/addproduct.css" rel="stylesheet" type="text/css"/>
+
+    {# Bootstrap CSS Import #}
+    <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    {# Icons #}
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+    {# End Bootstrap CSS Import #}
+{% endblock %}
+{% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/product/addEditVerifications.js') }}"></script>
 {% endblock %}
@@ -13,17 +23,33 @@
             {% endif %}
         </ul>
     </div>
+
     <form id="product_form" action="" method="post">
-        <input type="text" name="productName" placeholder="nom"> <br>
-        <input type="text" name="productStock" placeholder="stock"> <br>
-        <input type="text" name="imageLink" placeholder="image"> <br>
-        <select name="productType">
-            {% for productType in productTypes %}
-                <option> {{ productType.name }} </option>
-            {% endfor %}
-        </select> <br>
-        <input type="text" name="memberPrice" placeholder="memberPrice"> <br>
-        <input type="text" name="studentPrice" placeholder="studentPrice"> <br>
-        <input type="submit" onclick="return verifyProduct()">
+        <ul class="form-style-1">
+            <li><label>Nom du produit <span class="required">*</span></label><input type="text" name="productName"
+                                                                                    class="field-long"
+                                                                                    placeholder="nom"/></li>
+            <li><label>Quantité en stock <span class="required">*</span></label><input type="text" name="productStock"
+                                                                                       class="field-long"
+                                                                                       placeholder="stock"/></li>
+            <li><label>Lien de l'image </label><input type="text" name="imageLink" class="field-long"
+                                                      placeholder="image"/></li>
+            <li>
+                <label>Type de produits</label>
+                <select name="productType" class="field-select">
+                    {% for productType in productTypes %}
+                        <option> {{ productType.name }} </option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li><label>Tarification <span class="required">*</span></label><input type="text" name="memberPrice"
+                                                                                  class="field-divided"
+                                                                                  placeholder="Prix Membres"/> <input
+                        type="text" name="studentPrice" class="field-divided" placeholder="Prix Etudiant"/></li>
+            <li>
+                <input class="btn-primary" type="submit" onclick="return verifyProduct()">
+            </li>
+        </ul>
+
     </form>
 {% endblock %}

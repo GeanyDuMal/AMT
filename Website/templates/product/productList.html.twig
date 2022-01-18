@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {# Style Base Import #}
-    <link href="/style/base/css/base.css" rel="stylesheet"/>
-    {# End Style Base Import #}
 
-    <link href="/style/product/productList.css" rel="stylesheet"/>
+    <link href="/style/product/productList.css" rel="stylesheet" type="text/css"/>
 
     {# Bootstrap CSS Import #}
     <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -22,13 +19,18 @@
 
 {% block body %}
     {% if message is defined %}
-            <p>{{ message }}!</p>
+        <p>{{ message }}!</p>
     {% endif %}
-    <a href="{{ path('add_product') }}">Ajouter</a>
-    <div class="content-wrapper" id="products" >
+
+    <div class="content-wrapper" id="products">
+
         <div class="content-header d-flex justify-content-center">
-        {# d-flex justify-content-center : pour centrer à l'aide de bootstrap ;) #}
+            {# d-flex justify-content-center : pour centrer à l'aide de bootstrap ;) #}
             <h1 class="top-text">Nos Produits</h1>
+            <div class="droite">
+                <a href="{{ path('add_product') }}" class="btn btn-primary">Ajouter</a>
+            </div>
+
         </div>
         {% for product in products %}
             <div id="product_block" class="card mb-3 mx-auto">
@@ -40,8 +42,8 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text">Quantité en stock : {{ product.quantityStock }}</p>
-                            <a href="{{url('edit_product',{id:product.id})}}" class="btn btn-warning">Modifier</a>
-                            <a id="toDelete" class="btn btn-danger" data-id={{product.id}} >Supprimer</a>
+                            <a href="{{ url('edit_product',{id:product.id}) }}" class="btn btn-warning">Modifier</a>
+                            <a id="toDelete" class="btn btn-danger" data-id={{ product.id }}>Supprimer</a>
                         </div>
                     </div>
                 </div>
