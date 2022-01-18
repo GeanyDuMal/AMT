@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Client;
-use App\Entity\ClientType;
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
