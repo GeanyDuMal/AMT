@@ -17,6 +17,9 @@ class ShowBlogController extends AbstractController
     {
 
         $blogs=$manager->getRepository(Post::class)->findAll();
-        return $this->render('blog/index.html.twig',['blogs'=>$blogs,"message"=>$message]);
+        return $this->render('blog/index.html.twig',[
+          'blogs' => $blogs,
+          "message" => $message
+        ]);
     }
 }

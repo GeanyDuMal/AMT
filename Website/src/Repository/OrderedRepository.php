@@ -2,24 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\Client;
-use App\Entity\ClientType;
-use App\Entity\Command;
+use App\Entity\Ordered;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Command|null find($id, $lockMode = null, $lockVersion = null)
- * @method Command|null findOneBy(array $criteria, array $orderBy = null)
- * @method Command[]    findAll()
- * @method Command[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Ordered|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Ordered|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Ordered[]    findAll()
+ * @method Ordered[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommandRepository extends ServiceEntityRepository
+class OrderedRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Command::class);
+        parent::__construct($registry, Ordered::class);
     }
 
 
@@ -50,9 +47,7 @@ class CommandRepository extends ServiceEntityRepository
             ->where("WEEK(a.orderedAt)=:thisWeek")
             ->setParameter("thisWeek",$thisWeek)
             ->getQuery()
-            ->getResult()[0]
-            ;
-
+            ->getResult()[0];
     }
     // /**
     //  * @return Order[] Returns an array of Order objects

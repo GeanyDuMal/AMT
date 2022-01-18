@@ -3,7 +3,7 @@
 {% block title %}Menu Commande{% endblock %}
 
 {% block stylesheets %}
-    	<link rel="stylesheet" href="/style/order/menu.css">
+    <link rel="stylesheet" href="/style/ordered/menu.css">
 
 	{# Import #}
 	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
@@ -11,13 +11,14 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script src="/script/order/menuOrder.js"></script>
-	<script src="/script/order/ajaxMenuOrder.js"></script>
-
 	{# Import #}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+	
+	
+	<script src="/script/ordered/menuOrdered.js"></script>
+	<script src="/script/ordered/ajaxMenuOrdered.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -26,7 +27,7 @@
 			<h1>Liste des commandes</h1>
 		</div>
 		<div style="margin:5px">
-			<a href="{{ path('orderCreate') }}" class="btn btn-success">Ajouter</a>
+			<a href="{{ path('orderedCreate') }}" class="btn btn-success">Ajouter</a>
 		</div>
 		{% if message %}
 			<div class="alert alert-dismissible alert-success fade show">
@@ -35,8 +36,8 @@
 			</div>
 		{% endif %}
 		
-		{% if orderList|length > 0 %}
-		<table id="order_table" class="table table-striped">
+		{% if orderedList|length > 0 %}
+		<table id="ordered_table" class="table table-striped">
 			<thead>
 				<tr class="table-primary">
 					<th>ID</th>
@@ -44,30 +45,30 @@
 					<th>Nom Client</th>
 					<th>Login</th>
 					<th>Type Client</th>
-					<th>Montant</th>
+					<th>Details</th>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<th>Supprimer</th>
 					{% endif %}
 				</tr>
 			</thead>
 			<tbody>
-			{% for order in orderList %}
+			{% for ordered in orderedList %}
 				<tr>
 					<td id="idCell">
-						{{ order.id }}
+						{{ ordered.id }}
 					</td>
 					<td>
-						{{ order.orderedAt|date('d/m/Y à H:i:s') }}
+						{{ ordered.orderedAt|date('d/m/Y à H:i:s') }}
 					</td>
-					{% if order.client %}
+					{% if ordered.client %}
 						<td>
-							{{ order.client.name }} {{ order.client.firstName }}
+							{{ ordered.client.name }} {{ ordered.client.firstName }}
 						</td>
 						<td >
-							{{ order.client.login }}
+							{{ ordered.client.login }}
 						</td>
 						<td>
-							{{ order.client.clientType.name }}
+							{{ ordered.client.clientType.name }}
 						</td>
 					{% else %}
 						<td>
@@ -77,7 +78,7 @@
 						<td></td>
 					{% endif %}
 						<td>
-							<a id="toDelete" class="btn btn-danger" href="{{ path("detailOrder",{'idOrder' : order.id}) }}">info</a>
+							<a class="btn btn-danger" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">Info</a>
 						</td>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<td>

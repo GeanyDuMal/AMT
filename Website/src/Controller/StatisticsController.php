@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ClientRepository;
-use App\Repository\CommandRepository;
+use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
@@ -16,7 +16,7 @@ class StatisticsController extends AbstractController
     /**
      * @Route("/statistics", name="statistics",methods={"GET", "POST"} )
      */
-    public function index(ProductRepository $productRepository,PostRepository $postRepository,PurchaseRepository $purchaseRepository,CommandRepository $commandRepository,ClientRepository $clientRepository):Response{
+    public function index(ProductRepository $productRepository, PostRepository $postRepository, PurchaseRepository $purchaseRepository, OrderedRepository $commandRepository, ClientRepository $clientRepository):Response{
         if (!$this->isGranted('ROLE_TRESORIER')){
             return $this->redirectToRoute('home');
         }

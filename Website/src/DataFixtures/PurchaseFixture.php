@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Client;
-use App\Entity\Command;
+use App\Entity\Ordered;
 use App\Entity\Purchase;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,7 +14,7 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $commandRepository = $manager->getRepository(Command::class);
+        $commandRepository = $manager->getRepository(Ordered::class);
         $productRepository = $manager->getRepository(Product::class);
         $clientRepository = $manager ->getRepository(Client::class);
 
@@ -42,7 +42,7 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return[
-            OrderFixture::class,
+            OrderedFixture::class,
             ProductFixture::class
         ];
     }

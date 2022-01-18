@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CommandRepository;
+use App\Repository\OrderedRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CommandRepository::class)
+ * @ORM\Entity(repositoryClass=OrderedRepository::class)
  */
-class Command
+class Ordered
 {
     /**
      * @ORM\Id
@@ -20,31 +20,31 @@ class Command
     /**
      * @ORM\Column(type="datetime")
      */
-    private $orderedAt;
+    private ?\DateTime $orderedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
      * @ORM\JoinColumn(nullable=true)
      */
-    private $client;
+    private ?Client $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=PaymentType::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $paymentType;
+    private ?PaymentType $paymentType;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOrderedAt(): ?\DateTimeInterface
+    public function getOrderedAt(): ?\DateTime
     {
         return $this->orderedAt;
     }
 
-    public function setOrderedAt(\DateTimeInterface $orderedAt): self
+    public function setOrderedAt(\DateTime $orderedAt): self
     {
         $this->orderedAt = $orderedAt;
 

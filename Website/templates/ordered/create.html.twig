@@ -4,11 +4,11 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/bootstrap.css">
-    <link rel="stylesheet" href="/style/order/create.css">
+    <link rel="stylesheet" href="/style/ordered/create.css">
 {% endblock %}
 
 {% block javascripts %}    
-    <script src="/script/order/createOrder.js"></script>
+    <script src="/script/ordered/createOrdered.js"></script>
 {% endblock %}
 
 {% block body %}    
@@ -43,7 +43,7 @@
             </select>
             <button type="submit" class="btn btn-primary" onclick="return checkQuantityInput()">Valider la commande</button>
         </div>
-        <a href="{{ path("orderMenu") }}">
+        <a href="{{ path("orderedMenu") }}">
             <img src="/img/icons/back.png" class="img" alt="" srcset="">    
         </a>
     </form>

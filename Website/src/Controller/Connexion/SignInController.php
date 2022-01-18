@@ -42,6 +42,7 @@ class SignInController extends AbstractController
                     ->setPassword($hashedPassword)
                     ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
                     ->setRoles(["ROLE_USER"]);
+
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
 
             /**

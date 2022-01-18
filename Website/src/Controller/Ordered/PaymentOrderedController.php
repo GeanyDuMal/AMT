@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Controller\Command;
+namespace App\Controller\Ordered;
 
 use App\Entity\Client;
 use App\Entity\ClientType;
-use App\Entity\Command;
+use App\Entity\Ordered;
 use App\Entity\PaymentType;
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Entity\Purchase;
-use App\Manager\OrderManager;
+use App\Manager\OrderedManager;
 use App\Manager\PurchaseManager;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,10 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PaymentOrderController extends AbstractController
+class PaymentOrderedController extends AbstractController
 {
     /**
-     * @Route("/order/payment/{productOrderedSerialized}&{idClient}", name="orderPayment")
+     * @Route("/ordered/payment/{productOrderedSerialized}&{idClient}", name="orderedPayment")
      */
     public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request): Response
     {
@@ -35,7 +35,7 @@ class PaymentOrderController extends AbstractController
         $paymentTypeRepository = $manager->getRepository(PaymentType::class);
         $productRepository = $manager->getRepository(Product::class);
         $purchaseManager = new PurchaseManager($manager);
-        $orderManager = new OrderManager($manager);
+        $orderManager = new OrderedManager($manager);
         $clientOrder = null;
         $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
         $inputParameterBag = $request->request;
@@ -84,7 +84,7 @@ class PaymentOrderController extends AbstractController
             }
 
             //Creer la commande
-            $order = new Command();
+            $order = new Ordered();
             $order->setClient($clientOrder)
                     ->setOrderedAt(new DateTime("now"))
                     ->setPaymentType($paymentTypeChose);
@@ -107,10 +107,10 @@ class PaymentOrderController extends AbstractController
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);
             //rediriger ver l'accueil
-            return $this->redirectToRoute("orderMenu", ["message" => "Commande effectuée avec succès"]);
+            return $this->redirectToRoute("orderedMenu", ["message" => "Commande effectuée avec succès"]);
         }
 
-        return $this->render('order/payment.html.twig', [
+        return $this->render('ordered/payment.html.twig', [
             'listProduct' => $listProduct,
             'productQuantity' => $productOrderedIdTab,
             'montantProduct' => $montantProduct,

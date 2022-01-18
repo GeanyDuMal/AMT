@@ -6,7 +6,6 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Price;
 
 /**
  * @method Purchase|null find($id, $lockMode = null, $lockVersion = null)
@@ -44,11 +43,11 @@ class PurchaseRepository extends ServiceEntityRepository
     {
         $thisWeek =date('W');
         $purchase=$this->getEntityManager()->createQuery("
-            SELECT SUM(Price.price*Purchase.quantity) as revunue,WEEK(Command.orderedAt) week
-            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Command Command
+            SELECT SUM(Price.price*Purchase.quantity) as revunue,WEEK(Ordered.orderedAt) week
+            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Ordered Ordered
             WHERE Purchase.product=Price.product
-            AND WEEK(Command.orderedAt)=$thisWeek
-            AND Command=Purchase.command
+            AND WEEK(Ordered.orderedAt)=$thisWeek
+            AND Ordered=Purchase.ordered
         ");
         return $purchase->getResult()[0];
     }
@@ -57,10 +56,10 @@ class PurchaseRepository extends ServiceEntityRepository
         $thisMonth =date('m');
         $purchase=$this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revunue
-            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Command Command
+            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Ordered Ordered
             WHERE Purchase.product=Price.product
-            AND MONTH(Command.orderedAt)=$thisMonth
-            AND Command=Purchase.command
+            AND MONTH(Ordered.orderedAt)=$thisMonth
+            AND Ordered=Purchase.ordered
         ");
         return $purchase->getResult()[0];
     }
