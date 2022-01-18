@@ -5,7 +5,9 @@ namespace App\Controller\Client;
 use App\Entity\Association;
 use App\Entity\Client;
 use App\Manager\ClientManager;
+use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
+use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +22,7 @@ class AddClientController extends AbstractController
     /**
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
-    public function index(UserPasswordHasherInterface $passwordHasher,Request $request,AssociationRoleRepository $associationRoleRepository,ClientTypeRepository $clientTypeRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index(ClientRepository $clientRepository,AssociationRepository $associationRepository,UserPasswordHasherInterface $passwordHasher,Request $request,AssociationRoleRepository $associationRoleRepository,ClientTypeRepository $clientTypeRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
@@ -49,6 +51,9 @@ class AddClientController extends AbstractController
                      * */
                     if($client->getClientType()->getName()=="Association"){
                         $newMember=$commonFunctions->makeMember($client,$associationRoleRepository,$request);
+                        if($newMember->getRole()->getName()=="President"){
+                            $commonFunctions->removeOtherPresitents($manager,$newMember,$clientTypeRepository,$associationRepository,$clientRepository);
+                        }
                         $manager->persist($newMember);
                         $manager->flush();
                     }
@@ -62,7 +67,6 @@ class AddClientController extends AbstractController
                 'assosRoles' => $assosRoles,
                 'validationErrors' => $validationErrors,
                 'errorLoginExist' => $errorLoginExist,
-                'client' => $client
             ]
         );
     }

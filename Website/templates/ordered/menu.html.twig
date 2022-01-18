@@ -45,7 +45,7 @@
 					<th>Nom Client</th>
 					<th>Login</th>
 					<th>Type Client</th>
-					<th>Montant</th>
+					<th>Details</th>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<th>Supprimer</th>
 					{% endif %}
@@ -78,7 +78,7 @@
 						<td></td>
 					{% endif %}
 						<td>
-							{{ montantOrdered[ordered.id] }}€
+							<a id="toDelete" class="btn btn-danger" href="{{ path("detailOrder",{'idOrder' : order.id}) }}">info</a>
 						</td>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<td>
