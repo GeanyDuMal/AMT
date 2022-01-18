@@ -31,7 +31,7 @@ final class Version20220117221456 extends AbstractMigration
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B8D9F6D38 FOREIGN KEY (ordered_id) REFERENCES `ordered` (id)');
         $this->addSql('ALTER TABLE purchase ADD CONSTRAINT FK_6117D13B4584665A FOREIGN KEY (product_id) REFERENCES product (id)');
         $this->addSql('CREATE INDEX IDX_6117D13B8D9F6D38 ON purchase (ordered_id)');
-        $this->addSql('ALTER TABLE client CHANGE roles roles LONGTEXT DEFAULT ["ROLE_USER"] NOT NULL COMMENT \'(DC2Type:json)\'');
+        $this->addSql('ALTER TABLE client CHANGE roles roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\'');
         $this->addSql('CREATE TRIGGER verifClientNonNull 
                             BEFORE INSERT ON `ordered` FOR EACH ROW
                             IF (ISNULL(NEW.client_id) && (SELECT name FROM payment_type WHERE id = NEW.payment_type_id) = "Solde") THEN
