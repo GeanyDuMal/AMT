@@ -35,6 +35,12 @@
 {% block title %}Blog{% endblock %}
 
 {% block body %}
+    {% if message %}
+        <div class="alert alert-dismissible alert-success fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ message }}!</strong>
+        </div>
+    {% endif %}
 
     {# Title Of The Page #}
     <h1 class="page__title d-flex justify-content-center">Posts & Events</h1>
