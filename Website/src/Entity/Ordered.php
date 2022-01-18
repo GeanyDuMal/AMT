@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderRepository;
+use App\Repository\OrderedRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
+ * @ORM\Entity(repositoryClass=OrderedRepository::class)
  */
 class Ordered
 {

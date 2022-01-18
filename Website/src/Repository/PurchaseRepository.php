@@ -6,7 +6,6 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Price;
 
 /**
  * @method Purchase|null find($id, $lockMode = null, $lockVersion = null)

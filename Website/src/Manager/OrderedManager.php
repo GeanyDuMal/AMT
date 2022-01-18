@@ -34,7 +34,7 @@ class OrderedManager
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
         $montant = $this->montantTotal($order);
 
-        $purchaseList = $purchaseRepository->findBy(["ordered => $order"]);
+        $purchaseList = $purchaseRepository->findBy(["ordered" => $order]);
 
         /*
          * Permet de restore le client s'il est mentionné dans la commande

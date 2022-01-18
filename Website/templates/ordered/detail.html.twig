@@ -2,20 +2,29 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="/style/bootstrap.css">
-    <link rel="stylesheet" href="/style/order/detail.css">
+    <link rel="stylesheet" href="/style/ordered/detail.css">
 {% endblock %}
 
 {% block javascripts %}
-	<script src="/script/order/detailOrder.js"></script>
+	<script src="/script/ordered/detailOrdered.js"></script>
 {% endblock %}
 
 {% block title %}Detail de la commande{% endblock %}
 
 {% block body %}
       <div class="flex_vertical centered_flex_vertical">
+            <div id="idCommande" style="display:none">
+                  {{ ordered.id }}
+            </div>
             <h3>
-                  Commande n° {{ order.id}} réalisé par {{ order.client.name }} {{ order.client.firstName }} 
+                  Commande n° {{ ordered.id }} 
+                  {% if ordered.client %}
+                        réalisé par {{ ordered.client.name }} {{ ordered.client.firstName }}
+                  {% endif %}
             </h3>
+            <h4>
+                  Commande de type {{ clientType.name }} reglé avec {{ ordered.paymentType.name }}
+            </h4>
             <div class="flex_horizontal centered_flex_horizontal block_all_purchase">
                   {% for purchase in purchaseList %}
                         <div class="block_product flex_vertical">
@@ -38,7 +47,7 @@
                   Montant total : {{ montantTotal }}€
             </h4>
             <div class="block_button flex_horizontal centered_flex_vertical">
-                  <a href="{{ path("orderMenu") }}">
+                  <a href="{{ path("orderedMenu") }}">
                         <img src="/img/icons/back.png" class="img">    
                   </a>
                   {% if is_granted("ROLE_TRESORIER") %}

@@ -6,10 +6,8 @@ $("#ordered_table").on("click", "#toDelete", function(){
     if (confirm("Voulez vous vraiment supprimer cette commande ?" +
         "Tout les achats lié a cette commandes seront supprimés")){
         var id = tr.querySelector("#idCell").innerHTML;
-        console.log(id);
         fetch('/ordered/menu/delete/' + id, {method: 'DELETE'})
             .then(function (resp) {
-                console.log(resp)
                 Swal.fire({
                     icon: 'success',
                     title: 'Suppresion',

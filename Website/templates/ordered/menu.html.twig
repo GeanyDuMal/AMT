@@ -78,7 +78,7 @@
 						<td></td>
 					{% endif %}
 						<td>
-							<a id="toDelete" class="btn btn-danger" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">info</a>
+							<a class="btn btn-danger" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">Info</a>
 						</td>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<td>
