@@ -20,7 +20,7 @@ class Order
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?\DateTimeInterface $orderedAt;
+    private ?\DateTime $orderedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
@@ -39,7 +39,7 @@ class Order
         return $this->id;
     }
 
-    public function getOrderedAt(): ?\DateTimeInterface
+    public function getOrderedAt(): ?\DateTime
     {
         return $this->orderedAt;
     }
