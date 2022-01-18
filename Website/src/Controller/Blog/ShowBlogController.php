@@ -11,20 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowBlogController extends AbstractController
 {
     /**
-     * @Route("/blog", name="blog")
+     * @Route("/blog/{message}", name="blog")
      */
     public function index(EntityManagerInterface $manager): Response
     {
 
         $blogs=$manager->getRepository(Post::class)->findAll();
-        return $this->render('blog/AddModalBlog.html.twig', array('blogs'=>$blogs));
-    }
-    public function show($message, EntityManagerInterface $manager):Response
-    {
-        if(!$this->isGranted('ROLE_ASSOC')){
-            return $this->redirectToRoute('home');
-        }
-        $blogs=$manager->getRepository(Post::class)->findAll();
-        return $this->render('blog/AddModalBlog.html.twig', array('blogs'=>$blogs,'message'=>$message));
+        return $this->render('blog/index.html.twig', array('blogs'=>$blogs));
     }
 }
