@@ -10,9 +10,9 @@
 }
 
 .content-wrapper h1 {
-    margin-left: auto;
+    margin-left: 0;
+    margin-right: auto;
 }
-
 .droite {
     margin-left: auto;
     margin-right: 0;
