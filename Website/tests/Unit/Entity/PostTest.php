@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit;
+namespace App\Tests\Unit\Entity\Entity\Entity\Entity;
 
 use App\Entity\Post;
 use App\Entity\PostType;
