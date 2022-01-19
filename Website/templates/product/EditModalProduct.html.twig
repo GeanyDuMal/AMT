@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-
+    {{ parent() }}
+    <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
     <link href="/style/product/addproduct.css" rel="stylesheet" type="text/css"/>
 
     {# Bootstrap CSS Import #}
