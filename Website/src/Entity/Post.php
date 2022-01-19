@@ -28,7 +28,7 @@ class Post
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"default":"https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png"})
      * @ORM\Column(nullable=true)
      */
     private $imageLink;
