@@ -17,7 +17,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
         $client1 = new Client();
         $client1->setName("NATANELIC")
                 ->setFirstName("Romain")
-                ->setLogin("natanelic@etu.univ-loraine")
+                ->setLogin("Coincoin")
                 ->setPassword("hiddenPassword")
                 ->setBalance(0)
                 ->setFidelityPoint(0)
@@ -28,7 +28,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
         $client2 = new Client();
         $client2->setName("MULLER")
                 ->setFirstName("Leane")
-                ->setLogin("leane@hotmail.fr")
+                ->setLogin("LeaneMomi")
                 ->setPassword("Ayato")
                 ->setBalance(5)
                 ->setFidelityPoint(0)
@@ -39,7 +39,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
         $client3 = new Client();
         $client3->setName("LASALLE")
                 ->setFirstName("Jean")
-                ->setLogin("laSalle@MonEmail.eu")
+                ->setLogin("La_cochonnade")
                 ->setPassword("PetiteCochonne")
                 ->setBalance(0)
                 ->setFidelityPoint(0)
