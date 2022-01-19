@@ -20,6 +20,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     {# End Google Fonts #}
+    <style>
+        .card img {
+            height: 280px;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
@@ -30,6 +35,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     {# End Bootstrap JS Import #}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 {% endblock %}
 
 {% block title %}Blog{% endblock %}
@@ -41,48 +47,39 @@
             <strong>{{ message }}!</strong>
         </div>
     {% endif %}
-
-    {# Title Of The Page #}
-    <h1 class="page__title d-flex justify-content-center">Posts & Events</h1>
-    {# Article #}
-    <div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-        <rect width="100%" height="100%" fill="#868e96"></rect>
-        <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-        </svg>
-        <div class="article__title">
-            <p> 
-                Subtitle or title of the article
-            </p>
-        </div>
+<div class="container">
+    <div class="text-center my-5">
+        <h1>Posts & Events</h1>
+        <hr />
     </div>
-    {# End Article #}
-
-    {# Article #}
-    <div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-        <rect width="100%" height="100%" fill="#868e96"></rect>
-        <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-        </svg>
-        <div class="article__title">
-            <p> 
-                Subtitle or title of the article
-            </p>
-        </div>
+    {% if is_granted("ROLE_ASSOC") %}
+    <div align="right">
+        <a href="{{ path('add_blog') }}" class="btn btn-outline-primary rounded-0 ">Ajouter</a>
     </div>
-    {# End Article #}
+        <br>
+    {% endif %}
 
-    {# Article #}
-    <div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-        <rect width="100%" height="100%" fill="#868e96"></rect>
-        <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-        </svg>
-        <div class="article__title">
-            <p> 
-                Subtitle or title of the article
-            </p>
-        </div>
+    <div class="row">
+    {% for blog in blogs  %}
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card mb-5 shadow-sm">
+                    <img src={{ blog.imageLink }} class="img-fluid" />
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h2>{{ blog.title }}</h2>
+                        </div>
+                        <div class="card-text">
+                            <p>
+                                {{ blog.description|slice(0, 30) }}...
+                            </p>
+                        </div>
+                        <a href="{{url('selected_blog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
+                        <a href="{{url('edit_blog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
     </div>
-    {# End Article #}
+</div>
+
 {% endblock %}

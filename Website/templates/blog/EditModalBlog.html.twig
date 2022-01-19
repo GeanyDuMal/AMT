@@ -3,25 +3,38 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/blog/addEditVerificationsBlog.js') }}"></script>
 {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+{% endblock %}
 {% block body %}
-    <div>
-        <ul>
-            {% if validationErrors is defined and validationErrors!="" %}
-                {% for i in 0..validationErrors.count()-1 %}
-                    <li>{{ validationErrors[i].message }}</li>
-                {% endfor %}
-            {% endif %}
-        </ul>
+    <div class="container mt-5 ">
+        <form id="blog_form" action="" class="row g-2 " method="post" >
+            <h1>Nouveau post</h1>
+            <div class="form-floating col-md-12">
+                <input type="text" name="postTitle" class="form-control" id="floatingInput" placeholder="Titre"  value="{{ post.title }}"> <br>
+                <label for="floatingInput">Titre</label>
+            </div>
+            <div class="form-floating col-md-12">
+                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description">
+                    {{ post.description }}
+                </textarea>
+                <label for="floatingTextarea2">Description</label>
+                <br>
+            </div>
+            <div class="form-floating col-md-12">
+                <input type="text" name="imageLink" placeholder="image" class="form-control" id="floatingInput" value="{{ post.imageLink }}"> <br>
+                <label for="floatingInput">Image</label>
+            </div>
+            <div class="form-group col-md-12">
+                <select name="postType"  class="form-control linked-select">
+                    {% for postType in postTypes %}
+                        <option {% if postType.name==post.postType.name %} selected {% endif %} > {{ postType.name }} </option>
+                    {% endfor %}
+                </select> <br>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Modifier" onclick="return verifyPost()">
+        </form>
     </div>
-    <form id="blog_form" action="" method="post">
-        <input type="text" name="postTitle" placeholder="Titre" value="{{ post.title }}"> <br>
-        <textarea name="postDescription" placeholder="Description">{{ post.description }}</textarea> <br>
-        <input type="text" name="imageLink" placeholder="image" value="{{ post.imageLink }}"> <br>
-        <select name="postType">
-            {% for postType in postTypes %}
-                <option {% if postType.name==post.postType.name %} selected {% endif %} > {{ postType.name }} </option>
-            {% endfor %}
-        </select> <br>
-        <input type="submit" onclick="return verifyPost()">
-    </form>
 {% endblock %}

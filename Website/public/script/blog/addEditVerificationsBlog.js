@@ -4,7 +4,6 @@ function verifyPost(){
     let message = "";
     const titleValue = form.postTitle.value;
     const descriptionValue = form.postDescription.value;
-
     if (!titleValue.trim()) {
         message += "Titre du post non renseigné\n";
     }

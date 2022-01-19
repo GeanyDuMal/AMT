@@ -49,7 +49,7 @@ class EditBlogController extends AbstractController
                 else {
                     $manager->persist($post);
                     $manager->flush();
-                    return $this->redirectToRoute('blog', ["message" => "Ajout avec succès"]);
+                    return $this->redirectToRoute('blog', ["message" => "Modification avec succès"]);
                 }
 
             }

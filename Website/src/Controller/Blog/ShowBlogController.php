@@ -22,4 +22,15 @@ class ShowBlogController extends AbstractController
           "message" => $message
         ]);
     }
+    /**
+     * @Route("/blog/{id}", name="selected_blog")
+     */
+    public function showBlog($id,EntityManagerInterface $manager): Response
+    {
+
+        $blog=$manager->getRepository(Post::class)->find($id);
+        return $this->render('blog/ShowOneBlog.html.twig',[
+            'blog' => $blog,
+        ]);
+    }
 }
