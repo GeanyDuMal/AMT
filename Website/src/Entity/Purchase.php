@@ -63,12 +63,12 @@ class Purchase
         return $this;
     }
 
-    public function getCommand(): ?Ordered
+    public function getOrdered(): ?Ordered
     {
         return $this->ordered;
     }
 
-    public function setCommand(?Ordered $ordered): self
+    public function setOrdered(?Ordered $ordered): self
     {
         $this->ordered = $ordered;
 

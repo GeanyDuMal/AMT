@@ -96,7 +96,7 @@ class PaymentOrderedController extends AbstractController
 
                 $purchase = new Purchase();
                 $purchase->setProduct($product)
-                    ->setCommand($order)
+                    ->setOrdered($order)
                     ->setQuantity($quantity);
 
                 if ($purchaseManager->verifyDisponibilityProduct($purchase)){
