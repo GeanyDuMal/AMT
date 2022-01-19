@@ -18,26 +18,35 @@ class ShowProductController extends AbstractController
     /**
      * @Route("/product{message}", name="product_list",methods={"GET", "POST"} )
      */
-    public function show(string $message = null,EntityManagerInterface $manager): Response
+    public function show(string $message = null, EntityManagerInterface $manager): Response
     {
         $clientTypeRepository = $manager->getRepository(ClientType::class);
+        $productRepository = $manager->getRepository(Product::class);
+        $productIdPrices = [];
 
-        if ($this->isGranted("ROLE_ASSOC")){
-            $clientTypeActual = (Client::class)($this->getUser())->getClientType();
-        }else{
+        if ($this->isGranted("ROLE_ASSOC")) {
+            $clientTypeActual = $clientTypeRepository->findOneBy(["name" => "Association"]);
+        } else {
             $clientTypeActual = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
         }
 
 
+        $products = $productRepository->findAll();
+        $prices = $manager->getRepository(Price::class)->findBy(["clientType" => $clientTypeActual]);
 
-        $products=$manager->getRepository(Product::class)->findAll();
-        $prices=$manager->getRepository(Price::class)->findBy(["clientType"=> $clientTypeActual]);
-        foreach ($prices as $price){
+        foreach ($products as $product) {
+            foreach ($prices as $price) {
+                if ($price->getProduct() == $product) {
+                    $productIdPrices = $productIdPrices + [$product->getId() => $price->getPrice()];
+                }
 
+
+            }
         }
-        return $this->render('product/productList.html.twig',[
-            'products'=>$products,
-            'message'=>$message
+        return $this->render('product/productList.html.twig', [
+            'products' => $products,
+            'message' => $message,
+            'productIdPrices'=>$productIdPrices
         ]);
     }
 }
