@@ -74,7 +74,9 @@
                             </p>
                         </div>
                         <a href="{{url('selected_blog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
-                        <a href="{{url('edit_blog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
+                        {% if is_granted("ROLE_ASSOC") %}
+                            <a href="{{url('edit_blog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
