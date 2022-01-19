@@ -60,7 +60,7 @@ class EditProductController extends AbstractController
                             $manager->flush();
                             $manager->persist($studentPrice);
                             $manager->flush();
-                            return $this->redirectToRoute('product_list_message', ["message" => "Modification avec succès"]);
+                            return $this->redirectToRoute('product_list', ["message" => "Modification avec succès"]);
                         }
                     }
                 }
