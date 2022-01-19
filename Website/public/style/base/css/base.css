@@ -30,6 +30,7 @@ body {
   height: 100%;
   width: 0;
   position: fixed;
+  z-index: 9999;
   top: 0;
   left: 0;
   background-color: #212529;
