@@ -21,6 +21,9 @@
                     <li>{{ validationErrors[i].message }}</li>
                 {% endfor %}
             {% endif %}
+            {% if productExistsError is defined and productExistsError!="" %}
+                    {{ productExistsError }}
+            {% endif %}
         </ul>
     </div>
 
