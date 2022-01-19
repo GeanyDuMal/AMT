@@ -1,3 +1,12 @@
+h4{
+      margin: 0.5rem;
+      text-align: center;
+}
+footer{
+      position: absolute;
+}
+
+
 .flex_vertical {
       display: flex;
       flex-direction: column;
@@ -29,7 +38,7 @@
 .block_all_purchase{
       flex-wrap: wrap;
       max-width: 100%;
-      margin: 10px auto;  
+      margin: 10px 0;
 }
 
 .block_button{
