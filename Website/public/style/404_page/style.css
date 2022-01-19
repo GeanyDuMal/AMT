@@ -185,7 +185,7 @@ html, body {
   height: 12px;
   background: var(--primary);
   border-radius: 50%;
-  margin: 0 10px;
+  margin: 0 -8px;
   position: absolute;
   left: 0;
 }
@@ -195,7 +195,7 @@ html, body {
   height: 12px;
   background: var(--primary);
   border-radius: 50%;
-  margin: 0 10px;
+  margin: 0 40px;
   position: absolute;
   right: 0;
 }
