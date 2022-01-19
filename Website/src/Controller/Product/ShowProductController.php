@@ -2,6 +2,7 @@
 
 namespace App\Controller\Product;
 
+use App\Entity\Client;
 use App\Entity\ClientType;
 use App\Entity\Price;
 use App\Entity\Product;
@@ -19,8 +20,18 @@ class ShowProductController extends AbstractController
      */
     public function show(string $message = null,EntityManagerInterface $manager): Response
     {
+        $clientTypeRepository = $manager->getRepository(ClientType::class);
+
+        if ($this->isGranted("ROLE_ASSOC")){
+            $clientTypeActual = (Client::class)($this->getUser())->getClientType();
+        }else{
+            $clientTypeActual = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+        }
+
+
+
         $products=$manager->getRepository(Product::class)->findAll();
-        $prices=$manager->getRepository(Price::class)->findBy(["clientType"=>$manager->getRepository(ClientType::class)->findOneBy()]);
+        $prices=$manager->getRepository(Price::class)->findBy(["clientType"=> $clientTypeActual]);
         foreach ($prices as $price){
 
         }
