@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Entity\Entity\Entity\Entity\Entity\Entity;
+namespace App\Tests\Unit\Entity;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
