@@ -45,7 +45,7 @@ final class Version20220119152222 extends AbstractMigration
                             END;');
 
         $this->addSql('CREATE TRIGGER imageProductOnUpdate
-                            BEFORE UPDTAE
+                            BEFORE UPDATE
                             ON product
                             FOR EACH ROW
                             BEGIN

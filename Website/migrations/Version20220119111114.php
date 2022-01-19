@@ -32,7 +32,7 @@ final class Version20220119111114 extends AbstractMigration
                             END;');
 
         $this->addSql('CREATE TRIGGER imageOnUpdate
-                            BEFORE UPDTAE
+                            BEFORE UPDATE
                             ON post
                             FOR EACH ROW
                             BEGIN
