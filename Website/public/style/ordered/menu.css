@@ -1,23 +1,12 @@
 .content{
       width:95%;
-      min-width: 80vw;
       margin: 0 auto;
-}
-
-th{
-      width: fit-content;
 }
 
 footer{
       position: absolute;
 }
 
-/* Corrige le probleme du footer qui n'a pas la bonne dimension*/
-@media(max-width: 750px){
-      html{
-            width: fit-content;
-      }
-}
 
 @media(max-width: 600px) {
       .alert{
