@@ -71,12 +71,12 @@
                             </div>
                             {% if is_granted('ROLE_TRESORIER') %}
                                 <div class="block_nav">
-                                    <a href="{{ path("orderedMenu") }}">Gestion Commande</a>
+                                    <a href="{{ path("orderedMenu") }}">Gestion&nbspCommande</a>
                                     <a href="{{ path("statistics") }}">Statistiques</a>
                                 </div>
                                 {% if is_granted('ROLE_PRESIDENT') %}
                                     <div class="block_nav">
-                                        <a href="{{ path("client_list") }}">Gestion Clients</a>
+                                        <a href="{{ path("client_list") }}">Gestion&nbspClients</a>
                                     </div>
                                 {% endif %}
                             {% endif %}
