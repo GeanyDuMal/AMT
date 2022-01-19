@@ -22,14 +22,14 @@ body {
   /* position: fixed; */
   top: 0;
   width: 100%;
-  background-color: #212529; }
+  background-color: #212529;
+  z-index: 999; }
 
-/* line 41, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 42, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 999;
   top: 0;
   left: 0;
   background-color: #212529;
@@ -38,7 +38,7 @@ body {
   transition: 0.5s;
   padding-top: 70px; }
 
-/* line 55, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 56, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar a {
   padding: 0 0 0 2.5%;
   text-decoration: none;
@@ -49,11 +49,11 @@ body {
   display: block;
   transition: 0.3s; }
 
-/* line 66, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 67, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar a:hover {
   color: #f2f2f2; }
 
-/* line 70, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 71, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar .closebtn {
   position: absolute;
   top: 0;
@@ -61,34 +61,34 @@ body {
   /* font-size: 36px; */
   margin-left: 0; }
 
-/* line 78, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 79, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .block_nav {
   border-bottom: #999999 1px solid; }
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  /* line 84, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+  /* line 85, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
   .sidebar {
     padding-top: 15px; }
-  /* line 88, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+  /* line 89, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
   .sidebar a {
     font-size: 18px; } }
 
 /* End Navbar */
 /* Footer */
-/* line 97, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 98, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .social,
 .copyright {
   margin: 1rem;
   text-align: center; }
 
-/* line 103, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 104, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .social li {
   display: inline-block;
   padding-right: 10px;
   padding-left: 10px; }
 
-/* line 109, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 110, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 footer {
   position: relative;
   bottom: 0;
@@ -97,13 +97,13 @@ footer {
   text-align: center;
   background-color: #212529; }
 
-/* line 118, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 119, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .icon {
   color: #f2f2f2;
   font-size: 1.5rem;
   transition: 0.2s; }
 
-/* line 124, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
+/* line 125, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .icon:hover {
   color: #760700; }
 
