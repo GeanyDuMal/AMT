@@ -24,7 +24,7 @@ class Ordered
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private ?Client $client;
 
