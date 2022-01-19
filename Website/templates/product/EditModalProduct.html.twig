@@ -3,13 +3,6 @@
     {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
-    <link href="/style/product/addproduct.css" rel="stylesheet" type="text/css"/>
-
-    {# Bootstrap CSS Import #}
-    <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    {# Icons #}
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
@@ -25,35 +18,41 @@
             {% endif %}
         </ul>
     </div>
-    <form id="product_form" action="" method="post">
-        <ul class="form-style-1">
-            <li><label>Nom du produit <span class="required">*</span></label><input type="text" name="productName"
-                                                                                    class="field-long" placeholder="nom"
-                                                                                    value={{ product.name }}></li>
-            <li><label>Quantité en stock <span class="required">*</span></label><input type="text" name="productStock"
-                                                                                       class="field-long"
-                                                                                       placeholder="stock"
-                                                                                       value={{ product.quantityStock }}>
-            </li>
-            <li><label>Lien de l'image </label><input type="text" name="imageLink" class="field-long"
-                                                      placeholder="image" value={{ product.imageLink }}></li>
-            <li>
-                <label>Type de produits</label>
-                <select name="productType" class="field-select">
+    <div class="container mt-5 ">
+        <form id="product_form" action="" class="row g-2" method="post">
+            <h1>Modifier produit</h1>
+            <div class="form-floating col-md-12">
+                <input type="text" name="productName" class="form-control" id="floatingInput" class="field-long"
+                       placeholder="Nom du produit" value={{ product.name }} />
+                <label for="floatingInput">Nom du produit</label>
+            </div>
+            <div class="form-floating col-md-6">
+                <input type="text" name="productStock" class="form-control" id="floatingInput"  placeholder="Quantité en stock" value={{ product.quantityStock }} /></li>
+                <label for="floatingInput">Quantité en stock</label>
+            </div>
+            <div class="form-floating col-md-6">
+                <input type="text" name="imageLink" class="form-control" id="floatingInput"  placeholder="Lien de l'image" value={{ product.imageLink }} /></li>
+                <label for="floatingInput">Lien de l'image</label>
+            </div>
+            <h5>Tarification</h5>
+            <div class="form-floating col-md-6">
+                <input type="text" name="memberPrice" class="form-control" id="floatingInput" placeholder="Prix Membres" value={{ memberPrice }} />
+                <label for="floatingInput">Prix Membres</label>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input type="text" name="studentPrice" class="form-control" id="floatingInput" placeholder="Prix Etudiant" value={{ studentPrice }} />
+                <label for="floatingInput">Prix Etudiant</label>
+            </div>
+            <h5>Type de produits</h5>
+            <div class="form-group col-md-12" >
+                <select name="productType" class="form-control linked-select">
                     {% for productType in productTypes %}
                         <option {% if productType.name==product.productType.name %} selected {% endif %} > {{ productType.name }} </option>
                     {% endfor %}
                 </select>
-            </li>
-            <li><label>Tarification <span class="required">*</span></label><input type="text" name="memberPrice"
-                                                                                  class="field-divided"
-                                                                                  placeholder="Prix Membres"
-                                                                                  value={{ memberPrice }}> <input
-                        type="text" name="studentPrice" class="field-divided" placeholder="Prix Etudiant"
-                        value={{ studentPrice }}></li>
-            <li>
-                <input class="btn-primary" type="submit" onclick="return verifyProduct()">
-            </li>
-        </ul>
-    </form>
+            </div>
+            <input class="btn btn-primary" value="Modifier" type="submit" onclick="return verifyProduct()">
+        </form>
+    </div>
 {% endblock %}
