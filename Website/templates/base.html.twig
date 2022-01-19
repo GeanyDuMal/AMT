@@ -60,16 +60,26 @@
                     <div style="margin-right: 1em;">
 
                         {# Lien à modif #}
-                        <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
-                        {% if is_granted('ROLE_ASSOC') %}
-                            <a href="{{ path("orderedCreate") }}">Commander</a>
-                        {% endif %}
-                        {% if is_granted('ROLE_PRESIDENT') %}
-                            <a href="{{ path("client_list_message") }}">Clients</a>
-                        {% endif %}
-                        {% if is_granted('ROLE_TRESORIER') %}
-                            <a href="{{ path("statistics") }}">Statistiques</a>
+                        <div class="block_nav">
+                            <a href="{{ path("home") }}">Accueil</a>
+                            <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
                             <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
+                        </div>
+                        {% if is_granted('ROLE_ASSOC') %}
+                            <div class="block_nav">
+                                <a href="{{ path("orderedCreate") }}">Commander</a>
+                            </div>
+                            {% if is_granted('ROLE_TRESORIER') %}
+                                <div class="block_nav">
+                                    <a href="{{ path("orderedMenu") }}">Gestion Commande</a>
+                                    <a href="{{ path("statistics") }}">Statistiques</a>
+                                </div>
+                                {% if is_granted('ROLE_PRESIDENT') %}
+                                    <div class="block_nav">
+                                        <a href="{{ path("client_list") }}">Gestion Clients</a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
                         {% endif %}
                         {# <a href="#">Random</a> #}
                         {# Pas de bug si un seul mot #}
