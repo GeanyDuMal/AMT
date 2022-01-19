@@ -78,11 +78,11 @@
 						<td>NA</td>
 					{% endif %}
 						<td>
-							<a class="btn btn-danger" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">Info</a>
+							<a class="btn btn-primary" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">Info</a>
 						</td>
 					{% if is_granted("ROLE_TRESORIER") %}
 						<td>
-							<a id="toDelete" class="btn btn-danger">X</a>
+							<a id="toDelete" class="btn btn-primary">X</a>
 						</td>
 					{% endif %}
 					
