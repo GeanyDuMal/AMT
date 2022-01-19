@@ -43,12 +43,11 @@
         </div>
         {# End Top bar #}
 
-        <img src="/img/connexion/user.png" alt="" id="img_profile">
 
-        <form action="" class="flex_vertical" method="post" id="form_login">
-
+        <form action="" class="flex_vertical centered_flex" method="post" id="form_login">
+            <img src="/img/connexion/user.png" alt="" id="img_profile">
+            
             {# Form Inputs with floatig label #}
-
             <div class="form-floating">
                 <input type="text" name="login" class="form-control" value="{{ lastLogin }}" placeholder="Email">
                 <label for="floating">Login</label>

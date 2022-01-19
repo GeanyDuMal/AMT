@@ -21,34 +21,6 @@ footer{
     z-index: 4;
 }
 
-/* End Hiding div */
-
-/* "Header" */
-/* .top {
-    background-color: var(--primary);
-    width: 100%;
-    text-align: center;
-    margin-bottom: 3vh;
-    z-index: 5;
-}
-
-.top-text {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
-    margin-top: 10px;
-    color: var(--white);
-}
-
-.back-arrow {
-    position: absolute;
-    top: 14px;
-    left: 6px;
-    width: 40px;
-    height: auto;
-} */
-
-/* End "Header" */
-
 /* Client Info */
 #img_profile {
     width: 25%;
@@ -60,6 +32,10 @@ footer{
 }
 
 /* End Client Info */
+
+.btn{
+    width: fit-content;
+}
 
 /* Edit password */
 .edit-password {
