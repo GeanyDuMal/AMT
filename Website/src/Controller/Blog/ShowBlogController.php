@@ -22,6 +22,7 @@ class ShowBlogController extends AbstractController
           "message" => $message
         ]);
     }
+
     /**
      * @Route("/blog/{id}", name="selected_blog")
      */

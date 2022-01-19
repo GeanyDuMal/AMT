@@ -20,24 +20,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ShowClientController extends AbstractController
 {
-
-    /*
-     * @Route("/admin/client", name="client_list",methods={"GET", "POST"} )
-     */
-    /*
-    public function index(EntityManagerInterface $manager): Response
-    {
-        if (!$this->isGranted('ROLE_PRESIDENT')){
-            return $this->redirectToRoute('home');
-        }
-        $clients = $manager->getRepository(Client::class)->findAll();
-        return $this->render('client/index.html.twig', [
-            'clients' => $clients
-        ]);
-    }
-    */
     /**
-     * @Route("/admin/client/{message}", name="client_list_message",methods={"GET", "POST"} )
+     * @Route("/admin/client/{message}", name="client_list",methods={"GET", "POST"} )
      */
     public function show(string $message = null,EntityManagerInterface $manager): Response
     {
