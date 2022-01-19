@@ -15,10 +15,14 @@ class ShowProductController extends AbstractController
      */
     public function show(string $message = null,EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted('ROLE_MEMBER')){
+        if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
+
         $products=$manager->getRepository(Product::class)->findAll();
-        return $this->render('product/productList.html.twig', array('products'=>$products,'message'=>$message));
+        return $this->render('product/productList.html.twig',[
+            'products'=>$products,
+            'message'=>$message
+        ]);
     }
 }
