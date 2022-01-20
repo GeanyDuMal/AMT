@@ -17,20 +17,34 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
         $clientRepository = $manager->getRepository(Client::class);
         $paymentTypeRepository = $manager->getRepository(PaymentType::class);
 
-        $order1 = new Ordered();
-        $order1->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
-                ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]))
-                ->setOrderedAt(new DateTime("now"));
+        $paymentTypeCarte = $paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]);
+        $paymentTypeEspece = $paymentTypeRepository->findOneBy(["name" => "Espece"]);
+        $paymentTypeSolde = $paymentTypeRepository->findOneBy(["name" => "Solde"]);
+        $dateNow = new DateTime("now");
 
-        $manager->persist($order1);
+        $order = new Ordered();
+        $order->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
+                ->setPaymentType($paymentTypeCarte)
+                ->setOrderedAt($dateNow);
+        $manager->persist($order);
 
-        $order2 = new Ordered();
-        $order2->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
-                ->setPaymentType($paymentTypeRepository->findOneBy(["name" => "Espece"]))
-                ->setOrderedAt(new DateTime("now"));
-        $manager->persist($order2);
+        $order = new Ordered();
+        $order->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
+                ->setPaymentType($paymentTypeEspece)
+                ->setOrderedAt($dateNow);
+        $manager->persist($order);
 
+        $order = new Ordered();
+        $order->setClient($clientRepository->findOneBy(["name" => "GHONIEM"]))
+            ->setPaymentType($paymentTypeSolde)
+            ->setOrderedAt($dateNow);
+        $manager->persist($order);
 
+        $order = new Ordered();
+        $order->setClient($clientRepository->findOneBy(["name" => "TIJOU"]))
+            ->setPaymentType($paymentTypeCarte)
+            ->setOrderedAt($dateNow);
+        $manager->persist($order);
 
         $manager->flush();
     }

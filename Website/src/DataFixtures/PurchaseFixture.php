@@ -14,27 +14,72 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $commandRepository = $manager->getRepository(Ordered::class);
+        $orderRepository = $manager->getRepository(Ordered::class);
         $productRepository = $manager->getRepository(Product::class);
-        $clientRepository = $manager ->getRepository(Client::class);
+
+        $allOrder = $orderRepository->findAll();
+
+        //--------------------------------
+        //Order 1
 
         $purchase = new Purchase();
-        $purchase->setOrdered($commandRepository->findOneBy(["client" => $clientRepository->findOneBy(["name" => "NATANELIC"])]))
+        $purchase->setOrdered($allOrder[0])
                 ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
                 ->setQuantity(2);
         $manager->persist($purchase);
 
-        $purchase2 = new Purchase();
-        $purchase2->setOrdered($commandRepository->findOneBy(["client" => $clientRepository->findOneBy(["name" => "NATANELIC"])]))
-                ->setProduct($productRepository->findOneBy(["name" => "Coca Cherry"]))
-                ->setQuantity(1);
-        $manager->persist($purchase2);
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[0])
+            ->setProduct($productRepository->findOneBy(["name" => "Fuze tea"]))
+            ->setQuantity(1);
+        $manager->persist($purchase);
 
-        $purchase3 = new Purchase();
-        $purchase3->setOrdered($commandRepository->findOneBy(["client" => $clientRepository->findOneBy(["name" => "MULLER"])]))
-                ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
-                ->setQuantity(3);
-        $manager->persist($purchase3);
+        //--------------------------------
+        //Order 2
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[1])
+            ->setProduct($productRepository->findOneBy(["name" => "M&Ms"]))
+            ->setQuantity(1);
+        $manager->persist($purchase);
+
+        //--------------------------------
+        //Order 3
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[2])
+            ->setProduct($productRepository->findOneBy(["name" => "Oreo"]))
+            ->setQuantity(3);
+        $manager->persist($purchase);
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[2])
+            ->setProduct($productRepository->findOneBy(["name" => "Coca Cherry"]))
+            ->setQuantity(1);
+        $manager->persist($purchase);
+
+        //--------------------------------
+        //Order 4
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[3])
+            ->setProduct($productRepository->findOneBy(["name" => "Chips"]))
+            ->setQuantity(1);
+        $manager->persist($purchase);
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[3])
+            ->setProduct($productRepository->findOneBy(["name" => "Oreo"]))
+            ->setQuantity(1);
+        $manager->persist($purchase);
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[3])
+            ->setProduct($productRepository->findOneBy(["name" => "CapriSun Tropical"]))
+            ->setQuantity(1);
+        $manager->persist($purchase);
+
+        //--------------------------------
 
         $manager->flush();
     }
