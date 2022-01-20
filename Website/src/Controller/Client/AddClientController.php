@@ -58,7 +58,7 @@ class AddClientController extends AbstractController
                         $manager->flush();
                     }
 
-                    return $this->redirectToRoute('client_list_message',["message"=>"Ajout avec succès"]);
+                    return $this->redirectToRoute('client_list',["message"=>"Ajout avec succès"]);
                 }
         }
 

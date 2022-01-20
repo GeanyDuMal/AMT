@@ -25,6 +25,5 @@ class DeleteClientController extends AbstractController
         $client = $manager->getRepository('App:Client')->find($id);
         $manager->remove($client);
         $manager->flush();
-
     }
 }

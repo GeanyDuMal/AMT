@@ -60,7 +60,7 @@ class EditClientController extends AbstractController
                         }
                     }
                     $request->query->get("Modification avec succés");
-                    return $this->redirectToRoute('client_list_message',["message"=>"Modification avec succés"]);
+                    return $this->redirectToRoute('client_list',["message"=>"Modification avec succés"]);
 
                 }
             }
