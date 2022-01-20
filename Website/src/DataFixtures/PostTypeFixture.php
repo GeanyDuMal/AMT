@@ -10,13 +10,13 @@ class PostTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $postType1 = new PostType();
-        $postType1->setName("Event");
-        $manager->persist($postType1);
+        $postType = new PostType();
+        $postType->setName("Event");
+        $manager->persist($postType);
 
-        $postType2 = new PostType();
-        $postType2->setName("Autre");
-        $manager->persist($postType2);
+        $postType = new PostType();
+        $postType->setName("Autre");
+        $manager->persist($postType);
 
         $manager->flush();
 

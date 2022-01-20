@@ -10,13 +10,13 @@ class ProductTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $productType1 = new ProductType();
-        $productType1->setName("Snack");
-        $manager->persist($productType1);
+        $productType = new ProductType();
+        $productType->setName("Snack");
+        $manager->persist($productType);
 
-        $productType2 = new ProductType();
-        $productType2->setName("Boisson");
-        $manager->persist($productType2);
+        $productType = new ProductType();
+        $productType->setName("Boisson");
+        $manager->persist($productType);
 
         $manager->flush();
 

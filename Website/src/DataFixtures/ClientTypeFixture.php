@@ -10,13 +10,13 @@ class ClientTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $clientType1 = new ClientType();
-        $clientType1->setName("Association");
-        $manager->persist($clientType1);
+        $clientType = new ClientType();
+        $clientType->setName("Association");
+        $manager->persist($clientType);
         
-        $clientType2 = new ClientType();
-        $clientType2->setName("Etudiant");
-        $manager->persist($clientType2);
+        $clientType = new ClientType();
+        $clientType->setName("Etudiant");
+        $manager->persist($clientType);
 
         $manager->flush();
 

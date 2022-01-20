@@ -11,17 +11,17 @@ class PaymentTypeFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        $paymentType1 = new PaymentType();
-        $paymentType1->setName("Carte Bancaire");
-        $manager->persist($paymentType1);
+        $paymentType = new PaymentType();
+        $paymentType->setName("Carte Bancaire");
+        $manager->persist($paymentType);
 
-        $paymentType2 = new PaymentType();
-        $paymentType2->setName("Espece");
-        $manager->persist($paymentType2);
+        $paymentType = new PaymentType();
+        $paymentType->setName("Espece");
+        $manager->persist($paymentType);
 
-        $paymentType3 = new PaymentType();
-        $paymentType3->setName("Solde");
-        $manager->persist($paymentType3);
+        $paymentType = new PaymentType();
+        $paymentType->setName("Solde");
+        $manager->persist($paymentType);
 
         $manager->flush();
 

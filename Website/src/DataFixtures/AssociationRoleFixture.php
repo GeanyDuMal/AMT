@@ -11,25 +11,25 @@ class AssociationRoleFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        $associationRole1 = new AssociationRole();
-        $associationRole1->setName("President");
-        $manager->persist($associationRole1);
+        $associationRole = new AssociationRole();
+        $associationRole->setName("President");
+        $manager->persist($associationRole);
 
-        $associationRole2 = new AssociationRole();
-        $associationRole2->setName("Tresorier");
-        $manager->persist($associationRole2);
+        $associationRole = new AssociationRole();
+        $associationRole->setName("Tresorier");
+        $manager->persist($associationRole);
 
-        $associationRole3 = new AssociationRole();
-        $associationRole3->setName("Vice President");
-        $manager->persist($associationRole3);
+        $associationRole = new AssociationRole();
+        $associationRole->setName("Vice President");
+        $manager->persist($associationRole);
 
-        $associationRole4 = new AssociationRole();
-        $associationRole4->setName("Secretaire");
-        $manager->persist($associationRole4);
+        $associationRole = new AssociationRole();
+        $associationRole->setName("Secretaire");
+        $manager->persist($associationRole);
 
-        $associationRole5 = new AssociationRole();
-        $associationRole5->setName("Membre");
-        $manager->persist($associationRole5);
+        $associationRole = new AssociationRole();
+        $associationRole->setName("Membre");
+        $manager->persist($associationRole);
 
         $manager->flush();
 
