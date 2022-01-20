@@ -21,147 +21,147 @@ class PriceFixture extends Fixture implements DependentFixtureInterface
 
 
         $snickers = $productRepository->findOneBy(["name" => "Snickers"]);
-        $price1 = new Price();
-        $price1->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
                 ->setProduct($snickers)
                 ->setPrice(0.6);
-        $manager->persist($price1);
+        $manager->persist($price);
 
-        $price2 = new Price();
-        $price2->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
                 ->setProduct($snickers)
                 ->setPrice(0.8);
-        $manager->persist($price2);
+        $manager->persist($price);
 
         $mms = $productRepository->findOneBy(["name" => "M&Ms"]);
-        $price3 = new Price();
-        $price3->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
                 ->setProduct($mms)
                 ->setPrice(0.6);
-        $manager->persist($price3);
+        $manager->persist($price);
 
-        $price4 = new Price();
-        $price4->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
                 ->setProduct($mms)
                 ->setPrice(0.8);
-        $manager->persist($price4);
+        $manager->persist($price);
 
         $chips = $productRepository->findOneBy(["name" => "Chips"]);
-        $price5 = new Price();
-        $price5->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
                 ->setProduct($chips)
                 ->setPrice(0.6);
-        $manager->persist($price5);
+        $manager->persist($price);
 
-        $price6 = new Price();
-        $price6->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
                 ->setProduct($chips)
                 ->setPrice(0.8);
-        $manager->persist($price6);
+        $manager->persist($price);
 
         $oreo = $productRepository->findOneBy(["name" => "Oreo"]);
-        $price7 = new Price();
-        $price7->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
                 ->setProduct($oreo)
                 ->setPrice(0.4);
-        $manager->persist($price7);
+        $manager->persist($price);
 
-        $price8 = new Price();
-        $price8->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
                 ->setProduct($oreo)
                 ->setPrice(0.5);
-        $manager->persist($price8);
+        $manager->persist($price);
 
         $colaCherry = $productRepository->findOneBy(["name" => "Coca Cherry"]);
-        $price9 = new Price();
-        $price9->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
                 ->setProduct($colaCherry)
                 ->setPrice(0.6);
-        $manager->persist($price9);
+        $manager->persist($price);
 
-        $price10 = new Price();
-        $price10->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
                 ->setProduct($colaCherry)
                 ->setPrice(0.8);
-        $manager->persist($price10);
+        $manager->persist($price);
 
         $pepsiMax = $productRepository->findOneBy(["name" => "Pepsi Max"]);
-        $price11 = new Price();
-        $price11->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
             ->setProduct($pepsiMax)
             ->setPrice(0.6);
-        $manager->persist($price11);
+        $manager->persist($price);
 
-        $price12 = new Price();
-        $price12->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
             ->setProduct($pepsiMax)
             ->setPrice(0.8);
-        $manager->persist($price12);
+        $manager->persist($price);
 
         $fuzeTea = $productRepository->findOneBy(["name" => "Fuze Tea"]);
-        $price13 = new Price();
-        $price13->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
             ->setProduct($fuzeTea)
             ->setPrice(0.6);
-        $manager->persist($price13);
+        $manager->persist($price);
 
-        $price14 = new Price();
-        $price14->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
             ->setProduct($fuzeTea)
             ->setPrice(0.8);
-        $manager->persist($price14);
+        $manager->persist($price);
 
         $minuteMaidOrange = $productRepository->findOneBy(["name" => "Minute Maid Orange"]);
-        $price15 = new Price();
-        $price15->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
             ->setProduct($minuteMaidOrange)
             ->setPrice(0.6);
-        $manager->persist($price15);
+        $manager->persist($price);
 
-        $price16 = new Price();
-        $price16->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
             ->setProduct($minuteMaidOrange)
             ->setPrice(0.8);
-        $manager->persist($price16);
+        $manager->persist($price);
 
         $capriSunMulti = $productRepository->findOneBy(["name" => "Capri Sun MultiVitamine"]);
-        $price17 = new Price();
-        $price17->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
             ->setProduct($capriSunMulti)
             ->setPrice(0.6);
-        $manager->persist($price17);
+        $manager->persist($price);
 
-        $price18 = new Price();
-        $price18->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
             ->setProduct($capriSunMulti)
             ->setPrice(0.8);
-        $manager->persist($price18);
+        $manager->persist($price);
 
         $capriSunTropi = $productRepository->findOneBy(["name" => "Capri Sun Tropical"]);
-        $price19 = new Price();
-        $price19->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
             ->setProduct($capriSunTropi)
             ->setPrice(0.6);
-        $manager->persist($price19);
+        $manager->persist($price);
 
-        $price20 = new Price();
-        $price20->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
             ->setProduct($capriSunTropi)
             ->setPrice(0.8);
-        $manager->persist($price20);
+        $manager->persist($price);
 
         $eau = $productRepository->findOneBy(["name" => "Eau"]);
-        $price21 = new Price();
-        $price21->setClientType($clientTypeAssociation)
+        $price = new Price();
+        $price->setClientType($clientTypeAssociation)
             ->setProduct($eau)
             ->setPrice(0.3);
-        $manager->persist($price21);
+        $manager->persist($price);
 
-        $price22 = new Price();
-        $price22->setClientType($clientTypeEtudiant)
+        $price = new Price();
+        $price->setClientType($clientTypeEtudiant)
             ->setProduct($eau)
             ->setPrice(0.3);
-        $manager->persist($price22);
+        $manager->persist($price);
 
         $manager->flush();
     }
