@@ -39,7 +39,7 @@ class ProductFixture extends Fixture implements DependentFixtureInterface
         $product4->setName("Oreo")
             ->setProductType($productTypeRepository->findOneBy(["name" => "Snack"]))
             ->setQuantityStock(10)
-            ->setImageLink("https://i.makeagif.com/media/5-14-2020/KHA2dt.gif");
+            ->setImageLink("https://i.gifer.com/7H8I.gif");
         $manager->persist($product4);
 
         $product5 = new Product();
