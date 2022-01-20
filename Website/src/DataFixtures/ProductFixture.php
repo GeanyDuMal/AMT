@@ -74,14 +74,14 @@ class ProductFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($product);
 
         $product = new Product();
-        $product->setName("Capri Sun MultiVitamine")
+        $product->setName("CapriSun MultiVitamine")
                 ->setProductType($productTypeBoisson)
                 ->setQuantityStock(10)
                 ->setImageLink("https://www.cdiscount.com/pdt2/5/6/2/4/550x550/cap2009937911562/rw/capri-sonne-multivitamines-10-x-0-2l.jpg");
         $manager->persist($product);
 
         $product = new Product();
-        $product->setName("Capri Sun Tropical")
+        $product->setName("CapriSun Tropical")
                 ->setProductType($productTypeBoisson)
                 ->setQuantityStock(10)
                 ->setImageLink("https://cdn.monoprix.fr/cdn-cgi/image/width=580,quality=60,format=auto,metadata=none/assets/images/grocery/2561914/580x580.jpg");

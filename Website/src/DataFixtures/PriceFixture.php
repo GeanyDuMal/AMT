@@ -124,7 +124,7 @@ class PriceFixture extends Fixture implements DependentFixtureInterface
             ->setPrice(0.8);
         $manager->persist($price);
 
-        $capriSunMulti = $productRepository->findOneBy(["name" => "Capri Sun MultiVitamine"]);
+        $capriSunMulti = $productRepository->findOneBy(["name" => "CapriSun MultiVitamine"]);
         $price = new Price();
         $price->setClientType($clientTypeAssociation)
             ->setProduct($capriSunMulti)
@@ -137,7 +137,7 @@ class PriceFixture extends Fixture implements DependentFixtureInterface
             ->setPrice(0.8);
         $manager->persist($price);
 
-        $capriSunTropi = $productRepository->findOneBy(["name" => "Capri Sun Tropical"]);
+        $capriSunTropi = $productRepository->findOneBy(["name" => "CapriSun Tropical"]);
         $price = new Price();
         $price->setClientType($clientTypeAssociation)
             ->setProduct($capriSunTropi)
