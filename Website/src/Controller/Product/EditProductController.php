@@ -35,7 +35,6 @@ class EditProductController extends AbstractController
         //
         $validationErrors="";
         $productExistsError="";
-
         if($data->count()>0){
             $commonMethods=new CommonProductMethods();
             $commonMethods->setDataForProduct($product,$request,$productTypeRepository);

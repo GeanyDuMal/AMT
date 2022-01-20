@@ -22,8 +22,8 @@
         <form id="product_form" action="" class="row g-2" method="post">
             <h1>Modifier produit</h1>
             <div class="form-floating col-md-12">
-                <input type="text" name="productName" class="form-control" id="floatingInput" class="field-long"
-                       placeholder="Nom du produit" value={{ product.name }} />
+                <input type="text" name="productName" class="form-control field-long" id="floatingInput"
+                       placeholder="Nom du produit" value="{{ product.name }}"/>
                 <label for="floatingInput">Nom du produit</label>
             </div>
             <div class="form-floating col-md-6">
