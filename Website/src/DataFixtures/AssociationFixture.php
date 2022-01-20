@@ -15,20 +15,28 @@ class AssociationFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $clientRepository = $manager->getRepository(Client::class);
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
         $associationRoleRepository = $manager->getRepository(AssociationRole::class);
 
-        $membreAssoc = $clientRepository->findBy(["clientType" => $clientTypeRepository->findOneBy(["name" => "Association"])]);
 
-        $association1 = new Association();
-        $association1->setMember($membreAssoc[0])
+        $association = new Association();
+        $association->setMember($clientRepository->findOneBy(["login" => "RomainGamer57"]))
                     ->setRole($associationRoleRepository->findOneBy(["name" => "President"]));
-        $manager->persist($association1);
+        $manager->persist($association);
 
-        $association2 = new Association();
-        $association2->setMember($membreAssoc[1])
-                    ->setRole($associationRoleRepository->findOneBy(["name" => "Membre"]));
-        $manager->persist($association2);
+        $association = new Association();
+        $association->setMember($clientRepository->findOneBy(["login" => "Dhoulnoun"]))
+            ->setRole($associationRoleRepository->findOneBy(["name" => "Tresorier"]));
+        $manager->persist($association);
+
+        $association = new Association();
+        $association->setMember($clientRepository->findOneBy(["login" => "Omareee"]))
+            ->setRole($associationRoleRepository->findOneBy(["name" => "Secretaire"]));
+        $manager->persist($association);
+
+        $association = new Association();
+        $association->setMember($clientRepository->findOneBy(["login" => "LeaneLoli"]))
+            ->setRole($associationRoleRepository->findOneBy(["name" => "Membre"]));
+        $manager->persist($association);
         
         $manager->flush();
     }
