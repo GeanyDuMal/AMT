@@ -80,6 +80,14 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($purchase);
 
         //--------------------------------
+        //Order 5
+
+        $purchase = new Purchase();
+        $purchase->setOrdered($allOrder[4])
+            ->setProduct($productRepository->findOneBy(["name" => "Pepsi Max"]))
+            ->setQuantity(2);
+        $manager->persist($purchase);
+        //--------------------------------
 
         $manager->flush();
     }

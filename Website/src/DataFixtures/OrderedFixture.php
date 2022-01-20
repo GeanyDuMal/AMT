@@ -46,6 +46,12 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
             ->setOrderedAt($dateNow);
         $manager->persist($order);
 
+        $order = new Ordered();
+        $order->setClient()
+            ->setPaymentType($paymentTypeEspece)
+            ->setOrderedAt($dateNow);
+        $manager->persist($order);
+
         $manager->flush();
     }
 
