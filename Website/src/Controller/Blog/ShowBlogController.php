@@ -15,8 +15,9 @@ class ShowBlogController extends AbstractController
      */
     public function index(string $message = null , EntityManagerInterface $manager): Response
     {
+        //findBy plutot que findAll car on peut trier et recuperer le dernier post en premier
 
-        $blogs=$manager->getRepository(Post::class)->findAll();
+        $blogs=$manager->getRepository(Post::class)->findBy([], ["id" => "DESC"]);
         return $this->render('blog/index.html.twig',[
           'blogs' => $blogs,
           "message" => $message
