@@ -9,6 +9,10 @@
   --middle-red: #760700; }
 
 /* End Colors */
+
+footer {
+  position:absolute
+}
 /* line 25, ../../Github_clones/Website_AEDI/Website/public/style/blog/scss/blog.scss */
 .page__title {
   margin-top: 10px;
