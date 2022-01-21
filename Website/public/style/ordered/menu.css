@@ -3,10 +3,6 @@
       margin: 0 auto;
 }
 
-footer{
-      position: absolute;
-}
-
 
 @media(max-width: 600px) {
       .alert{

@@ -1,7 +1,3 @@
-footer{
-      position: absolute;
-}
-
 .flex_vertical {
       display: flex;
       flex-direction: column;
