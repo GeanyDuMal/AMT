@@ -42,6 +42,7 @@ security:
         ROLE_ASSOC: ROLE_USER
         ROLE_TRESORIER: ROLE_ASSOC
         ROLE_PRESIDENT: ROLE_TRESORIER
+        ROLE_ADMIN: ROLE_PRESIDENT
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
