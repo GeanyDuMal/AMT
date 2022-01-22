@@ -17,7 +17,6 @@ class DeleteBlogController extends AbstractController
         if(!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
-        
         $post=$postRepository->find($id);
 
         $manager->remove($post);
