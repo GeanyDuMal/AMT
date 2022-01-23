@@ -12,8 +12,15 @@
 - We used Symfony so everything is displayed in different package*
 - You have to go to the package "Website" to access to all the file
 - In the .env file, you can set the adress of the database and the step of the app (dev or prod)
-- The test are done in the "test" package
-  - YOUNES ECRIT ICI CE QU'IL FAUT POUR FAIRE LES TESTS
+- The test are done in the "tests" package they will be conducted with PHPUnit
+  - in order to make sure of the sanity and quality of the app you should run tests
+  - there are two packages for testing "Unit" and 'Func':
+    - the Unit package is there to conduct unit tests in order to test small parts of the project.
+    - The Func package is there to conduct functionnal tests, they concern larger parts of your project such as
+      - Integration tests
+      - Application tests where you test user behavior, those tests are most the time conducted on controllers.
+  - for more information on testing check PHPUnit documentation [here](https://symfony.com/doc/current/testing.html)
+  - not that you might need to install a debugger like XDebug to run tests
 - In the "src" directory, you have :
   - The controller directory which contains all the files used by the pages
   - The DataFixtures directory contains all the files to setup the database for the test
@@ -25,3 +32,5 @@
 - In the "migrations" directory, you have all the files to build your database for the project
 - In the "config" directory, you can go to the "package" directory to see the security.yaml
   - Into this file you can set the encoder and the role hierarchy
+- in the root directory you'll find a .env file this will allow you to set up your project environement.
+- we strongly advise you to create .env.local in order to set up you local developpement environnement this is useful when you develop on localhost.
