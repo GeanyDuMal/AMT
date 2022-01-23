@@ -20,7 +20,7 @@
       - Integration tests
       - Application tests where you test user behavior, those tests are most the time conducted on controllers.
   - for more information on testing check PHPUnit documentation [here](https://symfony.com/doc/current/testing.html)
-  - not that you might need to install a debugger like XDebug to run tests
+  - note that you might need to install a debugger like XDebug to run tests
 - In the "src" directory, you have :
   - The controller directory which contains all the files used by the pages
   - The DataFixtures directory contains all the files to setup the database for the test
