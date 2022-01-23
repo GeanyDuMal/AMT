@@ -11,6 +11,7 @@
 
 - We used Symfony so everything is displayed in different package*
 - You have to go to the package "Website" to access to all the file
+- In the .env file, you can set the adress of the database and the step of the app (dev or prod)
 - The test are done in the "test" package
   - YOUNES ECRIT ICI CE QU'IL FAUT POUR FAIRE LES TESTS
 - In the "src" directory, you have :
