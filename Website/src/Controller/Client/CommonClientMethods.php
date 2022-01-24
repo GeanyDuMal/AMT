@@ -29,7 +29,11 @@ class CommonClientMethods{
         $type = $clientTypeRepository->findOneBy(["name" => $clientType]);
         $isStudent = strcmp($clientType,"Etudiant") == 0;
         $assosRole = $data->get('assosRoles');
-        $typeName = $isStudent?$clientType:$assosRole;
+        if ($isStudent){
+            $typeName = $clientType;
+        }else{
+            $typeName = $assosRole;
+        }
         $role = $this->getRoleFromType($typeName);
         /*
             if password input exists so it's the add page
@@ -83,9 +87,7 @@ class CommonClientMethods{
      * If there is one or more (which isn't possible, but it prevents bug)
      * It removes every President
      */
-    public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember,
-        ClientTypeRepository $clientTypeRepository, ClientRepository $clientRepository, AssociationRepository $associationRepository)
-    {
+    public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember, ClientTypeRepository $clientTypeRepository, ClientRepository $clientRepository, AssociationRepository $associationRepository){
         $members = $associationRepository->findAll();
 
         foreach ($members as $otherMember){

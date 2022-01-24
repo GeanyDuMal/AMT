@@ -58,12 +58,11 @@ class AddClientController extends AbstractController
                         $newMember = $commonFunctions->makeMember($client, $roleAssociation);
 
                         if($newMember->getRole()->getName() == "President"){
-                            $commonFunctions->removeOtherPresidents($manager, $newMember);
+                            $commonFunctions->removeOtherPresidents($manager, $newMember, $clientTypeRepository, $clientRepository, $associationRepository);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
                     }
-
                     return $this->redirectToRoute('client_list',["message"=>"Ajout avec succès"]);
                 }
         }
