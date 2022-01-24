@@ -74,6 +74,11 @@ class CommonClientMethods{
         return $newMember;
     }
 
+    /**
+     * Verify in the table Association if there is already a president
+     * If there is one or more (which isn't possible but it prevent bug)
+     * It remove every President
+     */
     public function removeOtherPresidents(EntityManagerInterface $manager, Association $member)
     {
         $clientTypeRepository = $manager->getRepository(ClientType::class);
@@ -84,8 +89,8 @@ class CommonClientMethods{
 
         foreach ($members as $otherMember){
             if($member->getMember() !== $otherMember->getMember()){
-                if($otherMember->getRole()->getName()=="President"){
-                    $client=$clientRepository->findOneBy(['id'=> $otherMember->getMember()]);
+                if($otherMember->getRole()->getName() == "President"){
+                    $client = $clientRepository->findOneBy(['id'=> $otherMember->getMember()]);
                     $client->setClientType($clientTypeRepository->findOneBy(['name'=>'Etudiant']));
                     $client->setRoles(["ROLE_USER"]);
                     $manager->persist($client);
