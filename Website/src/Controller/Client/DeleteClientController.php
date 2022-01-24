@@ -2,6 +2,7 @@
 
 namespace App\Controller\Client;
 
+use App\Entity\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,12 +18,13 @@ class DeleteClientController extends AbstractController
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
+
         /*
          * when we delete a client
-         * we delete if from association too
+         * we delete it from association too
          * -> manipulated by a trigger called : deleteFromAssosIfMemberDeleted
          */
-        $client = $manager->getRepository('App:Client')->find($id);
+        $client = $manager->getRepository(Client::class)->find($id);
         $manager->remove($client);
         $manager->flush();
     }

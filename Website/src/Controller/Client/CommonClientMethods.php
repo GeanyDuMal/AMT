@@ -83,13 +83,10 @@ class CommonClientMethods{
      * If there is one or more (which isn't possible, but it prevents bug)
      * It removes every President
      */
-    public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember)
+    public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember,
+        ClientTypeRepository $clientTypeRepository, ClientRepository $clientRepository, AssociationRepository $associationRepository)
     {
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
-        $associationtRepository = $manager->getRepository(Association::class);
-        $clientRepository = $manager->getRepository(Client::class);
-
-        $members=$associationtRepository->findAll();
+        $members = $associationRepository->findAll();
 
         foreach ($members as $otherMember){
             if($associationMember->getMember() !== $otherMember->getMember()){

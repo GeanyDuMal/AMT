@@ -27,6 +27,7 @@ class AddClientController extends AbstractController
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
+
         $commonFunctions=new CommonClientMethods();
         $data = $request->request;
         $clientManager = new ClientManager($manager);
@@ -34,6 +35,7 @@ class AddClientController extends AbstractController
         $errorLoginExist = "";
         $validationErrors="";
         $assosRoles = $associationRoleRepository->findAll();
+
         if ($data->count()> 0) {
             $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $validationErrors = $validator->validate($client);
@@ -53,7 +55,7 @@ class AddClientController extends AbstractController
                         $roleName = $request->get('assosRoles');
                         $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
 
-                        $newMember=$commonFunctions->makeMember($client, $roleAssociation);
+                        $newMember = $commonFunctions->makeMember($client, $roleAssociation);
 
                         if($newMember->getRole()->getName() == "President"){
                             $commonFunctions->removeOtherPresidents($manager, $newMember);

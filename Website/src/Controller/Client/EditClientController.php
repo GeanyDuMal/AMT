@@ -94,14 +94,14 @@ class EditClientController extends AbstractController
     private function manageMember(AssociationRepository $associationRepository, Client $client, AssociationRole $roleAssociation, EntityManagerInterface $manager, CommonClientMethods $commonFunctions)
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
-            if($clientMember){
-                $clientMember->setRole($roleAssociation);
-            }
-            else{
-                $clientMember = $commonFunctions->makeMember($client, $roleAssociation);
-            }
-            $manager->persist($clientMember);
-            $manager->flush();
 
+        if($clientMember){
+            $clientMember->setRole($roleAssociation);
+        }
+        else{
+            $clientMember = $commonFunctions->makeMember($client, $roleAssociation);
+        }
+        $manager->persist($clientMember);
+        $manager->flush();
     }
 }
