@@ -38,11 +38,11 @@ class EditClientController extends AbstractController
         $errorLoginExist = "";
         $member = $associationRepository->findOneBy(["member"=>$client]);
 
-        if ($data->count()> 0) {
+        if ($data->count() > 0) {
             $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $validationErrors = $validator->validate($client);
 
-            if($validationErrors->count()==0){
+            if($validationErrors->count() == 0){
                 $ChosenClientLogin = $clientRepository->find($id)->getLogin();
                 $roleName = $request->get('assosRoles');
                 $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);

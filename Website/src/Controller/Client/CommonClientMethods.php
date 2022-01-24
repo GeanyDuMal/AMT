@@ -22,15 +22,15 @@ class CommonClientMethods{
      * @param UserPasswordHasherInterface $passwordHasher
      * @return void
      */
-    public function setData(Client &$client, Request $request, ClientTypeRepository $clientTypeRepository,UserPasswordHasherInterface $passwordHasher){
+    public function setData(Client $client, Request $request, ClientTypeRepository $clientTypeRepository, UserPasswordHasherInterface $passwordHasher){
         $data = $request->request;
 
-        $clientType=$data->get('clientType');
-        $type=$clientTypeRepository->findOneBy(["name"=>$clientType]);
-        $isStudent=strcmp($clientType,"Etudiant")==0;
-        $assosRole=$data->get('assosRoles');
-        $typeName= $isStudent?$clientType:$assosRole;
-        $role= $this->getRoleFromType($typeName);
+        $clientType = $data->get('clientType');
+        $type = $clientTypeRepository->findOneBy(["name" => $clientType]);
+        $isStudent = strcmp($clientType,"Etudiant") == 0;
+        $assosRole = $data->get('assosRoles');
+        $typeName = $isStudent?$clientType:$assosRole;
+        $role = $this->getRoleFromType($typeName);
         /*
             if password input exists so it's the add page
             so we have to initialize the fidelity points
