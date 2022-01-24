@@ -39,7 +39,8 @@ class EditClientController extends AbstractController
             $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $validationErrors = $validator->validate($client);
             if($validationErrors->count()==0){
-                $ChosenClientID=$clientRepository->find($id)->getLogin();
+                $ChosenClientLogin=$clientRepository->find($id)->getLogin();
+
                 /*
                  *  if admin changed the role of a member to another role
                  *  we have to change it too in association table
@@ -47,16 +48,15 @@ class EditClientController extends AbstractController
                  *    called deleteFromAssosIfChangedToStudent
                  */
                 $this->manageMember($associationRepository,$associationRoleRepository,$client,$request,$manager,$commonFunctions);
-                if(strcmp($ChosenClientID,$client->getLogin())!=0 &&
-                    $clientManager->loginExists($client)){
+                if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
                     $errorLoginExist="Login Existe déja";
                 }
                 else{
                     $clientManager->persist($client);
-                    if($client->getClientType()->getName()=="Association"){
-                        $member=$associationRepository->findOneBy(["member"=>$client]);
-                            if($member->getRole()->getName()=="President"){
-                                $commonFunctions->removeOtherPresitents($manager,$member,$clientTypeRepository,$associationRepository,$clientRepository);
+                    if($client->getClientType()->getName() == "Association"){
+                        $member = $associationRepository->findOneBy(["member"=>$client]);
+                            if($member->getRole()->getName() == "President"){
+                                $commonFunctions->removeOtherPresidents($manager,$member);
                         }
                     }
                     $request->query->get("Modification avec succés");

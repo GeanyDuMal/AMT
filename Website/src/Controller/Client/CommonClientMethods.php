@@ -3,6 +3,7 @@ namespace App\Controller\Client;
 
 use App\Entity\Association;
 use App\Entity\Client;
+use App\Entity\ClientType;
 use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
@@ -73,13 +74,18 @@ class CommonClientMethods{
         return $newMember;
     }
 
-    public function removeOtherPresitents(EntityManagerInterface $manager, Association $member,ClientTypeRepository $clientTypeRepository, AssociationRepository $associationtRepository,ClientRepository $clientRepository)
+    public function removeOtherPresidents(EntityManagerInterface $manager, Association $member)
     {
+        $clientTypeRepository = $manager->getRepository(ClientType::class);
+        $associationtRepository = $manager->getRepository(Association::class);
+        $clientRepository = $manager->getRepository(Client::class);
+
         $members=$associationtRepository->findAll();
+
         foreach ($members as $otherMember){
             if($member->getMember() !== $otherMember->getMember()){
                 if($otherMember->getRole()->getName()=="President"){
-                    $client=$clientRepository->findOneBy(['id'=>$otherMember->getMember()]);
+                    $client=$clientRepository->findOneBy(['id'=> $otherMember->getMember()]);
                     $client->setClientType($clientTypeRepository->findOneBy(['name'=>'Etudiant']));
                     $client->setRoles(["ROLE_USER"]);
                     $manager->persist($client);

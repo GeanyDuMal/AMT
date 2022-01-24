@@ -52,7 +52,7 @@ class AddClientController extends AbstractController
                     if($client->getClientType()->getName()=="Association"){
                         $newMember=$commonFunctions->makeMember($client,$associationRoleRepository,$request);
                         if($newMember->getRole()->getName()=="President"){
-                            $commonFunctions->removeOtherPresitents($manager,$newMember,$clientTypeRepository,$associationRepository,$clientRepository);
+                            $commonFunctions->removeOtherPresidents($manager,$newMember,$clientTypeRepository,$associationRepository,$clientRepository);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
