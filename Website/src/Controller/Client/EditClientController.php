@@ -21,25 +21,31 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index($id,UserPasswordHasherInterface $passwordHasher,AssociationRepository $associationRepository,Request $request,ClientTypeRepository $clientTypeRepository,AssociationRoleRepository $associationRoleRepository,ClientRepository $clientRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index($id, UserPasswordHasherInterface $passwordHasher, AssociationRepository $associationRepository, Request $request,
+                          ClientTypeRepository $clientTypeRepository, AssociationRoleRepository $associationRoleRepository,
+                          ClientRepository $clientRepository, EntityManagerInterface $manager, ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
-        $data = $request->request;
-        $commonFunctions=new CommonClientMethods();
-        $client = $clientRepository->find($id);
 
+        $data = $request->request;
+        $commonFunctions = new CommonClientMethods();
+        $client = $clientRepository->find($id);
         $clientManager = new ClientManager($manager);
         $assosRoles = $associationRoleRepository->findAll();
-        $validationErrors="";
-        $errorLoginExist= "";
-        $member=$associationRepository->findOneBy(["member"=>$client]);
+        $validationErrors = "";
+        $errorLoginExist = "";
+        $member = $associationRepository->findOneBy(["member"=>$client]);
+
         if ($data->count()> 0) {
             $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
             $validationErrors = $validator->validate($client);
+
             if($validationErrors->count()==0){
-                $ChosenClientLogin=$clientRepository->find($id)->getLogin();
+                $ChosenClientLogin = $clientRepository->find($id)->getLogin();
+                $roleName = $request->get('assosRoles');
+                $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
 
                 /*
                  *  if admin changed the role of a member to another role
@@ -47,7 +53,8 @@ class EditClientController extends AbstractController
                  * -> if admin changed the type of a member to student it is manipulated by a trigger
                  *    called deleteFromAssosIfChangedToStudent
                  */
-                $this->manageMember($associationRepository,$associationRoleRepository,$client,$request,$manager,$commonFunctions);
+                $this->manageMember($associationRepository, $client, $roleAssociation, $manager, $commonFunctions);
+
                 if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
                     $errorLoginExist="Login Existe déja";
                 }
@@ -59,7 +66,6 @@ class EditClientController extends AbstractController
                                 $commonFunctions->removeOtherPresidents($manager,$member);
                         }
                     }
-                    $request->query->get("Modification avec succés");
                     return $this->redirectToRoute('client_list',["message"=>"Modification avec succés"]);
 
                 }
@@ -79,24 +85,22 @@ class EditClientController extends AbstractController
 
     /**
      * @param AssociationRepository $associationRepository
-     * @param AssociationRoleRepository $associationRoleRepository
      * @param Client $client
-     * @param Request $request
+     * @param AssociationRole $roleAssociation
      * @param EntityManagerInterface $manager
      * @param CommonClientMethods $commonFunctions
      * @return void
      */
-    private function manageMember(AssociationRepository $associationRepository, AssociationRoleRepository $associationRoleRepository, Client $client, Request $request, EntityManagerInterface $manager, CommonClientMethods $commonFunctions)
+    private function manageMember(AssociationRepository $associationRepository, Client $client, AssociationRole $roleAssociation, EntityManagerInterface $manager, CommonClientMethods $commonFunctions)
     {
-        $data=$request->request;
-        $existeDansAssos=$associationRepository->findOneBy(['member'=>$client]);
-            if($existeDansAssos){
-                $existeDansAssos->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('assosRoles')]));
+        $clientMember = $associationRepository->findOneBy(['member' => $client]);
+            if($clientMember){
+                $clientMember->setRole($roleAssociation);
             }
             else{
-                $existeDansAssos=$commonFunctions->makeMember($client,$associationRoleRepository,$request);
+                $clientMember = $commonFunctions->makeMember($client, $roleAssociation);
             }
-            $manager->persist($existeDansAssos);
+            $manager->persist($clientMember);
             $manager->flush();
 
     }

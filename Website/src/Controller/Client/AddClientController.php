@@ -49,10 +49,14 @@ class AddClientController extends AbstractController
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if($client->getClientType()->getName()=="Association"){
-                        $newMember=$commonFunctions->makeMember($client,$associationRoleRepository,$request);
-                        if($newMember->getRole()->getName()=="President"){
-                            $commonFunctions->removeOtherPresidents($manager,$newMember,$clientTypeRepository,$associationRepository,$clientRepository);
+                    if($client->getClientType()->getName() == "Association"){
+                        $roleName = $request->get('assosRoles');
+                        $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
+
+                        $newMember=$commonFunctions->makeMember($client, $roleAssociation);
+
+                        if($newMember->getRole()->getName() == "President"){
+                            $commonFunctions->removeOtherPresidents($manager, $newMember);
                         }
                         $manager->persist($newMember);
                         $manager->flush();

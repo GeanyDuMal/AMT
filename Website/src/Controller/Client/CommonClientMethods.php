@@ -2,6 +2,7 @@
 namespace App\Controller\Client;
 
 use App\Entity\Association;
+use App\Entity\AssociationRole;
 use App\Entity\Client;
 use App\Entity\ClientType;
 use App\Repository\AssociationRepository;
@@ -66,20 +67,23 @@ class CommonClientMethods{
         }
         return $role;
     }
-    public function makeMember(Client $client,AssociationRoleRepository $associationRoleRepository,Request $request):Association{
-        $data = $request->request;
-        $newMember=new Association();
+
+    public function makeMember(Client $client, AssociationRole $role):Association
+    {
+        $newMember = new Association();
+
         $newMember->setMember($client);
-        $newMember->setRole($associationRoleRepository->findOneBy(["name"=>$data->get('assosRoles')]));
+        $newMember->setRole($role);
+
         return $newMember;
     }
 
     /**
      * Verify in the table Association if there is already a president
-     * If there is one or more (which isn't possible but it prevent bug)
-     * It remove every President
+     * If there is one or more (which isn't possible, but it prevents bug)
+     * It removes every President
      */
-    public function removeOtherPresidents(EntityManagerInterface $manager, Association $member)
+    public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember)
     {
         $clientTypeRepository = $manager->getRepository(ClientType::class);
         $associationtRepository = $manager->getRepository(Association::class);
@@ -88,7 +92,7 @@ class CommonClientMethods{
         $members=$associationtRepository->findAll();
 
         foreach ($members as $otherMember){
-            if($member->getMember() !== $otherMember->getMember()){
+            if($associationMember->getMember() !== $otherMember->getMember()){
                 if($otherMember->getRole()->getName() == "President"){
                     $client = $clientRepository->findOneBy(['id'=> $otherMember->getMember()]);
                     $client->setClientType($clientTypeRepository->findOneBy(['name'=>'Etudiant']));
