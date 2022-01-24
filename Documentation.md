@@ -32,5 +32,5 @@
 - In the "migrations" directory, you have all the files to build your database for the project
 - In the "config" directory, you can go to the "package" directory to see the security.yaml
   - Into this file you can set the encoder and the role hierarchy
-- in the root directory you'll find a .env file this will allow you to set up your project environement.
-- we strongly advise you to create .env.local in order to set up you local developpement environnement this is useful when you develop on localhost.
+- In the root directory you'll find a .env file this will allow you to set up your project environement.
+  - We strongly advise you to create .env.local in order to set up your local developpement environnement this is useful when you develop on localhost.
