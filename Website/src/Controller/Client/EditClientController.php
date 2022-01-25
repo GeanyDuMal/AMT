@@ -3,6 +3,7 @@
 namespace App\Controller\Client;
 use App\Entity\AssociationRole;
 use App\Entity\Client;
+use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
 use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
@@ -30,16 +31,19 @@ class EditClientController extends AbstractController
         }
 
         $data = $request->request;
-        $commonFunctions = new CommonClientMethods();
         $client = $clientRepository->find($id);
         $clientManager = new ClientManager($manager);
+        $associationManager = new AssociationManager($manager);
         $assosRoles = $associationRoleRepository->findAll();
         $validationErrors = "";
         $errorLoginExist = "";
         $member = $associationRepository->findOneBy(["member"=>$client]);
 
-        if ($data->count() > 0) {
-            $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
+        if ($data->count() > 0){
+            $clientManager->setData($client, $clientTypeRepository, $passwordHasher, $data->get("name"),
+                $data->get("firstName"), $data->get("login"), $data->get("password"),
+                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));
+
             $validationErrors = $validator->validate($client);
 
             if($validationErrors->count() == 0){
@@ -53,7 +57,7 @@ class EditClientController extends AbstractController
                  * -> if admin changed the type of a member to student it is manipulated by a trigger
                  *    called deleteFromAssosIfChangedToStudent
                  */
-                $this->manageMember($associationRepository, $client, $roleAssociation, $manager, $commonFunctions);
+                $this->manageMember($manager, $clientManager, $associationRepository, $client, $roleAssociation );
 
                 if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
                     $errorLoginExist="Login Existe déja";
@@ -63,7 +67,7 @@ class EditClientController extends AbstractController
                     if($client->getClientType()->getName() == "Association"){
                         $member = $associationRepository->findOneBy(["member"=>$client]);
                             if($member->getRole()->getName() == "President"){
-                                $commonFunctions->removeOtherPresidents($manager,$member);
+                                $associationManager->removeOtherPresidents($manager, $member, $clientTypeRepository, $clientRepository);
                         }
                     }
                     return $this->redirectToRoute('client_list',["message"=>"Modification avec succés"]);
@@ -72,8 +76,7 @@ class EditClientController extends AbstractController
             }
         }
 
-        return $this->render('client/EditModalClient.html.twig',
-            [
+        return $this->render('client/EditModalClient.html.twig', [
                 'assosRoles' => $assosRoles,
                 'validationErrors' => $validationErrors,
                 'errorLoginExist' => $errorLoginExist,
@@ -84,14 +87,14 @@ class EditClientController extends AbstractController
     }
 
     /**
+     * @param EntityManagerInterface $manager
+     * @param ClientManager $clientManager
      * @param AssociationRepository $associationRepository
      * @param Client $client
      * @param AssociationRole $roleAssociation
-     * @param EntityManagerInterface $manager
-     * @param CommonClientMethods $commonFunctions
      * @return void
      */
-    private function manageMember(AssociationRepository $associationRepository, Client $client, AssociationRole $roleAssociation, EntityManagerInterface $manager, CommonClientMethods $commonFunctions)
+    private function manageMember(EntityManagerInterface $manager, ClientManager $clientManager, AssociationRepository $associationRepository, Client $client, AssociationRole $roleAssociation)
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 
@@ -99,7 +102,7 @@ class EditClientController extends AbstractController
             $clientMember->setRole($roleAssociation);
         }
         else{
-            $clientMember = $commonFunctions->makeMember($client, $roleAssociation);
+            $clientMember = $clientManager->makeMember($client, $roleAssociation);
         }
         $manager->persist($clientMember);
         $manager->flush();

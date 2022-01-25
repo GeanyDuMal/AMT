@@ -198,7 +198,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * Methods implemented by the UserInterface
      */
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         // you *may* need a real salt depending on your encoder
         // see section on salt below

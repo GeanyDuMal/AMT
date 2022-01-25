@@ -2,8 +2,8 @@
 
 namespace App\Controller\Client;
 
-use App\Entity\Association;
 use App\Entity\Client;
+use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
 use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
@@ -22,23 +22,29 @@ class AddClientController extends AbstractController
     /**
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
-    public function index(ClientRepository $clientRepository,AssociationRepository $associationRepository,UserPasswordHasherInterface $passwordHasher,Request $request,AssociationRoleRepository $associationRoleRepository,ClientTypeRepository $clientTypeRepository,EntityManagerInterface $manager,ValidatorInterface $validator): Response
+    public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
+                          AssociationRoleRepository $associationRoleRepository, ClientTypeRepository $clientTypeRepository,
+                          EntityManagerInterface $manager, ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
         }
 
-        $commonFunctions=new CommonClientMethods();
         $data = $request->request;
         $clientManager = new ClientManager($manager);
+        $associationManager = new AssociationManager($manager);
         $client = new Client();
         $errorLoginExist = "";
         $validationErrors="";
         $assosRoles = $associationRoleRepository->findAll();
 
         if ($data->count()> 0) {
-            $commonFunctions->setData($client,$request,$clientTypeRepository,$passwordHasher);
+            $clientManager->setData($client, $clientTypeRepository, $passwordHasher, $data->get("name"),
+                $data->get("firstName"), $data->get("login"), $data->get("password"),
+                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));
+
             $validationErrors = $validator->validate($client);
+
             if($validationErrors->count()==0)
                 if($clientManager->loginExists($client)){
                     $errorLoginExist="Login Existe déja";
@@ -55,24 +61,24 @@ class AddClientController extends AbstractController
                         $roleName = $request->get('assosRoles');
                         $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
 
-                        $newMember = $commonFunctions->makeMember($client, $roleAssociation);
+                        $newMember = $clientManager->makeMember($client, $roleAssociation);
 
                         if($newMember->getRole()->getName() == "President"){
-                            $commonFunctions->removeOtherPresidents($manager, $newMember, $clientTypeRepository, $clientRepository, $associationRepository);
+                            $associationManager->removeOtherPresidents($manager, $newMember, $clientTypeRepository, $clientRepository);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
                     }
-                    return $this->redirectToRoute('client_list',["message"=>"Ajout avec succès"]);
+                    return $this->redirectToRoute('client_list',[
+                        "message"=>"Ajout avec succès"
+                    ]);
                 }
         }
 
-        return $this->render('client/AddModalClient.html.twig',
-            [
+        return $this->render('client/AddModalClient.html.twig', [
                 'assosRoles' => $assosRoles,
                 'validationErrors' => $validationErrors,
-                'errorLoginExist' => $errorLoginExist,
-            ]
-        );
+                'errorLoginExist' => $errorLoginExist
+        ]);
     }
 }
