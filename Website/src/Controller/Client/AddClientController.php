@@ -5,7 +5,6 @@ namespace App\Controller\Client;
 use App\Entity\Client;
 use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
-use App\Repository\AssociationRepository;
 use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;

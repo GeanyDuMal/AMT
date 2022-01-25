@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller\Client;
+
 use App\Entity\AssociationRole;
 use App\Entity\Client;
 use App\Manager\AssociationManager;
@@ -22,9 +23,9 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index($id, UserPasswordHasherInterface $passwordHasher, AssociationRepository $associationRepository, Request $request,
-                          ClientTypeRepository $clientTypeRepository, AssociationRoleRepository $associationRoleRepository,
-                          ClientRepository $clientRepository, EntityManagerInterface $manager, ValidatorInterface $validator): Response
+    public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager, 
+                          ValidatorInterface $validator, AssociationRepository $associationRepository, ClientTypeRepository $clientTypeRepository,
+                          AssociationRoleRepository $associationRoleRepository, ClientRepository $clientRepository): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
