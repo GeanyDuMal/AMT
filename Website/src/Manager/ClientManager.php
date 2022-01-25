@@ -2,17 +2,54 @@
 
 namespace App\Manager;
 
+use App\Entity\Association;
+use App\Entity\AssociationRole;
 use App\Entity\Client;
 use App\Entity\ClientType;
+use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ClientManager
 {
     public EntityManagerInterface $manager;
+    public ObjectRepository $clientRepository;
 
     public function __construct(EntityManagerInterface $managerController)
     {
         $this->manager = $managerController;
+        $this->clientRepository = $this->manager->getRepository(Client::class);
+    }
+
+    public function setData(Client $client, ClientTypeRepository $clientTypeRepository, UserPasswordHasherInterface $passwordHasher,
+        String $name, String $firstName, String $login, ?String $password, String $balance, String $roleAssociationName, String $clientTypeName
+        ){
+        $client->setName($name)
+            ->setFirstName($firstName)
+            ->setLogin($login)
+            ->setBalance($balance);
+
+        $type = $clientTypeRepository->findOneBy(["name" => $clientTypeName]);
+        $isStudent = (strcmp($clientTypeName,"Etudiant") == 0);
+        if ($isStudent){
+            $typeName = $clientTypeName;
+        }else{
+            $typeName = $roleAssociationName;
+        }
+        $role = $this->getRoleFromType($typeName);
+
+        /*
+            if password input exists so it's the add page
+            so we have to set the password to the chosen one.
+        */
+        if($password){
+            $hashedPassword=$passwordHasher->hashPassword($client, trim($password));
+            $client->setPassword($hashedPassword);
+        }
+
+        $client->setRoles($role)
+            ->setClientType($type);
     }
 
     /**
@@ -55,11 +92,10 @@ class ClientManager
      */
     public function loginExists(?Client $client): bool
     {
-        $clientRepository = $this->manager->getRepository(Client::class);
 
-        $dupplicata = $clientRepository->findOneBy(["login" => $client->getLogin()]);
+        $duplicata = $this->clientRepository->findOneBy(["login" => $client->getLogin()]);
 
-        return !is_null($dupplicata);
+        return !is_null($duplicata);
     }
 
     /**
@@ -98,9 +134,7 @@ class ClientManager
      */
     public function checkMoreOneClient(): bool
     {
-        //à verifier mais normalement correct
-        $clientRepository = $this->manager->getRepository(Client::class);
-        return sizeof($clientRepository->findAll()) > 0;
+        return sizeof($this->clientRepository->findAll()) > 0;
     }
 
     /**
@@ -124,12 +158,16 @@ class ClientManager
             case "President":
                 $role[] = "ROLE_PRESIDENT";
                 break;
+            case "Etudiant":
+                $role[] = "ROLE_USER";
+                break;
             default:
                 $role[] = "ROLE_ASSOC";
                 break;
         }
         return $role;
     }
+
     public function getTypeFromRole(array $role):string{
         switch ($role[0]){
             case "ROLE_TRESORIER":
@@ -143,6 +181,22 @@ class ClientManager
                 break;
         }
         return $type;
+    }
+
+    /**
+     * return a Member made from the client in Parameter
+     * @param Client $client
+     * @param AssociationRole $role
+     * @return Association
+     */
+    public function makeMember(Client $client, AssociationRole $role):Association
+    {
+        $newMember = new Association();
+
+        $newMember->setMember($client);
+        $newMember->setRole($role);
+
+        return $newMember;
     }
 
     public function addFidelityPoint(float $amountOrder, Client $client): void{
