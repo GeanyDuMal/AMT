@@ -5,19 +5,18 @@ namespace App\Manager;
 use App\Entity\Post;
 use App\Entity\PostType;
 use App\Repository\PostRepository;
-use App\Repository\PostTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ObjectRepository;
 
 class PostManager
 {
     public EntityManagerInterface $manager;
-    public PostRepository $postRepository;
+    public ObjectRepository $postRepository;
 
     public function __construct(EntityManagerInterface $managerController)
     {
         $this->manager = $managerController;
-        $this->postRepository = (PostRepository::class)($this->manager->getRepository(Post::class));
+        $this->postRepository = $this->manager->getRepository(Post::class);
     }
 
     /**
