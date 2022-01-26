@@ -59,7 +59,7 @@
         {% if is_granted('ROLE_ASSOC') %}
 
             <div align="right">
-                <a href="{{ path('add_product') }}" class="btn btn-primary rounded-0">Ajouter</a>
+                <a href="{{ path('add_product') }}" class="btn btn-primary rounded-0 button--add">Ajouter</a>
             </div>
         {% endif %}
         <div class="row">
@@ -92,7 +92,7 @@
                             {% if is_granted('ROLE_ASSOC') %}
                                 <a href="{{ url('edit_product',{id:product.id}) }}"
                                    class="btn btn-secondary rounded-0 float-end">Modifier</a>
-                                   
+
                                 <a id="toDelete" class="btn btn-primary rounded-0 float-end"
                                    data-id={{ product.id }}>Supprimer</a>
                             {% endif %}
