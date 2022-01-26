@@ -3,20 +3,20 @@
 namespace App\Manager;
 
 use App\Entity\Association;
+use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 
 class AssociationManager
 {
     public EntityManagerInterface $manager;
-    public ObjectRepository $associationRepository;
+    public AssociationRepository $associationRepository;
 
     public function __construct(EntityManagerInterface $managerController)
     {
         $this->manager = $managerController;
-        $this->associationRepository = $this->manager->getRepository(Association::class);
+        $this->associationRepository = (AssociationRepository::class)($this->manager->getRepository(Association::class));
     }
 
     /**

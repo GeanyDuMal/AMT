@@ -3,6 +3,7 @@
 namespace App\Controller\Blog;
 
 use App\Entity\Post;
+use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Repository\PostTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,12 +17,6 @@ class AddBlogController extends AbstractController
 {
     /**
      * @Route("/blog/add", name="add_blog")
-     * @param EntityManagerInterface $manager
-     * @param PostRepository $postRepository
-     * @param Request $request
-     * @param PostTypeRepository $postTypeRepository
-     * @param ValidatorInterface $validator
-     * @return Response
      */
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request, PostTypeRepository $postTypeRepository,ValidatorInterface $validator): Response
     {
@@ -34,17 +29,22 @@ class AddBlogController extends AbstractController
         $postTypes = $postTypeRepository->findAll();
         $validationErrors = "";
         $postExistsError = "";
+        $postmanager = new PostManager($manager);
 
         if($data->count() > 0){
-            $commonMethods = new CommonBlogMethods();
-            $commonMethods->setData($post, $request, $postTypeRepository);
+            $type = $data->get('postType');
+            $postType = $postTypeRepository->findOneBy(["name" => $type]);
+
+            $postmanager->setData($post,$postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
             $validationErrors = $validator->validate($post);
+
             if($validationErrors->count() == 0){
                 if($postRepository->findBy(['title' => $post->getTitle()])){
                     $postExistsError = "Le post existe déjà.";
                 }else{
                     $manager->persist($post);
                     $manager->flush();
+
                     return $this->redirectToRoute('blog',[
                         "message" => "Ajout avec succès"
                     ]);
