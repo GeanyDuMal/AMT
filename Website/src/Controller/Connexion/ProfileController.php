@@ -4,6 +4,7 @@ namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
+use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,12 +18,10 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
+    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher,
+        ClientRepository $clientRepository): Response
     {
-
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
-            $clientRepository = $manager->getRepository(Client::class);
-
             $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
 
             $inputParameterBag = $request->request;
@@ -38,9 +37,7 @@ class ProfileController extends AbstractController
 
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
                 if (password_verify(trim($inputParameterBag->get("oldPassword")), $this->getUser()->getPassword())) {
-                    $hashedPassword = $passwordHasher->hashPassword(
-                        $client,
-                        trim($inputParameterBag->get("newPassword")));
+                    $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("newPassword")));
 
                     $client->setPassword($hashedPassword);
 

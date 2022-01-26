@@ -30,14 +30,15 @@ class AddClientController extends AbstractController
         }
 
         $data = $request->request;
-        $clientManager = new ClientManager($manager);
-        $associationManager = new AssociationManager($manager);
-        $client = new Client();
-        $errorLoginExist = "";
-        $validationErrors="";
         $assosRoles = $associationRoleRepository->findAll();
+        $errorLoginExist = "";
+        $validationErrors = "";
 
         if ($data->count()> 0) {
+            $clientManager = new ClientManager($manager);
+            $associationManager = new AssociationManager($manager);
+            $client = new Client();
+
             $clientManager->setData($client, $clientTypeRepository, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
                 $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));

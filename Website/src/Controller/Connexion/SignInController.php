@@ -3,8 +3,8 @@
 namespace App\Controller\Connexion;
 
 use App\Entity\Client;
-use App\Entity\ClientType;
 use App\Manager\ClientManager;
+use App\Repository\ClientTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ class SignInController extends AbstractController
     /**
      * @Route("/signin", name="signin")
      */
-    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
+    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher, ClientTypeRepository $clientTypeRepository): Response
     {
         // Redirige vers le profil si deja connecté
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
@@ -26,15 +26,12 @@ class SignInController extends AbstractController
 
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
         $client = new Client;
         $loginExist = false;
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
         if (!is_null($inputParameterBag->get("name"))){
-            $hashedPassword = $passwordHasher->hashPassword(
-                $client,
-                trim($inputParameterBag->get("password")));
+            $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
             $client->setName(trim($inputParameterBag->get("name")))
                     ->setFirstName(trim($inputParameterBag->get("firstName")))

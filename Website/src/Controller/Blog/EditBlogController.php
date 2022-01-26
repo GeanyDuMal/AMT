@@ -3,6 +3,7 @@
 namespace App\Controller\Blog;
 
 
+use App\Manager\PostManager;
 use App\Repository\PostRepository;
 
 use App\Repository\PostTypeRepository;
@@ -27,14 +28,18 @@ class EditBlogController extends AbstractController
         $data = $request->request;
         $post = $postRepository->find($id);
         $postTypes = $postTypeRepository->findAll();
+        $postmanager = new PostManager($manager);
 
         $validationErrors = "";
         $postExistsError = "";
 
         if ($data->count() > 0) {
-            $commonMethods = new CommonBlogMethods();
-            $commonMethods->setData($post, $request, $postTypeRepository);
+            $type = $data->get('postType');
+            $postType = $postTypeRepository->findOneBy(["name" => $type]);
+
+            $postmanager->setData($post,$postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
             $validationErrors = $validator->validate($post);
+
             if ($validationErrors->count() == 0) {
                 $selectedPostName = $postRepository->find($id)->getTitle();
                 $editedPostName = $post->getTitle();
