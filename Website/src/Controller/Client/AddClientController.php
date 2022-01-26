@@ -34,7 +34,7 @@ class AddClientController extends AbstractController
         $associationManager = new AssociationManager($manager);
         $client = new Client();
         $errorLoginExist = "";
-        $validationErrors="";
+        $validationErrors = "";
         $assosRoles = $associationRoleRepository->findAll();
 
         if ($data->count()> 0) {

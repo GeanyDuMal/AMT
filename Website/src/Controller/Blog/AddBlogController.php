@@ -28,22 +28,26 @@ class AddBlogController extends AbstractController
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
+
         $data = $request->request;
-        $post=new Post();
-        $postTypes=$postTypeRepository->findAll();
-        $validationErrors="";
-        $postExistsError="";
-        if($data->count()>0){
-            $commonMethods=new CommonBlogMethods();
-            $commonMethods->setData($post,$request,$postTypeRepository);
-            $validationErrors=$validator->validate($post);
-            if($validationErrors->count()==0){
-                if ($postRepository->findBy(['title'=>$post->getTitle()]))
-                    $postExistsError="Le post existe déjà.";
-                else{
+        $post = new Post();
+        $postTypes = $postTypeRepository->findAll();
+        $validationErrors = "";
+        $postExistsError = "";
+
+        if($data->count() > 0){
+            $commonMethods = new CommonBlogMethods();
+            $commonMethods->setData($post, $request, $postTypeRepository);
+            $validationErrors = $validator->validate($post);
+            if($validationErrors->count() == 0){
+                if($postRepository->findBy(['title' => $post->getTitle()])){
+                    $postExistsError = "Le post existe déjà.";
+                }else{
                     $manager->persist($post);
                     $manager->flush();
-                    return $this->redirectToRoute('blog',["message"=>"Ajout avec succès"]);
+                    return $this->redirectToRoute('blog',[
+                        "message" => "Ajout avec succès"
+                    ]);
                 }
 
             }
@@ -54,7 +58,6 @@ class AddBlogController extends AbstractController
             'validationErrors'=>$validationErrors,
             'postExistsError'=>$postExistsError,
             'post'=>$post
-
         ]);
     }
 }
