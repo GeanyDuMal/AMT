@@ -6,17 +6,21 @@
     --black: #000;
     --primary: #212529;
     --dark-red: #4c0d00;
-    --middle-red: #760700; }
+    --middle-red: #760700;
+}
 
 /* End Colors */
 /* line 25, ../../Github_clones/Website_AEDI/Website/public/style/blog/scss/blog.scss */
 .page__title {
     margin-top: 10px;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 45px; }
+    font-size: 45px;
+}
 
 /* line 34, ../../Github_clones/Website_AEDI/Website/public/style/blog/scss/blog.scss */
 .article__title {
     background-color: #212529;
-    color: #f2f2f2; }
+    color: #f2f2f2;
+}
+
 /*# sourceMappingURL=blog.css.map */
