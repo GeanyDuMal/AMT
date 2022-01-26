@@ -33,14 +33,15 @@ class EditClientController extends AbstractController
 
         $data = $request->request;
         $client = $clientRepository->find($id);
-        $clientManager = new ClientManager($manager);
-        $associationManager = new AssociationManager($manager);
         $assosRoles = $associationRoleRepository->findAll();
         $validationErrors = "";
         $errorLoginExist = "";
-        $member = $associationRepository->findOneBy(["member"=>$client]);
+        $member = $associationRepository->findOneBy(["member" => $client]);
 
         if ($data->count() > 0){
+            $clientManager = new ClientManager($manager);
+            $associationManager = new AssociationManager($manager);
+
             $clientManager->setData($client, $clientTypeRepository, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
                 $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));
@@ -49,16 +50,22 @@ class EditClientController extends AbstractController
 
             if($validationErrors->count() == 0){
                 $ChosenClientLogin = $clientRepository->find($id)->getLogin();
-                $roleName = $request->get('assosRoles');
-                $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
 
                 /*
-                 *  if admin changed the role of a member to another role
-                 *  we have to change it too in association table
-                 * -> if admin changed the type of a member to student it is manipulated by a trigger
-                 *    called deleteFromAssosIfChangedToStudent
+                 * If we set the ClientType Association, we need to put the client in the table Association
                  */
-                $this->manageMember($manager, $clientManager, $associationRepository, $client, $roleAssociation );
+                if ($data->get("clientType") == "Association"){
+                    $roleName = $request->get('assosRoles');
+                    $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
+
+                    /*
+                     *  if admin changed the role of a member to another role
+                     *  we have to change it too in association table
+                     * -> if admin changed the type of a member to student it is manipulated by a trigger
+                     *    called deleteFromAssosIfChangedToStudent
+                     */
+                    $this->manageMember($manager, $clientManager, $associationRepository, $client, $roleAssociation);
+                }
 
                 if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
                     $errorLoginExist="Login Existe déja";
@@ -67,8 +74,8 @@ class EditClientController extends AbstractController
                     $clientManager->persist($client);
                     if($client->getClientType()->getName() == "Association"){
                         $member = $associationRepository->findOneBy(["member"=>$client]);
-                            if($member->getRole()->getName() == "President"){
-                                $associationManager->removeOtherPresidents($manager, $member, $clientTypeRepository, $clientRepository);
+                        if($member->getRole()->getName() == "President"){
+                            $associationManager->removeOtherPresidents($manager, $member, $clientTypeRepository, $clientRepository);
                         }
                     }
                     return $this->redirectToRoute('client_list',["message"=>"Modification avec succés"]);
