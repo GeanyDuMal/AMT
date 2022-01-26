@@ -4,6 +4,8 @@ namespace App\Controller\Product;
 
 use App\Entity\Price;
 use App\Entity\Product;
+use App\Manager\PriceManager;
+use App\Manager\ProductManager;
 use App\Repository\ClientTypeRepository;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
@@ -26,40 +28,43 @@ class EditProductController extends AbstractController
             return $this->redirectToRoute('home');
         }
         $data = $request->request;
-        $product=$productRepository->find($id);
-        $productTypes=$productTypeRepository->findAll();
-        $typeMember=$clientTypeRepository->findBy(["name"=>"Association"]);
-        $typeStudent=$clientTypeRepository->findBy(["name"=>"Etudiant"]);
-        $memberPrice=$priceRepository->findBy(["product"=>$product,"clientType"=>$typeMember])[0];
-        $studentPrice=$priceRepository->findBy(["product"=>$product,"clientType"=>$typeStudent])[0];
-        //
-        $validationErrors="";
-        $productExistsError="";
+        $product = $productRepository->find($id);
+        $productTypes = $productTypeRepository->findAll();
+        $typeMember = $clientTypeRepository->findBy(["name" => "Association"]);
+        $typeStudent = $clientTypeRepository->findBy(["name" => "Etudiant"]);
+        $memberPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => $typeMember]);
+        $studentPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => $typeStudent]);
+
+        $validationErrors = "";
+        $productExistsError = "";
+
         if($data->count()>0){
-            $commonMethods=new CommonProductMethods();
-            $commonMethods->setDataForProduct($product,$request,$productTypeRepository);
+            $productManager = new ProductManager($manager);
+            $priceManager = new PriceManager($manager);
+
+            $productManager->setData($productTypeRepository, $product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
             $validationErrors = $validator->validate($product);
-            if($validationErrors->count()==0){
-                $ChosenProductName=$productRepository->find($id)->getName();
-                $newProductName=$product->getName();
-                if(
-                    strcmp($ChosenProductName,$newProductName)!=0 &&
-                    $productRepository->findOneBy(['name'=>$newProductName])
-                )
+
+            if($validationErrors->count() == 0){
+                $ChosenProductName = $productRepository->find($id)->getName();
+                $newProductName = $product->getName();
+
+                if(strcmp($ChosenProductName, $newProductName) != 0 && $productRepository->findOneBy(['name' => $newProductName])){
                     $productExistsError="Produit existe déja";
-                else{
-                    $commonMethods->setDataForPrice($memberPrice,$studentPrice,$product,$request,$clientTypeRepository);
-                    $validationErrors=$validator->validate($memberPrice);
-                    if($validationErrors->count()==0){
+                }else{
+                    $priceManager->setData($clientTypeRepository, $memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
+
+                    $validationErrors = $validator->validate($memberPrice);
+                    if($validationErrors->count() == 0){
                         $validationErrors=$validator->validate($studentPrice);
-                        if($validationErrors->count()==0) {
-                            $manager->persist($product);
-                            $manager->flush();
-                            $manager->persist($memberPrice);
-                            $manager->flush();
-                            $manager->persist($studentPrice);
-                            $manager->flush();
-                            return $this->redirectToRoute('product_list', ["message" => "Modification avec succès"]);
+                        if($validationErrors->count() == 0) {
+                            $productManager->persist($product);
+                            $priceManager->persist($memberPrice);
+                            $priceManager->persist($studentPrice);
+
+                            return $this->redirectToRoute('product_list', [
+                                "message" => "Modification avec succès"
+                            ]);
                         }
                     }
                 }
