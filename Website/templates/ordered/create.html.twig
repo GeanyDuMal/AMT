@@ -21,14 +21,14 @@
                         {{ product.name }}
                     </h3>
                     <div class="quantity_block">
-                        Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</span>
+                        <em>Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</em></span>
                     </div>
                 </div>
                 <div>
                     <input type="number" name="quantity_product_{{ product.id }}" class="input_quantity" step="1" value="0" min="0">
                     <div class="block_button">
-                        <div class="btn btn-primary btn_minus">-</div>
-                        <div class="btn btn-primary btn_plus">+</div>
+                        <div class="btn btn-secondary btn_minus">-</div>
+                        <div class="btn btn-secondary btn_plus">+</div>
                     </div>
                 </div>
             </div>
