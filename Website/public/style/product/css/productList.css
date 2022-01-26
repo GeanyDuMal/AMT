@@ -24,7 +24,7 @@
     height: 300px;
 }
 
-.button--add {
+.button__add {
     position: absolute;
     top: 5rem;
     right:1%;
