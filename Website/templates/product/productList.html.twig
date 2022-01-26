@@ -19,6 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     {# End Google Fonts #}
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/product/deleteScript.js') }}"></script>
@@ -38,6 +39,7 @@
     {# End Bootstrap JS Import #}
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 {% endblock %}
+
 {% block title %}Nos Produits{% endblock %}
 
 
@@ -74,7 +76,8 @@
 
                                 {% if product.quantityStock ==0 %}
                                     <p>
-                                        Quantité en stock : {{ product.quantityStock }} &nbsp&nbsp&nbsp <b style="color:red;">Stock épuisé</b>
+                                        {# Quantité en stock : {{ product.quantityStock }} &nbsp&nbsp&nbsp  #}
+                                        <b style="color:red;">Stock épuisé</b>
                                     </p>
 
                                 {% else %}
@@ -97,5 +100,11 @@
                 </div>
             {% endfor %}
         </div>
+        {# End Products #}
+        <div class="text-center my-5">
+            <h1 class="page__title  ">Produits épuisés</h1>
+            <hr/>
+        </div>
+        {# End Products #}
     </div>
 {% endblock %}
