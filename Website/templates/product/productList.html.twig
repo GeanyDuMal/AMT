@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {# Style Base Import #}
-    <link href="/style/base/css/base.css" rel="stylesheet"/>
-    {# End Style Base Import #}
 
-    <link href="/style/product/css/productList.css" rel="stylesheet" type="text/css"/>
+    <link href="/style/product/productList.css" rel="stylesheet" type="text/css"/>
 
     {# Bootstrap CSS Import #}
     {# <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/> #}
@@ -76,7 +73,6 @@
 
                                 {% if product.quantityStock ==0 %}
                                     <p>
-                                        {# Quantité en stock : {{ product.quantityStock }} &nbsp&nbsp&nbsp  #}
                                         <b style="color:red;">Stock épuisé</b>
                                     </p>
 
