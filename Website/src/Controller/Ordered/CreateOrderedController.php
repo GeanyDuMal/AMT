@@ -4,6 +4,8 @@ namespace App\Controller\Ordered;
 
 use App\Entity\Client;
 use App\Entity\Product;
+use App\Repository\ClientRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,20 +17,18 @@ class CreateOrderedController extends AbstractController
     /**
      * @Route("/ordered/create", name="orderedCreate")
      */
-    public function index(Request $request, EntityManagerInterface $manager): Response
+    public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository, ClientRepository $clientRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
 
         $user = $this->getUser();
-        $productRepository = $manager->getRepository(Product::class);
-        $clientRepository = $manager->getRepository(Client::class);
         $allProductPositiveStock = [];
         $inputParameterBag = $request->request;
         $productOrdered = [];
 
-        //Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
+        // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProduct = $productRepository->findAll();
         foreach ($allProduct as $product){
             if ($product->getQuantityStock() > 0){
@@ -36,7 +36,7 @@ class CreateOrderedController extends AbstractController
             }
         }
 
-        //Recupere toutes les quantités de produit selectionné
+        // Recupere toutes les quantités de produit selectionné
         foreach ($allProductPositiveStock as $product){
             $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
             if ($quantity != 0 ){
@@ -44,7 +44,7 @@ class CreateOrderedController extends AbstractController
             }
         }
 
-        //Si l'on a commandé au moins 1 produits
+        // Si l'on a commandé au moins 1 produits
         if ($productOrdered){
             return $this->redirectToRoute("orderedPayment", [
                 "productOrderedSerialized" => serialize($productOrdered),
@@ -52,6 +52,7 @@ class CreateOrderedController extends AbstractController
             ]);
         }
 
+        // Recupere tout les clients par ordre alphabetique
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
         return $this->render('ordered/create.html.twig', [
