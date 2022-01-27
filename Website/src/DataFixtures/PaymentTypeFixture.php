@@ -10,7 +10,6 @@ class PaymentTypeFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
         $paymentType = new PaymentType();
         $paymentType->setName("Carte Bancaire");
         $manager->persist($paymentType);
@@ -24,6 +23,5 @@ class PaymentTypeFixture extends Fixture
         $manager->persist($paymentType);
 
         $manager->flush();
-
     }
 }
