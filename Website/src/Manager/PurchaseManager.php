@@ -2,11 +2,6 @@
 
 namespace App\Manager;
 
-use App\Entity\Client;
-use App\Entity\ClientType;
-use App\Entity\PaymentType;
-use App\Entity\Price;
-use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 

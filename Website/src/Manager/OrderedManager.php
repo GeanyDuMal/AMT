@@ -67,6 +67,7 @@ class OrderedManager
     public function reduceBalanceIfNecessary(Ordered $order): void{
         $paymentTypeRepository = $this->manager->getRepository(PaymentType::class);
         $clientManager = new ClientManager($this->manager);
+
         if ($order->getPaymentType() == $paymentTypeRepository->findOneBy(["name" => "Solde"])
             && $order->getClient() != null){
             $montantTotal = $this->montantTotal($order);

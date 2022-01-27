@@ -3,11 +3,9 @@
 namespace App\Manager;
 
 use App\Entity\Product;
-use App\Entity\ProductType;
 use App\Repository\ProductTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProductManager
 {

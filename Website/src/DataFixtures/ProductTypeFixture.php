@@ -19,6 +19,5 @@ class ProductTypeFixture extends Fixture
         $manager->persist($productType);
 
         $manager->flush();
-
     }
 }

@@ -10,7 +10,6 @@ class AssociationRoleFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
         $associationRole = new AssociationRole();
         $associationRole->setName("President");
         $manager->persist($associationRole);
