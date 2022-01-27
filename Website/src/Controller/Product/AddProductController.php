@@ -43,16 +43,16 @@ class AddProductController extends AbstractController
 
             if($validationErrors->count() == 0){
                 if($productRepository->findBy(['name' => $product->getName()])){
-                    $productExistsError="Le produit existe déjà";
+                    $productExistsError = "Le produit existe déjà";
                 }else{
                     $memberPrice = new Price();
                     $studentPrice = new Price();
 
                     $priceManager->setData($clientTypeRepository, $memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
-                    $validationErrors=$validator->validate($memberPrice);
+                    $validationErrors = $validator->validate($memberPrice);
 
                     if($validationErrors->count() == 0){
-                        $validationErrors=$validator->validate($studentPrice);
+                        $validationErrors = $validator->validate($studentPrice);
 
                         if($validationErrors->count() == 0) {
                             $productManager->persist($product);
