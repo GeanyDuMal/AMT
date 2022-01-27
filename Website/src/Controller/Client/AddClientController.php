@@ -34,7 +34,7 @@ class AddClientController extends AbstractController
         $errorLoginExist = "";
         $validationErrors = "";
 
-        if ($data->count()> 0) {
+        if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
             $associationManager = new AssociationManager($manager);
             $client = new Client();
@@ -45,12 +45,12 @@ class AddClientController extends AbstractController
 
             $validationErrors = $validator->validate($client);
 
-            if($validationErrors->count()==0)
+            if($validationErrors->count() == 0)
                 if($clientManager->loginExists($client)){
                     $errorLoginExist="Login Existe déja";
-                }
-                else{
+                }else{
                     $clientManager->persist($client);
+
                     /*
                      * if the client added is a member, we have to add him in association table too.
                      *
@@ -70,7 +70,7 @@ class AddClientController extends AbstractController
                         $manager->flush();
                     }
                     return $this->redirectToRoute('client_list',[
-                        "message"=>"Ajout avec succès"
+                        "message" => "Ajout avec succès"
                     ]);
                 }
         }

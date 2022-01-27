@@ -29,7 +29,6 @@ class EditBlogController extends AbstractController
         $post = $postRepository->find($id);
         $postTypes = $postTypeRepository->findAll();
         $postmanager = new PostManager($manager);
-
         $validationErrors = "";
         $postExistsError = "";
 
@@ -37,7 +36,7 @@ class EditBlogController extends AbstractController
             $type = $data->get('postType');
             $postType = $postTypeRepository->findOneBy(["name" => $type]);
 
-            $postmanager->setData($post,$postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
+            $postmanager->setData($post, $postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
             $validationErrors = $validator->validate($post);
 
             if ($validationErrors->count() == 0) {
@@ -45,16 +44,19 @@ class EditBlogController extends AbstractController
                 $editedPostName = $post->getTitle();
                 $selectedPostDescription = $postRepository->find($id)->getDescription();
                 $editedPostDescription = $post->getDescription();
-                if (
-                    strcmp($selectedPostName, $editedPostName) != 0 &&
+
+                if (strcmp($selectedPostName, $editedPostName) != 0 &&
                     strcmp($selectedPostDescription, $editedPostDescription) != 0 &&
-                    $postRepository->findOneBy(['title' => $post->getTitle()])
-                )
+                    $postRepository->findOneBy(['title' => $post->getTitle()]))
+                {
                     $postExistsError = "Le post existe déjà.";
-                else {
+                }else{
                     $manager->persist($post);
                     $manager->flush();
-                    return $this->redirectToRoute('blog', ["message" => "Modification avec succès"]);
+
+                    return $this->redirectToRoute('blog', [
+                        "message" => "Modification avec succès"
+                    ]);
                 }
 
             }

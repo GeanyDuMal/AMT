@@ -16,13 +16,15 @@ class StatisticsController extends AbstractController
     /**
      * @Route("/statistics", name="statistics",methods={"GET", "POST"} )
      */
-    public function index(ProductRepository $productRepository, PostRepository $postRepository, PurchaseRepository $purchaseRepository, OrderedRepository $commandRepository, ClientRepository $clientRepository):Response{
+    public function index(ProductRepository $productRepository, PostRepository $postRepository, PurchaseRepository $purchaseRepository,
+                          OrderedRepository $commandRepository, ClientRepository $clientRepository): Response
+    {
         if (!$this->isGranted('ROLE_TRESORIER')){
             return $this->redirectToRoute('home');
         }
 
         $products = $productRepository->findAll();
-        $productSum = $productName = array();
+        $productSum = $productName = [];
         $countClients = count($clientRepository->findAll());
         $countThisWeeksCommands = $commandRepository->thisWeeksCommands()["number"];
         $salesRevenueOverAll = $purchaseRepository->salesRevunueOverAll()["revunue"];
@@ -34,11 +36,12 @@ class StatisticsController extends AbstractController
         }else {
             $averagePerStudent = number_format($salesRevenueThisWeek / $countThisWeeksCommands, 2);
         }
-        $postsNumber=count($postRepository->findAll());
-        $noStock=[];
+        $postsNumber = count($postRepository->findAll());
+        $noStock = [];
+
         //we send the name of the product and number of quantity bought for each one to the template associated
         foreach($products as $product){
-            if($product->getQuantityStock()<=10)
+            if($product->getQuantityStock() <= 10)
                 $noStock[] = $product;
             $productName[] = $product->getName();
             $productSum[] = $purchaseRepository->getQuantityByProduct($product)[0]["somme"];
@@ -70,14 +73,15 @@ class StatisticsController extends AbstractController
         ]);
     }
 
-    private function existIn($date, $orders):int
+    private function existIn($date, $orders): int
     {
         foreach ($orders as $order)
             if (strcmp($date,$order["orderDate"]) == 0)
                 return $order["count"];
         return -1;
     }
-    private function thisWeek(){
+    private function thisWeek(): array
+    {
         $day_of_week = date('N', strtotime(date("Y-m-d")));
 
         $given_date = strtotime( date("d-m-Y"));
@@ -88,5 +92,4 @@ class StatisticsController extends AbstractController
         }
         return $week_array;
     }
-
 }

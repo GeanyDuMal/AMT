@@ -19,6 +19,5 @@ class ClientTypeFixture extends Fixture
         $manager->persist($clientType);
 
         $manager->flush();
-
     }
 }

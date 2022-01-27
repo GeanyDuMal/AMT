@@ -4,7 +4,6 @@ namespace App\Manager;
 
 use App\Entity\Post;
 use App\Entity\PostType;
-use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 

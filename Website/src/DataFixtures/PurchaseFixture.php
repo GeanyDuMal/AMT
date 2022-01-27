@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Client;
 use App\Entity\Ordered;
 use App\Entity\Purchase;
 use App\Entity\Product;

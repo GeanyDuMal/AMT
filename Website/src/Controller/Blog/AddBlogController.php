@@ -18,17 +18,17 @@ class AddBlogController extends AbstractController
     /**
      * @Route("/blog/add", name="add_blog")
      */
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request, PostTypeRepository $postTypeRepository,ValidatorInterface $validator): Response
+    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request, PostTypeRepository $postTypeRepository, ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
-        $post = new Post();
         $postTypes = $postTypeRepository->findAll();
         $validationErrors = "";
         $postExistsError = "";
+        $post = new Post();
         $postmanager = new PostManager($manager);
 
         if($data->count() > 0){

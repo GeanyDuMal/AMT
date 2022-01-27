@@ -29,9 +29,9 @@ class ProfileController extends AbstractController
             $edit = false;
 
             // Verifie que les champs soit bien rempli
-            if (!is_null($inputParameterBag->get("oldPassword"))
-                && !is_null($inputParameterBag->get("newPassword"))
-                && trim($inputParameterBag->get("newPassword")) === trim($inputParameterBag->get("confirmPassword")))
+            if (!is_null($inputParameterBag->get("oldPassword")) &&
+                !is_null($inputParameterBag->get("newPassword")) &&
+                trim($inputParameterBag->get("newPassword")) === trim($inputParameterBag->get("confirmPassword")))
             {
                 $clientManager = new ClientManager($manager);
 

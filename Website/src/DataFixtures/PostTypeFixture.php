@@ -19,6 +19,5 @@ class PostTypeFixture extends Fixture
         $manager->persist($postType);
 
         $manager->flush();
-
     }
 }
