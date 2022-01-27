@@ -4,6 +4,7 @@ namespace App\Controller\Ordered;
 
 use App\Entity\Ordered;
 use App\Manager\OrderedManager;
+use App\Repository\OrderedRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,23 +15,23 @@ class MenuOrderedController extends AbstractController
     /**
      * @Route("/ordered/menu/{message}", name="orderedMenu")
      */
-    public function menu(string $message = null ,EntityManagerInterface $manager): Response
+    public function menu(string $message = null ,EntityManagerInterface $manager, OrderedRepository $orderedRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
 
-        $commandeRepository = $manager->getRepository(Ordered::class);
-        $orderManager = new OrderedManager($manager);
+        $orderedManager = new OrderedManager($manager);
         $montantIdOrder = [];
 
-        /**
+        /*
          * Recuperer toute les commandes avec leurs clients et leurs types
          * Tout faire en une seule requetes, plus opti
          */
-        $allOrder = $commandeRepository->findAllOrderAndClientAndClientType();
+        $allOrder = $orderedRepository->findAllOrderAndClientAndClientType();
+        //Créer un tableau avec en clé les id des commandes et en valeur le tarif total de la commande
         foreach ($allOrder as $order){
-            $montantIdOrder = $montantIdOrder + [$order->getId() => $orderManager->montantTotal($order)];
+            $montantIdOrder = $montantIdOrder + [$order->getId() => $orderedManager->montantTotal($order)];
         }
 
 

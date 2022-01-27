@@ -11,6 +11,12 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Manager\OrderedManager;
 use App\Manager\PurchaseManager;
+use App\Repository\ClientRepository;
+use App\Repository\ClientTypeRepository;
+use App\Repository\PaymentTypeRepository;
+use App\Repository\PriceRepository;
+use App\Repository\ProductRepository;
+use App\Repository\ProductTypeRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,17 +29,14 @@ class PaymentOrderedController extends AbstractController
     /**
      * @Route("/ordered/payment/{productOrderedSerialized}&{idClient}", name="orderedPayment")
      */
-    public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request): Response
+    public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
+        ClientTypeRepository $clientTypeRepository, PriceRepository $priceRepository, PaymentTypeRepository $paymentTypeRepository,
+        ProductRepository $productRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
         }
 
-        $clientRepository = $manager->getRepository(Client::class);
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
-        $priceRepository = $manager->getRepository(Price::class);
-        $paymentTypeRepository = $manager->getRepository(PaymentType::class);
-        $productRepository = $manager->getRepository(Product::class);
         $purchaseManager = new PurchaseManager($manager);
         $orderManager = new OrderedManager($manager);
         $clientOrder = null;
@@ -107,7 +110,9 @@ class PaymentOrderedController extends AbstractController
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);
             //rediriger ver l'accueil
-            return $this->redirectToRoute("orderedMenu", ["message" => "Commande effectuée avec succès"]);
+            return $this->redirectToRoute("orderedMenu", [
+                "message" => "Commande effectuée avec succès"
+            ]);
         }
 
         return $this->render('ordered/payment.html.twig', [
