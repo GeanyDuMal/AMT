@@ -73,13 +73,15 @@ class EditClientController extends AbstractController
                 else{
                     $clientManager->persist($client);
                     if($client->getClientType()->getName() == "Association"){
-                        $member = $associationRepository->findOneBy(["member"=>$client]);
+                        $member = $associationRepository->findOneBy(["member" => $client]);
                         if($member->getRole()->getName() == "President"){
                             $associationManager->removeOtherPresidents($manager, $member, $clientTypeRepository, $clientRepository);
                         }
                     }
-                    return $this->redirectToRoute('client_list',["message"=>"Modification avec succés"]);
 
+                    return $this->redirectToRoute('client_list',[
+                        "message"=>"Modification avec succés"
+                    ]);
                 }
             }
         }
