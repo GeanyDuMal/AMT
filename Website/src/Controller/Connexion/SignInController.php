@@ -34,15 +34,15 @@ class SignInController extends AbstractController
             $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
             $client->setName(trim($inputParameterBag->get("name")))
-                    ->setFirstName(trim($inputParameterBag->get("firstName")))
-                    ->setLogin(trim($inputParameterBag->get("login")))
-                    ->setPassword($hashedPassword)
-                    ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
-                    ->setRoles(["ROLE_USER"]);
+                ->setFirstName(trim($inputParameterBag->get("firstName")))
+                ->setLogin(trim($inputParameterBag->get("login")))
+                ->setPassword($hashedPassword)
+                ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
+                ->setRoles(["ROLE_USER"]);
 
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
 
-            /**
+            /*
              * Si le form n'est pas vide,
              * que le login n'existe pas
              * et que les infos sont correctes
