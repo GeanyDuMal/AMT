@@ -21,7 +21,7 @@
                         {{ product.name }}
                     </h3>
                     <div class="quantity_block">
-                        <em>Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</em></span>
+                        <em>Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</em>
                     </div>
                 </div>
                 <div>
@@ -35,12 +35,17 @@
         {% endfor %}
         </div>
         <div class="flex_vertical centered_flex_vertical block_bottom_create">
+            {# SearchBar #}
+
+            <input type="text" placeholder="Saisir un nom ...">
+            {# Ancienne ChoiceBox #}
             <select name="client_commande" id="">
                 <option value="null">Choisir un Client</option>
                 {% for client in clientList %}
                     <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }} / {{ client.login }}</option>
                 {% endfor %}
             </select>
+
             <button type="submit" class="btn btn-primary" onclick="return checkQuantityInput()">Valider la commande</button>
         </div>
         <a href="{{ path("orderedMenu") }}">
