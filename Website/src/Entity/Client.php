@@ -60,7 +60,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
      * @Assert\PositiveOrZero(
-     *      message="Les points de fidilité sont positive"
+     *      message="La balance doit etre positive"
      *      )
      */
     private ?string $balance;
@@ -68,7 +68,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
      * @Assert\PositiveOrZero(
-     *      message="Les points de fidilité sont positive"
+     *      message="Les points de fidelité doivent etre positif"
      *      )
      */
     private ?int $fidelityPoint;
