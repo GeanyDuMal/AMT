@@ -1,5 +1,14 @@
 # Site pour l'AEDI
 
+Ce site :
+* Permet de s'inscrire avec un login et un mot de passe
+* De créer des produits avec un stock 
+* De créer des commandes
+* De gerer les clients avec des roles
+* De créer des posts avec un systeme de blog 
+
+
+# Ce site vient d'un projet, voici la liste de ce que nous voulions (tout n'as pas été réalisé car il y a eu des changements durant le projet) :
 Les objectifs de ce site vont être biensur : 
 * Permettre de tenir le bar du local, en manière de stock, de paiements ou encore de factures
   - Cela devras être stocké sur une Base de Données MySQL
