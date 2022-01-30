@@ -1,11 +1,11 @@
 # Site pour l'AEDI
 
-Ce site :
-* Permet de s'inscrire avec un login et un mot de passe
-* De créer des produits avec un stock 
-* De créer des commandes
-* De gerer les clients avec des roles
-* De créer des posts avec un systeme de blog 
+Ce site permet de :
+* S'inscrire avec un login et un mot de passe
+* Créer des produits avec un stock 
+* Créer des commandes
+* Gerer les clients avec des roles
+* Créer des posts avec un systeme de blog 
 
 
 # Ce site vient d'un projet, voici la liste de ce que nous voulions (tout n'as pas été réalisé car il y a eu des changements durant le projet) :
@@ -44,3 +44,6 @@ Les objectifs de ce site vont être biensur :
 
 Lien poster : 
 https://www.canva.com/design/DAE1nZKEhL8/kkicE3HD_o1dCTlX45ydZg/watch?utm_content=DAE1nZKEhL8&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton
+
+lien de la maquette : 
+https://www.figma.com/team_invite/redeem/yYHIuuBsqySfktRCz4w5wu
