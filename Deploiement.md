@@ -1,4 +1,4 @@
-## Toute les manipulations indiqué ne seront pas faites dans le repository mais seront a faire une fois le projet téléchargé
+## Toute les manipulations indiqué ne seront pas faites dans le repository mais seront à faire une fois le projet téléchargé
 
 # Pour le deploiement il y a plusieurs choses à faire : 
 Nous, du fait de notre hebergeur on doit modifié le codage des caractere :
