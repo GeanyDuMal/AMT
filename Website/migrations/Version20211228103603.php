@@ -30,7 +30,7 @@ final class Version20211228103603 extends AbstractMigration
                                         SIGNAL SQLSTATE "45000"
                                         SET MESSAGE_TEXT = "Solde negatif, erreur Update";
                                     END IF;
-                                    IF(NEW.fidelity_point >= 200)THEN
+                                    IF(NEW.fidelity_point >= 150)THEN
                                         BEGIN
                                             SET NEW.fidelity_point = NEW.fidelity_point - 150;
                                             SET NEW.balance = NEW.balance + 0.8; 
