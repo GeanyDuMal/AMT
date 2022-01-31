@@ -51,14 +51,12 @@ class EditBlogController extends AbstractController
                 {
                     $postExistsError = "Le post existe déjà.";
                 }else{
-                    $manager->persist($post);
-                    $manager->flush();
+                    $postmanager->persist($post);
 
                     return $this->redirectToRoute('blog', [
                         "message" => "Modification avec succès"
                     ]);
                 }
-
             }
         }
 

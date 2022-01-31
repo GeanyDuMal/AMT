@@ -18,6 +18,15 @@ class PostManager
         $this->postRepository = $this->manager->getRepository(Post::class);
     }
 
+    public function persist(Post $post){
+        if ($this->verifPost($post)){
+            $this->replaceImageIfEmpty($post);
+
+            $this->manager->persist($post);
+            $this->manager->flush();
+        }
+    }
+
     /**
      * @param Post $post
      * @param PostType $postType
@@ -32,5 +41,18 @@ class PostManager
         $post->setDescription($postDescription);
         $post->setImageLink($imageLink);
         $post->setPostType($postType);
+    }
+
+
+    public function verifPost(Post $post): bool
+    {
+        return ($post->getTitle() != "" && $post->getDescription() != "");
+    }
+
+    public function replaceImageIfEmpty(Post $post)
+    {
+        if($post->getImageLink() == null || $post->getImageLink() == ""){
+            $post->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
+        }
     }
 }

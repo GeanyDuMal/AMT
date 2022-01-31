@@ -42,8 +42,7 @@ class AddBlogController extends AbstractController
                 if($postRepository->findBy(['title' => $post->getTitle()])){
                     $postExistsError = "Le post existe déjà.";
                 }else{
-                    $manager->persist($post);
-                    $manager->flush();
+                    $postmanager->persist($post);
 
                     return $this->redirectToRoute('blog',[
                         "message" => "Ajout avec succès"
