@@ -20,6 +20,8 @@ class ProductManager
 
     public function persist(Product $product){
          if ($this->verifProduct($product)){
+             $this->replaceImageIfEmpty($product);
+
              $this->manager->persist($product);
              $this->manager->flush();
          }
@@ -35,7 +37,7 @@ class ProductManager
      * @return void
      */
     public function setData(ProductTypeRepository $productTypeRepository, Product $product, String $productType, String $productName, int $productStock, String $imageLink){
-                            $type = $productTypeRepository->findOneBy(["name"=>$productType]);
+        $type = $productTypeRepository->findOneBy(["name"=>$productType]);
 
         $product->setName($productName)
             ->setImageLink($imageLink)
@@ -52,6 +54,13 @@ class ProductManager
         if ($quantityToRestock > 0){
             $product->setQuantityStock($product->getQuantityStock() + $quantityToRestock);
             $this->persist($product);
+        }
+    }
+
+    public function replaceImageIfEmpty(Product $product)
+    {
+        if($product->getImageLink() == null || $product->getImageLink() == ""){
+            $product->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
     }
 }
