@@ -16,6 +16,8 @@ class PurchaseManager
 
     public function persist(Purchase $purchase): void{
         if ($this->verifyDisponibilityProduct($purchase)){
+            $this->removeProductQuantity($purchase);
+
             $this->manager->persist($purchase);
             $this->manager->flush();
         }
@@ -36,5 +38,15 @@ class PurchaseManager
         $product = $purchase->getProduct();
 
         return ($product->getQuantityStock() >= $purchase->getQuantity());
+    }
+
+    /**
+     * @param Purchase $purchase
+     * @return void
+     * Remove the quantity of the product ordered
+     */
+    public function removeProductQuantity(Purchase $purchase){
+        $product = $purchase->getProduct();
+        $product->setQuantityStock($product->getQuantityStock() - $purchase->getQuantity());
     }
 }
