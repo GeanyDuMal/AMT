@@ -92,8 +92,7 @@ class EditClientController extends AbstractController
                 'errorLoginExist' => $errorLoginExist,
                 'client' => $client,
                 'member' => $member
-            ]
-        );
+        ]);
     }
 
     /**

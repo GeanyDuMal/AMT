@@ -3,6 +3,7 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client;
+use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,8 +26,9 @@ class DeleteClientController extends AbstractController
          * we delete it from association too
          * -> manipulated by a trigger called : deleteFromAssosIfMemberDeleted
          */
+        $clientManager = new ClientManager($manager);
+
         $client = $clientRepository->find($id);
-        $manager->remove($client);
-        $manager->flush();
+        $clientManager->remove($client);
     }
 }

@@ -28,7 +28,8 @@ class ClientManager
         $client->setName($name)
             ->setFirstName($firstName)
             ->setLogin($login)
-            ->setBalance($balance);
+            ->setBalance($balance)
+            ->setFidelityPoint(0);
 
         $type = $clientTypeRepository->findOneBy(["name" => $clientTypeName]);
         $isStudent = (strcmp($clientTypeName,"Etudiant") == 0);
@@ -59,13 +60,41 @@ class ClientManager
      */
     public function persist(?Client $client)
     {
-        if (!$this->checkMoreOneClient())
+        if (!$this->clientTableNotEmpty())
         {
             $clientTypeRepository = $this->manager->getRepository(ClientType::class);
             $client->setRoles(["ROLE_PRESIDENT"])
                    ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
+
+            //Set the president of the association
+            $associationRole = $this->manager->getRepository(AssociationRole::class)->findOneBy(["name" => "President"]);
+            $association = new Association();
+            $association->setMember($client)
+                ->setRole($associationRole);
+
+            $this->manager->persist($association);
+            $this->manager->flush();
         }
+        $this->checkIfRemoveFromAssociation($client);
+        $this->verifyBalanceAndFidelity($client);
+        $this->fidelityPointLimitCheck($client);
+
         $this->manager->persist($client);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Client $client
+     * @return void
+     * Remove the Client from the table Association if he is deleted
+     */
+    public function remove(Client $client){
+        $clientTypeEtudiant = $this->manager->getRepository(ClientType::class)->findOneBy(["name" => "Etudiant"]);
+        $client->setClientType($clientTypeEtudiant);
+
+        $this->checkIfRemoveFromAssociation($client);
+
+        $this->manager->remove($client);
         $this->manager->flush();
     }
 
@@ -130,9 +159,9 @@ class ClientManager
 
     /**
      * @return boolean
-     * verify if there is more than one client in the database
+     * Verify if the table Client isn't empty
      */
-    public function checkMoreOneClient(): bool
+    public function clientTableNotEmpty(): bool
     {
         return sizeof($this->clientRepository->findAll()) > 0;
     }
@@ -146,7 +175,7 @@ class ClientManager
     {
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-        return (strpbrk($password, $regexSpecial) && strlen($password) >= 5);
+        return (strpbrk(trim($password), $regexSpecial) && strlen(trim($password)) >= 5);
     }
 
     public function getRoleFromType(string $typeName):array{
@@ -184,7 +213,7 @@ class ClientManager
     }
 
     /**
-     * return a Member made from the client in Parameter
+     * return a Member made from the client in Parameter And a Role
      * @param Client $client
      * @param AssociationRole $role
      * @return Association
@@ -202,5 +231,52 @@ class ClientManager
     public function addFidelityPoint(float $amountOrder, Client $client): void{
           $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
           $this->persist($client);
+    }
+
+    /**
+     * @param Client $client
+     * @return void
+     * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
+     */
+    public function checkIfRemoveFromAssociation(Client $client){
+        $clientTypeAssociation = $this->manager->getRepository(ClientType::class)->findOneBy(["name" => "Association"]);
+
+        if ($client->getClientType() != $clientTypeAssociation){
+            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
+            if ($associationMember){
+                $this->manager->remove($associationMember);
+                $this->manager->flush();
+            }
+        }
+    }
+
+    /**
+     * @param Client $client
+     * @return void
+     * Check if Balance and Fidelity Point are strictly positive
+     */
+    public function verifyBalanceAndFidelity(Client $client){
+        if ($client->getBalance() == null || floatval($client->getBalance()) < 0){
+            $client->setBalance(0);
+        }
+        if ($client->getFidelityPoint() == null || !is_numeric($client->getFidelityPoint()) || $client->getFidelityPoint() < 0 ){
+            $client->setFidelityPoint(0);
+        }
+    }
+
+    /**
+     * @param Client $client
+     * @return void
+     * Verify if the limit of fidelity point is reached
+     * If it's the case, it transform the fidelity point in an amount into the balance
+     */
+    public function fidelityPointLimitCheck(Client $client){
+        $limitFidelityPoint = 150;
+        $amountTransferToBalance = 0.8; // 1 = 1€
+
+        if ($client->getFidelityPoint() >= $limitFidelityPoint){
+            $client->setFidelityPoint($client->getFidelityPoint() - $limitFidelityPoint);
+            $client->setBalance(floatval($client->getBalance()) + $amountTransferToBalance);
+        }
     }
 }
