@@ -12,7 +12,7 @@ function verifyProduct(){
     }
     let stock =parseInt(stockValue);
 
-    if(stock!==0 && !stock && stockValue !== "")
+    if(!stock || stockValue === "" || isNaN(stockValue))
         message += "Stock doit être un nombre.\n ";
     else if (stock < 0)
         message += "Le stock doit être positif.\n ";
@@ -23,14 +23,14 @@ function verifyProduct(){
         message += "Le prix des membres ne doit pas être vide.\n ";
     else if (memberPriceValue < 0)
         message += "Le prix des membres doit être positif.\n ";
-    else if(Number.isNaN(memberPriceValue)){
+    else if(isNaN(memberPriceValue)){
         message += "Le prix des membres doit être un nombre. ";    }
 
     if(studentPrice === "")
         message += "Le prix des étudiants ne doit pas être vide.\n ";
     else if (studentPriceValue < 0)
         message += "Le prix des étudiants doit être positif.\n ";
-    else if(Number.isNaN(studentPriceValue)){
+    else if(isNaN(studentPriceValue)){
         message += "Le prix des étudiants doit être un nombre. ";    }
 
     if (message !== "") {
