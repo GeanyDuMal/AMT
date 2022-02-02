@@ -30,4 +30,4 @@ Nous, du fait de notre hebergeur, nous avons du modifier le codage des caractere
     RewriteCond %{REQUEST_URI} .(?:css|js|jpe?g|gif|png)$ [NC]
     RewriteRule ^(.*)$ public/$1 [QSA,L]
     ```
-  - Le second qui permet de gerer les route avec Apache, il est present dans Website/public/.htaccess
+  - Le second qui permet de gerer les route avec Apache, est present dans Website/public/.htaccess
