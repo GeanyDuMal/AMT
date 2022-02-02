@@ -1,8 +1,8 @@
 function verifyInputLogin() {
       var form = document.querySelector("#form_login");
   
-      var valueLogin = form._username.value;
-      var valuePassword = form._password.value;
+      var valueLogin = form.username.value;
+      var valuePassword = form.password.value;
   
       if (valueLogin === "" || valuePassword === "" || valuePassword.length < 5) {
           Swal.fire({
