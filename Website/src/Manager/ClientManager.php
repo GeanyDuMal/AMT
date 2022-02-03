@@ -197,6 +197,42 @@ class ClientManager
         return $role;
     }
 
+    /**
+     * @param Client $client
+     * @return void
+     */
+    public function setRoleForClient(Client $client){
+        $clientTypeRepository = $this->manager->getRepository(ClientType::class);
+
+        $associationType = $this->$clientTypeRepository->findOneBy(["name" => "Association"]);
+
+        /*
+         * We check if the client is part of the association,
+         * if it's the case we check it role,
+         * else the client get the role user
+         */
+        switch ($client->getClientType()){
+            case $associationType:
+            {
+                $associationRepository = $this->manager->getRepository(Association::class);
+
+                switch ($associationRepository->findOneBy(["member" => $client])->getAssociationRole()->getName()){
+                    case "President":
+                        $client->setRoles(["ROLE_PRESIDENT"]);
+                        break;
+                    case "Tresorier":
+                        $client->setRoles(["ROLE_TRESORIER"]);
+                        break;
+                    default:
+                        $client->setRoles([ "ROLE_ASSOC"]);
+                }
+            }
+            default:
+                $client->setRoles(["ROLE_USER"]);
+                break;
+        }
+    }
+
     public function getTypeFromRole(array $role):string{
         switch ($role[0]){
             case "ROLE_TRESORIER":
