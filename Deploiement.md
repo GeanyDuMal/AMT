@@ -31,3 +31,17 @@ Nous, du fait de notre hebergeur, nous avons du modifier le codage des caractere
     RewriteRule ^(.*)$ public/$1 [QSA,L]
     ```
   - Le second qui permet de gerer les route avec Apache, est present dans Website/public/.htaccess
+- Afin de faire fonctionner la partie connexion en HTTPS, il faudra rajouter ce code entre la ligne 7 et 8 dans le fichier public/index.php :
+  ```PHP
+  if ($context['APP_ENV'] === "prod") {
+        if ((!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') 
+        && (!isset($_SERVER['REDIRECT_HTTPS']) || $_SERVER['REDIRECT_HTTPS'] != 'on')
+        && (!isset($_SERVER['REDIRECT_REDIRECT_HTTPS']) || $_SERVER['REDIRECT_REDIRECT_HTTPS'] != 'on') // this one is the one working....
+        ){
+            $url = sprintf('https://%s%s', $_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']);
+            die(header("Location: $url"));
+        }
+    }
+  
+  ```
+  Pour cette partie dans le index.php, ce n'est pas la plus propre, mais elle est fonctionnelle sur notre hebergeur (comparée aux autres)
