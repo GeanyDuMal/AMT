@@ -17,7 +17,7 @@ class MenuOrderedController extends AbstractController
      */
     public function menu(string $message = null ,EntityManagerInterface $manager, OrderedRepository $orderedRepository): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')){
+        if (!$this->isGranted('ROLE_TRESORIER')){
             return $this->redirectToRoute('home');
         }
 
