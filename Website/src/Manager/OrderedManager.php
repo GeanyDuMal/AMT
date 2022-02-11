@@ -102,9 +102,7 @@ class OrderedManager
             $montant = $this->montantTotal($ordered);
             $clientManager = new ClientManager($this->manager);
 
-            if ($montant >= 1){
-                $clientManager->addFidelityPoint($montant, $ordered->getClient());
-            }
+            $clientManager->addFidelityPoint($montant, $ordered->getClient());
         }
     }
 
