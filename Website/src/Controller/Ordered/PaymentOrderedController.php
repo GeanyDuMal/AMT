@@ -82,7 +82,9 @@ class PaymentOrderedController extends AbstractController
             foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
                 if ($product->getQuantityStock() == 0){
-                    return $this->redirectToRoute("menuOrder");
+                    return $this->redirectToRoute("menuOrder", [
+                        "message" => "Le produit commandé n'est plus disponible"
+                    ]);
                 }
             }
 
