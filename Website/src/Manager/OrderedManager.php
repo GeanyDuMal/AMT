@@ -155,13 +155,9 @@ class OrderedManager
     /**
      * @param Ordered $ordered
      * @return bool
-     * Verify if the Date != null, PaymentType != (null || "Solde")
+     * Verify if the Date != null, PaymentType != null
      */
     public function verifyOrder(Ordered $ordered): bool{
-        $paymentTypeSolde = $this->manager->getRepository(PaymentType::class)->findOneBy(["name" => "Solde"]);
-
-        return ($ordered->getOrderedAt() != null && $ordered->getPaymentType() != null && $ordered->getPaymentType() != $paymentTypeSolde);
+        return ($ordered->getOrderedAt() != null && $ordered->getPaymentType() != null);
     }
-
-
 }
