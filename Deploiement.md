@@ -42,6 +42,5 @@ Nous, du fait de notre hebergeur, nous avons du modifier le codage des caractere
             die(header("Location: $url"));
         }
     }
-  
   ```
   Pour cette partie dans le index.php, ce n'est pas la plus propre, mais elle est fonctionnelle sur notre hebergeur (comparée aux autres)
