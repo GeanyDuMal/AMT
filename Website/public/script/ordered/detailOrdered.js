@@ -5,7 +5,7 @@ function confirmDelete() {
     {
         id = document.querySelector("#idCommande").innerHTML
         fetch('/ordered/menu/delete/' + id, {method: 'DELETE'}).then(r => {
-            window.location.href = "/ordered/menu/Supprésion%20Réussie"
+            window.location.href = "/ordered/menu/Suppression%20Réussie"
         });
     }
 
