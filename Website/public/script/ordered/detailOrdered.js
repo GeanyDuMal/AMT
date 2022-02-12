@@ -8,7 +8,4 @@ function confirmDelete() {
             window.location.href = "/ordered/menu/Suppression%20Réussie"
         });
     }
-
-
-
 }
