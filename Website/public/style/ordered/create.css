@@ -57,11 +57,13 @@
 
 select{
       margin: 10px;
+      max-width: 50%;
 }
 
 .flex_vertical.block_bottom_create{
       flex-direction: row;
       justify-content: center;
+      max-width: 95%;
 }
 
 @media(max-width: 600px) {
