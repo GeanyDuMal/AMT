@@ -135,10 +135,26 @@ body {
     z-index: 2;
 }
 
+.carousel-inner {
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (min-width: 600px){
+    .carousel {
+        display: block;
+    }
+
+    .carousel-inner {
+        height: 75vh;
+    }
+}
+
 .imgiut {
     width: 100%;
     height: auto;
 }
+
 
 /* Img Iut */
 
