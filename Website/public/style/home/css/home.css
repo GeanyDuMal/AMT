@@ -123,30 +123,38 @@ body {
   z-index: 2; }
 
 /* line 138, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.imgiut {
-  width: 100%;
-  height: auto; }
+.carousel-inner {
+  display: flex;
+  align-items: center; }
 
 @media only screen and (min-width: 600px) {
   /* line 144, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
   .carousel {
-    display: none; } }
+    display: block; }
+  /* line 148, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+  .carousel-inner {
+    height: 75vh; } }
+
+/* line 153, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+.imgiut {
+  width: 100%;
+  height: auto; }
 
 /* Img Iut */
 /* Footer */
-/* line 152, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 162, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .social,
 .copyright {
   margin: 1rem;
   text-align: center; }
 
-/* line 158, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 168, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .social li {
   display: inline-block;
   padding-right: 10px;
   padding-left: 10px; }
 
-/* line 164, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 174, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 footer {
   position: relative;
   bottom: 0;
@@ -155,13 +163,13 @@ footer {
   text-align: center;
   background-color: #212529; }
 
-/* line 173, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 183, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .icon {
   color: #f2f2f2;
   font-size: 1.5rem;
   transition: 0.2s; }
 
-/* line 179, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
+/* line 189, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .icon:hover {
   color: #760700; }
 
