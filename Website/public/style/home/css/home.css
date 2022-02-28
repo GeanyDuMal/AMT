@@ -127,7 +127,7 @@ body {
   display: flex;
   align-items: center; }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 850px) {
   /* line 144, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
   .carousel {
     display: block; }
