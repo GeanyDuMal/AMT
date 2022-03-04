@@ -32,7 +32,7 @@ class PurchaseRepository extends ServiceEntityRepository
     public function salesRevunueOverAll()
     {
         $purchase=$this->getEntityManager()->createQuery("
-            SELECT SUM(Price.price*Purchase.quantity) as revunue
+            SELECT SUM(Price.price*Purchase.quantity) as revenue
             FROM App\Entity\Price Price,App\Entity\Purchase Purchase
             WHERE Purchase.product=Price.product
         ");
@@ -43,7 +43,7 @@ class PurchaseRepository extends ServiceEntityRepository
     {
         $thisWeek =date('W');
         $purchase=$this->getEntityManager()->createQuery("
-            SELECT SUM(Price.price*Purchase.quantity) as revunue,WEEK(Ordered.orderedAt) week
+            SELECT SUM(Price.price*Purchase.quantity) as revenue,WEEK(Ordered.orderedAt) week
             FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Ordered Ordered
             WHERE Purchase.product=Price.product
             AND WEEK(Ordered.orderedAt)=$thisWeek
@@ -53,9 +53,10 @@ class PurchaseRepository extends ServiceEntityRepository
     }
     public function salesRevenueThisMonth()
     {
+        $clientType = 
         $thisMonth =date('m');
         $purchase=$this->getEntityManager()->createQuery("
-            SELECT SUM(Price.price*Purchase.quantity) as revunue
+            SELECT SUM(Price.price*Purchase.quantity) as revenue
             FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Ordered Ordered
             WHERE Purchase.product=Price.product
             AND MONTH(Ordered.orderedAt)=$thisMonth
