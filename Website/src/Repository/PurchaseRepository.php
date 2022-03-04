@@ -37,7 +37,7 @@ class PurchaseRepository extends ServiceEntityRepository
             WHERE Purchase.ordered = Ordered.id
             AND Purchase.product = Price.product
             AND Price.clientType = ClientType.id
-            AND ClientType.name = 'Etudiant'
+            AND ClientType.name = 'Association'
             ");
         return $purchase->getResult()[0];
     }
@@ -51,7 +51,7 @@ class PurchaseRepository extends ServiceEntityRepository
             WHERE Purchase.ordered = Ordered.id
             AND Purchase.product = Price.product
             AND Price.clientType = ClientType.id
-            AND ClientType.name = 'Etudiant'
+            AND ClientType.name = 'Association'
             AND WEEK(Ordered.orderedAt)= $thisWeek
         ");
         return $purchase->getResult()[0];
@@ -65,7 +65,7 @@ class PurchaseRepository extends ServiceEntityRepository
             WHERE Purchase.ordered = Ordered.id
             AND Purchase.product = Price.product
             AND Price.clientType = ClientType.id
-            AND ClientType.name = 'Etudiant'
+            AND ClientType.name = 'Association'
             AND MONTH(Ordered.orderedAt)=$thisMonth
         ");
         return $purchase->getResult()[0];
