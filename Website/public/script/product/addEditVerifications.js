@@ -10,9 +10,9 @@ function verifyProduct(){
     if (!nameValue.trim()) {
         message += "Nom du produit non renseigné\n";
     }
-    let stock =parseInt(stockValue);
+    let stock = parseInt(stockValue);
 
-    if(!stock || stockValue === "" || isNaN(stockValue))
+    if(stockValue === "" || isNaN(stockValue))
         message += "Stock doit être un nombre.\n ";
     else if (stock < 0)
         message += "Le stock doit être positif.\n ";

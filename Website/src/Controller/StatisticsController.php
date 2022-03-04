@@ -27,9 +27,9 @@ class StatisticsController extends AbstractController
         $productSum = $productName = [];
         $countClients = count($clientRepository->findAll());
         $countThisWeeksCommands = $commandRepository->thisWeeksCommands()["number"];
-        $salesRevenueOverAll = $purchaseRepository->salesRevunueOverAll()["revunue"];
-        $salesRevenueThisMonth = $purchaseRepository->salesRevenueThisMonth()["revunue"];
-        $salesRevenueThisWeek = $purchaseRepository->salesRevenueThisWeek()["revunue"];
+        $salesRevenueOverAll = $purchaseRepository->salesRevunueOverAll()["revenue"];
+        $salesRevenueThisMonth = $purchaseRepository->salesRevenueThisMonth()["revenue"];
+        $salesRevenueThisWeek = $purchaseRepository->salesRevenueThisWeek()["revenue"];
 
         if($countThisWeeksCommands == 0){
             $averagePerStudent = 0;
