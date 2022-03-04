@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Manager\OrderedManager;
 use App\Repository\ClientRepository;
 use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +19,7 @@ class StatisticsController extends AbstractController
      * @Route("/statistics", name="statistics",methods={"GET", "POST"} )
      */
     public function index(ProductRepository $productRepository, PostRepository $postRepository, PurchaseRepository $purchaseRepository,
-                          OrderedRepository $commandRepository, ClientRepository $clientRepository): Response
+                          OrderedRepository $orderedRepository, ClientRepository $clientRepository, EntityManagerInterface $manager): Response
     {
         if (!$this->isGranted('ROLE_TRESORIER')){
             return $this->redirectToRoute('home');
@@ -26,10 +28,20 @@ class StatisticsController extends AbstractController
         $products = $productRepository->findAll();
         $productSum = $productName = [];
         $countClients = count($clientRepository->findAll());
-        $countThisWeeksCommands = $commandRepository->thisWeeksCommands()["number"];
-        $salesRevenueOverAll = $purchaseRepository->salesRevenueOverAll()["revenue"];
-        $salesRevenueThisMonth = $purchaseRepository->salesRevenueThisMonth()["revenue"];
-        $salesRevenueThisWeek = $purchaseRepository->salesRevenueThisWeek()["revenue"];
+        $orderedManager = new OrderedManager($manager);
+        $countThisWeeksCommands = $orderedRepository->quantityThisWeeksCommands()["number"];
+        $salesRevenueThisMonth = 0;
+        $salesRevenueThisWeek = 0;
+        $monthOrderedList = $orderedRepository->thisMonthOrdered();
+        $weekOrderedList = $orderedRepository->thisWeekOrdered();
+
+        // Build the amount of purchase for the current month and the current week
+        foreach ($monthOrderedList as $ordered){
+                $salesRevenueThisMonth += $orderedManager->montantTotal($ordered);
+        }
+        foreach ($weekOrderedList as $ordered){
+                $salesRevenueThisWeek += $orderedManager->montantTotal($ordered);
+        }
 
         if($countThisWeeksCommands == 0){
             $averagePerStudent = 0;
@@ -47,7 +59,7 @@ class StatisticsController extends AbstractController
             $productSum[] = $purchaseRepository->getQuantityByProduct($product)[0]["somme"];
         }
 
-        $orders = $commandRepository->countByDate();
+        $orders = $orderedRepository->countByDate();
         $thisWeek[] = $this->thisWeek();
         $orderCount = [];
         for($i = 0; $i < count($thisWeek[0]); $i++){
@@ -66,7 +78,7 @@ class StatisticsController extends AbstractController
             "thisWeek" => json_encode($thisWeek[0]),
             "countClients" => json_encode($countClients),
             "noStock" => $noStock,
-            "salesRevenueOverAll" => $salesRevenueOverAll,
+            "salesRevenueThisWeek" => $salesRevenueThisWeek,
             "salesRevenueThisMonth" => $salesRevenueThisMonth,
             "averagePerStudent" => $averagePerStudent,
             "postsNumber" => $postsNumber

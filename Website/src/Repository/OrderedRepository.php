@@ -39,7 +39,7 @@ class OrderedRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function thisWeeksCommands()
+    public function quantityThisWeeksCommands()
     {
         $thisWeek =date('W');
         return $this->createQueryBuilder('a')
@@ -48,6 +48,39 @@ class OrderedRepository extends ServiceEntityRepository
             ->setParameter("thisWeek",$thisWeek)
             ->getQuery()
             ->getResult()[0];
+    }
+
+    public function thisWeekOrdered()
+    {
+        $thisWeek = date('W');
+        $purchase = $this->getEntityManager()->createQuery("
+            SELECT Ordered
+            FROM App\Entity\Ordered Ordered
+            WHERE WEEK(Ordered.orderedAt) = $thisWeek
+            ");
+        return $purchase->getResult();
+    }
+
+    public function thisMonthOrdered()
+    {
+        $thisMonth = date('m');
+        $purchase = $this->getEntityManager()->createQuery("
+            SELECT Ordered
+            FROM App\Entity\Ordered Ordered
+            WHERE MONTH(Ordered.orderedAt) = $thisMonth
+            ");
+        return $purchase->getResult();
+    }
+
+    public function thisYearOrdered()
+    {
+        $thisYear = date('Y');
+        $purchase = $this->getEntityManager()->createQuery("
+            SELECT Ordered
+            FROM App\Entity\Ordered Ordered
+            WHERE YEAR(Ordered.orderedAt) = $thisYear
+            ");
+        return $purchase->getResult();
     }
     // /**
     //  * @return Order[] Returns an array of Order objects
