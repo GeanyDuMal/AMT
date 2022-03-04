@@ -29,38 +29,44 @@ class PurchaseRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-    public function salesRevunueOverAll()
+    public function salesRevenueOverAll()
     {
         $purchase=$this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revenue
-            FROM App\Entity\Price Price,App\Entity\Purchase Purchase
-            WHERE Purchase.product=Price.product
-        ");
+            FROM App\Entity\Price Price , App\Entity\Purchase Purchase, App\Entity\Ordered Ordered, App\Entity\ClientType ClientType
+            WHERE Purchase.ordered = Ordered.id
+            AND Purchase.product = Price.product
+            AND Price.clientType = ClientType.id
+            AND ClientType.name = 'Etudiant'
+            ");
         return $purchase->getResult()[0];
     }
 
     public function salesRevenueThisWeek()
     {
-        $thisWeek =date('W');
-        $purchase=$this->getEntityManager()->createQuery("
+        $thisWeek = date('W');
+        $purchase = $this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revenue,WEEK(Ordered.orderedAt) week
-            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Ordered Ordered
-            WHERE Purchase.product=Price.product
-            AND WEEK(Ordered.orderedAt)=$thisWeek
-            AND Ordered=Purchase.ordered
+            FROM App\Entity\Price Price, App\Entity\Purchase Purchase, App\Entity\Ordered Ordered, App\Entity\ClientType ClientType
+            WHERE Purchase.ordered = Ordered.id
+            AND Purchase.product = Price.product
+            AND Price.clientType = ClientType.id
+            AND ClientType.name = 'Etudiant'
+            AND WEEK(Ordered.orderedAt)= $thisWeek
         ");
         return $purchase->getResult()[0];
     }
     public function salesRevenueThisMonth()
     {
-        $clientType = 
-        $thisMonth =date('m');
+        $thisMonth = date('m');
         $purchase=$this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revenue
-            FROM App\Entity\Price Price,App\Entity\Purchase Purchase,App\Entity\Ordered Ordered
-            WHERE Purchase.product=Price.product
+            FROM App\Entity\Price Price, App\Entity\Purchase Purchase, App\Entity\Ordered Ordered, App\Entity\ClientType ClientType
+            WHERE Purchase.ordered = Ordered.id
+            AND Purchase.product = Price.product
+            AND Price.clientType = ClientType.id
+            AND ClientType.name = 'Etudiant'
             AND MONTH(Ordered.orderedAt)=$thisMonth
-            AND Ordered=Purchase.ordered
         ");
         return $purchase->getResult()[0];
     }
