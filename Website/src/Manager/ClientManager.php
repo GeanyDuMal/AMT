@@ -25,7 +25,7 @@ class ClientManager
     public function setData(Client $client, ClientTypeRepository $clientTypeRepository, UserPasswordHasherInterface $passwordHasher,
         String $name, String $firstName, String $login, ?String $password, String $balance, String $roleAssociationName, String $clientTypeName)
     {
-        $client->setName($name)
+        $client->setName(strtoupper($name))
             ->setFirstName($firstName)
             ->setLogin($login)
             ->setBalance($balance);

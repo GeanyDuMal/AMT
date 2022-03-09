@@ -33,14 +33,27 @@ class SignInController extends AbstractController
         if (!is_null($inputParameterBag->get("name"))){
             $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
-            $client->setName(trim($inputParameterBag->get("name")))
+            $name = $inputParameterBag->get("name");
+            $firstName = $inputParameterBag->get("firstName");
+            $login = $inputParameterBag->get("login");
+            $balance = 0;
+            $roleAssociationName = $inputParameterBag->get("none");
+            $clientTypeName = $inputParameterBag->get("Etudiant");
+
+
+
+
+            /*$client->setName(strtoupper(trim($inputParameterBag->get("name"))))
                 ->setFirstName(trim($inputParameterBag->get("firstName")))
                 ->setLogin(trim($inputParameterBag->get("login")))
                 ->setPassword($hashedPassword)
                 ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
                 ->setRoles(["ROLE_USER"])
                 ->setFidelityPoint(0)
-                ->setBalance(0);
+                ->setBalance(0);*/
+
+            $clientManager->setData($client, $clientTypeRepository, $passwordHasher, $name,
+                $firstName, $login, $hashedPassword, $balance, $roleAssociationName, $clientTypeName);
 
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
 
