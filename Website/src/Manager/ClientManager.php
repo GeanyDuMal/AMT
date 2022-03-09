@@ -28,8 +28,7 @@ class ClientManager
         $client->setName($name)
             ->setFirstName($firstName)
             ->setLogin($login)
-            ->setBalance($balance)
-            ->setFidelityPoint(0);
+            ->setBalance($balance);
 
         $type = $clientTypeRepository->findOneBy(["name" => $clientTypeName]);
         $isStudent = (strcmp($clientTypeName,"Etudiant") == 0);
