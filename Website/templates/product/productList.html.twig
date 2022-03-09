@@ -5,7 +5,6 @@
     <link href="/style/product/productList.css" rel="stylesheet" type="text/css"/>
 
     {# Bootstrap CSS Import #}
-    {# <link href="https://bootswatch.com/_vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/> #}
     <link href="/style/bootstrap.css" rel="stylesheet"/>
     {# Icons #}
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
@@ -60,7 +59,7 @@
         {% endif %}
         <div class="row">
             {% for product in products %}
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-12 product_block">
                     <div class="card mb-5 shadow-sm">
                         <img src="{{ product.imageLink }}" class="img-fluid">
                         <div class="card-body">
