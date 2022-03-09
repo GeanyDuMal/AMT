@@ -276,8 +276,10 @@ class ClientManager
     public function checkIfRemoveFromAssociation(Client $client){
         $clientTypeAssociation = $this->manager->getRepository(ClientType::class)->findOneBy(["name" => "Association"]);
 
+        // If clientType isn't Association
         if ($client->getClientType() != $clientTypeAssociation){
             $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
+            // If client is present is table Association, it's not normal so we remove it
             if ($associationMember){
                 $this->manager->remove($associationMember);
                 $this->manager->flush();
