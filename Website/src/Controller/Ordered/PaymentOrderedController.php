@@ -113,7 +113,7 @@ class PaymentOrderedController extends AbstractController
             $orderManager->addFidelityToClient($order);
 
             //rediriger vers l'accueil
-            return $this->redirectToRoute("home");
+            return $this->redirectToRoute("orderedCreate");
         }
 
         return $this->render('ordered/payment.html.twig', [
