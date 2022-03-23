@@ -70,16 +70,16 @@
                             <div class="card-text">
 
                                 {% if product.quantityStock ==0 %}
-                                    <p>
+                                    <p class="product-quantity">
                                         <b style="color:red;">Stock épuisé</b>
                                     </p>
 
                                 {% else %}
-                                    <p>
+                                    <p class="product-quantity">
                                         Quantité en stock : {{ product.quantityStock }}
                                     </p>
                                 {% endif %}
-                                <p>
+                                <p class="product-price">
                                     Prix : {{ productIdPrices[product.id] }} €
                                 </p>
                             </div>
