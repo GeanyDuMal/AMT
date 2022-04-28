@@ -8,10 +8,9 @@ jobs:
     steps:
       - uses: Renato66/auto-label@v2
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_USER_TOKEN }}
           ignore-comments: true
           labels-synonyms: '{
-            "Minor":["Minor"],
             "Medium":["Medium"],
             "Critical":["Critical"]
           }'
