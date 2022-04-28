@@ -25,12 +25,12 @@ jobs:
       - uses: fregante/title-to-labels-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          keywords: "[Minor]"
+          keywords: '[Minor]'
           labels: Minor
 
       - uses: fregante/title-to-labels-action@v1
         with:
-          keywords: "[Medium]"
+          keywords: '[Medium]'
           labels: Medium
 
 
