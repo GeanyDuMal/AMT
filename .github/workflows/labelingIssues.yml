@@ -8,7 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: Renato66/auto-label@v2
+      - name: Labeling
+        uses: Renato66/auto-label@v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           ignore-comments: true
@@ -19,9 +20,8 @@ jobs:
           }'
 #          labels-not-allowed: '["good first issue"]'
           default-labels: '["toCheck"]'
-      - uses: madrapps/add-reviewers@v1
+      - name: Assigning
+        uses: pozil/auto-assign-issue@v1.4.0
         with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            reviewers: Spl4shh
-            re-request-when-approved: true
-            re-request-when-changes-requested: true
+            assignees: Spl4shh
+            numOfAssignee: 1
