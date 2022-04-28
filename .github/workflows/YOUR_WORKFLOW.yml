@@ -1,17 +1,34 @@
-name: Label issues
+
+name: CI
+
+# Controls when the workflow will run
 on:
   issues:
     types:
       - reopened
       - opened
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   label_issues:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - name: Label issues
+      - if: contains("[MINOR]", github.event.issue.title.toUpperCase())
+        name: Minor Label
         uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
         with:
           add-labels: "Minor"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: contains("[MEDIUM]", github.event.issue.title.toUpperCase())
+        name: Medium Label
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "Medium"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: contains("[CRITICAL]", github.event.issue.title.toUpperCase())
+        name: Critical Label
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "Critical"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
