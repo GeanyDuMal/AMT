@@ -1,33 +1,19 @@
-name: Labeler
-
+name: Labeling new issue
 on:
-  pull_request:
-    types: [opened, edited]
   issues:
-    types: [opened, edited]
-
+    types: ['opened']
 jobs:
-  Label:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: fregante/title-to-labels-action@v1
+      - uses: Renato66/auto-label@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          keywords: idea
-          # If you don't specify `labels`, the action will just clean up the titles from your keywords.
-
-      # The action can be used as many times as needed in a single job
-      - uses: fregante/title-to-labels-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          keywords: bug, bug report
-          labels: bug
-
-      - uses: fregante/title-to-labels-action@v1
-        with:
-          keywords: |
-            feature request
-            suggestions
-            enhancement
-          labels: |
-            enhancement
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ignore-comments: true
+          labels-synonyms: '{
+            "Minor":["Minor"],
+            "Medium":["Medium"],
+            "Critical":["Critical"]
+          }'
+#          labels-not-allowed: '["good first issue"]'
+          default-labels: '["Minor"]'
