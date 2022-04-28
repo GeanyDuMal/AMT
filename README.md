@@ -1,7 +1,7 @@
 # Site pour l'AEDI
 
 [![Auto Label](https://github.com/Renato66/auto-label/workflows/Labeling%20new%20issue/badge.svg)](https://github.com/Renato66/auto-label)
-### Issues
+### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme.
 En fonction de la gravité, vous pouvez mettre Minor, Mediumn ou Major dans le commentaire afin de le signaler a l'aide d'un label
 
