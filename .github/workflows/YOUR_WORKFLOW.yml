@@ -12,6 +12,8 @@ on:
 jobs:
   label_issues:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Label issues
       - if: contains("[MINOR]", github.event.issue.title.toUpperCase())
