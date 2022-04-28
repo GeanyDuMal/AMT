@@ -1,50 +1,33 @@
-name: Labeling Issues
+name: Labeler
 
-# Controls when the workflow will run
 on:
+  pull_request:
+    types: [opened, edited]
   issues:
-    types:
-      - reopened
-      - opened
-      - edited
+    types: [opened, edited]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  label_issues:
+  Label:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
+      - uses: fregante/title-to-labels-action@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          keywords: idea
+          # If you don't specify `labels`, the action will just clean up the titles from your keywords.
+
       # The action can be used as many times as needed in a single job
       - uses: fregante/title-to-labels-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          keywords: MinorLabel
-          labels: Minor
+          keywords: bug, bug report
+          labels: bug
 
       - uses: fregante/title-to-labels-action@v1
         with:
-          keywords: '[Medium]'
-          labels: Medium
-
-
-#    steps:
-#      - name: Label issues
-#      - if: contains("[MINOR]", github.event.issue.title.toUpperCase())
-#        name: Minor Label
-#        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
-#        with:
-#          add-labels: "Minor"
-#          repo-token: ${{ secrets.GITHUB_TOKEN }}
-#      - if: contains("[MEDIUM]", github.event.issue.title.toUpperCase())
-#        name: Medium Label
-#        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
-#        with:
-#          add-labels: "Medium"
-#          repo-token: ${{ secrets.GITHUB_TOKEN }}
-#      - if: contains("[CRITICAL]", github.event.issue.title.toUpperCase())
-#        name: Critical Label
-#        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
-#        with:
-#          add-labels: "Critical"
-#          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          keywords: |
+            feature request
+            suggestions
+            enhancement
+          labels: |
+            enhancement
