@@ -1,14 +1,14 @@
 # thanks to Renato66 for his Github Action
 
-name: Labeling new issue
+name: Managing New Issue
 on:
   issues:
-    types: ['opened']
+    types: ['opened', 'reopened']
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Labeling
+      - name: Labeling Issue
         uses: Renato66/auto-label@v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -20,7 +20,8 @@ jobs:
           }'
 #          labels-not-allowed: '["good first issue"]'
           default-labels: '["toCheck"]'
-      - name: Assigning
+
+      - name: Assigning Issue
         uses: pozil/auto-assign-issue@v1.4.0
         with:
             assignees: Spl4shh
