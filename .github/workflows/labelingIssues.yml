@@ -19,4 +19,9 @@ jobs:
           }'
 #          labels-not-allowed: '["good first issue"]'
           default-labels: '["toCheck"]'
-
+      - uses: madrapps/add-reviewers@v1
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            reviewers: Spl4shh
+            re-request-when-approved: true
+            re-request-when-changes-requested: true
