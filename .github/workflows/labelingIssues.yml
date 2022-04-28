@@ -18,7 +18,7 @@ jobs:
       - uses: fregante/title-to-labels-action@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          keywords: '[Minor]'
+          keywords: MinorLabel
           labels: Minor
 
       - uses: fregante/title-to-labels-action@v1
