@@ -1,5 +1,8 @@
 # Site pour l'AEDI
 
+[![Auto Label](https://github.com/Renato66/auto-label/workflows/Labeling%20new%20issue/badge.svg)](https://github.com/Renato66/auto-label)
+
+
 Ce site permet de :
 * S'inscrire avec un login et un mot de passe
 * Créer des produits avec un stock 
