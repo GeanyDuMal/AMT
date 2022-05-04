@@ -3,7 +3,7 @@
 [![Auto Label](https://github.com/Renato66/auto-label/workflows/Labeling%20new%20issue/badge.svg)](https://github.com/Renato66/auto-label)
 ### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>
-En fonction de la gravité, vous pouvez mettre Minor, Mediumn ou Major dans le commentaire afin de le signaler a l'aide d'un label
+En fonction de la gravité, vous pouvez mettre Minor, Medium ou Major dans le commentaire afin de le signaler à l'aide d'un label
 
 Ce site permet de :
 * S'inscrire avec un login et un mot de passe
