@@ -1,15 +1,19 @@
 # thanks to Renato66 for his Github Action
 
-name: Managing Pull Request
 on:
   pull_request:
-    types: ['opened', 'reopened']
+    types: [opened, ready_for_review]
+
 jobs:
-  build:
+  assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Add Pull Request Reviewer
-        uses: AveryCameronUofR/add-reviewer-gh-action@1.0.3
+      - uses: hkusu/review-assign-action@v1
         with:
+<<<<<<< Updated upstream
           reviewers: Spl4shh
           token: ${{ secrets.GITHUB_TOKEN }}
+=======
+          assignees: ${{ github.actor }} # assign pull request author
+          reviewers: Spl4shh # if draft, assigned when draft is released
+>>>>>>> Stashed changes
