@@ -1,5 +1,5 @@
 # thanks to Renato66 for his Github Action
-
+name: Assign Reviewer
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
