@@ -5,6 +5,13 @@
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>
 En fonction de la gravité, vous pouvez mettre Minor, Medium ou Major dans le commentaire afin de le signaler à l'aide d'un label
 
+### <ins>Version</ins>
+Une release est programmée tout les 3 mois si des bugs ont été rencontrés ou si une fonctionnalité a été développée.
+
+### <ins>Site<ins>
+Le site est disponible à cette adresse : 
+https://aedi.lescigales.org
+
 Ce site permet de :
 * S'inscrire avec un login et un mot de passe
 * Créer des produits avec un stock 
