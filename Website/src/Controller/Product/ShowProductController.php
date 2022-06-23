@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
+use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,7 @@ class ShowProductController extends AbstractController
      * @Route("/product{message}", name="product_list",methods={"GET", "POST"} )
      */
     public function show(string $message = null, EntityManagerInterface $manager, ClientTypeRepository $clientTypeRepository,
-        ProductRepository $productRepository): Response
+        ProductRepository $productRepository, PriceRepository $priceRepository): Response
     {
         if ($this->isGranted("ROLE_ASSOC")) {
             $clientTypeActual = $clientTypeRepository->findOneBy(["name" => "Association"]);
@@ -30,13 +31,13 @@ class ShowProductController extends AbstractController
         }
 
         $productIdPrices = [];
-        $products = $productRepository->findAll();
-        $prices = $manager->getRepository(Price::class)->findBy(["clientType" => $clientTypeActual]);
+        $products = $productRepository->findBy(["productTypeName" => "DESC"]);
+        $prices = $priceRepository->findBy(["clientType" => $clientTypeActual]);
 
         //Recupere pour chaque produit, le prix qui lui corresponp dans la liste $prices (en fonction de son type)
         foreach ($products as $product) {
             foreach ($prices as $price) {
-                if ($price->getProduct() == $product) {
+                if ($price->getProduct() === $product) {
                     $productIdPrices = $productIdPrices + [$product->getId() => $price->getPrice()];
                 }
             }
