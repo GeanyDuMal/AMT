@@ -2,10 +2,8 @@
 
 namespace App\Controller\Connexion;
 
-use App\Entity\Client;
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,23 +16,21 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher,
-        ClientRepository $clientRepository): Response
+    public function index(Request $request, UserPasswordHasherInterface $passwordHasher,
+        ClientRepository $clientRepository, ClientManager $clientManager): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
             $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
+            $edit = false;
 
             $inputParameterBag = $request->request;
 
-            $edit = false;
-
-            // Verifie que les champs soit bien rempli
+            // Verifie que les champs soient bien rempli et que le nouveau mot de passe et la confirmation soientt différent
             if (!is_null($inputParameterBag->get("oldPassword")) &&
                 !is_null($inputParameterBag->get("newPassword")) &&
-                trim($inputParameterBag->get("newPassword")) === trim($inputParameterBag->get("confirmPassword")))
+                trim($inputParameterBag->get("newPassword")) === trim($inputParameterBag->get("confirmPassword")) &&
+                !($inputParameterBag->get("oldPassword") === ($inputParameterBag->get("newPassword"))))
             {
-                $clientManager = new ClientManager($manager);
-
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
                 if (password_verify(trim($inputParameterBag->get("oldPassword")), $this->getUser()->getPassword())) {
                     $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("newPassword")));
