@@ -37,19 +37,25 @@ function verifyInputEditPassword() {
         form.confirmPassword.style.borderColor = "black";
     }
 
+    form.newPassword.style.borderColor = "red";
+    form.oldPassword.style.borderColor = "red";
+    if (valueOldPassword === valueNewPassword){
+        message += "<li>Le nouveau mot de passe n'est pas différent de l'ancien</li>"
+    }
+
     message += "</ul>"
 
-    if (message !== "<ul></ul>") {
+    var emptyMessage = message === "<ul></ul>";
+
+    if (!emptyMessage) {
         Swal.fire({
             title: 'Incomplet !',
             html: message,
             icon: 'error',
             confirmButtonText: 'Completer'
           })
-        return false;
-    }else{
-        return true;
     }
+    return emptyMessage;
 }
 
 function openCloseEditForm() {
