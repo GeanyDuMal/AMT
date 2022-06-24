@@ -62,21 +62,21 @@
                         {# Lien à modif #}
                         <div class="block_nav">
                             <a href="{{ path("home") }}">Accueil</a>
-                            <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
-                            <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
+                            <a href="{{ path("product_list", {'message': "none"}) }}">Nos&nbspProduits</a>
+                            <a href="{{ path("blog", {'message': "none"}) }}">Posts&nbsp&&nbspEvents</a>
                         </div>
                         {% if is_granted('ROLE_ASSOC') %}
                             <div class="block_nav">
-                                <a href="{{ path("orderedCreate") }}">Commander</a>
+                                <a href="{{ path("orderedCreate", {'message': "none"}) }}">Commander</a>
                             </div>
                             {% if is_granted('ROLE_TRESORIER') %}
                                 <div class="block_nav">
-                                    <a href="{{ path("orderedMenu") }}">Gestion&nbspCommande</a>
-                                    <a href="{{ path("statistics") }}">Statistiques</a>
+                                    <a href="{{ path("orderedMenu", {'message': "none"}) }}">Gestion&nbspCommande</a>
+                                    <a href="{{ path("statistics", {'message': "none"}) }}">Statistiques</a>
                                 </div>
                                 {% if is_granted('ROLE_PRESIDENT') %}
                                     <div class="block_nav">
-                                        <a href="{{ path("client_list") }}">Gestion&nbspClients</a>
+                                        <a href="{{ path("client_list", {'message': "none"}) }}">Gestion&nbspClients</a>
                                     </div>
                                 {% endif %}
                             {% endif %}

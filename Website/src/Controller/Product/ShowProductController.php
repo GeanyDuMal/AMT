@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowProductController extends AbstractController
 {
     /**
-     * @Route("/product{message}", name="product_list",methods={"GET", "POST"} )
+     * @Route("/product/{message}", name="product_list",methods={"GET", "POST"} )
      */
     public function show(string $message = null, EntityManagerInterface $manager, ClientTypeRepository $clientTypeRepository,
         ProductRepository $productRepository, PriceRepository $priceRepository): Response
@@ -31,16 +31,14 @@ class ShowProductController extends AbstractController
         }
 
         $productIdPrices = [];
-        $products = $productRepository->findBy(["productTypeName" => "DESC"]);
-        $prices = $priceRepository->findBy(["clientType" => $clientTypeActual]);
+        //$products = $productRepository->findBy(["price.clientType" => $clientTypeActual], ["productType" => "DESC", "name" => "ASC"]);
 
-        //Recupere pour chaque produit, le prix qui lui corresponp dans la liste $prices (en fonction de son type)
+        $productsWithPrice = $priceRepository->findAllProductsAndPriceByClientType($clientTypeActual->getName());
+
+        dd($productsWithPrice);
+        //Recupere pour chaque produit, le prix qui lui correspond dans la liste $prices (en fonction de son type)
         foreach ($products as $product) {
-            foreach ($prices as $price) {
-                if ($price->getProduct() === $product) {
-                    $productIdPrices = $productIdPrices + [$product->getId() => $price->getPrice()];
-                }
-            }
+            $productIdPrices = $productIdPrices + [$product->getId() => $priceRepository->findOneBy(["product" => $product->getId(), "clientType" => $clientTypeActual])->getPrice()];
         }
         return $this->render('product/productList.html.twig', [
             'products' => $products,
