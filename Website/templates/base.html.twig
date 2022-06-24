@@ -62,8 +62,8 @@
                         {# Lien à modif #}
                         <div class="block_nav">
                             <a href="{{ path("home") }}">Accueil</a>
-                            <a href="{{ path("product_list", {'message': "none"}) }}">Nos&nbspProduits</a>
-                            <a href="{{ path("blog", {'message': "none"}) }}">Posts&nbsp&&nbspEvents</a>
+                            <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
+                            <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
                         </div>
                         {% if is_granted('ROLE_ASSOC') %}
                             <div class="block_nav">
