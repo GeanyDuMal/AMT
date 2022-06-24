@@ -19,6 +19,21 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findProductsAndPricesByClientType($clientType): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('price', 'pr')// On joint sur le price
+            ->addSelect('pr')// On récupère la catégorie jointe->orderBy('p.id', 'ASC')
+            ->join('clientType', 'cl')// On joint sur le price
+            ->andWhere('cl.name = ' . $clientType)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
