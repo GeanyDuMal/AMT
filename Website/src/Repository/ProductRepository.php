@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\ClientType;
+use App\Entity\Price;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

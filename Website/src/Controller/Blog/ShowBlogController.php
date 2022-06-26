@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowBlogController extends AbstractController
 {
     /**
-     * @Route("/blog{message}", name="blog")
+     * @Route("/blog/{message}", name="blog")
      */
     public function index(string $message = null , EntityManagerInterface $manager): Response
     {
