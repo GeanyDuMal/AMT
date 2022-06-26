@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,30 +18,40 @@ class Product
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le produit doit avoir un nom")
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=ProductType::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $productType;
+    private ?ProductType $productType;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\PositiveOrZero(message="La quantité doit etre positif ou null")
      */
-    private $quantityStock;
+    private ?int $quantityStock;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $imageLink;
+    private ?string $imageLink;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Price::class, mappedBy="product", orphanRemoval=true, fetch="EAGER")
+     */
+    private Collection $prices;
+
+    public function __construct()
+    {
+        $this->prices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +102,36 @@ class Product
     public function setImageLink(string $imageLink): self
     {
         $this->imageLink = $imageLink;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPrices(): Collection
+    {
+        return $this->prices;
+    }
+
+    public function addPrice(Price $price): self
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices[] = $price;
+            $price->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrice(Price $price): self
+    {
+        if ($this->prices->removeElement($price)) {
+            // set the owning side to null (unless already changed)
+            if ($price->getProduct() === $this) {
+                $price->setProduct(null);
+            }
+        }
 
         return $this;
     }

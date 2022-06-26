@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\ClientType;
+use App\Entity\Price;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,21 +19,6 @@ class ProductRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Product::class);
-    }
-
-    /**
-     * @return Product[] Returns an array of Product objects
-     */
-    public function findProductsAndPricesByClientType($clientType): array
-    {
-        return $this->createQueryBuilder('p')
-            ->join('price', 'pr')// On joint sur le price
-            ->addSelect('pr')// On récupère la catégorie jointe->orderBy('p.id', 'ASC')
-            ->join('clientType', 'cl')// On joint sur le price
-            ->andWhere('cl.name = ' . $clientType)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     // /**

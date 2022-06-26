@@ -4,11 +4,10 @@ namespace App\Entity;
 
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\ClientType;
-use Exception;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  */
@@ -58,7 +57,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": 0})
+     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": "0.00"})
      * @Assert\PositiveOrZero(
      *      message="La balance doit etre positive"
      *      )

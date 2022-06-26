@@ -69,7 +69,7 @@
 
                             <div class="card-text">
 
-                                {% if product.quantityStock ==0 %}
+                                {% if product.quantityStock == 0 %}
                                     <p class="product-quantity">
                                         <b style="color:red;">Stock épuisé</b>
                                     </p>
@@ -80,7 +80,11 @@
                                     </p>
                                 {% endif %}
                                 <p class="product-price">
-                                    Prix : {{ productIdPrices[product.id] }} €
+                                    Prix : {% for price in product.prices %}
+                                                {% if price.clientType.name == clientTypeActual%}
+                                                    {{ price.price }}€
+                                                {% endif %}
+                                            {% endfor %}
                                 </p>
                             </div>
                             {% if is_granted('ROLE_ASSOC') %}

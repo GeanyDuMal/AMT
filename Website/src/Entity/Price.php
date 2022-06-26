@@ -5,18 +5,20 @@ namespace App\Entity;
 use App\Repository\PriceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=PriceRepository::class)
  */
 class Price
 {
+
     /**
-     * @ORM\Id 
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE" )
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="prices")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Assert\NotNull(message="Le produit dans prix ne doit pas etre null")
      */
-    private $product;
+    private ?Product $product;
 
     /**
      * @ORM\Id
@@ -24,13 +26,13 @@ class Price
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Le type client dans prix ne doit pas etre null")
      */
-    private $clientType;
+    private ?ClientType $clientType;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Assert\Positive(message="Le prix doit etre positif")
      */
-    private $price;
+    private ?string $price;
 
     public function getProduct(): ?Product
     {
