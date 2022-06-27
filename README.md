@@ -7,8 +7,7 @@ En fonction de la gravité, vous pouvez mettre Minor, Medium ou Major dans le co
 
 ### <ins>Version</ins>
 Une release est programmée tout les 3 mois si des bugs ont été rencontrés ou si une fonctionnalité a été développée.<br>
-Fonctionnement : <br>
-X.Y : 
+Fonctionnement en X.Y : 
 - X Corresponds à une version générale avec ajout de fonctionnalitées et nombreuses correction
 - Y Corresponds à un correctif léger pour des bugs qui peuvent etre bloquant à l'utilisation
 - Possibilité de rajouter un 3eme indice en cas d'absence de grosse modification mais ajout de détails
