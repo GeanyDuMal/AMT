@@ -138,8 +138,8 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/twbs/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/beberlei/doctrineextensions" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/apache-pack" />
-      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-php81" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-csrf" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/masterminds/html5" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -253,7 +253,7 @@ class ClientManager
      * @param AssociationRole $role
      * @return Association
      */
-    public function makeMember(Client $client, AssociationRole $role):Association
+    public function makeMember(Client $client, AssociationRole $role): Association
     {
         $newMember = new Association();
 
