@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/create/{message}", name="orderedCreate")
+     * @Route("/ordered/create/{message?}", name="orderedCreate")
      */
     public function index(string $message = null, Request $request, EntityManagerInterface $manager, ProductRepository $productRepository, ClientRepository $clientRepository): Response
     {

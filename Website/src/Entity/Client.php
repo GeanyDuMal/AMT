@@ -204,7 +204,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return null;
     }
 
-    public function getUserIdentifier(): ?string
+    public function getUserIdentifier(): string
     {
         return $this->getLogin();
     }

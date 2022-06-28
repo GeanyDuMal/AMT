@@ -12,7 +12,7 @@ class DeleteProductController extends AbstractController
 {
 
     /**
-     * @Route("/product/delete/{id}", name="delete_product", methods={"GET", "DELETE"})
+     * @Route("/product/delete/{!id}", name="delete_product", methods={"GET", "DELETE"})
      */
     public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository)
     {

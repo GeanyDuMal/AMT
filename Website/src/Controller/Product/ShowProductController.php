@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowProductController extends AbstractController
 {
     /**
-     * @Route("/product/{message}", name="product_list",methods={"GET", "POST"} )
+     * @Route("/product/{message?}", name="product_list",methods={"GET", "POST"} )
      */
     public function show(string $message = null, EntityManagerInterface $manager, ClientTypeRepository $clientTypeRepository,
         ProductRepository $productRepository): Response

@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DetailOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/details&id={idOrder}", name="detailOrdered")
+     * @Route("/ordered/details&id={!idOrder}", name="detailOrdered")
      */
     public function index($idOrder, EntityManagerInterface $manager, ClientTypeRepository $clientTypeRepository, OrderedRepository $orderedRepository,
                           PurchaseRepository $purchaseRepository, PriceRepository $priceRepository): Response

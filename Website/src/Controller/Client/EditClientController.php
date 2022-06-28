@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/edit/{!id}", name="edit_client",methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager, 
                           ValidatorInterface $validator, AssociationRepository $associationRepository, ClientTypeRepository $clientTypeRepository,
@@ -68,7 +68,7 @@ class EditClientController extends AbstractController
                 }
 
                 if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
-                    $errorLoginExist="Login Existe déja";
+                    $errorLoginExist="Login existe déjà";
                 }
                 else{
                     $clientManager->persist($client);
@@ -80,7 +80,7 @@ class EditClientController extends AbstractController
                     }
 
                     return $this->redirectToRoute('client_list',[
-                        "message"=>"Modification avec succés"
+                        "message" => "Modification avec succès"
                     ]);
                 }
             }
