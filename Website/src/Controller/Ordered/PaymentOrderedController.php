@@ -113,7 +113,7 @@ class PaymentOrderedController extends AbstractController
             $orderManager->addFidelityToClient($order);
 
             //rediriger vers l'interface de creation de commande
-            return $this->redirectToRoute("orderedCreate", ["Commande réussie"]);
+            return $this->redirectToRoute("orderedCreate", ["message" => "Commande réussie"]);
         }
 
         return $this->render('ordered/payment.html.twig', [
