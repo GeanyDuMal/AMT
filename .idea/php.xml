@@ -101,8 +101,6 @@
       <path value="$PROJECT_DIR$/Website/vendor/symfony/service-contracts" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/serializer" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/security-http" />
-      <path value="$PROJECT_DIR$/Website/vendor/symfony/security-guard" />
-      <path value="$PROJECT_DIR$/Website/vendor/symfony/security-csrf" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/security-core" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/runtime" />
@@ -111,9 +109,7 @@
       <path value="$PROJECT_DIR$/Website/vendor/symfony/property-info" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/property-access" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/process" />
-      <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-php81" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-php80" />
-      <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-mbstring" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-intl-normalizer" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-intl-idn" />
@@ -139,6 +135,8 @@
       <path value="$PROJECT_DIR$/Website/vendor/beberlei/doctrineextensions" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/apache-pack" />
       <path value="$PROJECT_DIR$/Website/vendor/symfony/webpack-encore-bundle" />
+      <path value="$PROJECT_DIR$/Website/vendor/symfony/polyfill-php81" />
+      <path value="$PROJECT_DIR$/Website/vendor/symfony/security-csrf" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
