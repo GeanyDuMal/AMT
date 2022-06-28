@@ -13,7 +13,7 @@ class DeleteClientController extends AbstractController
 {
 
     /**
-     * @Route("/admin/client/delete/{id}", name="delete_client", methods={"GET", "DELETE"})
+     * @Route("/admin/client/delete/{!id}", name="delete_client", methods={"GET", "DELETE"})
      */
     public function index($id, EntityManagerInterface $manager, ClientRepository $clientRepository)
     {
