@@ -68,7 +68,7 @@ class EditClientController extends AbstractController
                 }
 
                 if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
-                    $errorLoginExist="Login Existe déja";
+                    $errorLoginExist="Login existe déjà";
                 }
                 else{
                     $clientManager->persist($client);
@@ -80,7 +80,7 @@ class EditClientController extends AbstractController
                     }
 
                     return $this->redirectToRoute('client_list',[
-                        "message"=>"Modification avec succés"
+                        "message" => "Modification avec succès"
                     ]);
                 }
             }
