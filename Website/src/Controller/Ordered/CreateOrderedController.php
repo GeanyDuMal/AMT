@@ -15,9 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/create", name="orderedCreate")
+     * @Route("/ordered/create/{message}", name="orderedCreate")
      */
-    public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository, ClientRepository $clientRepository): Response
+    public function index(string $message = null, Request $request, EntityManagerInterface $manager, ProductRepository $productRepository, ClientRepository $clientRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
@@ -58,7 +58,8 @@ class CreateOrderedController extends AbstractController
         return $this->render('ordered/create.html.twig', [
             "user" => $user,
             "productList" => $allProductPositiveStock,
-            "clientList" => $allClient
+            "clientList" => $allClient,
+            "message" => $message
         ]);
     }
 }
