@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EditProductController extends AbstractController
 {
     /**
-     * @Route("/product/edit/{!id}", name="edit_product")
+     * @Route("/product/edit/{id}", name="edit_product")
      */
     public function index($id, ProductRepository $productRepository, ValidatorInterface $validator, Request $request, EntityManagerInterface $manager, ProductTypeRepository $productTypeRepository, ClientTypeRepository $clientTypeRepository, PriceRepository $priceRepository): Response
     {
