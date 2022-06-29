@@ -105,6 +105,8 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/serializer" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-http" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-guard" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-csrf" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-core" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/runtime" />
@@ -113,7 +115,9 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/property-info" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/property-access" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-php81" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-php73" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-mbstring" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-intl-normalizer" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/polyfill-intl-idn" />
@@ -138,8 +142,6 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/twbs/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/beberlei/doctrineextensions" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/apache-pack" />
-      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/security-csrf" />
-      <excludeFolder url="file://$MODULE_DIR$/Website/vendor/masterminds/html5" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

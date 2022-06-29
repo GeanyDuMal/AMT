@@ -111,7 +111,6 @@ class OrderedManager
      * @param Client|null $client Client
      * @return array[PaymentType] $paymentTypeList
      */
-
     public function getAllowedPaymentType($purchaseList, Client $client = null): array
     {
         $clientTypeRepository = $this->manager->getRepository(ClientType::class);
