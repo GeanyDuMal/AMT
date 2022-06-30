@@ -18,7 +18,8 @@ class AddBlogController extends AbstractController
     /**
      * @Route("/blog/add", name="add_blog")
      */
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request, PostTypeRepository $postTypeRepository, ValidatorInterface $validator): Response
+    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request,
+                          PostTypeRepository $postTypeRepository, ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
@@ -53,10 +54,10 @@ class AddBlogController extends AbstractController
         }
 
         return $this->render('blog/AddModalBlog.html.twig', [
-            'postTypes'=>$postTypes,
-            'validationErrors'=>$validationErrors,
-            'postExistsError'=>$postExistsError,
-            'post'=>$post
+            'postTypes' => $postTypes,
+            'validationErrors' => $validationErrors,
+            'postExistsError' => $postExistsError,
+            'post' => $post
         ]);
     }
 }

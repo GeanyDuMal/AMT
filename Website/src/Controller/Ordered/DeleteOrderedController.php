@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/menu/delete/{id}", name="orderedDelete", methods={"GET", "DELETE"})
+     * @Route("/ordered/menu/delete/{!id}", name="orderedDelete", methods={"GET", "DELETE"})
      */
     public function delete($id, EntityManagerInterface $manager, OrderedRepository $orderedRepository): JsonResponse
     {

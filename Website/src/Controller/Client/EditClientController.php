@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/edit/{id}", name="edit_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/edit/{!id}", name="edit_client",methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager, 
                           ValidatorInterface $validator, AssociationRepository $associationRepository, ClientTypeRepository $clientTypeRepository,
