@@ -11,9 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/{message}", name="blog")
+     * @Route("/blog/{message?}", name="blog")
      */
-    public function index(string $message = null , EntityManagerInterface $manager): Response
+    public function index(EntityManagerInterface $manager, string $message = null): Response
     {
         //findBy plutot que findAll car on peut trier et recuperer le dernier post en premier
         $blogs=$manager->getRepository(Post::class)->findBy([], ["id" => "DESC"]);

@@ -17,9 +17,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/edit/{id}", name="edit_blog",methods={"GET", "POST"})
+     * @Route("/blog/edit/{!id}", name="edit_blog",methods={"GET", "POST"})
      */
-    public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request, EntityManagerInterface $manager, PostTypeRepository $postTypeRepository): Response
+    public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request,
+                          EntityManagerInterface $manager, PostTypeRepository $postTypeRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')) {
             return $this->redirectToRoute('home');

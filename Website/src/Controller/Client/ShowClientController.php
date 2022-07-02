@@ -12,9 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class ShowClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/{message}", name="client_list",methods={"GET", "POST"} )
+     * @Route("/admin/client/{message,}", name="client_list",methods={"GET", "POST"} )
      */
-    public function show(string $message = null, ClientRepository $clientRepository): Response
+    public function show(ClientRepository $clientRepository, string $message = null): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
             return $this->redirectToRoute('home');
@@ -24,7 +24,7 @@ class ShowClientController extends AbstractController
 
         return $this->render('client/index.html.twig', [
             'clients' => $clients,
-            'message'=>$message
+            'message' => $message
         ]);
     }
 
