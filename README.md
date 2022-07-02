@@ -6,11 +6,10 @@ Si vous avez un probleme, créez une issue et dans le commentaire, detaillez vot
 En fonction de la gravité, vous pouvez mettre Minor, Medium ou Major dans le commentaire afin de le signaler à l'aide d'un label
 
 ### <ins>Version</ins>
-Une release est programmée tout les 3 mois si des bugs ont été rencontrés ou si une fonctionnalité a été développée.<br>
-Fonctionnement en X.Y : 
-- X Corresponds à une version générale avec ajout de fonctionnalitées et nombreuses correction
-- Y Corresponds à un correctif léger pour des bugs qui peuvent etre bloquant à l'utilisation
-- Possibilité de rajouter un 3eme indice en cas d'absence de grosse modification mais ajout de détails
+Méthode de versionning : X.Y.Z <br>
+- X Correspond à une version non retro-compatible (PHP, Base de Données, Symfony)
+- Y Correspond à un ajout de fonctionnalité (et bug s'il y a)
+- Z Correspond à une correctionn de bug uniquement
 
 ### <ins>Site<ins>
 Le site est disponible à cette adresse : 
