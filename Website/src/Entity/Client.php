@@ -57,7 +57,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true ,options={"default": "0.00"})
+     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true, options={"default": "0.00"})
      * @Assert\PositiveOrZero(
      *      message="La balance doit etre positive"
      *      )
@@ -65,7 +65,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $balance;
 
     /**
-     * @ORM\Column(type="integer", nullable=true  ,options={"default": 0})
+     * @ORM\Column(type="integer", nullable=true, options={"default": 0})
      * @Assert\PositiveOrZero(
      *      message="Les points de fidelité doivent etre positif"
      *      )
@@ -73,10 +73,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $fidelityPoint;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ClientType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
-    private ClientType $clientType;
+    private string $clientType;
 
     /**
      * @ORM\Column(type="json")
@@ -163,12 +162,12 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getClientType(): ?ClientType
+    public function getClientType(): string
     {
         return $this->clientType;
     }
 
-    public function setClientType(?ClientType $clientType): self
+    public function setClientType(string $clientType): self
     {
         $this->clientType = $clientType;
 
