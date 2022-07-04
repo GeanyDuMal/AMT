@@ -27,10 +27,9 @@ class Product
     private ?string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProductType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private ?ProductType $productType;
+    private string $productType;
 
     /**
      * @ORM\Column(type="integer")
@@ -70,12 +69,12 @@ class Product
         return $this;
     }
 
-    public function getProductType(): ?ProductType
+    public function getProductType(): string
     {
         return $this->productType;
     }
 
-    public function setProductType(?ProductType $productType): self
+    public function setProductType(string $productType): self
     {
         $this->productType = $productType;
 

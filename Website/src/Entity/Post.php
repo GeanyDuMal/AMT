@@ -34,10 +34,9 @@ class Post
     private $imageLink;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PostType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $postType;
+    private string $postType;
 
     public function getId(): ?int
     {
@@ -80,12 +79,12 @@ class Post
         return $this;
     }
 
-    public function getPostType(): ?PostType
+    public function getPostType(): string
     {
         return $this->postType;
     }
 
-    public function setPostType(?PostType $postType): self
+    public function setPostType(string $postType): self
     {
         $this->postType = $postType;
 

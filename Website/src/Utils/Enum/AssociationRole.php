@@ -9,5 +9,4 @@ final class AssociationRole extends AbstractEnumClass
     public const TRESORIER = "Tresorier";
     public const SECRETAIRE = "Secretaire";
     public const MEMBRE = "Membre";
-
 }
