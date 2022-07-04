@@ -14,7 +14,7 @@ final class Version20220703214004 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Migration des table de type vers une chaine de caractere contenant le type';
+        return 'Migration des tables de type vers une chaine de caractere contenant le type';
     }
 
     public function up(Schema $schema): void
