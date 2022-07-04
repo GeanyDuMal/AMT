@@ -22,11 +22,11 @@ class Price
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=ClientType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      * @Assert\NotNull(message="Le type client dans prix ne doit pas etre null")
      */
-    private ?ClientType $clientType;
+    private string $clientType;
+
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
@@ -46,12 +46,12 @@ class Price
         return $this;
     }
 
-    public function getClientType(): ?ClientType
+    public function getClientType(): ?string
     {
         return $this->clientType;
     }
 
-    public function setClientType(?ClientType $clientType): self
+    public function setClientType(string $clientType): self
     {
         $this->clientType = $clientType;
 
