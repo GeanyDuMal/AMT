@@ -2,12 +2,7 @@
 
 namespace App\Controller\Ordered;
 
-use App\Entity\Client;
-use App\Entity\ClientType;
 use App\Entity\Ordered;
-use App\Entity\PaymentType;
-use App\Entity\Price;
-use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Manager\OrderedManager;
 use App\Manager\PurchaseManager;
@@ -16,7 +11,7 @@ use App\Repository\ClientTypeRepository;
 use App\Repository\PaymentTypeRepository;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
-use App\Repository\ProductTypeRepository;
+use App\Utils\Enum\ClientType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,9 +24,8 @@ class PaymentOrderedController extends AbstractController
     /**
      * @Route("/ordered/payment/{!productOrderedSerialized}&{!idClient}", name="orderedPayment")
      */
-    public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
-        ClientTypeRepository $clientTypeRepository, PriceRepository $priceRepository, PaymentTypeRepository $paymentTypeRepository,
-        ProductRepository $productRepository): Response
+    public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request,
+            ClientRepository $clientRepository, PriceRepository $priceRepository, ProductRepository $productRepository): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
@@ -40,7 +34,7 @@ class PaymentOrderedController extends AbstractController
         $purchaseManager = new PurchaseManager($manager);
         $orderManager = new OrderedManager($manager);
         $clientOrder = null;
-        $clientType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+        $clientType = ClientType::ETUDIANT;
         $inputParameterBag = $request->request;
         $listProduct = [];
         $productOrderedIdTab = unserialize($productOrderedSerialized);
@@ -51,7 +45,7 @@ class PaymentOrderedController extends AbstractController
             $clientType = $clientOrder->getClientType();
         }
 
-        /*
+        /**
          * Definir le montant pour chaque produit + montant total
          * tout ca dans un tableau
          */
@@ -73,7 +67,7 @@ class PaymentOrderedController extends AbstractController
 
         //Si l'on a cliqué sur un bouton sur la page Payment
         if ($inputParameterBag->get('payement_type')){
-            $paymentTypeChose = $paymentTypeRepository->find($inputParameterBag->get('payement_type'));
+            $paymentTypeChose = $inputParameterBag->get('payement_type');
 
             /*
              * Permet de verifier si le produit commander est en stock

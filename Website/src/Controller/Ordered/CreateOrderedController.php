@@ -45,7 +45,7 @@ class CreateOrderedController extends AbstractController
             }
         }
 
-        // Si l'on a commandé au moins 1 produits
+        // Si l'on a commandé au moins 1 produit
         if ($productOrdered){
             return $this->redirectToRoute("orderedPayment", [
                 "productOrderedSerialized" => serialize($productOrdered),
