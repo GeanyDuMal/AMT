@@ -20,8 +20,9 @@ class PriceManager
         $this->priceRepository = $this->manager->getRepository(Price::class);
     }
 
-    public function persist(Price $price){
-        if ($this->verifPrice($price)){
+    public function persist(Price $price)
+    {
+        if ($this->verifPrice($price)) {
             $this->manager->persist($price);
             $this->manager->flush();
         }
@@ -34,12 +35,12 @@ class PriceManager
      * @param String $memberPriceAmount
      * @param String $studentPriceAmount
      * @return void
-     *
      * Only price for member and student beacause we only set up 2 types,
      * if more needed, you have to change it
      */
-    public function setData(Price $memberPrice, Price $studentPrice, Product $product, String $memberPriceAmount,
-                            String $studentPriceAmount){
+    public function setData(Price  $memberPrice, Price $studentPrice, Product $product, string $memberPriceAmount,
+                            string $studentPriceAmount)
+    {
         $memberType = ClientType::ASSOCIATION;
         $studentType = ClientType::ETUDIANT;
 
@@ -53,7 +54,7 @@ class PriceManager
     }
 
     #[Pure]
-    public function verifPrice(Price $price):bool
+    public function verifPrice(Price $price): bool
     {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
     }

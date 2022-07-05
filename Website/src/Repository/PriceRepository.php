@@ -19,20 +19,6 @@ class PriceRepository extends ServiceEntityRepository
         parent::__construct($registry, Price::class);
     }
 
-    /**
-     * @return array[] of Price and Product filtered by a clientType
-     */
-    public function findAllProductsAndPriceByClientType($clientType): array
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.clientType.name = ' . $clientType)
-            ->join('p.product', 'pr')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-
     // /**
     //  * @return Price[] Returns an array of Price objects
     //  */

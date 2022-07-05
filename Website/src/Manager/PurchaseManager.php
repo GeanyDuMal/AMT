@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\Pure;
 
 class PurchaseManager
 {
@@ -14,8 +15,9 @@ class PurchaseManager
         $this->manager = $managerController;
     }
 
-    public function persist(Purchase $purchase): void{
-        if ($this->verifyDisponibilityProduct($purchase)){
+    public function persist(Purchase $purchase): void
+    {
+        if ($this->verifyDisponibilityProduct($purchase)) {
             $this->removeProductQuantity($purchase);
 
             $this->manager->persist($purchase);
@@ -23,7 +25,8 @@ class PurchaseManager
         }
     }
 
-    public function removeWithRestore(Purchase $purchase): void{
+    public function removeWithRestore(Purchase $purchase): void
+    {
         $product = $purchase->getProduct();
         $productManager = new ProductManager($this->manager);
 
@@ -34,7 +37,9 @@ class PurchaseManager
         $this->manager->flush();
     }
 
-    public function verifyDisponibilityProduct(Purchase $purchase): bool{
+    #[Pure]
+    public function verifyDisponibilityProduct(Purchase $purchase): bool
+    {
         $product = $purchase->getProduct();
 
         return ($product->getQuantityStock() >= $purchase->getQuantity());
@@ -45,7 +50,8 @@ class PurchaseManager
      * @return void
      * Remove the quantity of the product ordered
      */
-    public function removeProductQuantity(Purchase $purchase){
+    public function removeProductQuantity(Purchase $purchase)
+    {
         $product = $purchase->getProduct();
         $product->setQuantityStock($product->getQuantityStock() - $purchase->getQuantity());
     }

@@ -4,7 +4,9 @@ namespace App\Manager;
 
 use App\Entity\Association;
 use App\Repository\ClientRepository;
+use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -38,9 +40,7 @@ class AssociationManager
     public function changeMemberTypeAdd(Association $association): void
     {
         $client = $association->getMember();
-        $clientTypeAssociation = $this->manager->getRepository(ClientType::class)->findOneBy(["name" => "Association"]);
-
-        $client->setClientType($clientTypeAssociation);
+        $client->setClientType(ClientType::ASSOCIATION);
 
         $this->manager->persist($client);
         $this->manager->flush();
@@ -49,9 +49,7 @@ class AssociationManager
     public function changeMemberTypeRemove(Association $association): void
     {
         $client = $association->getMember();
-        $clientTypeEtudiant = $this->manager->getRepository(ClientType::class)->findOneBy(["name" => "Etudiant"]);
-
-        $client->setClientType($clientTypeEtudiant);
+        $client->setClientType(ClientType::ETUDIANT);
 
         $this->manager->persist($client);
         $this->manager->flush();
@@ -63,19 +61,19 @@ class AssociationManager
      * It removes every President
      */
     public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember,
-        ClientRepository $clientRepository): void
+                                          ClientRepository       $clientRepository): void
     {
         $members = $this->associationRepository->findAll();
 
-        foreach ($members as $otherMember){
-            if($associationMember->getMember() !== $otherMember->getMember()){
-                if($otherMember->getRole()->getName() == "President"){
+        foreach ($members as $otherMember) {
+            if ($associationMember->getMember() !== $otherMember->getMember()) {
+                if ($otherMember->getRole()->getName() == AssociationRole::PRESIDENT) {
                     //Here $otherMember is the President in Function
 
                     $client = $clientRepository->findOneBy(['id' => $otherMember->getMember()]);
 
                     $client->setClientType(ClientType::ETUDIANT);
-                    $client->setRoles(["ROLE_USER"]);
+                    $client->setRoles([SymfonyRole::USER]);
 
                     $manager->remove($otherMember);
                     $manager->persist($client);
