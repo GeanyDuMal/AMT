@@ -5,6 +5,8 @@ namespace App\Controller\Connexion;
 use App\Entity\Client;
 use App\Manager\ClientManager;
 use App\Repository\ClientTypeRepository;
+use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +19,7 @@ class SignInController extends AbstractController
     /**
      * @Route("/signin", name="signin")
      */
-    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher, ClientTypeRepository $clientTypeRepository): Response
+    public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         // Redirige vers le profil si deja connecté
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
@@ -37,8 +39,8 @@ class SignInController extends AbstractController
                 ->setFirstName(trim($inputParameterBag->get("firstName")))
                 ->setLogin(trim($inputParameterBag->get("login")))
                 ->setPassword($hashedPassword)
-                ->setClientType($clientTypeRepository->findOneBy(["name" => "Etudiant"]))
-                ->setRoles(["ROLE_USER"])
+                ->setClientType(ClientType::ETUDIANT)
+                ->setRoles([SymfonyRole::USER])
                 ->setFidelityPoint(0)
                 ->setBalance(0);
 

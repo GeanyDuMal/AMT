@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Utils\Enum;
+
+final class SymfonyRole extends AbstractEnumClass
+{
+    /**
+     * Role d'admin non-présent car non assignable.
+     * Il a été affecté manuellement
+     */
+    public const USER = "ROLE_USER";
+    public const ASSOC = "ROLE_ASSOC";
+    public const TRESORIER = "ROLE_TRESORIER";
+    public const ROLE_PRESIDENT = "ROLE_PRESIDENT";
+}
