@@ -3,9 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Association;
-use App\Entity\AssociationRole;
 use App\Entity\Client;
-use App\Entity\ClientType;
+use App\Utils\Enum\AssociationRole;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,37 +14,35 @@ class AssociationFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $clientRepository = $manager->getRepository(Client::class);
-        $associationRoleRepository = $manager->getRepository(AssociationRole::class);
 
 
         $association = new Association();
         $association->setMember($clientRepository->findOneBy(["login" => "RomainGamer57"]))
-                    ->setRole($associationRoleRepository->findOneBy(["name" => "President"]));
+            ->setRole(AssociationRole::PRESIDENT);
         $manager->persist($association);
 
         $association = new Association();
         $association->setMember($clientRepository->findOneBy(["login" => "Dhoulnoun"]))
-            ->setRole($associationRoleRepository->findOneBy(["name" => "Tresorier"]));
+            ->setRole(AssociationRole::TRESORIER);
         $manager->persist($association);
 
         $association = new Association();
         $association->setMember($clientRepository->findOneBy(["login" => "Omareee"]))
-            ->setRole($associationRoleRepository->findOneBy(["name" => "Secretaire"]));
+            ->setRole(AssociationRole::SECRETAIRE);
         $manager->persist($association);
 
         $association = new Association();
         $association->setMember($clientRepository->findOneBy(["login" => "LeaneLoli"]))
-            ->setRole($associationRoleRepository->findOneBy(["name" => "Membre"]));
+            ->setRole(AssociationRole::MEMBRE);
         $manager->persist($association);
-        
+
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
-        return[
+        return [
             ClientFixture::class,
-            AssociationRoleFixture::class
         ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\ClientType;
 use App\Entity\Price;
 use App\Entity\Product;
+use App\Utils\Enum\ClientType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,11 +13,10 @@ class PriceFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
         $productRepository = $manager->getRepository(Product::class);
 
-        $clientTypeEtudiant = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
-        $clientTypeAssociation = $clientTypeRepository->findOneBy(["name" => "Association"]);
+        $clientTypeAssociation = ClientType::ASSOCIATION;
+        $clientTypeEtudiant = ClientType::ETUDIANT;
 
 
         $snickers = $productRepository->findOneBy(["name" => "Snickers"]);
@@ -166,10 +165,9 @@ class PriceFixture extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return[
-            ClientTypeFixture::class,
             ProductFixture::class
         ];
     }

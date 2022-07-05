@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Post;
-use App\Entity\PostType;
+use App\Utils\Enum\PostType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -12,9 +12,8 @@ class PostFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $postTypeRepository = $manager->getRepository(PostType::class);
-        $postTypeEvent = $postTypeRepository->findOneBy(["name" => "Event"]);
-        $postTypeAutre = $postTypeRepository->findOneBy(["name" => "Autre"]);
+        $postTypeEvent = PostType::EVENT;
+        $postTypeAutre = PostType::AUTRE;
 
 
         $post = new Post();
@@ -27,7 +26,7 @@ class PostFixture extends Fixture implements DependentFixtureInterface
 
         $post = new Post();
         $post->setTitle("Retrait SweatShirt")
-            ->setPostType($postTypeEvent)
+            ->setPostType($postTypeAutre)
             ->setDescription("Les Sweats et les Tshirts sont enfin arrivé au bureau, pensez a venir les recuperer
                                         afin que vous puissiez les revetir ;-)")
             ->setImageLink("https://media.dior.com/couture/ecommerce/media/catalog/product/i/H/1604511903_113J698A0531_C989_E01_GHC.jpg?imwidth=800");
@@ -35,7 +34,7 @@ class PostFixture extends Fixture implements DependentFixtureInterface
 
         $post = new Post();
         $post->setTitle("Veste Oubliée")
-            ->setPostType($postTypeEvent)
+            ->setPostType($postTypeAutre)
             ->setDescription("Une veste a été oublié au bureau, merci de venir la recupérer")
             ->setImageLink("https://assets.laboutiqueofficielle.com/w_450,q_auto,f_auto/media/products/2021/03/02/mtx_255225_TEDDY-497_BLACK-WHITE_20210309T164443_01.jpg");
         $manager->persist($post);
@@ -43,10 +42,8 @@ class PostFixture extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
-        return[
-            PostTypeFixture::class
-        ];
+        return [];
     }
 }

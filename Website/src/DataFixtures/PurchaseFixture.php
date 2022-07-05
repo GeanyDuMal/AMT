@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ordered;
-use App\Entity\Purchase;
 use App\Entity\Product;
+use App\Entity\Purchase;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -23,8 +23,8 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
 
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[0])
-                ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
-                ->setQuantity(2);
+            ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
+            ->setQuantity(2);
         $manager->persist($purchase);
 
         $purchase = new Purchase();
@@ -91,9 +91,9 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
-        return[
+        return [
             OrderedFixture::class,
             ProductFixture::class
         ];
