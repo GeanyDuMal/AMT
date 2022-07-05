@@ -14,7 +14,7 @@ class DeleteProductController extends AbstractController
     /**
      * @Route("/product/delete/{!id}", name="delete_product", methods={"GET", "DELETE"})
      */
-    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository)
+    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): JsonResponse
     {
         if (!$this->isGranted('ROLE_TRESORIER')){
             return new JsonResponse(false);

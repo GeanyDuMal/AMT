@@ -3,9 +3,9 @@
 namespace App\Manager;
 
 use App\Entity\Product;
-use App\Repository\ProductTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use JetBrains\PhpStorm\Pure;
 
 class ProductManager
 {
@@ -28,7 +28,6 @@ class ProductManager
     }
 
     /**
-     * @param ProductTypeRepository $productTypeRepository
      * @param Product $product
      * @param String $productType
      * @param String $productName
@@ -36,15 +35,14 @@ class ProductManager
      * @param String $imageLink
      * @return void
      */
-    public function setData(ProductTypeRepository $productTypeRepository, Product $product, String $productType, String $productName, int $productStock, String $imageLink){
-        $type = $productTypeRepository->findOneBy(["name"=>$productType]);
-
+    public function setData(Product $product, String $productType, String $productName, int $productStock, String $imageLink):void {
         $product->setName($productName)
             ->setImageLink($imageLink)
             ->setQuantityStock($productStock)
-            ->setProductType($type);
+            ->setProductType($productType);
     }
 
+    #[Pure]
     public function verifProduct(Product $product): bool
     {
         return($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "");

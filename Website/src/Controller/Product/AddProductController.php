@@ -8,6 +8,7 @@ use App\Manager\ProductManager;
 use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductTypeRepository;
+use App\Utils\Enum\ProductType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +22,7 @@ class AddProductController extends AbstractController
      * @Route("/product/add", name="add_product")
      */
     public function index(ProductRepository $productRepository, ValidatorInterface $validator, Request $request,
-                          EntityManagerInterface $manager, ProductTypeRepository $productTypeRepository,
-                          ClientTypeRepository $clientTypeRepository): Response
+                          EntityManagerInterface $manager): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
@@ -30,7 +30,7 @@ class AddProductController extends AbstractController
 
         $data = $request->request;
         $product = new Product();
-        $productTypes = $productTypeRepository->findAll();
+        $productTypes = ProductType::getAll();
         $validationErrors = "";
         $productExistsError = "";
 
@@ -38,7 +38,7 @@ class AddProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($productTypeRepository, $product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
+            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
             $validationErrors = $validator->validate($product);
 
             if($validationErrors->count() == 0){
@@ -48,7 +48,7 @@ class AddProductController extends AbstractController
                     $memberPrice = new Price();
                     $studentPrice = new Price();
 
-                    $priceManager->setData($clientTypeRepository, $memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
+                    $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
                     $validationErrors = $validator->validate($memberPrice);
 
                     if($validationErrors->count() == 0){
