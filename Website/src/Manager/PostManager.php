@@ -29,14 +29,15 @@ class PostManager
 
     /**
      * @param Post $post
-     * @param PostType $postType
+     * @param string $postType
      * @param String $postTitle
      * @param String $postDescription
      * @param String $imageLink
      * @return void
      */
-    public function setData(Post $post, PostType $postType, String $postTitle,
-                            String $postDescription, String $imageLink){
+    public function setData(Post $post, string $postType, String $postTitle,
+                            String $postDescription, String $imageLink): void
+    {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
         $post->setImageLink($imageLink);
@@ -49,7 +50,7 @@ class PostManager
         return ($post->getTitle() != "" && $post->getDescription() != "");
     }
 
-    public function replaceImageIfEmpty(Post $post)
+    public function replaceImageIfEmpty(Post $post): void
     {
         if($post->getImageLink() == null || $post->getImageLink() == ""){
             $post->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
