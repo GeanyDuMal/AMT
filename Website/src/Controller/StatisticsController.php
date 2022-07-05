@@ -92,6 +92,7 @@ class StatisticsController extends AbstractController
                 return $order["count"];
         return -1;
     }
+    
     private function thisWeek(): array
     {
         $day_of_week = date('N', strtotime(date("Y-m-d")));
