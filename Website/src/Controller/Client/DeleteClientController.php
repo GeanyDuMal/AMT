@@ -2,12 +2,10 @@
 
 namespace App\Controller\Client;
 
-use App\Entity\Client;
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteClientController extends AbstractController
 {

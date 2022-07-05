@@ -8,6 +8,7 @@ use App\Manager\ClientManager;
 use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
+use App\Utils\Enum\AssociationRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,6 @@ class AddClientController extends AbstractController
      * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
      */
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
-                          AssociationRoleRepository $associationRoleRepository, ClientTypeRepository $clientTypeRepository,
                           EntityManagerInterface $manager, ValidatorInterface $validator): Response
     {
         if (!$this->isGranted('ROLE_PRESIDENT')){
@@ -30,7 +30,7 @@ class AddClientController extends AbstractController
         }
 
         $data = $request->request;
-        $assosRoles = $associationRoleRepository->findAll();
+        $assosRoles = AssociationRole::getAll();
         $errorLoginExist = "";
         $validationErrors = "";
 
@@ -39,7 +39,7 @@ class AddClientController extends AbstractController
             $associationManager = new AssociationManager($manager);
             $client = new Client();
 
-            $clientManager->setData($client, $clientTypeRepository, $passwordHasher, $data->get("name"),
+            $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
                 $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));
 

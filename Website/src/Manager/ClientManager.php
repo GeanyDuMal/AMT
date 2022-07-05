@@ -5,16 +5,17 @@ namespace App\Manager;
 use App\Entity\Association;
 use App\Entity\AssociationRole;
 use App\Entity\Client;
-use App\Entity\ClientType;
-use App\Repository\ClientTypeRepository;
+use App\Repository\ClientRepository;
+use App\Utils\Enum\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+;
 
 class ClientManager
 {
     public EntityManagerInterface $manager;
-    public ObjectRepository $clientRepository;
+    public ClientRepository $clientRepository;
 
     public function __construct(EntityManagerInterface $managerController)
     {
@@ -22,18 +23,19 @@ class ClientManager
         $this->clientRepository = $this->manager->getRepository(Client::class);
     }
 
-    public function setData(Client $client, ClientTypeRepository $clientTypeRepository, UserPasswordHasherInterface $passwordHasher,
-        String $name, String $firstName, String $login, ?String $password, String $balance, String $roleAssociationName, String $clientTypeName)
+    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher,
+        string $name, string $firstName, string $login, string $password, string $balance, string $roleAssociationName,
+        string $clientType): void
     {
         $client->setName(strtoupper($name))
             ->setFirstName($firstName)
             ->setLogin($login)
-            ->setBalance($balance);
+            ->setBalance($balance)
+            ->setClientType($clientType);
 
-        $type = $clientTypeRepository->findOneBy(["name" => $clientTypeName]);
-        $isStudent = (strcmp($clientTypeName,"Etudiant") == 0);
+        $isStudent = (strcmp($clientType,ClientType::ETUDIANT) == 0);
         if ($isStudent){
-            $typeName = $clientTypeName;
+            $typeName = $clientType;
         }else{
             $typeName = $roleAssociationName;
         }
@@ -48,8 +50,7 @@ class ClientManager
             $client->setPassword($hashedPassword);
         }
 
-        $client->setRoles($role)
-            ->setClientType($type);
+        $client->setRoles($role);
     }
 
     /**
