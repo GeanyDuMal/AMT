@@ -31,8 +31,8 @@ final class Version20220703214004 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_CAC822D99771C8EE ON price');
         $this->addSql('ALTER TABLE price DROP PRIMARY KEY');
         $this->addSql('ALTER TABLE price ADD client_type VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE price ADD PRIMARY KEY (product_id, client_type)');
         $this->addSql('UPDATE price SET client_type = (SELECT client_type.name FROM client_type, price WHERE price.client_type_id = client_type.id)');
+        $this->addSql('ALTER TABLE price ADD PRIMARY KEY (product_id, client_type)');
         $this->addSql('ALTER TABLE price DROP client_type_id');
 
         // Modification du champs paymentType sur Ordered
