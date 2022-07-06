@@ -4,7 +4,7 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
-use App\Entity\PaymentType;
+use App\Utils\Enum\PaymentType;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -13,19 +13,18 @@ class OrderedTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->ordered=new Ordered();
-        $this->dateTime=new DateTime('NOW');
-        $this->paymentType=new PaymentType();
-        $this->client=new Client();
+        $this->ordered = new Ordered();
+        $this->dateTime = new DateTime('Now');
+        $this->client = new Client();
     }
 
 
     public function testGetClient()
     {
-        $value='Younes';
+        $value = 'Younes';
 
-        $responseC=$this->client->setName($value);
-        $response=$this->ordered->setClient($responseC);
+        $responseC = $this->client->setName($value);
+        $response = $this->ordered->setClient($responseC);
 
         self::assertInstanceOf(Client::class, $responseC);
         self::assertInstanceOf(Client::class, $this->ordered->getClient());
@@ -35,27 +34,24 @@ class OrderedTest extends TestCase
 
     public function testGetPaymentType()
     {
-        $value='CB';
+        $value = PaymentType::CARTE_BANCAIRE;
 
-        $responsePT=$this->paymentType->setName($value);
-        $response=$this->ordered->setPaymentType($responsePT);
+        $response = $this->ordered->setPaymentType($value);
 
-        self::assertInstanceOf(PaymentType::class,$responsePT);
-        self::assertInstanceOf(PaymentType::class,$response->getPaymentType());
-        self::assertInstanceOf(Ordered::class,$response);
-        self::assertEquals($value,$this->ordered->getPaymentType()->getName());
-
+        self::assertInstanceOf(Ordered::class, $response);
+        self::assertContains($this->ordered->getPaymentType(), PaymentType::getAll());
+        self::assertEquals($value, $this->ordered->getPaymentType());
     }
 
     public function testGetOrderedAt()
     {
-        $value= $this->dateTime;
+        $value = $this->dateTime;
 
-        $response=$this->ordered->setOrderedAt($value);
+        $response = $this->ordered->setOrderedAt($value);
 
-        self::assertInstanceOf(Ordered::class,$response);
-        self::assertInstanceOf(DateTime::class,$value);
-        self::assertEquals($value,$this->ordered->getOrderedAt());
+        self::assertInstanceOf(Ordered::class, $response);
+        self::assertInstanceOf(DateTime::class, $value);
+        self::assertEquals($value, $this->ordered->getOrderedAt());
 
     }
 }

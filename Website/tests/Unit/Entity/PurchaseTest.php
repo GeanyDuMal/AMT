@@ -13,48 +13,48 @@ class PurchaseTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->purchase=new Purchase();
-        $this->product=new Product();
-        $this->ordered=new Ordered();
-        $this->dateTime=new DateTime('NOW');
+        $this->purchase = new Purchase();
+        $this->product = new Product();
+        $this->ordered = new Ordered();
+        $this->dateTime = new DateTime('NOW');
     }
 
     public function testGetProduct()
     {
-        $value='Snickers';
+        $value = 'Snickers';
 
-        $responseP=$this->product->setName($value);
-        $response=$this->purchase->setProduct($responseP);
+        $responseP = $this->product->setName($value);
+        $response = $this->purchase->setProduct($responseP);
 
-        self::assertInstanceOf(Product::class,$responseP);
+        self::assertInstanceOf(Product::class, $responseP);
         self::assertInstanceOf(Product::class, $response->getProduct());
         self::assertInstanceOf(Purchase::class, $response);
-        self::assertEquals($value,$this->purchase->getProduct()->getName());
+        self::assertEquals($value, $this->purchase->getProduct()->getName());
     }
 
     public function testGetQuantity()
     {
-        $value=10;
+        $value = 10;
 
-        $response=$this->purchase->setQuantity($value);
+        $response = $this->purchase->setQuantity($value);
 
-        self::assertInstanceOf(Purchase::class,$response);
-        self::assertEquals($value,$this->purchase->getQuantity());
+        self::assertInstanceOf(Purchase::class, $response);
+        self::assertEquals($value, $this->purchase->getQuantity());
 
     }
 
     public function testGetOrdered()
     {
-        $value= $this->dateTime;
+        $value = $this->dateTime;
 
-        $responseO=$this->ordered->setOrderedAt($value);
-        $response=$this->purchase->setOrdered($responseO);
+        $responseO = $this->ordered->setOrderedAt($value);
+        $response = $this->purchase->setOrdered($responseO);
 
-        self::assertInstanceOf(Ordered::class,$responseO);
-        self::assertInstanceOf(DateTime::class,$value);
-        self::assertInstanceOf(Ordered::class,$response->getOrdered());
-        self::assertInstanceOf(Purchase::class,$response);
-        self::assertEquals($value,$this->purchase->getOrdered()->getOrderedAt());
+        self::assertInstanceOf(Ordered::class, $responseO);
+        self::assertInstanceOf(DateTime::class, $value);
+        self::assertInstanceOf(Ordered::class, $response->getOrdered());
+        self::assertInstanceOf(Purchase::class, $response);
+        self::assertEquals($value, $this->purchase->getOrdered()->getOrderedAt());
 
     }
 }
