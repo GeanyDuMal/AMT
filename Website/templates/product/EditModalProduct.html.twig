@@ -53,7 +53,7 @@
             <div class="form-group col-md-12" >
                 <select name="productType" class="form-control linked-select">
                     {% for productType in productTypes %}
-                        <option {% if productType.name==product.productType.name %} selected {% endif %} > {{ productType.name }} </option>
+                        <option {% if productType == product.productType %} selected {% endif %} > {{ productType.name }} </option>
                     {% endfor %}
                 </select>
             </div>

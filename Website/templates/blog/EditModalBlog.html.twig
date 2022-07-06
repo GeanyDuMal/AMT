@@ -30,7 +30,7 @@
             <div class="form-group col-md-12">
                 <select name="postType"  class="form-control linked-select">
                     {% for postType in postTypes %}
-                        <option {% if postType.name==post.postType.name %} selected {% endif %} > {{ postType.name }} </option>
+                        <option {% if postType == post.postType %} selected {% endif %} > {{ postType }} </option>
                     {% endfor %}
                 </select> <br>
             </div>

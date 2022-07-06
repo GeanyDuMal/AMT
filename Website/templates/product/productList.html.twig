@@ -81,7 +81,7 @@
                                 {% endif %}
                                 <p class="product-price">
                                     Prix : {% for price in product.prices %}
-                                                {% if price.clientType.name == clientTypeActual%}
+                                                {% if price.clientType == clientTypeActual%}
                                                     {{ price.price }}€
                                                 {% endif %}
                                             {% endfor %}

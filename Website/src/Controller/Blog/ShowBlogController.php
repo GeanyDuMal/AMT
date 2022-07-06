@@ -25,14 +25,18 @@ class ShowBlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{!id}", name="selected_blog")
+     * @Route("/blog/show/{!id}", name="selected_blog")
      */
     public function showBlog($id, PostRepository $postRepository, EntityManagerInterface $manager): Response
     {
         $blog = $postRepository->find($id);
 
-        return $this->render('blog/ShowOneBlog.html.twig',[
-            'blog' => $blog,
-        ]);
+        if ($blog){
+            return $this->render('blog/ShowOneBlog.html.twig',[
+                'blog' => $blog,
+            ]);
+        }else{
+            return $this->redirectToRoute('blog');
+        }
     }
 }
