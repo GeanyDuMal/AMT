@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Post;
-use App\Entity\PostType;
+use App\Utils\Enum\PostType;
 use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase
@@ -12,53 +12,50 @@ class PostTest extends TestCase
     {
         parent::setUp();
         $this->post = new Post();
-        $this->postType= new PostType();
     }
 
 
     public function testGetTitle()
     {
-        $value='post title';
+        $value = 'post title';
 
-        $response=$this->post->setTitle($value);
+        $response = $this->post->setTitle($value);
 
-        self::assertInstanceOf(Post::class,$response);
-        self::assertEquals($value,$this->post->getTitle());
+        self::assertInstanceOf(Post::class, $response);
+        self::assertEquals($value, $this->post->getTitle());
 
     }
 
     public function testGetDescription()
     {
-        $value='this is a long text to put in the description';
+        $value = 'this is a long text to put in the description';
 
-        $response=$this->post->setDescription($value);
+        $response = $this->post->setDescription($value);
 
-        self::assertInstanceOf(Post::class,$response);
-        self::assertEquals($value,$this->post->getDescription());
+        self::assertInstanceOf(Post::class, $response);
+        self::assertEquals($value, $this->post->getDescription());
 
     }
 
     public function testGetImageLink()
     {
-        $value='https://thisisalink.notfound/image';
+        $value = 'https://thisisalink.notfound/image';
 
-        $response=$this->post->setImageLink($value);
+        $response = $this->post->setImageLink($value);
 
-        self::assertInstanceOf(Post::class,$response);
-        self::assertEquals($value,$this->post->getImageLink());
+        self::assertInstanceOf(Post::class, $response);
+        self::assertEquals($value, $this->post->getImageLink());
 
     }
 
     public function testGetPostType()
     {
-        $value='event';
+        $value = PostType::EVENT;
 
-        $responsePT=$this->postType->setName($value);
-        $response=$this->post->setPostType($responsePT);
+        $response = $this->post->setPostType($value);
 
-        self::assertInstanceOf(PostType::class,$responsePT);
-        self::assertInstanceOf(Post::class,$response);
-        self::assertInstanceOf(PostType::class,$this->post->getPostType());
-        self::assertEquals($value,$this->post->getPostType()->getName());
+        self::assertInstanceOf(Post::class, $response);
+        self::assertEquals($value, $this->post->getPostType());
+        self::assertContains($this->post->getPostType(), PostType::getAll());
     }
 }
