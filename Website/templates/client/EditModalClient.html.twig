@@ -73,13 +73,13 @@
                 <label>Role</label>
                 <select name="assosRoles" id="assosRoles" class="form-control linked-select"  id="clientType">
                     {% if memberExists %}
-                        {% set memberRoleName=member.role.name %}
+                        {% set memberRoleName = member.role %}
                     {% else %}
-                        {% set memberRoleName=null %}
+                        {% set memberRoleName = null %}
                     {% endif %}
                     {% for assosRole in assosRoles %}
-                        <option {% if assosRole.name==memberRoleName %} selected {% endif %} >
-                            {{assosRole.name}}
+                        <option {% if assosRole == memberRoleName %} selected {% endif %} >
+                            {{assosRole}}
                         </option>
                     {% endfor %}
                 </select>

@@ -4,6 +4,8 @@ namespace App\Controller\Product;
 
 use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
+use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,22 +16,21 @@ class ShowProductController extends AbstractController
     /**
      * @Route("/product/{message?}", name="product_list",methods={"GET", "POST"} )
      */
-    public function show(EntityManagerInterface $manager, ClientTypeRepository $clientTypeRepository,
-        ProductRepository $productRepository, string $message = null): Response
+    public function show(EntityManagerInterface $manager, ProductRepository $productRepository, string $message = null): Response
     {
-        if ($this->isGranted("ROLE_ASSOC")) {
-            $clientTypeActual = $clientTypeRepository->findOneBy(["name" => "Association"]);
+        if ($this->isGranted(SymfonyRole::ASSOC)) {
+            $clientTypeActual = ClientType::ASSOCIATION;
         } else {
-            $clientTypeActual = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+            $clientTypeActual = ClientType::ETUDIANT;
         }
 
         // On recupere tout les produits
-        $products = $productRepository->findAll();
+        $products = $productRepository->findBy([], ["productType" => "ASC"]);
 
         return $this->render('product/productList.html.twig', [
             'products' => $products,
             'message' => $message,
-            'clientTypeActual' => $clientTypeActual->getName()
+            'clientTypeActual' => $clientTypeActual
         ]);
     }
 }

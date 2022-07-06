@@ -18,10 +18,9 @@ class Association
     private $member;
 
     /**
-     * @ORM\ManyToOne(targetEntity=AssociationRole::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $role;
+    private string $role;
 
     public function getMember(): ?Client
     {
@@ -35,12 +34,12 @@ class Association
         return $this;
     }
 
-    public function getRole(): ?AssociationRole
+    public function getRole(): string
     {
         return $this->role;
     }
 
-    public function setRole(?AssociationRole $role): self
+    public function setRole(string $role): self
     {
         $this->role = $role;
 

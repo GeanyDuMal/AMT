@@ -3,6 +3,7 @@
 namespace App\Controller\Blog;
 
 use App\Repository\PostRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +17,7 @@ class DeleteBlogController extends AbstractController
      */
     public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): JsonResponse
 {
-        if(!$this->isGranted('ROLE_ASSOC')){
+        if(!$this->isGranted(SymfonyRole::ASSOC)){
             return new JsonResponse(false);
         }
 

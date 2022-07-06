@@ -3,19 +3,19 @@
 namespace App\DataFixtures;
 
 use App\Entity\Client;
-use App\Entity\ClientType;
+use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ClientFixture extends Fixture implements DependentFixtureInterface
+class ClientFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $clientTypeRepository = $manager->getRepository(ClientType::class);
 
-        $clientTypeAssociation = $clientTypeRepository->findOneBy(["name" => "Association"]);
-        $clientTypeEtudiant = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+        $clientTypeAssociation = ClientType::ASSOCIATION;
+        $clientTypeEtudiant = ClientType::ETUDIANT;
 
         $client = new Client();
         $client->setName("NATANELIC")
@@ -25,7 +25,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
                 ->setBalance(1.50)
                 ->setFidelityPoint(26)
                 ->setClientType($clientTypeAssociation)
-                ->setRoles(["ROLE_PRESIDENT"]);
+                ->setRoles([SymfonyRole::PRESIDENT]);
         $manager->persist($client);
 
         $client = new Client();
@@ -36,7 +36,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
                 ->setBalance(5)
                 ->setFidelityPoint(12)
                 ->setClientType($clientTypeAssociation)
-                ->setRoles(["ROLE_ASSOC"]);
+                ->setRoles([SymfonyRole::ASSOC]);
         $manager->persist($client);
 
         $client = new Client();
@@ -47,7 +47,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
             ->setBalance(0)
             ->setFidelityPoint(60)
             ->setClientType($clientTypeAssociation)
-            ->setRoles(["ROLE_TRESORIER"]);
+            ->setRoles([SymfonyRole::TRESORIER]);
         $manager->persist($client);
 
         $client = new Client();
@@ -58,7 +58,7 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
             ->setBalance(80)
             ->setFidelityPoint(0)
             ->setClientType($clientTypeAssociation)
-            ->setRoles(["ROLE_ASSOC"]);
+            ->setRoles([SymfonyRole::ASSOC]);
         $manager->persist($client);
 
         $client = new Client();
@@ -69,16 +69,9 @@ class ClientFixture extends Fixture implements DependentFixtureInterface
             ->setBalance(0)
             ->setFidelityPoint(0)
             ->setClientType($clientTypeEtudiant)
-            ->setRoles(["ROLE_USER"]);
+            ->setRoles([SymfonyRole::USER]);
         $manager->persist($client);
 
         $manager->flush();
-    }
-
-    public function getDependencies(): array
-    {
-        return[
-            ClientTypeFixture::class
-        ];
     }
 }

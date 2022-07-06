@@ -29,10 +29,9 @@ class Ordered
     private ?Client $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PaymentType::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
-    private ?PaymentType $paymentType;
+    private string $paymentType;
 
     public function getId(): ?int
     {
@@ -63,12 +62,12 @@ class Ordered
         return $this;
     }
 
-    public function getPaymentType(): ?PaymentType
+    public function getPaymentType(): string
     {
         return $this->paymentType;
     }
 
-    public function setPaymentType(?PaymentType $paymentType): self
+    public function setPaymentType(string $paymentType): self
     {
         $this->paymentType = $paymentType;
 

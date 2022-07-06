@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Ordered;
 use App\Entity\Client;
-use App\Entity\PaymentType;
+use App\Entity\Ordered;
+use App\Utils\Enum\PaymentType;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -15,23 +15,22 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $clientRepository = $manager->getRepository(Client::class);
-        $paymentTypeRepository = $manager->getRepository(PaymentType::class);
 
-        $paymentTypeCarte = $paymentTypeRepository->findOneBy(["name" => "Carte Bancaire"]);
-        $paymentTypeEspece = $paymentTypeRepository->findOneBy(["name" => "Espece"]);
-        $paymentTypeSolde = $paymentTypeRepository->findOneBy(["name" => "Solde"]);
+        $paymentTypeCarte = PaymentType::CARTE_BANCAIRE;
+        $paymentTypeEspece = PaymentType::ESPECE;
+        $paymentTypeSolde = PaymentType::SOLDE;
         $dateNow = new DateTime("now");
 
         $order = new Ordered();
         $order->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
-                ->setPaymentType($paymentTypeCarte)
-                ->setOrderedAt($dateNow);
+            ->setPaymentType($paymentTypeCarte)
+            ->setOrderedAt($dateNow);
         $manager->persist($order);
 
         $order = new Ordered();
         $order->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
-                ->setPaymentType($paymentTypeEspece)
-                ->setOrderedAt($dateNow);
+            ->setPaymentType($paymentTypeEspece)
+            ->setOrderedAt($dateNow);
         $manager->persist($order);
 
         $order = new Ordered();
@@ -55,10 +54,9 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
-        return[
-            PaymentTypeFixture::class,
+        return [
             ClientFixture::class
         ];
     }

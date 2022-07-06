@@ -33,19 +33,18 @@ class OrderedRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.client', 'c')
-            ->leftjoin('c.clientType', 't')
             ->addSelect('c')
-            ->addSelect('t')
             ->getQuery()
             ->getResult();
     }
+
     public function quantityThisWeeksCommands()
     {
-        $thisWeek =date('W');
+        $thisWeek = date('W');
         return $this->createQueryBuilder('a')
             ->select("count(a) as number")
             ->where("WEEK(a.orderedAt)=:thisWeek")
-            ->setParameter("thisWeek",$thisWeek)
+            ->setParameter("thisWeek", $thisWeek)
             ->getQuery()
             ->getResult()[0];
     }
@@ -82,6 +81,7 @@ class OrderedRepository extends ServiceEntityRepository
             ");
         return $purchase->getResult();
     }
+
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */

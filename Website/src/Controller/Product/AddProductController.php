@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller\Product;
+
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Manager\PriceManager;
@@ -8,6 +9,9 @@ use App\Manager\ProductManager;
 use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductTypeRepository;
+use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\ProductType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,41 +24,40 @@ class AddProductController extends AbstractController
     /**
      * @Route("/product/add", name="add_product")
      */
-    public function index(ProductRepository $productRepository, ValidatorInterface $validator, Request $request,
-                          EntityManagerInterface $manager, ProductTypeRepository $productTypeRepository,
-                          ClientTypeRepository $clientTypeRepository): Response
+    public function index(ProductRepository      $productRepository, ValidatorInterface $validator, Request $request,
+                          EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')){
+        if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
         $product = new Product();
-        $productTypes = $productTypeRepository->findAll();
+        $productTypes = ProductType::getAll();
         $validationErrors = "";
         $productExistsError = "";
 
-        if($data->count()>0){
+        if ($data->count() > 0) {
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($productTypeRepository, $product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
+            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
             $validationErrors = $validator->validate($product);
 
-            if($validationErrors->count() == 0){
-                if($productRepository->findBy(['name' => $product->getName()])){
+            if ($validationErrors->count() == 0) {
+                if ($productRepository->findBy(['name' => $product->getName()])) {
                     $productExistsError = "Le produit existe déjà";
-                }else{
+                } else {
                     $memberPrice = new Price();
                     $studentPrice = new Price();
 
-                    $priceManager->setData($clientTypeRepository, $memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
+                    $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
                     $validationErrors = $validator->validate($memberPrice);
 
-                    if($validationErrors->count() == 0){
+                    if ($validationErrors->count() == 0) {
                         $validationErrors = $validator->validate($studentPrice);
 
-                        if($validationErrors->count() == 0) {
+                        if ($validationErrors->count() == 0) {
                             $productManager->persist($product);
 
                             $priceManager->persist($memberPrice);

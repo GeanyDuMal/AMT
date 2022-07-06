@@ -50,8 +50,8 @@
             <form method="post" class="block_button_payment">
 
                   {% for paymentType in paymentTypeList %}
-                        <button type="submit" name="payement_type" value="{{ paymentType.id }}" class="btn btn-primary" onclick="return preventPayment()">
-                              {{ paymentType.name }}
+                        <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary" onclick="return preventPayment()">
+                              {{ paymentType }}
                         </button>
                   {% endfor %}
             </form>

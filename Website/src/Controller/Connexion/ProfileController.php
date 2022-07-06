@@ -16,10 +16,10 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function index(Request $request, UserPasswordHasherInterface $passwordHasher,
-        ClientRepository $clientRepository, ClientManager $clientManager): Response
+    public function index(Request          $request, UserPasswordHasherInterface $passwordHasher,
+                          ClientRepository $clientRepository, ClientManager $clientManager): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
             $edit = false;
 
@@ -29,8 +29,7 @@ class ProfileController extends AbstractController
             if (!is_null($inputParameterBag->get("oldPassword")) &&
                 !is_null($inputParameterBag->get("newPassword")) &&
                 trim($inputParameterBag->get("newPassword")) === trim($inputParameterBag->get("confirmPassword")) &&
-                !($inputParameterBag->get("oldPassword") === ($inputParameterBag->get("newPassword"))))
-            {
+                !($inputParameterBag->get("oldPassword") === ($inputParameterBag->get("newPassword")))) {
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
                 if (password_verify(trim($inputParameterBag->get("oldPassword")), $this->getUser()->getPassword())) {
                     $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("newPassword")));
@@ -39,7 +38,7 @@ class ProfileController extends AbstractController
 
                     $clientManager->persist($client);
                     $edit = true;
-                }else{
+                } else {
                     $edit = 'wrong_password';
                 }
             }
@@ -48,7 +47,7 @@ class ProfileController extends AbstractController
                 "user" => $client,
                 "edit" => $edit
             ]);
-        }else{
+        } else {
             return $this->redirectToRoute("login");
         }
     }

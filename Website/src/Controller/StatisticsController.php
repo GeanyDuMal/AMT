@@ -8,6 +8,7 @@ use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +22,7 @@ class StatisticsController extends AbstractController
     public function index(ProductRepository $productRepository, PostRepository $postRepository, PurchaseRepository $purchaseRepository,
                           OrderedRepository $orderedRepository, ClientRepository $clientRepository, EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted('ROLE_TRESORIER')){
+        if (!$this->isGranted(SymfonyRole::TRESORIER)){
             return $this->redirectToRoute('home');
         }
 
@@ -92,6 +93,7 @@ class StatisticsController extends AbstractController
                 return $order["count"];
         return -1;
     }
+
     private function thisWeek(): array
     {
         $day_of_week = date('N', strtotime(date("Y-m-d")));

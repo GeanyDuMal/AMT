@@ -5,8 +5,8 @@ namespace App\Controller\Blog;
 
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
-
-use App\Repository\PostTypeRepository;
+use App\Utils\Enum\PostType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,22 +20,21 @@ class EditBlogController extends AbstractController
      * @Route("/blog/edit/{!id}", name="edit_blog",methods={"GET", "POST"})
      */
     public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request,
-                          EntityManagerInterface $manager, PostTypeRepository $postTypeRepository): Response
+                          EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')) {
+        if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
         $post = $postRepository->find($id);
-        $postTypes = $postTypeRepository->findAll();
+        $postTypes = PostType::getAll();
         $postmanager = new PostManager($manager);
         $validationErrors = "";
         $postExistsError = "";
 
         if ($data->count() > 0) {
-            $type = $data->get('postType');
-            $postType = $postTypeRepository->findOneBy(["name" => $type]);
+            $postType = $data->get('postType');
 
             $postmanager->setData($post, $postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
             $validationErrors = $validator->validate($post);
@@ -63,10 +62,10 @@ class EditBlogController extends AbstractController
 
 
         return $this->render('blog/EditModalBlog.html.twig', [
-            'postTypes'=>$postTypes,
-            'validationErrors'=>$validationErrors,
-            'postExistsError'=>$postExistsError,
-            'post'=>$post
+            'postTypes' => $postTypes,
+            'validationErrors' => $validationErrors,
+            'postExistsError' => $postExistsError,
+            'post' => $post
         ]);
     }
 }

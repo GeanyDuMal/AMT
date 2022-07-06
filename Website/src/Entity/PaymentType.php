@@ -5,22 +5,12 @@ namespace App\Entity;
 use App\Repository\PaymentTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PaymentTypeRepository::class)
- */
+
 class PaymentType
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    private string $name;
 
     public function getId(): ?int
     {

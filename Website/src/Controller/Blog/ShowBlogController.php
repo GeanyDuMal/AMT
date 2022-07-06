@@ -2,7 +2,7 @@
 
 namespace App\Controller\Blog;
 
-use App\Entity\Post;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +13,10 @@ class ShowBlogController extends AbstractController
     /**
      * @Route("/blog/{message?}", name="blog")
      */
-    public function index(EntityManagerInterface $manager, string $message = null): Response
+    public function index(EntityManagerInterface $manager, PostRepository $postRepository,
+                          string $message = null): Response
     {
-        //findBy plutot que findAll car on peut trier et recuperer le dernier post en premier
-        $blogs=$manager->getRepository(Post::class)->findBy([], ["id" => "DESC"]);
+        $blogs = $postRepository->findBy([], ["id" => "DESC"]);
 
         return $this->render('blog/index.html.twig',[
           'blogs' => $blogs,
@@ -25,14 +25,18 @@ class ShowBlogController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{id}", name="selected_blog")
+     * @Route("/blog/show/{!id}", name="selected_blog")
      */
-    public function showBlog($id, EntityManagerInterface $manager): Response
+    public function showBlog($id, PostRepository $postRepository, EntityManagerInterface $manager): Response
     {
-        $blog=$manager->getRepository(Post::class)->find($id);
+        $blog = $postRepository->find($id);
 
-        return $this->render('blog/ShowOneBlog.html.twig',[
-            'blog' => $blog,
-        ]);
+        if ($blog){
+            return $this->render('blog/ShowOneBlog.html.twig',[
+                'blog' => $blog,
+            ]);
+        }else{
+            return $this->redirectToRoute('blog');
+        }
     }
 }

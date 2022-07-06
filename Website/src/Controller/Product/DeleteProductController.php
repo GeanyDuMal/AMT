@@ -3,6 +3,7 @@
 namespace App\Controller\Product;
 
 use App\Repository\ProductRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,9 +15,9 @@ class DeleteProductController extends AbstractController
     /**
      * @Route("/product/delete/{!id}", name="delete_product", methods={"GET", "DELETE"})
      */
-    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository)
+    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): JsonResponse
     {
-        if (!$this->isGranted('ROLE_TRESORIER')){
+        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
             return new JsonResponse(false);
         }
 

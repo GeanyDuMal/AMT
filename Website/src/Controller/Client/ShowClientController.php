@@ -3,11 +3,10 @@
 namespace App\Controller\Client;
 
 use App\Repository\ClientRepository;
+use App\Utils\Enum\SymfonyRole;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Client;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ShowClientController extends AbstractController
 {
@@ -16,7 +15,7 @@ class ShowClientController extends AbstractController
      */
     public function show(ClientRepository $clientRepository, string $message = null): Response
     {
-        if (!$this->isGranted('ROLE_PRESIDENT')){
+        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute('home');
         }
 

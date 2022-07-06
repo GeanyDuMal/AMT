@@ -2,12 +2,12 @@
 
 namespace App\Manager;
 
-use App\Entity\ClientType;
 use App\Entity\Price;
 use App\Entity\Product;
-use App\Repository\ClientTypeRepository;
+use App\Utils\Enum\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use JetBrains\PhpStorm\Pure;
 
 class PriceManager
 {
@@ -20,29 +20,29 @@ class PriceManager
         $this->priceRepository = $this->manager->getRepository(Price::class);
     }
 
-    public function persist(Price $price){
-        if ($this->verifPrice($price)){
+    public function persist(Price $price)
+    {
+        if ($this->verifPrice($price)) {
             $this->manager->persist($price);
             $this->manager->flush();
         }
     }
 
     /**
-     * @param ClientTypeRepository $clientTypeRepository
      * @param Price $memberPrice
      * @param Price $studentPrice
      * @param Product $product
      * @param String $memberPriceAmount
      * @param String $studentPriceAmount
      * @return void
-     *
      * Only price for member and student beacause we only set up 2 types,
      * if more needed, you have to change it
      */
-    public function setData(ClientTypeRepository $clientTypeRepository, Price $memberPrice, Price $studentPrice, Product $product, String $memberPriceAmount,
-                            String $studentPriceAmount){
-        $memberType = $clientTypeRepository->findOneBy(["name" => "Association"]);
-        $studentType = $clientTypeRepository->findOneBy(["name" => "Etudiant"]);
+    public function setData(Price  $memberPrice, Price $studentPrice, Product $product, string $memberPriceAmount,
+                            string $studentPriceAmount)
+    {
+        $memberType = ClientType::ASSOCIATION;
+        $studentType = ClientType::ETUDIANT;
 
         $memberPrice->setClientType($memberType)
             ->setPrice($memberPriceAmount)
@@ -53,7 +53,8 @@ class PriceManager
             ->setProduct($product);
     }
 
-    public function verifPrice(Price $price):bool
+    #[Pure]
+    public function verifPrice(Price $price): bool
     {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
     }

@@ -2,9 +2,9 @@
 
 namespace App\Controller\Ordered;
 
-use App\Entity\Ordered;
 use App\Manager\OrderedManager;
 use App\Repository\OrderedRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,7 @@ class DeleteOrderedController extends AbstractController
      */
     public function delete($id, EntityManagerInterface $manager, OrderedRepository $orderedRepository): JsonResponse
     {
-        if (!$this->isGranted('ROLE_TRESORIER')){
+        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
             return new JsonResponse(false);
         }
 
