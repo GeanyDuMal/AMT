@@ -44,3 +44,9 @@ Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracter
     }
   ```
   Pour cette partie dans le index.php, ce n'est pas la plus propre, mais elle est fonctionnelle sur notre hebergeur (comparée aux autres)
+
+### Migrations dans la base de données
+
+Actuellement, l'hebergeur ne permet pas de faire de migration via les lignes de commandes comme le permet Symfony.
+Il faudra prendre la migration puis conserver unqiuement le SQL et le saisir ligne par ligne afin de s'assurer qu'il ne plante pas lors de la saisie
+Il faudra également recuperer la ligne inseré en base de données de test pour la table doctrine-migration dans le cas d'un changement d'hebergeur un jour.
