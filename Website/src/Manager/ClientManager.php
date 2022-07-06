@@ -25,7 +25,7 @@ class ClientManager
     }
 
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, string $password, string $balance, string $roleAssociationName, string $clientType): void
+                            string $login, ?string $password, string $balance, string $roleAssociationName, string $clientType): void
     {
         $client->setName(strtoupper($name))
             ->setFirstName($firstName)
@@ -61,9 +61,8 @@ class ClientManager
     public function persist(Client $client)
     {
         if (!$this->clientTableNotEmpty()) {
-            $clientTypeRepository = $this->manager->getRepository(ClientType::class);
-            $client->setRoles([SymfonyRole::ROLE_PRESIDENT])
-                ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
+            $client->setRoles([SymfonyRole::PRESIDENT])
+                ->setClientType(ClientType::ASSOCIATION);
 
             //Set the president of the association
             $associationRole = AssociationRole::PRESIDENT;
@@ -89,8 +88,7 @@ class ClientManager
      */
     public function remove(Client $client)
     {
-        $clientTypeEtudiant = $this->manager->getRepository(ClientType::class)->findOneBy(["name" => "Etudiant"]);
-        $client->setClientType($clientTypeEtudiant);
+        $client->setClientType(ClientType::ETUDIANT);
 
         $this->checkIfRemoveFromAssociation($client);
 
@@ -183,7 +181,7 @@ class ClientManager
         $role = [];
         $role[] = match ($typeName) {
             "Tresorier" => SymfonyRole::TRESORIER,
-            "President" => SymfonyRole::ROLE_PRESIDENT,
+            "President" => SymfonyRole::PRESIDENT,
             "Etudiant" => SymfonyRole::USER,
             default => SymfonyRole::ASSOC,
         };
@@ -209,9 +207,9 @@ class ClientManager
             {
                 $associationRepository = $this->manager->getRepository(Association::class);
 
-                switch ($associationRepository->findOneBy(["member" => $client])->getAssociationRole()->getName()) {
+                switch ($associationRepository->findOneBy(["member" => $client])->getAssociationRole()) {
                     case "President":
-                        $client->setRoles([SymfonyRole::ROLE_PRESIDENT]);
+                        $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
                     case "Tresorier":
                         $client->setRoles([SymfonyRole::TRESORIER]);
@@ -230,7 +228,7 @@ class ClientManager
     {
         return match ($role[0]) {
             SymfonyRole::TRESORIER => AssociationRole::TRESORIER,
-            SymfonyRole::ROLE_PRESIDENT => AssociationRole::PRESIDENT,
+            SymfonyRole::PRESIDENT => AssociationRole::PRESIDENT,
             default => AssociationRole::MEMBRE,
         };
     }

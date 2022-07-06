@@ -2,9 +2,14 @@
 
 namespace App\Utils\Enum;
 
-abstract class AbstractEnumClass
+use ReflectionClass;
+
+class AbstractEnumClass
 {
-    public static function getAll(): array{
-        return get_class_vars(self::class);
+    public static function getAll(): array
+    {
+        // static fait reference à la classe qui appelle cette function
+        $reflectionClass = new ReflectionClass(static::class);
+        return $reflectionClass->getConstants();
     }
 }

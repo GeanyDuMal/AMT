@@ -26,7 +26,7 @@ class AddClientController extends AbstractController
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
                           EntityManagerInterface $manager, ValidatorInterface $validator): Response
     {
-        if (!$this->isGranted(SymfonyRole::ROLE_PRESIDENT)){
+        if (!$this->isGranted(SymfonyRole::PRESIDENT)){
             return $this->redirectToRoute('home');
         }
 

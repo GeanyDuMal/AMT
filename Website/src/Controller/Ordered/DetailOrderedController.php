@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DetailOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/details&id={i!dOrder}", name="detailOrdered")
+     * @Route("/ordered/details&id={!idOrder}", name="detailOrdered")
      */
     public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
                           PurchaseRepository $purchaseRepository, PriceRepository $priceRepository): Response
@@ -24,7 +24,6 @@ class DetailOrderedController extends AbstractController
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
-
         $orderManager = new OrderedManager($manager);
         $priceList = [];
         $clientType = ClientType::ETUDIANT;
@@ -44,6 +43,7 @@ class DetailOrderedController extends AbstractController
                             $priceRepository->findOneBy(["product" => $purchase->getProduct(), "clientType" => $clientType])];
                 }
             } else {
+                dd("hello");
                 return $this->redirectToRoute('home');
             }
         } else {

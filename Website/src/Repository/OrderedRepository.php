@@ -33,9 +33,7 @@ class OrderedRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.client', 'c')
-            ->leftjoin('c.clientType', 't')
             ->addSelect('c')
-            ->addSelect('t')
             ->getQuery()
             ->getResult();
     }

@@ -15,7 +15,7 @@ class ShowClientController extends AbstractController
      */
     public function show(ClientRepository $clientRepository, string $message = null): Response
     {
-        if (!$this->isGranted(SymfonyRole::ROLE_PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute('home');
         }
 

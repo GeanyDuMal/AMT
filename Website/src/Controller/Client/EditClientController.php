@@ -8,6 +8,7 @@ use App\Manager\ClientManager;
 use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,7 @@ class EditClientController extends AbstractController
                           ValidatorInterface $validator, AssociationRepository $associationRepository,
                           ClientRepository $clientRepository): Response
     {
-        if (!$this->isGranted(SymfonyRole::ROLE_PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute('home');
         }
 
@@ -53,7 +54,7 @@ class EditClientController extends AbstractController
                 /*
                  * If we set the ClientType Association, we need to put the client in the table Association
                  */
-                if ($data->get("clientType") == "Association") {
+                if ($data->get("clientType") == ClientType::ASSOCIATION) {
 
                     /*
                      *  if admin changed the role of a member to another role
@@ -63,12 +64,12 @@ class EditClientController extends AbstractController
                 }
 
                 if (strcmp($ChosenClientLogin, $client->getLogin()) != 0 && $clientManager->loginExists($client)) {
-                    $errorLoginExist = "Login Existe déja";
+                    $errorLoginExist = "Ce login existe déja";
                 } else {
                     $clientManager->persist($client);
-                    if ($client->getClientType()->getName() == "Association") {
+                    if ($client->getClientType() == ClientType::ASSOCIATION) {
                         $member = $associationRepository->findOneBy(["member" => $client]);
-                        if ($member->getRole()->getName() == "President") {
+                        if ($member->getRole() == AssociationRole::PRESIDENT) {
                             $associationManager->removeOtherPresidents($manager, $member, $clientRepository);
                         }
                     }
@@ -94,10 +95,10 @@ class EditClientController extends AbstractController
      * @param ClientManager $clientManager
      * @param AssociationRepository $associationRepository
      * @param Client $client
-     * @param AssociationRole $roleAssociation
+     * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(EntityManagerInterface $manager, ClientManager $clientManager, AssociationRepository $associationRepository, Client $client, AssociationRole $roleAssociation)
+    private function manageMember(EntityManagerInterface $manager, ClientManager $clientManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation)
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 

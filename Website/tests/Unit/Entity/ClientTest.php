@@ -62,12 +62,12 @@ class  ClientTest extends TestCase
 
     public function testGetRole():void
     {
-        $value = [SymfonyRole::ROLE_PRESIDENT];
+        $value = [SymfonyRole::PRESIDENT];
         $response=$this->client->setRoles($value);
 
         self::assertInstanceOf(Client::class,$response);
         self::assertContains(SymfonyRole::USER, $this->client->getRoles());
-        self::assertContains(SymfonyRole::ROLE_PRESIDENT, $this->client->getRoles());
+        self::assertContains(SymfonyRole::PRESIDENT, $this->client->getRoles());
     }
 
     public function testGetPassword()

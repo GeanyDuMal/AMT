@@ -30,7 +30,7 @@ class CreateOrderedController extends AbstractController
         $productOrdered = [];
 
         // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
-        $allProduct = $productRepository->findAll();
+        $allProduct = $productRepository->findBy([], ["productType" => "ASC"]);
         foreach ($allProduct as $product) {
             if ($product->getQuantityStock() > 0) {
                 $allProductPositiveStock[] = $product;

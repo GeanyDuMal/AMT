@@ -25,7 +25,7 @@ class ClientFixture extends Fixture
                 ->setBalance(1.50)
                 ->setFidelityPoint(26)
                 ->setClientType($clientTypeAssociation)
-                ->setRoles([SymfonyRole::ROLE_PRESIDENT]);
+                ->setRoles([SymfonyRole::PRESIDENT]);
         $manager->persist($client);
 
         $client = new Client();

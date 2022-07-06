@@ -9,6 +9,7 @@ use App\Manager\ProductManager;
 use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProductTypeRepository;
+use App\Utils\Enum\PaymentType;
 use App\Utils\Enum\ProductType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;

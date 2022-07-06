@@ -25,7 +25,7 @@ class ShowProductController extends AbstractController
         }
 
         // On recupere tout les produits
-        $products = $productRepository->findAll();
+        $products = $productRepository->findBy([], ["productType" => "ASC"]);
 
         return $this->render('product/productList.html.twig', [
             'products' => $products,

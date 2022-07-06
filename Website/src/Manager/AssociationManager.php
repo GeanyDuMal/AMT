@@ -61,13 +61,13 @@ class AssociationManager
      * It removes every President
      */
     public function removeOtherPresidents(EntityManagerInterface $manager, Association $associationMember,
-                                          ClientRepository       $clientRepository): void
+                                          ClientRepository $clientRepository): void
     {
         $members = $this->associationRepository->findAll();
 
         foreach ($members as $otherMember) {
             if ($associationMember->getMember() !== $otherMember->getMember()) {
-                if ($otherMember->getRole()->getName() == AssociationRole::PRESIDENT) {
+                if ($otherMember->getRole() == AssociationRole::PRESIDENT) {
                     //Here $otherMember is the President in Function
 
                     $client = $clientRepository->findOneBy(['id' => $otherMember->getMember()]);
