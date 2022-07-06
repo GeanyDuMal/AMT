@@ -94,7 +94,6 @@ symfony server:stop
 ## Pour Setup le projet complet avec le jeu d'essai : 
 - cd .\Website
 - composer install
-- composer require beberlei/DoctrineExtensions
 - php bin/console doctrine:database:create
 - php bin/console doctrine:migration:migrate
 - composer require orm-fixtures --dev
