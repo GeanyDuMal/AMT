@@ -7,6 +7,7 @@ use App\Repository\OrderedRepository;
 use App\Repository\PriceRepository;
 use App\Repository\PurchaseRepository;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ class DetailOrderedController extends AbstractController
     public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
                           PurchaseRepository $purchaseRepository, PriceRepository $priceRepository): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')) {
+        if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 

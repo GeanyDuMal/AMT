@@ -12,6 +12,7 @@ use App\Repository\PaymentTypeRepository;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,9 +26,9 @@ class PaymentOrderedController extends AbstractController
      * @Route("/ordered/payment/{!productOrderedSerialized}&{!idClient}", name="orderedPayment")
      */
     public function index($productOrderedSerialized, $idClient, EntityManagerInterface $manager, Request $request,
-            ClientRepository $clientRepository, PriceRepository $priceRepository, ProductRepository $productRepository): Response
+                          ClientRepository $clientRepository, PriceRepository $priceRepository, ProductRepository $productRepository): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')){
+        if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
@@ -40,7 +41,7 @@ class PaymentOrderedController extends AbstractController
         $productOrderedIdTab = unserialize($productOrderedSerialized);
 
         //Si l'on a select un client, alors on conserve celui ci + son type
-        if ($idClient != "null"){
+        if ($idClient != "null") {
             $clientOrder = $clientRepository->find($idClient);
             $clientType = $clientOrder->getClientType();
         }
@@ -51,12 +52,12 @@ class PaymentOrderedController extends AbstractController
          */
         $montantProduct = [];
         $montantTotal = 0;
-        foreach ($productOrderedIdTab as $idProduct => $quantity){
+        foreach ($productOrderedIdTab as $idProduct => $quantity) {
             $product = $productRepository->find($idProduct);
             $listProduct[] = $product;
 
             $montantProduct = $montantProduct + [$idProduct => $priceRepository->findOneBy(['product' => $product,
-                'clientType' => $clientType])->getPrice() * $quantity];
+                        'clientType' => $clientType])->getPrice() * $quantity];
 
             $montantTotal = $montantTotal + $montantProduct[$idProduct];
         }
@@ -66,7 +67,7 @@ class PaymentOrderedController extends AbstractController
 
 
         //Si l'on a cliqué sur un bouton sur la page Payment
-        if ($inputParameterBag->get('payement_type')){
+        if ($inputParameterBag->get('payement_type')) {
             $paymentTypeChose = $inputParameterBag->get('payement_type');
 
             /*
@@ -75,7 +76,7 @@ class PaymentOrderedController extends AbstractController
              */
             foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
-                if ($product->getQuantityStock() == 0){
+                if ($product->getQuantityStock() == 0) {
                     return $this->redirectToRoute("menuOrder", [
                         "message" => "Le produit commandé n'est plus disponible"
                     ]);
@@ -85,8 +86,8 @@ class PaymentOrderedController extends AbstractController
             //Creer la commande
             $order = new Ordered();
             $order->setClient($clientOrder)
-                    ->setOrderedAt(new DateTime("now"))
-                    ->setPaymentType($paymentTypeChose);
+                ->setOrderedAt(new DateTime("now"))
+                ->setPaymentType($paymentTypeChose);
             $orderManager->persist($order);
 
             //Creer tout les achats
@@ -98,7 +99,7 @@ class PaymentOrderedController extends AbstractController
                     ->setOrdered($order)
                     ->setQuantity($quantity);
 
-                if ($purchaseManager->verifyDisponibilityProduct($purchase)){
+                if ($purchaseManager->verifyDisponibilityProduct($purchase)) {
                     $purchaseManager->persist($purchase);
                 }
             }

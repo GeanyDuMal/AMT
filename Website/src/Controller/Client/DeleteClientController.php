@@ -4,8 +4,10 @@ namespace App\Controller\Client;
 
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteClientController extends AbstractController
 {
@@ -15,7 +17,7 @@ class DeleteClientController extends AbstractController
      */
     public function index($id, EntityManagerInterface $manager, ClientRepository $clientRepository)
     {
-        if (!$this->isGranted('ROLE_PRESIDENT')){
+        if (!$this->isGranted(SymfonyRole::ROLE_PRESIDENT)) {
             return $this->redirectToRoute('home');
         }
 

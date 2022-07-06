@@ -8,11 +8,13 @@ use App\Manager\ClientManager;
 use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditClientController extends AbstractController
@@ -20,11 +22,11 @@ class EditClientController extends AbstractController
     /**
      * @Route("/admin/client/edit/{!id}", name="edit_client",methods={"GET", "POST"} )
      */
-    public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager, 
+    public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
                           ValidatorInterface $validator, AssociationRepository $associationRepository,
                           ClientRepository $clientRepository): Response
     {
-        if (!$this->isGranted('ROLE_PRESIDENT')){
+        if (!$this->isGranted(SymfonyRole::ROLE_PRESIDENT)) {
             return $this->redirectToRoute('home');
         }
 
@@ -35,23 +37,23 @@ class EditClientController extends AbstractController
         $errorLoginExist = "";
         $member = $associationRepository->findOneBy(["member" => $client]);
 
-        if ($data->count() > 0){
+        if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
             $associationManager = new AssociationManager($manager);
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));
+                $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"));
 
             $validationErrors = $validator->validate($client);
 
-            if($validationErrors->count() == 0){
+            if ($validationErrors->count() == 0) {
                 $ChosenClientLogin = $clientRepository->find($id)->getLogin();
 
                 /*
                  * If we set the ClientType Association, we need to put the client in the table Association
                  */
-                if ($data->get("clientType") == "Association"){
+                if ($data->get("clientType") == "Association") {
 
                     /*
                      *  if admin changed the role of a member to another role
@@ -60,31 +62,30 @@ class EditClientController extends AbstractController
                     $this->manageMember($manager, $clientManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
-                if(strcmp($ChosenClientLogin,$client->getLogin()) != 0 && $clientManager->loginExists($client)){
-                    $errorLoginExist="Login Existe déja";
-                }
-                else{
+                if (strcmp($ChosenClientLogin, $client->getLogin()) != 0 && $clientManager->loginExists($client)) {
+                    $errorLoginExist = "Login Existe déja";
+                } else {
                     $clientManager->persist($client);
-                    if($client->getClientType()->getName() == "Association"){
+                    if ($client->getClientType()->getName() == "Association") {
                         $member = $associationRepository->findOneBy(["member" => $client]);
-                        if($member->getRole()->getName() == "President"){
+                        if ($member->getRole()->getName() == "President") {
                             $associationManager->removeOtherPresidents($manager, $member, $clientRepository);
                         }
                     }
 
-                    return $this->redirectToRoute('client_list',[
-                        "message"=>"Modification avec succés"
+                    return $this->redirectToRoute('client_list', [
+                        "message" => "Modification avec succés"
                     ]);
                 }
             }
         }
 
         return $this->render('client/EditModalClient.html.twig', [
-                'assosRoles' => $assosRoles,
-                'validationErrors' => $validationErrors,
-                'errorLoginExist' => $errorLoginExist,
-                'client' => $client,
-                'member' => $member
+            'assosRoles' => $assosRoles,
+            'validationErrors' => $validationErrors,
+            'errorLoginExist' => $errorLoginExist,
+            'client' => $client,
+            'member' => $member
         ]);
     }
 
@@ -100,10 +101,9 @@ class EditClientController extends AbstractController
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 
-        if($clientMember){
+        if ($clientMember) {
             $clientMember->setRole($roleAssociation);
-        }
-        else{
+        } else {
             $clientMember = $clientManager->makeMember($client, $roleAssociation);
         }
         $manager->persist($clientMember);

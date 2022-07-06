@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -179,7 +180,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
 
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = SymfonyRole::USER;
 
         return array_unique($roles);
     }

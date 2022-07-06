@@ -22,7 +22,7 @@ class SignInController extends AbstractController
     public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         // Redirige vers le profil si deja connecté
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('profile');
         }
 
@@ -32,7 +32,7 @@ class SignInController extends AbstractController
         $loginExist = false;
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
-        if (!is_null($inputParameterBag->get("name"))){
+        if (!is_null($inputParameterBag->get("name"))) {
             $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
             $client->setName(strtoupper(trim($inputParameterBag->get("name"))))
@@ -54,12 +54,11 @@ class SignInController extends AbstractController
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
             if (!$clientManager->isNotFull($client) && !$clientManager->loginExists($client)
-                && $clientManager->dataCorrect($client) && (trim($inputParameterBag->get("password")) == $verifPassword))
-            {
+                && $clientManager->dataCorrect($client) && (trim($inputParameterBag->get("password")) == $verifPassword)) {
                 $clientManager->persist($client);
 
                 return $this->redirectToRoute('login');
-            }else if ($clientManager->loginExists($client)) {
+            } else if ($clientManager->loginExists($client)) {
                 $loginExist = true;
             }
         }

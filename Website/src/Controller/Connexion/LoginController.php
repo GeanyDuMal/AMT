@@ -15,7 +15,7 @@ class LoginController extends AbstractController
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // Redirige vers le profil si deja connecté
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')){
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('profile');
         }
 

@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\Client;
 use App\Entity\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use PHPUnit\Framework\TestCase;
 
 class  ClientTest extends TestCase
@@ -24,7 +25,7 @@ class  ClientTest extends TestCase
 
         self::assertInstanceOf(Client::class,$response);
         self::assertEquals($value,$this->client->getID());
-        self::assertContains('ROLE_USER',$this->client->getRoles());
+        self::assertContains(SymfonyRole::USER, $this->client->getRoles());
     }
 
     public function testGetBalance():void
@@ -61,12 +62,12 @@ class  ClientTest extends TestCase
 
     public function testGetRole():void
     {
-        $value=['ROLE_PRESIDENT'];
+        $value = [SymfonyRole::ROLE_PRESIDENT];
         $response=$this->client->setRoles($value);
 
         self::assertInstanceOf(Client::class,$response);
-        self::assertContains('ROLE_USER',$this->client->getRoles());
-        self::assertContains('ROLE_PRESIDENT',$this->client->getRoles());
+        self::assertContains(SymfonyRole::USER, $this->client->getRoles());
+        self::assertContains(SymfonyRole::ROLE_PRESIDENT, $this->client->getRoles());
     }
 
     public function testGetPassword()

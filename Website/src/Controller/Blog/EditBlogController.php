@@ -5,12 +5,13 @@ namespace App\Controller\Blog;
 
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
-use App\Repository\PostTypeRepository;
 use App\Utils\Enum\PostType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditBlogController extends AbstractController
@@ -21,7 +22,7 @@ class EditBlogController extends AbstractController
     public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request,
                           EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')) {
+        if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 

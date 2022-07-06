@@ -5,6 +5,7 @@ namespace App\Controller\Product;
 use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class ShowProductController extends AbstractController
      */
     public function show(EntityManagerInterface $manager, ProductRepository $productRepository, string $message = null): Response
     {
-        if ($this->isGranted("ROLE_ASSOC")) {
+        if ($this->isGranted(SymfonyRole::ASSOC)) {
             $clientTypeActual = ClientType::ASSOCIATION;
         } else {
             $clientTypeActual = ClientType::ETUDIANT;

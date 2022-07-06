@@ -9,13 +9,14 @@ use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ClientTypeRepository;
 use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AddClientController extends AbstractController
 {
@@ -25,7 +26,7 @@ class AddClientController extends AbstractController
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
                           EntityManagerInterface $manager, ValidatorInterface $validator): Response
     {
-        if (!$this->isGranted('ROLE_PRESIDENT')){
+        if (!$this->isGranted(SymfonyRole::ROLE_PRESIDENT)){
             return $this->redirectToRoute('home');
         }
 

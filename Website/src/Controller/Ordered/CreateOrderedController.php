@@ -2,10 +2,10 @@
 
 namespace App\Controller\Ordered;
 
-use App\Entity\Client;
-use App\Entity\Product;
+
 use App\Repository\ClientRepository;
 use App\Repository\ProductRepository;
+use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +17,10 @@ class CreateOrderedController extends AbstractController
     /**
      * @Route("/ordered/create/{message?}", name="orderedCreate")
      */
-    public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository,
+    public function index(Request          $request, EntityManagerInterface $manager, ProductRepository $productRepository,
                           ClientRepository $clientRepository, string $message = null): Response
     {
-        if (!$this->isGranted('ROLE_ASSOC')){
+        if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
@@ -31,22 +31,22 @@ class CreateOrderedController extends AbstractController
 
         // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProduct = $productRepository->findAll();
-        foreach ($allProduct as $product){
-            if ($product->getQuantityStock() > 0){
+        foreach ($allProduct as $product) {
+            if ($product->getQuantityStock() > 0) {
                 $allProductPositiveStock[] = $product;
             }
         }
 
         // Recupere toutes les quantités de produit selectionné
-        foreach ($allProductPositiveStock as $product){
+        foreach ($allProductPositiveStock as $product) {
             $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
-            if ($quantity != 0 ){
-                  $productOrdered = $productOrdered + [$product->getId() => $quantity];
+            if ($quantity != 0) {
+                $productOrdered = $productOrdered + [$product->getId() => $quantity];
             }
         }
 
         // Si l'on a commandé au moins 1 produit
-        if ($productOrdered){
+        if ($productOrdered) {
             return $this->redirectToRoute("orderedPayment", [
                 "productOrderedSerialized" => serialize($productOrdered),
                 "idClient" => $inputParameterBag->get("client_commande")

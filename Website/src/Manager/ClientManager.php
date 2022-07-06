@@ -62,7 +62,7 @@ class ClientManager
     {
         if (!$this->clientTableNotEmpty()) {
             $clientTypeRepository = $this->manager->getRepository(ClientType::class);
-            $client->setRoles(["ROLE_PRESIDENT"])
+            $client->setRoles([SymfonyRole::ROLE_PRESIDENT])
                 ->setClientType($clientTypeRepository->findOneBy(["name" => "Association"]));
 
             //Set the president of the association
@@ -182,10 +182,10 @@ class ClientManager
     {
         $role = [];
         $role[] = match ($typeName) {
-            "Tresorier" => "ROLE_TRESORIER",
-            "President" => "ROLE_PRESIDENT",
-            "Etudiant" => "ROLE_USER",
-            default => "ROLE_ASSOC",
+            "Tresorier" => SymfonyRole::TRESORIER,
+            "President" => SymfonyRole::ROLE_PRESIDENT,
+            "Etudiant" => SymfonyRole::USER,
+            default => SymfonyRole::ASSOC,
         };
         return $role;
     }
@@ -221,7 +221,7 @@ class ClientManager
                 }
             }
             default:
-                $client->setRoles(["ROLE_USER"]);
+                $client->setRoles([SymfonyRole::USER]);
                 break;
         }
     }
@@ -229,9 +229,9 @@ class ClientManager
     public function getTypeFromRole(array $role): string
     {
         return match ($role[0]) {
-            "ROLE_TRESORIER" => "Tresorier",
-            "ROLE_PRESIDENT" => "President",
-            default => "Membre",
+            SymfonyRole::TRESORIER => AssociationRole::TRESORIER,
+            SymfonyRole::ROLE_PRESIDENT => AssociationRole::PRESIDENT,
+            default => AssociationRole::MEMBRE,
         };
     }
 

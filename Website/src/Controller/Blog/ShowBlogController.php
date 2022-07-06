@@ -2,7 +2,6 @@
 
 namespace App\Controller\Blog;
 
-use App\Entity\Post;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
