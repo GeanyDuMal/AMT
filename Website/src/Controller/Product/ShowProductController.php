@@ -2,6 +2,7 @@
 
 namespace App\Controller\Product;
 
+use App\Entity\Client;
 use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
@@ -18,10 +19,10 @@ class ShowProductController extends AbstractController
      */
     public function show(EntityManagerInterface $manager, ProductRepository $productRepository, string $message = null): Response
     {
-        if ($this->isGranted(SymfonyRole::ASSOC)) {
-            $clientTypeActual = ClientType::ASSOCIATION;
-        } else {
-            $clientTypeActual = ClientType::ETUDIANT;
+        $clientTypeActual = ClientType::ETUDIANT;
+
+        if ($this->getUser() && $this->getUser()->getClientType() === ClientType::ASSOCIATION) {
+             $clientTypeActual = ClientType::ASSOCIATION;
         }
 
         // On recupere tout les produits
