@@ -3,7 +3,6 @@
 namespace App\Controller\Product;
 
 use App\Entity\Client;
-use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
