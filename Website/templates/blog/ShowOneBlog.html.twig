@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
     <style>
@@ -17,6 +16,7 @@
         }
     </style>
 {% endblock %}
+
 {% block body %}
     <div class="container mt-5 ">
         <form id="blog_form" class="row g-2 " method="post" >
@@ -25,7 +25,7 @@
                <img style="max-width:50%;" class="img-responsive center"  src={{ blog.imageLink }}>
             </div>
             <div class="col-md-12">
-            <h3>Contenu:</h3>
+            <h3>Contenu :</h3>
                 <p>
                     {{ blog.description }}
                 </p>

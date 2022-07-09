@@ -1,7 +1,8 @@
 /**
  * Delete a Blog with AJAX
  */
-$('.row').on("click", "#toDelete", function(){
+$(".row").on("click", "#toDelete", function(){
+
     var nodeBlog = this.parentNode.parentNode.parentNode;
     if (confirm("Voulez vous vraiment supprimer ce blog ?")){
         console.log(nodeBlog);
