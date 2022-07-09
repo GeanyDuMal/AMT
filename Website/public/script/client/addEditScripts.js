@@ -1,21 +1,23 @@
-var clientType=document.querySelector("#clientType");
-var assosRoles=document.querySelector("#roles");
+var clientType = document.querySelector("#clientType");
+var assosRoles = document.querySelector("#roles");
 var form = document.querySelector("#form_Client");
+
 /**
  * hide the combobox of association roles if it's not a member
  */
 window.onload = function() {
-    if(clientType.value!=="Association"){
-        assosRoles.style.visibility="hidden";
+    if(clientType.value !== "Association"){
+        assosRoles.style.visibility = "hidden";
     }
 }
+
 /**
  * same thing as above but when the admin change it's value
  */
-clientType.onchange=function (){
+clientType.onchange = function (){
     var selectedOption = this[this.selectedIndex];
     var selectedText = selectedOption.text;
-    assosRoles.style.visibility =selectedText==="Etudiant"? "hidden":"visible";
+    assosRoles.style.visibility = (selectedText === "Etudiant" ? "hidden" : "visible");
 }
 
 /**
@@ -58,7 +60,7 @@ function communVerify(){
 }
 function verifyEdit(){
     var message = "";
-    message=communVerify();
+    message = communVerify();
     if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',

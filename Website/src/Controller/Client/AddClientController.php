@@ -42,13 +42,13 @@ class AddClientController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"));
+                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), null);
 
             $validationErrors = $validator->validate($client);
 
             if($validationErrors->count() == 0)
                 if($clientManager->loginExists($client)){
-                    $errorLoginExist="Login Existe déja";
+                    $errorLoginExist = "Login Existe déja";
                 }else{
                     $clientManager->persist($client);
 
@@ -58,14 +58,12 @@ class AddClientController extends AbstractController
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if($client->getClientType()->getName() == "Association"){
-                        $roleName = $request->get('assosRoles');
-                        $roleAssociation = $associationRoleRepository->findOneBy(["name" => $roleName]);
+                    if($client->getClientType() == "Association"){
 
-                        $newMember = $clientManager->makeMember($client, $roleAssociation);
+                        $newMember = $clientManager->makeMember($client, $request->get('assosRoles'));
 
-                        if($newMember->getRole()->getName() == "President"){
-                            $associationManager->removeOtherPresidents($manager, $newMember, $clientTypeRepository, $clientRepository);
+                        if($newMember->getRole() == "President"){
+                            $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
