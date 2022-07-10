@@ -19,7 +19,9 @@
         <ul>
             {% if validationErrors is defined and validationErrors != "" %}
                 {% for i in 0..validationErrors.count()-1 %}
-                    <li>{{ validationErrors[i].message }}</li>
+                    <li>
+                        {{ validationErrors[i].message }}
+                    </li>
                 {% endfor %}
             {% endif %}
         </ul>
