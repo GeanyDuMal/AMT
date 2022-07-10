@@ -23,6 +23,7 @@
 
 {% block javascripts %}
     <script src="/script/connexion/login.js"></script>
+    <script src="/script/generic/formGenericFunction.js"></script>
 
     {# Bootstrap JS Import #}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -44,7 +45,7 @@
         {# End Top bar #}
 
 
-        <form action="" class="flex_vertical centered_flex" method="post" id="form_login">
+        <form action="" class="flex_vertical centered_flex" method="post" id="form_login" onsubmit="disableButton()">
             <img src="/img/connexion/user.png" alt="" id="img_profile">
             
             {# Form Inputs with floatig label #}
@@ -68,7 +69,7 @@
             {# End erreur #}
 
             <div class="flex_vertical centered_flex">
-                <button type="submit" class="btn btn-primary" onclick="return verifyInputLogin()">
+                <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputLogin()">
                     Se Connecter
                 </button>
             </div>

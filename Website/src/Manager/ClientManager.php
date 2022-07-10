@@ -25,13 +25,17 @@ class ClientManager
     }
 
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, ?string $password, string $balance, string $roleAssociationName, string $clientType): void
+                            string $login, ?string $password, string $balance, string $roleAssociationName, string $clientType,
+                            ?int $fidelityPoint): void
     {
         $client->setName(strtoupper($name))
             ->setFirstName($firstName)
             ->setLogin($login)
             ->setBalance($balance)
             ->setClientType($clientType);
+
+        //Si les points de fidélités sont définis ont les affectes, sinon 0
+        $fidelityPoint ? $client->setFidelityPoint($fidelityPoint) : $client->setFidelityPoint(0);
 
         $isStudent = (strcmp($clientType, ClientType::ETUDIANT) == 0);
         if ($isStudent) {

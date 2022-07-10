@@ -9,6 +9,7 @@
 
 {% block javascripts %}    
     <script src="/script/ordered/createOrdered.js"></script>
+    <script src="/script/generic/formGenericFunction.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -18,7 +19,7 @@
             <strong>{{ message }}!</strong>
         </div>
     {% endif %}
-    <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command">
+    <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command" onsubmit="disableButton()">
         <div class="flex_horizontal centered_flex_horizontal block_all_product">
         {% for product in productList %}
             <div class="block_product flex_vertical">
@@ -48,7 +49,9 @@
                 {% endfor %}
             </select>
 
-            <button type="submit" class="btn btn-primary" onclick="return checkQuantityInput()">Valider la commande</button>
+            <button type="submit" class="btn btn-primary disableable" onclick="return checkQuantityInput()">
+                Valider la commande
+            </button>
         </div>
         <a href="{{ path("orderedMenu") }}">
             <img src="/img/icons/back.png" class="img" alt="" srcset="">    

@@ -23,84 +23,84 @@
 
 {% block body %}
     	<div class="content">
-		<div class="content-header">
-			<h1>Liste des commandes</h1>
-		</div>
-		<div style="margin:5px">
-			<a href="{{ path('orderedCreate') }}" class="btn btn-success">Ajouter</a>
-		</div>
-		{% if message %}
-			<div class="alert alert-dismissible alert-success fade show">
-				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-				<strong>{{ message }}!</strong>
+			<div class="content-header">
+				<h1>Liste des commandes</h1>
 			</div>
-		{% endif %}
+			<div style="margin:5px">
+				<a href="{{ path('orderedCreate') }}" class="btn btn-success">Ajouter</a>
+			</div>
+			{% if message %}
+				<div class="alert alert-dismissible alert-success fade show">
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+					<strong>{{ message }}!</strong>
+				</div>
+			{% endif %}
 		
-		{% if orderedList|length > 0 %}
-		<table id="ordered_table" class="table table-striped">
-			<thead>
-				<tr class="table-primary">
-					<th>ID</th>
-					<th>Date et Heure</th>
-					<th>Nom Client</th>
-					<th>Login</th>
-					<th>Type Client</th>
-					<th>Details</th>
-					{% if is_granted("ROLE_TRESORIER") %}
-						<th>Supprimer</th>
-					{% endif %}
-				</tr>
-			</thead>
-			<tbody>
-			{% for ordered in orderedList %}
-				<tr>
-					<td id="idCell">
-						{{ ordered.id }}
-					</td>
-					<td>
-						{{ ordered.orderedAt|date('d/m/Y à H:i:s') }}
-					</td>
-					{% if ordered.client %}
-						<td>
-							{{ ordered.client.name }} {{ ordered.client.firstName }}
-						</td>
-						<td >
-							{{ ordered.client.login }}
+			{% if orderedList|length > 0 %}
+			<table id="ordered_table" class="table table-striped">
+				<thead>
+					<tr class="table-primary">
+						<th>ID</th>
+						<th>Date et Heure</th>
+						<th>Nom Client</th>
+						<th>Login</th>
+						<th>Type Client</th>
+						<th>Details</th>
+						{% if is_granted("ROLE_TRESORIER") %}
+							<th>Supprimer</th>
+						{% endif %}
+					</tr>
+				</thead>
+				<tbody>
+				{% for ordered in orderedList %}
+					<tr>
+						<td id="idCell">
+							{{ ordered.id }}
 						</td>
 						<td>
-							{{ ordered.client.clientType }}
+							{{ ordered.orderedAt|date('d/m/Y à H:i:s') }}
 						</td>
-					{% else %}
-						<td>
-							Client non renseigné
-						</td>
-						<td>NA</td>
-						<td>NA</td>
-					{% endif %}
-						<td>
-							<a class="btn btn-primary" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">Info</a>
-						</td>
-					{% if is_granted("ROLE_TRESORIER") %}
-						<td>
-							<a id="toDelete" class="btn btn-primary">X</a>
-						</td>
-					{% endif %}
-					
-				</tr>
-			{% endfor %}
-			
-			</tbody>
-		</table>
-		{% else %}
-			<div class="alert alert-info alert-dismissible fade show">
-				<p>
-					<strong>Info!</strong>
-				</p> 
-				<p>
-					Il n'y a pas encore des Commandes.
-				</p> 
-				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-			</div>
-		{% endif %}
-	</div>
+						{% if ordered.client %}
+							<td>
+								{{ ordered.client.name }} {{ ordered.client.firstName }}
+							</td>
+							<td >
+								{{ ordered.client.login }}
+							</td>
+							<td>
+								{{ ordered.client.clientType }}
+							</td>
+						{% else %}
+							<td>
+								Client non renseigné
+							</td>
+							<td>NA</td>
+							<td>NA</td>
+						{% endif %}
+							<td>
+								<a class="btn btn-primary" href="{{ path("detailOrdered",{'idOrder' : ordered.id}) }}">Info</a>
+							</td>
+						{% if is_granted("ROLE_TRESORIER") %}
+							<td>
+								<a id="toDelete" class="btn btn-primary">X</a>
+							</td>
+						{% endif %}
+
+					</tr>
+				{% endfor %}
+
+				</tbody>
+			</table>
+			{% else %}
+				<div class="alert alert-info alert-dismissible fade show">
+					<p>
+						<strong>Info!</strong>
+					</p>
+					<p>
+						Il n'y a pas encore des Commandes.
+					</p>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+			{% endif %}
+		</div>
 {% endblock %}

@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}
     Nouveau Client
 {% endblock %}
+
 {%  block javascripts %}
-    {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/client/addEditScripts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
+
 {% block stylesheets %}
-    {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
+
 {% block body %}
     <div>
         <ul>
@@ -25,7 +28,7 @@
     {% set memberExists=member is not null %}
     <div class="container mt-5">
 
-        <form action="" method="post" class="row g-3" id='form_Client'>
+        <form action="" method="post" class="row g-3" id='form_Client' onsubmit="disableButton()">
             {% if errorLoginExist is defined and errorLoginExist!="" %}
                 <div class="alert alert-dismissible alert-danger">
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -60,10 +63,10 @@
                 <select class="form-select" name="clientType" id="clientType" data-target="assosRoles"
                         data-source="path">
                     {% if clientExists %}
-                    <option {% if client.roles[0]=="ROLE_USER" %} selected {% endif %} >
+                    <option {% if client.roles[0] == "ROLE_USER" %} selected {% endif %}>
                         Etudiant
                     </option>
-                    <option {% if client.roles[0]!="ROLE_USER" %} selected {% endif %} id="member">
+                    <option {% if client.roles[0] != "ROLE_USER" %} selected {% endif %} id="member">
                         Association
                     </option>
                     {% endif %}
@@ -85,7 +88,9 @@
                 </select>
             </div>
             <br>
-            <input type="submit" class="btn btn-primary" value="Enregistrer" onclick="return verifyEdit()" style="margin-bottom: 25px;">
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyEdit()" style="margin-bottom: 25px;">
+                Enregistrer
+            </button>
         </form>
     </div>
 {% endblock %}

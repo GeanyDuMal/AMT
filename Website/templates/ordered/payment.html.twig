@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/script/ordered/createOrdered.js"></script>
     <script src="/script/ordered/paymentOrdered.js"></script>
+    <script src="/script/generic/formGenericFunction.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -47,7 +47,7 @@
             <h2>
                   Montant total : {{ montantTotal }}€
             </h2>
-            <form method="post" class="block_button_payment">
+            <form method="post" class="block_button_payment" onsubmit="disableButton()">
 
                   {% for paymentType in paymentTypeList %}
                         <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary" onclick="return preventPayment()">

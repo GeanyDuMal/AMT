@@ -66,6 +66,8 @@ class PaymentOrderedController extends AbstractController
         $paymentTypeList = $orderManager->getAllowedPaymentType($productOrderedIdTab, $clientOrder);
 
 
+        //dd($inputParameterBag->get('payement_type'));
+
         //Si l'on a cliqué sur un bouton sur la page Payment
         if ($inputParameterBag->get('payement_type')) {
             $paymentTypeChose = $inputParameterBag->get('payement_type');

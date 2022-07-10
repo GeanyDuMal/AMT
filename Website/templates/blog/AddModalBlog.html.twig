@@ -1,17 +1,19 @@
 {% extends 'base.html.twig' %}
+
 {%  block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('script/blog/addEditVerificationsBlog.js') }}"></script>
+    <script type="text/javascript" src="/script/blog/addEditVerificationsBlog.js"></script>
+    <script type="text/javascript" src="/script/generic/formGenericFunction.js"></script>
 {% endblock %}
+
 {% block stylesheets %}
-    {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
+
 {% block body %}
     <div>
         <ul>
-            {% if validationErrors is defined and validationErrors!="" %}
+            {% if validationErrors is defined and validationErrors != "" %}
                 {% for i in 0..validationErrors.count()-1 %}
                     <li>{{ validationErrors[i].message }}</li>
                 {% endfor %}
@@ -19,7 +21,7 @@
         </ul>
     </div>
     <div class="container mt-5 ">
-        <form id="blog_form" action="" class="row g-2 " method="post" >
+        <form id="blog_form" action="" class="row g-2 " method="post" onsubmit="disableButton()">
             <h1>Nouveau post</h1>
             <div class="form-floating col-md-12">
                 <input type="text" name="postTitle" class="form-control" id="floatingInput" placeholder="Titre" value=""> <br>
@@ -35,13 +37,16 @@
                 <label for="floatingInput">Image</label>
             </div>
             <div class="form-group col-md-12">
-                    <select name="postType"  class="form-control linked-select">
-                {% for postType in postTypes %}
-                    <option> {{ postType }} </option>
-                {% endfor %}
-            </select> <br>
+                <select name="postType"  class="form-control linked-select">
+                    {% for postType in postTypes %}
+                        <option> {{ postType }} </option>
+                    {% endfor %}
+                </select>
+                <br>
             </div>
-            <input type="submit" class="btn btn-primary" value="Créer" onclick="return verifyPost()">
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyPost()">
+                Créer
+            </button>
         </form>
     </div>
 {% endblock %}

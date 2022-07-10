@@ -29,7 +29,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     {# End Bootstrap JS Import #}
 
-    <script src="./script/blog/ajaxAllBlog.js"></script>
+    <script src="/script/blog/ajaxAllBlog.js"></script>
 {% endblock %}
 
 {% block title %}Blog{% endblock %}
@@ -38,13 +38,13 @@
     {% if message %}
         <div class="alert alert-dismissible alert-success fade show">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>{{ message }}!</strong>
+            <strong>{{ message }} !</strong>
         </div>
     {% endif %}
 <div class="container">
     <div class="text-center my-5">
         <h1 class="page__title">Posts & Events</h1>
-        <hr />
+        <hr/>
     </div>
     {% if is_granted("ROLE_ASSOC") %}
     <div >

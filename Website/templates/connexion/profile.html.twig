@@ -18,6 +18,7 @@
 
 {% block javascripts %}
     <script src="/script/connexion/profile.js"></script>
+    <script src="/script/generic/formGenericFunction.js"></script>
 {% endblock %}
 
 {% block navbar %}
@@ -81,7 +82,7 @@
                         Modifier le mot de passe
                     </button>
                     <a href="{{ path('logout') }}">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary disableable">
                             Se déconnecter
                         </button>
                     </a>
@@ -91,7 +92,7 @@
     </div>
 
     {# Edit Password #}
-    <form class="edit_password flex_vertical centered_flex secondary_block" method="post" id="form_edit_password">
+    <form class="edit_password flex_vertical centered_flex secondary_block" onsubmit="disableButton()" method="post" id="form_edit_password">
         <div class="edit-password">
             <div class="form-floating">
                 <input type="password" name="oldPassword" class="form-control" id="floatingPassword" placeholder="Password">
@@ -112,7 +113,9 @@
                 <label for="floatingPassword">Confirmation du nouveau mot de passe</label>
             </div>
 
-            <button type="submit" class="btn btn-primary" onclick="return verifyInputEditPassword()">Valider</button>
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputEditPassword()">
+                Valider
+            </button>
         </div>
     </form>
     {# End Edit Password #}

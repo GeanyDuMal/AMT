@@ -1,9 +1,12 @@
+/**
+ * Va verifier les input dans le form
+ */
 function verifyInputLogin() {
       var form = document.querySelector("#form_login");
-  
+
       var valueLogin = form.login.value;
       var valuePassword = form.password.value;
-  
+
       if (valueLogin === "" || valuePassword === "" || valuePassword.length < 5) {
           Swal.fire({
               title: 'Incomplet !',
@@ -16,4 +19,3 @@ function verifyInputLogin() {
           return true;
       }
 }
-

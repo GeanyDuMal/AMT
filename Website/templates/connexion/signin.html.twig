@@ -23,6 +23,7 @@
 
 {% block javascripts %}
       <script src="/script/connexion/signin.js"></script>
+      <script src="/script/generic/formGenericFunction.js"></script>
 
       {# Bootstrap JS Import #}
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -43,7 +44,7 @@
             {# End Top bar #}
 
             {# Form Start #}
-            <form action="" method="post" class="flex_vertical centered_flex" id="form_signin">
+            <form action="" method="post" class="flex_vertical centered_flex" id="form_signin" onsubmit="disableButton()">
                   <img src="/img/connexion/user.png" alt="" id="img_profile">
                   <div class="flex_horizontal">
                         <div class="form-floating col-md-6">
@@ -85,7 +86,9 @@
                   {% endif %}
 
                   <div class="flex_vertical centered_flex">
-                        <button type="submit" class="btn btn-primary" onclick="return verifyInputSignin()">S'inscrire</button>
+                        <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputSignin()">
+                              S'inscrire
+                        </button>
                   </div>
             </form>
             {# End Form #}

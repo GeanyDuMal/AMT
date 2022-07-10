@@ -5,26 +5,29 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
+
 {% block javascripts %}
-    {{ parent() }}
     <script type="text/javascript" src="{{ asset('script/product/addEditVerifications.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
+
 {% block body %}
     <div>
         <ul>
-            {% if validationErrors is defined and validationErrors!="" %}
+            {% if validationErrors is defined and validationErrors != "" %}
                 {% for i in 0..validationErrors.count()-1 %}
-                    <li>{{ validationErrors[i].message }}</li>
+                    <li>
+                        {{ validationErrors[i].message }}
+                    </li>
                 {% endfor %}
             {% endif %}
         </ul>
     </div>
     <div class="container mt-5 ">
-        <form id="product_form" action="" class="row g-2" method="post">
+        <form id="product_form" action="" class="row g-2" method="post" onsubmit="disableButton()">
             <h1>Modifier produit</h1>
             <div class="form-floating col-md-12">
                 <input type="text" name="productName" class="form-control field-long" id="floatingInput"
@@ -44,7 +47,6 @@
                 <input type="text" name="memberPrice" class="form-control" id="floatingInput" placeholder="Prix Membres" value={{ memberPrice }} />
                 <label for="floatingInput">Prix Membres</label>
             </div>
-
             <div class="form-floating col-md-6">
                 <input type="text" name="studentPrice" class="form-control" id="floatingInput" placeholder="Prix Etudiant" value={{ studentPrice }} />
                 <label for="floatingInput">Prix Etudiant</label>
@@ -53,11 +55,15 @@
             <div class="form-group col-md-12" >
                 <select name="productType" class="form-control linked-select">
                     {% for productType in productTypes %}
-                        <option {% if productType == product.productType %} selected {% endif %} > {{ productType }} </option>
+                        <option {% if productType == product.productType %} selected {% endif %}>
+                            {{ productType }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
-            <input class="btn btn-primary" value="Modifier" type="submit" onclick="return verifyProduct()">
+            <button class="btn btn-primary disableable" type="submit" onclick="return verifyProduct()">
+                Modifier
+            </button>
         </form>
     </div>
 {% endblock %}
