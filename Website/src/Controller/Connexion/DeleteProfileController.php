@@ -7,6 +7,7 @@ use App\Repository\ClientRepository;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -18,11 +19,13 @@ class DeleteProfileController extends AbstractController
      * @Route("/profile/delete", name="delete_profile", methods={"GET", "DELETE"})
      */
     public function index(EntityManagerInterface $manager, ClientRepository $clientRepository, TokenStorageInterface $tokenStorage,
-        Request $request)
+        Request $request): RedirectResponse
     {
-        // Not allowed to remove you account if you are the president
+        // Not allowed to remove you account if you are the president or if you aren't connected
         if ($this->isGranted(SymfonyRole::PRESIDENT) || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('home', [
+                "message" => "Votre compte ne peut pas être supprimé, merci de contacter l'administrateur "
+            ]);
         }
 
         $clientManager = new ClientManager($manager);
