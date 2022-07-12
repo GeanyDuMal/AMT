@@ -61,12 +61,3 @@ function verifyInputEditPassword() {
 function openCloseEditForm() {
     form.classList.toggle("open_menu");
 }
-
-function warningSuppressionAccount(){
-    var message = "Vous êtes sur le point de supprimer votre compte. \n" +
-        "Votre action est irreversible et supprimera toutes information liées à votre compte !"
-
-    var messageBis = "Merci de confirmer une seconde fois la supression de votre compte."
-
-    return (confirm(message) && confirm(messageBis));
-}

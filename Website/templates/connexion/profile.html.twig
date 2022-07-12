@@ -38,60 +38,55 @@
             <div class="client-info">
                 <img src="/img/connexion/user.png" alt="" id="img_profile">
 
-                <h1 class="text_block">
-                    Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
-                </h1>
+                    <h1 class="text_block">
+                        Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
+                    </h1>
 
-                {% if edit is same as("wrong_password") %}
-                    <h2 class="message_information message_incorrect">
-                        Votre mot de passe est incorrect
-                    </h2>
-                {% elseif edit %}
-                    <h2 class="message_information message_correct">
-                        Modification effectuée avec succès
-                    </h2>
-                {% endif %}
+                    {% if edit is same as("wrong_password") %}
+                        <h2 class="message_information message_incorrect">
+                            Votre mot de passe est incorrect
+                        </h2>
+                    {% elseif edit %}
+                        <h2 class="message_information message_correct">
+                            Modification effectuée avec succès
+                        </h2>
+                    {% endif %}
 
-                {# Client Informations #}
-                <table class="table_information">
-                    <tr>
-                        <td>Solde :</td>
-                        <td>{{ user.balance }}
-                            €</td>
-                    </tr>
-                    <tr>
-                        <td>Compteur de fidelité :</td>
-                        <td>{{ user.fidelityPoint }}</td>
-                    </tr>
-                    <tr>
-                        <td>Statut :</td>
-                        <td>{{ user.clientType }}</td>
-                    </tr>
+                    {# Client Informations #}
+                    <table class="table_information">
+                        <tr>
+                            <td>Solde :</td>
+                            <td>{{ user.balance }}
+                                €</td>
+                        </tr>
+                        <tr>
+                            <td>Compteur de fidelité :</td>
+                            <td>{{ user.fidelityPoint }}</td>
+                        </tr>
+                        <tr>
+                            <td>Statut :</td>
+                            <td>{{ user.clientType }}</td>
+                        </tr>
 
-                </table>
-                {# End Client Informations #}
+                    </table>
+                    {# End Client Informations #}
 
-                {# Points #}
-                    <p class="d-flex justify-content-center">
-                        <em> 150 point de fidelité = 0.8€ </em>
-                    </p>
-                {# End Points #}
+                    {# Points #}
+                        <p class="d-flex justify-content-center" style="font-style">
+                            <em> 150 point de fidelité = 0.8€ </em>
+                        </p>
+                    {# End Points #}
 
-                {# Options #}
-                <button class="btn btn-secondary" onclick="openCloseEditForm()">
-                    Modifier le mot de passe
-                </button>
-                <a href="{{ path('logout') }}">
-                    <button class="btn btn-primary disableable">
-                        Se déconnecter
+                    {# Options #}
+                    <button class="btn btn-secondary" onclick="openCloseEditForm()">
+                        Modifier le mot de passe
                     </button>
-                </a>
-                <a href="{{ path('delete_profile') }}" >
-                    <button class="btn btn-secondary disableable" onclick="return warningSuppressionAccount()">
-                        Supprimer son compte
-                    </button>
-                </a>
-                {# End Options #}
+                    <a href="{{ path('logout') }}">
+                        <button class="btn btn-primary disableable">
+                            Se déconnecter
+                        </button>
+                    </a>
+                    {# End Options #}
             </div>
         </div>
     </div>
