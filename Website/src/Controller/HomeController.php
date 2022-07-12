@@ -10,10 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/{message?}", name="home")
      */
-    public function index(): Response
+    public function index(?string $message): Response
     {
-        return $this->render('home/index.html.twig', []);
+        return $this->render('home/index.html.twig', [
+            "message" => $message
+        ]);
     }
 }
