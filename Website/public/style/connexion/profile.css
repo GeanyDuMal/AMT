@@ -67,6 +67,11 @@
     /* border-color: var(--primary); */
 }
 
+/* Permet de corriger le soulignement qui depasse du bouton déconnexion */
+a {
+    text-decoration: none;
+}
+
 .text_block {
     text-align: center;
 }
