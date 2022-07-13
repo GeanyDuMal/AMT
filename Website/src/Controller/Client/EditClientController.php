@@ -45,7 +45,7 @@ class EditClientController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $client->getFidelityPoint());
+                $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $data->get("fidelityPoint"));
 
             $validationErrors = $validator->validate($client);
 
@@ -99,7 +99,7 @@ class EditClientController extends AbstractController
      * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(EntityManagerInterface $manager, ClientManager $clientManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation)
+    private function manageMember(EntityManagerInterface $manager, ClientManager $clientManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation): void
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 
