@@ -42,8 +42,9 @@ class EditClientController extends AbstractController
             $clientManager = new ClientManager($manager);
             $associationManager = new AssociationManager($manager);
 
+
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
-                $data->get("firstName"), $client->getLogin(), $data->get("password"),
+                $data->get("firstName"), $data->get("login"), $data->get("password"),
                 $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $data->get("fidelityPoint"));
 
             $validationErrors = $validator->validate($client);
