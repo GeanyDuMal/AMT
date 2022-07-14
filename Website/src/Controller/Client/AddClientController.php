@@ -5,9 +5,7 @@ namespace App\Controller\Client;
 use App\Entity\Client;
 use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
-use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
-use App\Repository\ClientTypeRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,7 +40,7 @@ class AddClientController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), null);
+                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), 0);
 
             $validationErrors = $validator->validate($client);
 

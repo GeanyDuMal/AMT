@@ -8,6 +8,7 @@ use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
+use Decimal\Decimal;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -17,6 +18,8 @@ class ClientManager
 {
     public EntityManagerInterface $manager;
     public ClientRepository $clientRepository;
+    const AMOUNT_FIDELITY_SWITCH = 150;
+    const AMOUNT_BALANCE_SWITCH = 0.80;
 
     public function __construct(EntityManagerInterface $managerController)
     {
@@ -36,6 +39,19 @@ class ClientManager
 
         //Si les points de fidélités sont définis ont les affectes, sinon 0
         $fidelityPoint ? $client->setFidelityPoint($fidelityPoint) : $client->setFidelityPoint(0);
+
+        if ($fidelityPoint){
+            $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
+
+            if ($nbReduction != 0){
+                $fidelityPoint = $fidelityPoint - $nbReduction*self::AMOUNT_FIDELITY_SWITCH;
+                $client->setBalance(floatval($balance) + $nbReduction*(self::AMOUNT_BALANCE_SWITCH));
+            }
+
+            $client->setFidelityPoint($fidelityPoint);
+        } else {
+            $client->setFidelityPoint(0);
+        }
 
         $isStudent = (strcmp($clientType, ClientType::ETUDIANT) == 0);
         if ($isStudent) {
