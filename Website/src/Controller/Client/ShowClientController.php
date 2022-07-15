@@ -11,9 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/{message,}", name="client_list",methods={"GET", "POST"} )
+     * @Route("/admin/client/{message?}", name="client_list",methods={"GET", "POST"} )
      */
-    public function show(ClientRepository $clientRepository, string $message = null): Response
+    public function show(ClientRepository $clientRepository, ?string $message): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute('home');

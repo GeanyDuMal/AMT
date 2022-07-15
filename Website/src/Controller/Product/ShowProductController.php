@@ -16,7 +16,7 @@ class ShowProductController extends AbstractController
     /**
      * @Route("/product/{message?}", name="product_list",methods={"GET", "POST"} )
      */
-    public function show(EntityManagerInterface $manager, ProductRepository $productRepository, string $message = null): Response
+    public function show(EntityManagerInterface $manager, ProductRepository $productRepository, ?string $message = null): Response
     {
         $clientTypeActual = ClientType::ETUDIANT;
 
@@ -25,7 +25,7 @@ class ShowProductController extends AbstractController
         }
 
         // On recupere tout les produits
-        $products = $productRepository->findBy([], ["productType" => "ASC"]);
+        $products = $productRepository->findBy([], ["productType" => "ASC", "name" => "ASC"]);
 
         return $this->render('product/productList.html.twig', [
             'products' => $products,
