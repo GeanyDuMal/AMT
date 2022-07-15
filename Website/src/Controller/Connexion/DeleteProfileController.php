@@ -23,7 +23,7 @@ class DeleteProfileController extends AbstractController
     {
         // Not allowed to remove you account if you are the president or if you aren't connected
         if ($this->isGranted(SymfonyRole::PRESIDENT) || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home', [
+            return $this->redirectToRoute('profile', [
                 "message" => "Votre compte ne peut pas être supprimé, merci de contacter l'administrateur "
             ]);
         }
