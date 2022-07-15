@@ -8,7 +8,6 @@ use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
-use Decimal\Decimal;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
