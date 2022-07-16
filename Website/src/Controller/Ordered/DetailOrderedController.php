@@ -3,6 +3,7 @@
 namespace App\Controller\Ordered;
 
 use App\Manager\OrderedManager;
+use App\Manager\PriceManager;
 use App\Repository\OrderedRepository;
 use App\Repository\PriceRepository;
 use App\Repository\PurchaseRepository;
@@ -24,7 +25,9 @@ class DetailOrderedController extends AbstractController
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
+
         $orderManager = new OrderedManager($manager);
+        $priceManager = new PriceManager($manager);
         $priceList = [];
         $clientType = ClientType::ETUDIANT;
 
@@ -33,7 +36,7 @@ class DetailOrderedController extends AbstractController
             $order = $orderedRepository->find($idOrder);
             if ($order != null) {
                 if ($order->getClient()) {
-                    $clientType = $order->getClient()->getClientType();
+                    $clientType = $priceManager->getClientTypeUseForPrice($order->getClient()->getClientType());
                 }
 
                 $purchaseList = $purchaseRepository->findBy(["ordered" => $order]);

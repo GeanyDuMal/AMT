@@ -17,7 +17,7 @@ window.onload = function() {
 clientType.onchange = function (){
     var selectedOption = this[this.selectedIndex];
     var selectedText = selectedOption.text;
-    assosRoles.style.visibility = (selectedText === "Etudiant" ? "hidden" : "visible");
+    assosRoles.style.visibility = (selectedText === "Association" ? "visible" : "hidden");
 }
 
 /**
