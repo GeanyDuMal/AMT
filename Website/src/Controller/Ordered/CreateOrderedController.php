@@ -24,24 +24,21 @@ class CreateOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $user = $this->getUser();
-        $allProductPositiveStock = [];
         $inputParameterBag = $request->request;
         $productOrdered = [];
 
         // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
-        $allProduct = $productRepository->findBy([], ["productType" => "ASC"]);
-        foreach ($allProduct as $product) {
-            if ($product->getQuantityStock() > 0) {
-                $allProductPositiveStock[] = $product;
-            }
-        }
+        $allProductPositiveStock = $productRepository->findAllPositiveStock();
 
         // Recupere toutes les quantités de produit selectionné
-        foreach ($allProductPositiveStock as $product) {
-            $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
-            if ($quantity != 0) {
-                $productOrdered = $productOrdered + [$product->getId() => $quantity];
+        if ($allProductPositiveStock){
+            foreach ($allProductPositiveStock as $product) {
+                $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
+
+                // Vérifie si l'on a commandé le produit $product
+                if ($quantity != 0) {
+                    $productOrdered = $productOrdered + [$product->getId() => $quantity];
+                }
             }
         }
 
@@ -57,7 +54,6 @@ class CreateOrderedController extends AbstractController
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
         return $this->render('ordered/create.html.twig', [
-            "user" => $user,
             "productList" => $allProductPositiveStock,
             "clientList" => $allClient,
             "message" => $message

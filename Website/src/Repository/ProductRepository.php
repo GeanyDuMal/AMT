@@ -19,6 +19,20 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @return Product[] Returns an array of Product objects
+     * Return all the product with a positive stock
+     */
+    public function findAllPositiveStock(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.quantityStock > 0')
+            ->orderBy('p.productType, p.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
