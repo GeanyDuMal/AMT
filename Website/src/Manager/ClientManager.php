@@ -39,7 +39,7 @@ class ClientManager
         //Si les points de fidélités sont définis ont les affectes, sinon 0
         $fidelityPoint ? $client->setFidelityPoint($fidelityPoint) : $client->setFidelityPoint(0);
 
-        // Verification si le nombre de point de fidelité ne depasse le seuil de transfert
+        // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
         if ($fidelityPoint){
             $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
 

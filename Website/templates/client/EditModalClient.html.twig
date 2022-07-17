@@ -71,18 +71,10 @@
                         data-source="path">
                     {% if clientExists %}
                         {% for clientType in clientTypes %}
-                            <option {% if clientType == client.clientType %} selected {% endif %} id="member">
+                            <option {% if clientType == client.clientType %} selected {% endif %}>
                                 {{ clientType }}
                             </option>
                         {% endfor %}
-
-                   {#  <option {% if client.clientType == "Etudiant" %} selected {% endif %}>
-                        Etudiant
-                    </option>
-                    <option {% if client.clientType == "Association" %} selected {% endif %} id="member">
-                        Association
-                    </option>
-                        #}
                     {% endif %}
                 </select>
             </div>
