@@ -46,7 +46,6 @@ class DetailOrderedController extends AbstractController
                             $priceRepository->findOneBy(["product" => $purchase->getProduct(), "clientType" => $clientType])];
                 }
             } else {
-                dd("hello");
                 return $this->redirectToRoute('home');
             }
         } else {
