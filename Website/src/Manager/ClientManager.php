@@ -39,6 +39,7 @@ class ClientManager
         //Si les points de fidélités sont définis ont les affectes, sinon 0
         $fidelityPoint ? $client->setFidelityPoint($fidelityPoint) : $client->setFidelityPoint(0);
 
+        // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
         if ($fidelityPoint){
             $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
 
@@ -52,11 +53,11 @@ class ClientManager
             $client->setFidelityPoint(0);
         }
 
-        $isStudent = (strcmp($clientType, ClientType::ETUDIANT) == 0);
-        if ($isStudent) {
-            $typeName = $clientType;
-        } else {
+        $isAssoc = (strcmp($clientType, ClientType::ASSOCIATION) == 0);
+        if ($isAssoc) {
             $typeName = $roleAssociationName;
+        } else {
+            $typeName = $clientType;
         }
         $role = $this->getRoleFromType($typeName);
 
@@ -195,14 +196,20 @@ class ClientManager
         return (strpbrk(trim($password), $regexSpecial) && strlen(trim($password)) >= 5);
     }
 
+    /**
+     * @param string $typeName
+     * @return array
+     * Retourne en fonction du {@link $typename} qui est soit un {@link AssociationRole} soit un {@link ClientType},
+     * le {@link SymfonyRole} correspondant
+     */
     public function getRoleFromType(string $typeName): array
     {
         $role = [];
         $role[] = match ($typeName) {
-            "Tresorier" => SymfonyRole::TRESORIER,
-            "President" => SymfonyRole::PRESIDENT,
-            "Etudiant" => SymfonyRole::USER,
-            default => SymfonyRole::ASSOC,
+            AssociationRole::TRESORIER => SymfonyRole::TRESORIER,
+            AssociationRole::PRESIDENT => SymfonyRole::PRESIDENT,
+            AssociationRole::SECRETAIRE, AssociationRole::VICE_PRESIDENT, AssociationRole::MEMBRE => SymfonyRole::ASSOC,
+            default => SymfonyRole::USER
         };
         return $role;
     }
@@ -211,9 +218,8 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function setRoleForClient(Client $client)
+    public function setRoleForClient(Client $client): void
     {
-
         $associationType = ClientType::ASSOCIATION;
 
         /*

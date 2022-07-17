@@ -86,7 +86,8 @@ class EditClientController extends AbstractController
             'validationErrors' => $validationErrors,
             'errorLoginExist' => $errorLoginExist,
             'client' => $client,
-            'member' => $member
+            'member' => $member,
+            'clientTypes' => ClientType::getAll()
         ]);
     }
 

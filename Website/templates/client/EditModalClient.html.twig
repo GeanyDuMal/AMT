@@ -70,12 +70,11 @@
                 <select class="form-select" name="clientType" id="clientType" data-target="assosRoles"
                         data-source="path">
                     {% if clientExists %}
-                    <option {% if client.clientType == "Etudiant" %} selected {% endif %}>
-                        Etudiant
-                    </option>
-                    <option {% if client.clientType == "Association" %} selected {% endif %} id="member">
-                        Association
-                    </option>
+                        {% for clientType in clientTypes %}
+                            <option {% if clientType == client.clientType %} selected {% endif %}>
+                                {{ clientType }}
+                            </option>
+                        {% endfor %}
                     {% endif %}
                 </select>
             </div>

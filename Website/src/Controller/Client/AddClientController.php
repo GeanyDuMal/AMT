@@ -7,6 +7,7 @@ use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,11 +57,11 @@ class AddClientController extends AbstractController
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if($client->getClientType() == "Association"){
+                    if($client->getClientType() == ClientType::ASSOCIATION){
 
                         $newMember = $clientManager->makeMember($client, $request->get('assosRoles'));
 
-                        if($newMember->getRole() == "President"){
+                        if($newMember->getRole() == AssociationRole::PRESIDENT){
                             $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
                         }
                         $manager->persist($newMember);

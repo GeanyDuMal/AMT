@@ -2,12 +2,14 @@
 
 namespace App\Manager;
 
+use App\Entity\Client;
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Utils\Enum\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use JetBrains\PhpStorm\Pure;
+use function PHPUnit\Framework\assertContains;
 
 class PriceManager
 {
@@ -39,7 +41,7 @@ class PriceManager
      * if more needed, you have to change it
      */
     public function setData(Price  $memberPrice, Price $studentPrice, Product $product, string $memberPriceAmount,
-                            string $studentPriceAmount)
+                            string $studentPriceAmount) : void
     {
         $memberType = ClientType::ASSOCIATION;
         $studentType = ClientType::ETUDIANT;
@@ -57,5 +59,28 @@ class PriceManager
     public function verifPrice(Price $price): bool
     {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
+    }
+
+    /**
+     * @param string $clientType
+     * @return string
+     * Retourne le type de prix concerné par le type de client passé en paramètre
+     */
+    public function getClientTypeUseForPrice(string $clientType): string
+    {
+        $clientTypeReturn = ClientType::ETUDIANT;
+
+        if (in_array($clientType, ClientType::getAll(), true)){
+            switch ($clientType){
+                case ClientType::ETUDIANT :
+                    $clientTypeReturn = ClientType::ETUDIANT;
+                    break;
+                case ClientType::ASSOCIATION || ClientType::COTISANT :
+                    $clientTypeReturn = ClientType::ASSOCIATION;
+                    break;
+            }
+        }
+
+        return $clientTypeReturn;
     }
 }

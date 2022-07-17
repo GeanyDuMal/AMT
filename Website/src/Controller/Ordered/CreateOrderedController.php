@@ -17,7 +17,7 @@ class CreateOrderedController extends AbstractController
     /**
      * @Route("/ordered/create/{message?}", name="orderedCreate")
      */
-    public function index(Request          $request, EntityManagerInterface $manager, ProductRepository $productRepository,
+    public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository,
                           ClientRepository $clientRepository, string $message = null): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
