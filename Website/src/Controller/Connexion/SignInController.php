@@ -35,14 +35,10 @@ class SignInController extends AbstractController
         if (!is_null($inputParameterBag->get("name"))) {
             $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
-            $client->setName(strtoupper(trim($inputParameterBag->get("name"))))
-                ->setFirstName(trim($inputParameterBag->get("firstName")))
-                ->setLogin(trim($inputParameterBag->get("login")))
-                ->setPassword($hashedPassword)
-                ->setClientType(ClientType::ETUDIANT)
-                ->setRoles([SymfonyRole::USER])
-                ->setFidelityPoint(0)
-                ->setBalance(0);
+            $clientManager->setData($client, $passwordHasher, strtoupper(trim($inputParameterBag->get("name"))),
+                trim($inputParameterBag->get("firstName")), trim($inputParameterBag->get("login")),
+                trim($inputParameterBag->get("password")), 0, null, ClientType::ETUDIANT,
+                0);
 
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
 
