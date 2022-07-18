@@ -38,7 +38,7 @@ symfony server:ca:install
 Ensuite il faut pour lancer :
 
 ````shell
-symfony serve -d
+symfony server -d
 ````
 
 Pour l'arrêter il suffit d'écrire:
