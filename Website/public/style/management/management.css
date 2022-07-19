@@ -24,12 +24,14 @@
 
 .title_block{
     text-align: center;
-    margin-bottom: 5%;
+    margin-bottom: 25px;
+    font-size: 3rem;
+    text-decoration: underline;
 }
 
 .block_control{
     align-items: center;
-
+    min-height: 70px;
     width: 100%;
     padding: 0 5%;
     margin-bottom: 15px;
@@ -37,5 +39,6 @@
 }
 
     .block_control>*{
-        width: 45%;
+        width: 47.5%;
+        min-height: 40px;
     }
