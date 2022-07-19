@@ -27,7 +27,7 @@ class ClientManager
     }
 
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, ?string $password, string $balance, string $roleAssociationName, string $clientType,
+                            string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
                             ?int $fidelityPoint): void
     {
         $client->setName(strtoupper($name))
