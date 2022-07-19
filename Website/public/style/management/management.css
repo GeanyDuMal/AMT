@@ -1,0 +1,41 @@
+.flex_vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex_horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.centered_flex {
+    align-items: center;
+}
+
+.btn {
+    text-align: center;
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: box-shadow 0.2s;
+}
+
+.title_block{
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.block_control{
+    align-items: center;
+
+    width: 100%;
+    padding: 0 5%;
+    margin-bottom: 15px;
+    justify-content: space-around;
+}
+
+    .block_control>*{
+        width: 45%;
+    }

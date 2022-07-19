@@ -3,11 +3,50 @@
 {% block title %}Gestion{% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="/style/management/management.css">
 {% endblock %}
 
 {% block javascripts %}
+    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
+    <div class="flex_vertical centered_flex">
+        <div class="title_block">
+            <h1>Interface de controle</h1>
+        </div>
 
+        <form action="" class="flex_vertical centered_flex" method="post" id="form_management" onsubmit="disableButton()">
+            <div class="centered_flex flex_horizontal block_control">
+                <button class="btn btn-primary disableable">Purger les cotisants</button>
+                <div>
+                    Définir tout les cotisants comme étudiant.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button class="btn btn-primary disableable">Purger les clients</button>
+                <div>
+                    Supprimer les clients n'ayant effectués aucune action depuis 2 ans.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button class="btn btn-primary disableable">Purger les produits</button>
+                <div>
+                    Supprimer les produits n'ayant plus été commandé depuis X mois et dont le stock est vide.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button class="btn btn-primary disableable">Purger les commandes</button>
+                <div>
+                    Supprimer les commandes datant d'au moins 1 an sans client.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button class="btn btn-primary disableable">Purger les post</button>
+                <div>
+                    Supprimer les X dernier posts.
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}
