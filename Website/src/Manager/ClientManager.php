@@ -93,7 +93,8 @@ class ClientManager
             $this->manager->persist($association);
             $this->manager->flush();
         }
-        $this->checkIfRemoveFromAssociation($client);
+
+        $this->removeFromAssociationIfNecessary($client);
         $this->verifyBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
 
@@ -110,7 +111,7 @@ class ClientManager
     {
         $client->setClientType(ClientType::ETUDIANT);
 
-        $this->checkIfRemoveFromAssociation($client);
+        $this->removeFromAssociationIfNecessary($client);
 
         $this->manager->remove($client);
         $this->manager->flush();
@@ -122,7 +123,6 @@ class ClientManager
      * Check if the differents attributes aren't empty
      * Don't check the attribute balance, fidelityPoint and clientType
      */
-    #[Pure]
     public function isNotFull(?Client $client): bool
     {
         if ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" || $client->getPassword() == "") {
@@ -285,12 +285,12 @@ class ClientManager
      * @return void
      * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
      */
-    public function checkIfRemoveFromAssociation(Client $client)
+    public function removeFromAssociationIfNecessary(Client $client): void
     {
         // If clientType isn't Association
         if ($client->getClientType() != ClientType::ASSOCIATION) {
             $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
-            // If client is present is table Association, it's not normal, so we remove it
+            // If client is present in table Association, it's not normal, so we remove it
             if ($associationMember) {
                 $this->manager->remove($associationMember);
                 $this->manager->flush();

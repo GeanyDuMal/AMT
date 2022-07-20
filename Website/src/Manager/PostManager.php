@@ -18,7 +18,7 @@ class PostManager
         $this->postRepository = $this->manager->getRepository(Post::class);
     }
 
-    public function persist(Post $post)
+    public function persist(Post $post): void
     {
         if ($this->verifPost($post)) {
             $this->replaceImageIfEmpty($post);
@@ -26,6 +26,12 @@ class PostManager
             $this->manager->persist($post);
             $this->manager->flush();
         }
+    }
+
+    public function remove(Post $post): void
+    {
+        $this->manager->remove($post);
+        $this->manager->flush();
     }
 
     /**
@@ -45,8 +51,6 @@ class PostManager
         $post->setPostType($postType);
     }
 
-
-    #[Pure]
     public function verifPost(Post $post): bool
     {
         return ($post->getTitle() != "" && $post->getDescription() != "");

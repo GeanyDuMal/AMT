@@ -16,12 +16,19 @@
             Interface de controle
         </h1>
 
+        {% if message %}
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>{{ message }}!</strong>
+            </div>
+        {% endif %}
+
         <form action="" class="flex_vertical centered_flex" method="post" id="form_management" onsubmit="disableButton()">
             <h2>
                 Purge
             </h2>
             <div class="centered_flex flex_horizontal block_control">
-                <button class="btn btn-primary disableable">
+                <button type="submit" name="clearCotisant" value="true" class="btn btn-primary disableable">
                     Purger les cotisants
                 </button>
                 <div>
@@ -29,7 +36,7 @@
                 </div>
             </div>
             <div class="centered_flex flex_horizontal block_control">
-                <button class="btn btn-primary disableable">
+                <button type="submit" name="clearAssociation" value="true" class="btn btn-primary disableable">
                     Purger l'association
                 </button>
                 <div>
@@ -37,7 +44,7 @@
                 </div>
             </div>
             <div class="centered_flex flex_horizontal block_control">
-                <button class="btn btn-primary disableable">
+                <button type="submit" name="clearOldClient" value="true" class="btn btn-primary disableable">
                     Purger les clients
                 </button>
                 <div>
@@ -45,7 +52,7 @@
                 </div>
             </div>
             <div class="centered_flex flex_horizontal block_control">
-                <button class="btn btn-primary disableable">
+                <button type="submit" name="clearProduct" value="true" class="btn btn-primary disableable">
                     Purger les produits
                 </button>
                 <div>
@@ -53,7 +60,7 @@
                 </div>
             </div>
             <div class="centered_flex flex_horizontal block_control">
-                <button class="btn btn-primary disableable">
+                <button type="submit" name="clearOrder" value="true" class="btn btn-primary disableable">
                     Purger les commandes
                 </button>
                 <div>
@@ -61,7 +68,7 @@
                 </div>
             </div>
             <div class="centered_flex flex_horizontal block_control">
-                <button class="btn btn-primary disableable">
+                <button type="submit" name="clearPost" value="true" class="btn btn-primary disableable">
                     Purger les post
                 </button>
                 <div>
