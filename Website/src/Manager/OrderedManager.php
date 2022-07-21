@@ -29,6 +29,12 @@ class OrderedManager
         }
     }
 
+    public function remove(Ordered $ordered): void
+    {
+        $this->manager->remove($ordered);
+        $this->manager->flush();
+    }
+
     public function removeWithRestore(Ordered $order): void
     {
         $purchaseManager = new PurchaseManager($this->manager);

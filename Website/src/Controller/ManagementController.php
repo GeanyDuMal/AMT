@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
+use App\Manager\OrderedManager;
 use App\Manager\PostManager;
 use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
+use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
@@ -24,7 +26,7 @@ class ManagementController extends AbstractController
      * @Route("/management/", name="management")
      */
     public function index(EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
-        AssociationRepository $associationRepository, PostRepository $postRepository): Response
+        AssociationRepository $associationRepository, PostRepository $postRepository, OrderedRepository $orderedRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)){
             return $this->redirectToRoute('home');
@@ -86,18 +88,24 @@ class ManagementController extends AbstractController
          * Nettoyage des anciennes commandes sans client
          */
         if ($inputParameterBag->get("clearOrder") != ""){
+            $listOrdered = $orderedRepository->findOrderWithoutClientTwoYearsOld();
+            $orderedManager = new OrderedManager($manager);
 
+            foreach ($listOrdered as $ordered){
+                $orderedManager->remove($ordered);
+            }
+
+            $message = "Les commandes de plus de 2 ans sans client ont été supprimées.";
         }
 
         /**
          * Nettoyage des 3 posts les plus anciens
          */
         if ($inputParameterBag->get("clearPost") != ""){
-            $listPost = $postRepository->findBy([], ["id" => "ASC"]);
+            $listPost = $postRepository->findBy([], ["id" => "ASC"], 3);
             $postManager = new PostManager($manager);
 
-            for ($i = 0; $i < 3; $i++){
-                $post = $listPost[$i];
+            foreach ($listPost as $post){
                 $postManager->remove($post);
             }
 

@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Ordered;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DoctrineExtensions\Query\Mysql\Year;
+use DoctrineExtensions\Query\Sqlite\Date;
 
 /**
  * @method Ordered|null find($id, $lockMode = null, $lockVersion = null)
@@ -82,16 +86,35 @@ class OrderedRepository extends ServiceEntityRepository
         return $purchase->getResult();
     }
 
+    /**
+     * @return Ordered[] return an array of Ordered that are 2 years old and doesn't have client assigned
+     */
+    public function findOrderWithoutClientTwoYearsOld(): array
+    {
+        $date = new DateTime();
+        $date = $date->sub(DateInterval::createFromDateString("2 Year"));
+        $ordered = $this->getEntityManager()->createQuery("
+            SELECT Ordered
+            FROM App\Entity\Ordered Ordered
+            WHERE Ordered.client IS NULL
+            AND Ordered.orderedAt < :date
+        ")
+        ->setParameter("date", $date);
+
+        return $ordered->getResult();
+    }
+
+
     // /**
-    //  * @return Order[] Returns an array of Order objects
+    //  * @return Ordered[] Returns an array of Ordered objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('o')
+            ->andWhere(o.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
+            ->orderBy('o.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -102,8 +125,8 @@ class OrderedRepository extends ServiceEntityRepository
     /*
     public function findOneBySomeField($value): ?Order
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
