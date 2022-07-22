@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Client;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +19,24 @@ class ClientRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Client::class);
+    }
+
+    /**
+     * @return Client[] Returns an array of Client objects
+     */
+    public function findClientWithoutOrderedTwoYears(): array
+    {
+        $date = new DateTime();
+        $date = $date->sub(DateInterval::createFromDateString("2 Year"));
+        $ordered = $this->getEntityManager()->createQuery("
+            SELECT Client
+            FROM App\Entity\Ordered Ordered, App\Entity\Client Client
+            WHERE Ordered.client = Client
+            AND Ordered.orderedAt < :date
+        ")
+            ->setParameter("date", $date);
+
+        return $ordered->getResult();
     }
 
     // /**

@@ -78,7 +78,7 @@ class ClientManager
      * @return void
      * Insert the Client in the Database
      */
-    public function persist(Client $client)
+    public function persist(Client $client): void
     {
         if (!$this->clientTableNotEmpty()) {
             $client->setRoles([SymfonyRole::PRESIDENT])
@@ -105,16 +105,18 @@ class ClientManager
     /**
      * @param Client $client
      * @return void
-     * Remove the Client from the table Association if he is deleted
+     * Remove the Client and remove if necessary from the table Association
      */
-    public function remove(Client $client)
+    public function remove(Client $client): void
     {
-        $client->setClientType(ClientType::ETUDIANT);
+        if (in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
+            $client->setClientType(ClientType::ETUDIANT);
 
-        $this->removeFromAssociationIfNecessary($client);
+            $this->removeFromAssociationIfNecessary($client);
 
-        $this->manager->remove($client);
-        $this->manager->flush();
+            $this->manager->remove($client);
+            $this->manager->flush();
+        }
     }
 
     /**

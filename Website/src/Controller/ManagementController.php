@@ -74,7 +74,12 @@ class ManagementController extends AbstractController
          * Nettoyage des anciens clients
          */
         if ($inputParameterBag->get("clearOldClient") != ""){
+            $listClient = $clientRepository->findClientWithoutOrderedTwoYears();
+            $clientManager = new ClientManager($manager);
 
+            foreach ($listClient as $client){
+                $clientManager->remove($client);
+            }
         }
 
         /**
