@@ -105,11 +105,12 @@ class ClientManager
     /**
      * @param Client $client
      * @return void
-     * Remove the Client and remove if necessary from the table Association
+     * Remove the Client and remove it from the table Association if necessary
+     * Doesn't remove the president or the Admin
      */
     public function remove(Client $client): void
     {
-        if (in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
+        if (!in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
@@ -289,7 +290,6 @@ class ClientManager
      */
     public function removeFromAssociationIfNecessary(Client $client): void
     {
-        // If clientType isn't Association
         if ($client->getClientType() != ClientType::ASSOCIATION) {
             $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
             // If client is present in table Association, it's not normal, so we remove it

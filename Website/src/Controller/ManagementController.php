@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
-use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
 use App\Manager\OrderedManager;
 use App\Manager\PostManager;
@@ -39,7 +37,7 @@ class ManagementController extends AbstractController
         $message = null;
 
         /**
-         * Nettoyage des cotisants
+         * Purge des cotisants
          */
         if ($inputParameterBag->get("clearCotisant") != ""){
             $clientManager = new ClientManager($manager);
@@ -54,7 +52,7 @@ class ManagementController extends AbstractController
         }
 
         /**
-         * Nettoyage de l'association
+         * Purge de l'association
          */
         if ($inputParameterBag->get("clearAssociation") != ""){
             $clientManager = new ClientManager($manager);
@@ -74,7 +72,7 @@ class ManagementController extends AbstractController
         }
 
         /**
-         * Nettoyage des anciens clients
+         * Purge des anciens clients
          */
         if ($inputParameterBag->get("clearOldClient") != ""){
             $listClient = $clientRepository->findClientWithoutOrderedTwoYears();
@@ -88,7 +86,7 @@ class ManagementController extends AbstractController
         }
 
         /**
-         * Nettoyage des anciens produits
+         * Purge des anciens produits
          */
         if ($inputParameterBag->get("clearProduct") != ""){
             $listProduct = $productRepository->findProductEmptyWithoutCommandSixMonth();
@@ -102,7 +100,7 @@ class ManagementController extends AbstractController
         }
 
         /**
-         * Nettoyage des anciennes commandes sans client
+         * Purge des anciennes commandes sans client
          */
         if ($inputParameterBag->get("clearOrder") != ""){
             $listOrdered = $orderedRepository->findOrderWithoutClientTwoYearsOld();
@@ -116,7 +114,7 @@ class ManagementController extends AbstractController
         }
 
         /**
-         * Nettoyage des 3 posts les plus anciens
+         * Purge des 3 posts les plus anciens
          */
         if ($inputParameterBag->get("clearPost") != ""){
             $listPost = $postRepository->findBy([], ["id" => "ASC"], 3);

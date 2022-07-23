@@ -43,14 +43,6 @@ class ClientRepository extends ServiceEntityRepository
             ->setParameter("date", $date);
 
         return $orderedQuery->getResult();
-
-        /*return $this->createQueryBuilder('c')
-            ->from('App\Entity\Ordered', 'o')
-            ->andWhere('o.client = c')
-            ->andWhere('o.orderedAt < :date')
-            ->setParameter('date', $date)
-            ->getQuery()
-            ->getResult();*/
     }
 
     // /**

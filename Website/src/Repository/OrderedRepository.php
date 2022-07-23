@@ -7,8 +7,6 @@ use DateInterval;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use DoctrineExtensions\Query\Mysql\Year;
-use DoctrineExtensions\Query\Sqlite\Date;
 
 /**
  * @method Ordered|null find($id, $lockMode = null, $lockVersion = null)
@@ -93,15 +91,13 @@ class OrderedRepository extends ServiceEntityRepository
     {
         $date = new DateTime();
         $date = $date->sub(DateInterval::createFromDateString("2 Year"));
-        $ordered = $this->getEntityManager()->createQuery("
-            SELECT Ordered
-            FROM App\Entity\Ordered Ordered
-            WHERE Ordered.client IS NULL
-            AND Ordered.orderedAt < :date
-        ")
-        ->setParameter("date", $date);
 
-        return $ordered->getResult();
+        return $this->createQueryBuilder('o')
+            ->where('o.client IS NULL')
+            ->andWhere('o.orderedAt < :date')
+            ->setParameter("date", $date)
+            ->getQuery()
+            ->getResult();
     }
 
 

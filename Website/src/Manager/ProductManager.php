@@ -6,8 +6,6 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use JetBrains\PhpStorm\NoReturn;
-use JetBrains\PhpStorm\Pure;
 
 class ProductManager
 {
@@ -61,7 +59,6 @@ class ProductManager
             ->setProductType($productType);
     }
 
-    #[Pure]
     public function verifProduct(Product $product): bool
     {
         return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "");
@@ -81,5 +78,4 @@ class ProductManager
             $product->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
     }
-
 }
