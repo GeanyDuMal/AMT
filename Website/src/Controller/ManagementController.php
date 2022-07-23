@@ -80,6 +80,8 @@ class ManagementController extends AbstractController
             foreach ($listClient as $client){
                 $clientManager->remove($client);
             }
+
+            $message = "Les clients sans commandes de moins de 2 ans ont été supprimés";
         }
 
         /**

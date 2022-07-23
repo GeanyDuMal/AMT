@@ -22,21 +22,35 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Client[] Returns an array of Client objects
+     * @return Client[] Returns an array of Client that hasn't ordered anything for 2 years
      */
     public function findClientWithoutOrderedTwoYears(): array
     {
         $date = new DateTime();
         $date = $date->sub(DateInterval::createFromDateString("2 Year"));
-        $ordered = $this->getEntityManager()->createQuery("
+
+        //Recupere tout les clients qui n'ont pas une commande de moins de 2 ans
+        $orderedQuery = $this->getEntityManager()->createQuery("
             SELECT Client
-            FROM App\Entity\Ordered Ordered, App\Entity\Client Client
-            WHERE Ordered.client = Client
-            AND Ordered.orderedAt < :date
-        ")
+            FROM App\Entity\Client Client
+            WHERE Client NOT IN (
+                SELECT ClientInOrdered
+                FROM App\Entity\Ordered Ordered, App\Entity\Client ClientInOrdered
+                WHERE Ordered.client = ClientInOrdered
+                AND Ordered.orderedAt >= :date
+                )
+            ")
             ->setParameter("date", $date);
 
-        return $ordered->getResult();
+        return $orderedQuery->getResult();
+
+        /*return $this->createQueryBuilder('c')
+            ->from('App\Entity\Ordered', 'o')
+            ->andWhere('o.client = c')
+            ->andWhere('o.orderedAt < :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();*/
     }
 
     // /**
