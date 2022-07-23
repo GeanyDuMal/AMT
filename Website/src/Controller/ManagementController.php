@@ -98,7 +98,7 @@ class ManagementController extends AbstractController
                 $productManager->remove($product);
             }
 
-            $message = "Les produits sans commandes de moins de 6 mois dont le stock est vides ont été supprimés";
+            $message = "Les produits sans commandes de moins de 6 mois dont le stock est vide ont été supprimés";
         }
 
         /**
