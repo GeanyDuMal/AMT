@@ -3,8 +3,10 @@
 namespace App\Manager;
 
 use App\Entity\Product;
+use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 
 class ProductManager
@@ -18,7 +20,7 @@ class ProductManager
         $this->productRepository = $this->manager->getRepository(Product::class);
     }
 
-    public function persist(Product $product)
+    public function persist(Product $product): void
     {
         if ($this->verifProduct($product)) {
             $this->replaceImageIfEmpty($product);
@@ -26,6 +28,21 @@ class ProductManager
             $this->manager->persist($product);
             $this->manager->flush();
         }
+    }
+
+    public function remove(Product $product): void
+    {
+        $purchaseRepository = $this->manager->getRepository(Purchase::class);
+        $purchaseManager = new PurchaseManager($this->manager);
+        $purchaseLinked = $purchaseRepository->findBy(["product" => $product]);
+
+        //On supprime les achats liés au produit supprimé
+        foreach ($purchaseLinked as $purchase){
+            $purchaseManager->remove($purchase);
+        }
+
+        $this->manager->remove($product);
+        $this->manager->flush();
     }
 
     /**
@@ -64,4 +81,5 @@ class ProductManager
             $product->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
     }
+
 }

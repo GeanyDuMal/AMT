@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,7 +32,33 @@ class ProductRepository extends ServiceEntityRepository
             ->orderBy('p.productType, p.name', 'ASC')
             ->getQuery()
             ->getResult()
-        ;
+            ;
+    }
+
+    /**
+     * @return Product[]
+     */
+    public function findProductEmptyWithoutCommandSixMonth(): array
+    {
+        $date = new DateTime();
+        $date = $date->sub(DateInterval::createFromDateString("6 Month"));
+
+        //Recupere tout les produits qui n'ont pas une commande de moins de 6 mois et un stock vide
+        $productQuery = $this->getEntityManager()->createQuery("
+            SELECT Product_0
+            FROM App\Entity\Product Product_0
+            WHERE Product_0 NOT IN (
+                SELECT Product_1
+                FROM App\Entity\Ordered Ordered, App\Entity\Purchase Purchase, App\Entity\Product Product_1
+                WHERE Purchase.ordered = Ordered
+                AND Purchase.product = Product_1
+                AND Ordered.orderedAt >= :date
+                )
+            AND Product_0.quantityStock = 0
+            ")
+            ->setParameter("date", $date);
+
+        return $productQuery->getResult();
     }
 
     // /**

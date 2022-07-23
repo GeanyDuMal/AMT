@@ -7,10 +7,12 @@ use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
 use App\Manager\OrderedManager;
 use App\Manager\PostManager;
+use App\Manager\ProductManager;
 use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
 use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
+use App\Repository\ProductRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
@@ -26,7 +28,8 @@ class ManagementController extends AbstractController
      * @Route("/management/", name="management")
      */
     public function index(EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
-        AssociationRepository $associationRepository, PostRepository $postRepository, OrderedRepository $orderedRepository): Response
+        AssociationRepository $associationRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
+        ProductRepository $productRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)){
             return $this->redirectToRoute('home');
@@ -88,7 +91,14 @@ class ManagementController extends AbstractController
          * Nettoyage des anciens produits
          */
         if ($inputParameterBag->get("clearProduct") != ""){
+            $listProduct = $productRepository->findProductEmptyWithoutCommandSixMonth();
+            $productManager = new ProductManager($manager);
 
+            foreach ($listProduct as $product){
+                $productManager->remove($product);
+            }
+
+            $message = "Les produits sans commandes de moins de 6 mois dont le stock est vides ont été supprimés";
         }
 
         /**
