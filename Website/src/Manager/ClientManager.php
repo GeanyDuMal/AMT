@@ -78,7 +78,7 @@ class ClientManager
      * @return void
      * Insert the Client in the Database
      */
-    public function persist(Client $client)
+    public function persist(Client $client): void
     {
         if (!$this->clientTableNotEmpty()) {
             $client->setRoles([SymfonyRole::PRESIDENT])
@@ -93,7 +93,8 @@ class ClientManager
             $this->manager->persist($association);
             $this->manager->flush();
         }
-        $this->checkIfRemoveFromAssociation($client);
+
+        $this->removeFromAssociationIfNecessary($client);
         $this->verifyBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
 
@@ -104,16 +105,19 @@ class ClientManager
     /**
      * @param Client $client
      * @return void
-     * Remove the Client from the table Association if he is deleted
+     * Remove the Client and remove it from the table Association if necessary
+     * Doesn't remove the president or the Admin
      */
-    public function remove(Client $client)
+    public function remove(Client $client): void
     {
-        $client->setClientType(ClientType::ETUDIANT);
+        if (!in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
+            $client->setClientType(ClientType::ETUDIANT);
 
-        $this->checkIfRemoveFromAssociation($client);
+            $this->removeFromAssociationIfNecessary($client);
 
-        $this->manager->remove($client);
-        $this->manager->flush();
+            $this->manager->remove($client);
+            $this->manager->flush();
+        }
     }
 
     /**
@@ -122,7 +126,6 @@ class ClientManager
      * Check if the differents attributes aren't empty
      * Don't check the attribute balance, fidelityPoint and clientType
      */
-    #[Pure]
     public function isNotFull(?Client $client): bool
     {
         if ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" || $client->getPassword() == "") {
@@ -285,12 +288,11 @@ class ClientManager
      * @return void
      * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
      */
-    public function checkIfRemoveFromAssociation(Client $client)
+    public function removeFromAssociationIfNecessary(Client $client): void
     {
-        // If clientType isn't Association
         if ($client->getClientType() != ClientType::ASSOCIATION) {
             $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
-            // If client is present is table Association, it's not normal, so we remove it
+            // If client is present in table Association, it's not normal, so we remove it
             if ($associationMember) {
                 $this->manager->remove($associationMember);
                 $this->manager->flush();
