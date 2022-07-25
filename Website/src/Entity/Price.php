@@ -18,7 +18,7 @@ class Price
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Assert\NotNull(message="Le produit dans prix ne doit pas etre null")
      */
-    private ?Product $product;
+    private Product $product;
 
     /**
      * @ORM\Id

@@ -15,7 +15,7 @@ class Purchase
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class)

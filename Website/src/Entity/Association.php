@@ -15,7 +15,7 @@ class Association
      * @ORM\OneToOne(targetEntity=Client::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
      */
-    private $member;
+    private Client $member;
 
     /**
      * @ORM\Column(type="string", length=255)
