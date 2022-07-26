@@ -20,30 +20,30 @@ class Post
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="string", length=255, options={"default":"https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png"})
      * @ORM\Column(nullable=true)
      */
-    private $imageLink;
+    private string $imageLink;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private string $postType;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -55,7 +55,7 @@ class Post
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -67,7 +67,7 @@ class Post
         return $this;
     }
 
-    public function getImageLink(): ?string
+    public function getImageLink(): string
     {
         return $this->imageLink;
     }
