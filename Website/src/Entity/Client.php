@@ -28,7 +28,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre nom doit comporter au moins {{ limit }} caractères",
      *      )
      */
-    private ?string $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,7 +37,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre prénom doit comporter au moins {{ limit }} caractères",
      *      )
      */
-    private ?string $firstName;
+    private string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -46,7 +46,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre login doit comporter au moins {{ limit }} caractères",
      *     )
      */
-    private ?string $login;
+    private string $login;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -55,23 +55,23 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      *      minMessage = "Votre password doit comporter au moins {{ limit }} caractères",
      *     )
      */
-    private ?string $password;
+    private string $password;
 
     /**
-     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true, options={"default": "0.00"})
+     * @ORM\Column(type="decimal", precision=5, scale=2, options={"default": "0.00"})
      * @Assert\PositiveOrZero(
      *      message="La balance doit etre positive"
      *      )
      */
-    private ?string $balance;
+    private string $balance;
 
     /**
-     * @ORM\Column(type="integer", nullable=true, options={"default": 0})
+     * @ORM\Column(type="integer", options={"default": 0})
      * @Assert\PositiveOrZero(
      *      message="Les points de fidelité doivent etre positif"
      *      )
      */
-    private ?int $fidelityPoint;
+    private int $fidelityPoint;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -83,7 +83,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private array $roles = [];
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -92,7 +92,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         $this->id = $id;
         return $this;
     }
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -104,7 +104,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -116,7 +116,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLogin(): ?string
+    public function getLogin(): string
     {
         return $this->login;
     }
@@ -127,7 +127,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -139,7 +139,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBalance(): ?string
+    public function getBalance(): string
     {
         return $this->balance;
     }
@@ -151,7 +151,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFidelityPoint(): ?int
+    public function getFidelityPoint(): int
     {
         return $this->fidelityPoint;
     }
@@ -204,7 +204,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return null;
     }
 
-    public function getUserIdentifier(): ?string
+    public function getUserIdentifier(): string
     {
         return $this->getLogin();
     }
@@ -214,7 +214,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->getUserIdentifier();
     }
