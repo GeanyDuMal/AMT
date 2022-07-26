@@ -19,39 +19,39 @@ class Purchase
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private ?Product $product;
+    private Product $product;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $quantity;
+    private int $quantity;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordered::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private ?Ordered $ordered;
+    private Ordered $ordered;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
@@ -63,12 +63,12 @@ class Purchase
         return $this;
     }
 
-    public function getOrdered(): ?Ordered
+    public function getOrdered(): Ordered
     {
         return $this->ordered;
     }
 
-    public function setOrdered(?Ordered $ordered): self
+    public function setOrdered(Ordered $ordered): self
     {
         $this->ordered = $ordered;
 
