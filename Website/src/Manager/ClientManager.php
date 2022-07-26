@@ -178,7 +178,9 @@ class ClientManager
                         break;
                     default:
                         $client->setRoles([SymfonyRole::ASSOC]);
+                        break;
                 }
+                break;
             }
             default:
                 $client->setRoles([SymfonyRole::USER]);

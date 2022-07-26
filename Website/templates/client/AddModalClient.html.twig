@@ -81,12 +81,11 @@
             <div class="form-group col-md-6">
                 <label>Type</label>
                 <select class="form-select" name="clientType" id="clientType" data-target="assosRoles" data-source="path" value="0">
-                    <option>
-                            Etudiant
-                    </option>
-                    <option id="member">
-                        Association
-                    </option>
+                    {% for clientType in clientTypes %}
+                        <option >
+                            {{ clientType }}
+                        </option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="form-group col-md-12" id="roles">

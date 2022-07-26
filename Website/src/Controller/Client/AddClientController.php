@@ -74,9 +74,10 @@ class AddClientController extends AbstractController
         }
 
         return $this->render('client/AddModalClient.html.twig', [
-                'assosRoles' => $assosRoles,
-                'validationErrors' => $validationErrors,
-                'errorLoginExist' => $errorLoginExist
+            'assosRoles' => $assosRoles,
+            'validationErrors' => $validationErrors,
+            'errorLoginExist' => $errorLoginExist,
+            'clientTypes' => ClientType::getAll()
         ]);
     }
 }
