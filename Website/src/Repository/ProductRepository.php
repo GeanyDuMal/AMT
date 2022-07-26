@@ -38,12 +38,12 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Product[]
      */
-    public function findProductEmptyWithoutCommandSixMonth(): array
+    public function findProductEmptyWithoutCommandOneYear(): array
     {
         $date = new DateTime();
-        $date = $date->sub(DateInterval::createFromDateString("6 Month"));
+        $date = $date->sub(DateInterval::createFromDateString("1 Year"));
 
-        //Recupere tout les produits qui n'ont pas une commande de moins de 6 mois et un stock vide
+        //Recupere tout les produits qui n'ont pas une commande de moins de 1 an et un stock vide
         $productQuery = $this->getEntityManager()->createQuery("
             SELECT Product_0
             FROM App\Entity\Product Product_0

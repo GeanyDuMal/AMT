@@ -89,14 +89,14 @@ class ManagementController extends AbstractController
          * Purge des anciens produits
          */
         if ($inputParameterBag->get("clearProduct") != ""){
-            $listProduct = $productRepository->findProductEmptyWithoutCommandSixMonth();
+            $listProduct = $productRepository->findProductEmptyWithoutCommandOneYear();
             $productManager = new ProductManager($manager);
 
             foreach ($listProduct as $product){
                 $productManager->remove($product);
             }
 
-            $message = "Les produits sans commandes de moins de 6 mois dont le stock est vide ont été supprimés";
+            $message = "Les produits sans commandes de moins de 1 an dont le stock est vide ont été supprimés";
         }
 
         /**
