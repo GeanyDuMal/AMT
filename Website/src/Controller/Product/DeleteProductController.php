@@ -2,6 +2,7 @@
 
 namespace App\Controller\Product;
 
+use App\Manager\ProductManager;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,9 +22,11 @@ class DeleteProductController extends AbstractController
             return new JsonResponse(false);
         }
 
+        $productManager = new ProductManager($manager);
         $product = $productRepository->find($id);
-        $manager->remove($product);
-        $manager->flush();
+
+        $productManager->remove($product);
+        
         return new JsonResponse(true);
     }
 }
