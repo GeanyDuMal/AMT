@@ -60,7 +60,7 @@ class EditClientController extends AbstractController
                      *  if admin changed the role of a member to another role
                      *  we have to change it too in association table
                      */
-                    $this->manageMember($manager, $associationManager, $associationRepository, $client, $request->get('assosRoles'));
+                    $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
                 if (strcmp($ChosenClientLogin, $client->getLogin()) != 0 && $clientManager->loginExists($client)) {
@@ -92,14 +92,13 @@ class EditClientController extends AbstractController
     }
 
     /**
-     * @param EntityManagerInterface $manager
      * @param AssociationManager $associationManager
      * @param AssociationRepository $associationRepository
      * @param Client $client
      * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(EntityManagerInterface $manager, AssociationManager $associationManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation): void
+    private function manageMember(AssociationManager $associationManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation): void
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 
@@ -108,7 +107,6 @@ class EditClientController extends AbstractController
         } else {
             $clientMember = $associationManager->makeMember($client, $roleAssociation);
         }
-        $manager->persist($clientMember);
-        $manager->flush();
+        $associationManager->persist($clientMember);
     }
 }
