@@ -47,7 +47,7 @@ class AddClientController extends AbstractController
 
             if($validationErrors->count() == 0)
                 if($clientManager->loginExists($client)){
-                    $errorLoginExist = "Login Existe déja";
+                    $errorLoginExist = "Login existe déja";
                 }else{
                     $clientManager->persist($client);
 
@@ -59,7 +59,7 @@ class AddClientController extends AbstractController
                      * */
                     if($client->getClientType() == ClientType::ASSOCIATION){
 
-                        $newMember = $clientManager->makeMember($client, $request->get('assosRoles'));
+                        $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
 
                         if($newMember->getRole() == AssociationRole::PRESIDENT){
                             $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
