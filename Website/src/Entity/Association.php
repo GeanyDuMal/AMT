@@ -12,8 +12,8 @@ class Association
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity = Client::class)
-     * @ORM\JoinColumn(nullable = false, onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity=Client::class)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Client $member;
 

@@ -14,23 +14,23 @@ class Price
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity = Product::class, inversedBy = "prices")
-     * @ORM\JoinColumn(nullable = false, onDelete = "CASCADE")
-     * @Assert\NotNull(message = "Le produit dans prix ne doit pas etre null")
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="prices")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @Assert\NotNull(message="Le produit dans prix ne doit pas etre null")
      */
     private Product $product;
 
     /**
      * @ORM\Id
-     * @ORM\Column(type = "string")
-     * @Assert\NotNull(message = "Le type client dans prix ne doit pas etre null")
+     * @ORM\Column(type="string")
+     * @Assert\NotNull(message="Le type client dans prix ne doit pas etre null")
      */
     private string $clientType;
 
 
     /**
-     * @ORM\Column(type = "decimal", precision = 5, scale = 2)
-     * @Assert\Positive(message = "Le prix doit etre positif")
+     * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Assert\Positive(message="Le prix doit etre positif")
      */
     private string $price;
 
