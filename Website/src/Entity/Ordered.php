@@ -39,7 +39,7 @@ class Ordered
     /**
      * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true)
      */
-    private Collection $purchases;
+    private Collection $purchases ;
 
     public function __construct()
     {
