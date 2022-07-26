@@ -28,6 +28,11 @@ class ProductManager
         }
     }
 
+    /**
+     * @param Product $product
+     * @return void
+     * Remove the Product and all the Purchase linked
+     */
     public function remove(Product $product): void
     {
         $purchaseRepository = $this->manager->getRepository(Purchase::class);

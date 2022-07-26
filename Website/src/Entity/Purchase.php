@@ -29,8 +29,8 @@ class Purchase
     private int $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ordered::class)
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     * @ORM\ManyToOne(targetEntity=Ordered::class, inversedBy="purchases")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private Ordered $ordered;
 
