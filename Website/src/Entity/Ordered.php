@@ -30,7 +30,7 @@ class Ordered
     private ?Client $client;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string")
      */
     private string $paymentType;
 

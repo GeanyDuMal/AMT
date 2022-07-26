@@ -74,7 +74,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private int $fidelityPoint;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string")
      */
     private string $clientType;
 

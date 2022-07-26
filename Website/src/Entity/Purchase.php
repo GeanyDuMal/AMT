@@ -19,7 +19,7 @@ class Purchase
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private Product $product;
 
@@ -30,7 +30,7 @@ class Purchase
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordered::class)
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private Ordered $ordered;
 
