@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderedRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,10 +21,10 @@ class Ordered
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?\DateTime $orderedAt;
+    private DateTime $orderedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class)
+     * @ORM\ManyToOne(targetEntity = Client::class)
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private ?Client $client;
@@ -33,17 +34,17 @@ class Ordered
      */
     private string $paymentType;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getOrderedAt(): ?\DateTime
+    public function getOrderedAt(): DateTime
     {
         return $this->orderedAt;
     }
 
-    public function setOrderedAt(\DateTime $orderedAt): self
+    public function setOrderedAt(DateTime $orderedAt): self
     {
         $this->orderedAt = $orderedAt;
 
