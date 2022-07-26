@@ -24,7 +24,7 @@ class Product
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le produit doit avoir un nom")
      */
-    private ?string $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,7 +35,7 @@ class Product
      * @ORM\Column(type="integer")
      * @Assert\PositiveOrZero(message="La quantité doit etre positif ou null")
      */
-    private ?int $quantityStock;
+    private int $quantityStock;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -52,12 +52,12 @@ class Product
         $this->prices = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -81,7 +81,7 @@ class Product
         return $this;
     }
 
-    public function getQuantityStock(): ?int
+    public function getQuantityStock(): int
     {
         return $this->quantityStock;
     }
@@ -93,7 +93,7 @@ class Product
         return $this;
     }
 
-    public function getImageLink(): ?string
+    public function getImageLink(): string
     {
         return $this->imageLink;
     }
