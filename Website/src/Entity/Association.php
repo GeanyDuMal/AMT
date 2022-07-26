@@ -12,8 +12,8 @@ class Association
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Client::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity = Client::class)
+     * @ORM\JoinColumn(nullable = false)
      */
     private Client $member;
 
@@ -22,7 +22,7 @@ class Association
      */
     private string $role;
 
-    public function getMember(): ?Client
+    public function getMember(): Client
     {
         return $this->member;
     }
