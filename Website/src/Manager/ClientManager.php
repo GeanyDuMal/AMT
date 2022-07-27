@@ -26,53 +26,6 @@ class ClientManager
         $this->clientRepository = $this->manager->getRepository(Client::class);
     }
 
-    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
-                            ?int $fidelityPoint): void
-    {
-        $client->setName(strtoupper($name))
-            ->setFirstName($firstName)
-            ->setLogin($login)
-            ->setBalance($balance)
-            ->setClientType($clientType);
-
-        //Si les points de fidélités sont définis ont les affectes, sinon 0
-        $fidelityPoint ? $client->setFidelityPoint($fidelityPoint) : $client->setFidelityPoint(0);
-
-        // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
-        if ($fidelityPoint){
-            $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
-
-            if ($nbReduction != 0){
-                $fidelityPoint = $fidelityPoint - $nbReduction*self::AMOUNT_FIDELITY_SWITCH;
-                $client->setBalance(floatval($balance) + $nbReduction*(self::AMOUNT_BALANCE_SWITCH));
-            }
-
-            $client->setFidelityPoint($fidelityPoint);
-        } else {
-            $client->setFidelityPoint(0);
-        }
-
-        $isAssoc = (strcmp($clientType, ClientType::ASSOCIATION) == 0);
-        if ($isAssoc) {
-            $typeName = $roleAssociationName;
-        } else {
-            $typeName = $clientType;
-        }
-        $role = $this->getRoleFromType($typeName);
-
-        /*
-            if password input exists, so it's the add page,
-            so we have to set the password to the chosen one.
-        */
-        if ($password) {
-            $hashedPassword = $passwordHasher->hashPassword($client, trim($password));
-            $client->setPassword($hashedPassword);
-        }
-
-        $client->setRoles($role);
-    }
-
     /**
      * @param Client $client
      * @return void
@@ -80,19 +33,7 @@ class ClientManager
      */
     public function persist(Client $client): void
     {
-        if (!$this->clientTableNotEmpty()) {
-            $client->setRoles([SymfonyRole::PRESIDENT])
-                ->setClientType(ClientType::ASSOCIATION);
-
-            //Set the president of the association
-            $associationRole = AssociationRole::PRESIDENT;
-            $association = new Association();
-            $association->setMember($client)
-                ->setRole($associationRole);
-
-            $this->manager->persist($association);
-            $this->manager->flush();
-        }
+        $this->setPresidentIfNecessary($client);
 
         $this->removeFromAssociationIfNecessary($client);
         $this->verifyBalanceAndFidelity($client);
@@ -120,71 +61,87 @@ class ClientManager
         }
     }
 
-    /**
-     * @param Client|null $client
-     * @return bool
-     * Check if the differents attributes aren't empty
-     * Don't check the attribute balance, fidelityPoint and clientType
-     */
-    public function isNotFull(?Client $client): bool
+    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
+                            string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
+                            ?int $fidelityPoint = 0): void
     {
-        if ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" || $client->getPassword() == "") {
-            return true;
-        } else {
-            return false;
+        $client->setName(strtoupper($name))
+            ->setFirstName($firstName)
+            ->setLogin($login)
+            ->setBalance($balance)
+            ->setClientType($clientType)
+            ->setRoles([SymfonyRole::USER]);
+
+        $this->setRoleForClient($client, $roleAssociationName);
+
+        // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
+        $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
+
+        if ($nbReduction != 0){
+            $fidelityPoint = $fidelityPoint - $nbReduction*self::AMOUNT_FIDELITY_SWITCH;
+            $client->setBalance(floatval($balance) + $nbReduction*(self::AMOUNT_BALANCE_SWITCH));
+        }
+        $client->setFidelityPoint($fidelityPoint);
+
+
+        /*
+            if password input exists, so it's the add page,
+            so we have to set the password to the chosen one.
+        */
+        if ($password) {
+            $hashedPassword = $passwordHasher->hashPassword($client, trim($password));
+            $client->setPassword($hashedPassword);
         }
     }
 
     /**
-     * @param Client|null $client
+     * @param Client $client
+     * @return bool
+     * Check if the differents attributes aren't empty
+     * Don't check the attribute balance, fidelityPoint and clientType
+     */
+    public function isNotFull(Client $client): bool
+    {
+        return ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" ||
+            $client->getPassword() == "" || $client->getBalance() == "" || $client->getClientType() == "" ||
+            $client->getFidelityPoint() == "");
+    }
+
+    /**
+     * @param Client $client
      * @return bool
      * Check if the login is already assign to someone in the Database
      */
-    public function loginExists(?Client $client): bool
+    public function loginExists(Client $client): bool
     {
-
         $duplicata = $this->clientRepository->findOneBy(["login" => $client->getLogin()]);
 
         return !is_null($duplicata);
     }
 
     /**
-     * @param Client|null $client
+     * @param Client $client
      * @return bool
      * Allow to verify the data :
      * Check if the password contains a special character
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
      */
-    #[Pure]
-    public function dataCorrect(?Client $client): bool
+    public function dataCorrect(Client $client): bool
     {
-        if (!is_null($client)) {
-            $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
+        $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-            $containsSpecialPassword = $this->verifPassword($client->getPassword());
-            $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
-            $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
+        $containsSpecialPassword = $this->verifPassword($client->getPassword());
+        $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
+        $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
-            $nameUpperTwo = (strlen($client->getName()) > 2);
-            $firstNameUpperTwo = (strlen($client->getFirstName()) > 2);
-            $loginUpperFour = (strlen($client->getLogin()) > 4);
-            $passwordUpperFour = (strlen($client->getPassword()) > 4);
+        $nameUpperTwo = (strlen($client->getName()) > 2);
+        $firstNameUpperTwo = (strlen($client->getFirstName()) > 2);
+        $loginUpperFour = (strlen($client->getLogin()) > 4);
+        $passwordUpperFour = (strlen($client->getPassword()) > 4);
 
-            return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
-                && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return boolean
-     * Verify if the table Client isn't empty
-     */
-    public function clientTableNotEmpty(): bool
-    {
-        return sizeof($this->clientRepository->findAll()) > 0;
+        return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
+            && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName);
     }
 
     /**
@@ -200,42 +157,19 @@ class ClientManager
     }
 
     /**
-     * @param string $typeName
-     * @return array
-     * Retourne en fonction du {@link $typename} qui est soit un {@link AssociationRole} soit un {@link ClientType},
-     * le {@link SymfonyRole} correspondant
-     */
-    public function getRoleFromType(string $typeName): array
-    {
-        $role = [];
-        $role[] = match ($typeName) {
-            AssociationRole::TRESORIER => SymfonyRole::TRESORIER,
-            AssociationRole::PRESIDENT => SymfonyRole::PRESIDENT,
-            AssociationRole::SECRETAIRE, AssociationRole::VICE_PRESIDENT, AssociationRole::MEMBRE => SymfonyRole::ASSOC,
-            default => SymfonyRole::USER
-        };
-        return $role;
-    }
-
-    /**
      * @param Client $client
+     * @param string|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
      * @return void
      */
-    public function setRoleForClient(Client $client): void
+    public function setRoleForClient(Client $client, ?string $roleAssociation): void
     {
-        $associationType = ClientType::ASSOCIATION;
-
         /*
-         * We check if the client is part of the association,
-         * if it's the case we check it role,
-         * else the client get the role user
+         * If the clientType is Association, $roleAssociation is not null
          */
         switch ($client->getClientType()) {
-            case $associationType:
+            case ClientType::ASSOCIATION:
             {
-                $associationRepository = $this->manager->getRepository(Association::class);
-
-                switch ($associationRepository->findOneBy(["member" => $client])->getAssociationRole()) {
+                switch ($roleAssociation) {
                     case "President":
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
@@ -244,37 +178,14 @@ class ClientManager
                         break;
                     default:
                         $client->setRoles([SymfonyRole::ASSOC]);
+                        break;
                 }
+                break;
             }
             default:
                 $client->setRoles([SymfonyRole::USER]);
                 break;
         }
-    }
-
-    public function getTypeFromRole(array $role): string
-    {
-        return match ($role[0]) {
-            SymfonyRole::TRESORIER => AssociationRole::TRESORIER,
-            SymfonyRole::PRESIDENT => AssociationRole::PRESIDENT,
-            default => AssociationRole::MEMBRE,
-        };
-    }
-
-    /**
-     * return a Member made from the client in Parameter And a Role
-     * @param Client $client
-     * @param string $role
-     * @return Association
-     */
-    public function makeMember(Client $client, string $role): Association
-    {
-        $newMember = new Association();
-
-        $newMember->setMember($client);
-        $newMember->setRole($role);
-
-        return $newMember;
     }
 
     public function addFidelityPoint(float $amountOrder, Client $client): void
@@ -329,6 +240,22 @@ class ClientManager
         if ($client->getFidelityPoint() >= $limitFidelityPoint) {
             $client->setFidelityPoint($client->getFidelityPoint() - $limitFidelityPoint);
             $client->setBalance(floatval($client->getBalance()) + $amountTransferToBalance);
+        }
+    }
+
+    private function setPresidentIfNecessary(Client $client): void
+    {
+        if (!(sizeof($this->clientRepository->findAll()) > 0)) {
+            $client->setRoles([SymfonyRole::PRESIDENT])
+                ->setClientType(ClientType::ASSOCIATION);
+
+            //Set the president of the association
+            $association = new Association();
+            $association->setMember($client)
+                ->setRole(AssociationRole::PRESIDENT);
+
+            $this->manager->persist($association);
+            $this->manager->flush();
         }
     }
 }

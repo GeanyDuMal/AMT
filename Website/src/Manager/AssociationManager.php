@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Association;
+use App\Entity\Client;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
@@ -81,5 +82,22 @@ class AssociationManager
                 }
             }
         }
+    }
+
+
+    /**
+     * return a Member made from the Client in parameter and a Role
+     * @param Client $client
+     * @param string $role
+     * @return Association
+     */
+    public function makeMember(Client $client, string $role): Association
+    {
+        $newMember = new Association();
+
+        $newMember->setMember($client);
+        $newMember->setRole($role);
+
+        return $newMember;
     }
 }
