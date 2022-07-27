@@ -16,7 +16,7 @@ class DeleteProfileController extends AbstractController
 {
 
     /**
-     * @Route("/profile/delete", name="delete_profile", methods={"GET", "DELETE"})
+     * @Route("/profile/delete", name="deleteProfile", methods={"GET", "DELETE"})
      */
     public function index(EntityManagerInterface $manager, ClientRepository $clientRepository, TokenStorageInterface $tokenStorage,
         Request $request): RedirectResponse
