@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AddBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/add", name="add_blog")
+     * @Route("/blog/add", name="addBlog")
      */
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request,
                           ValidatorInterface $validator): Response
@@ -44,7 +44,7 @@ class AddBlogController extends AbstractController
                 }else{
                     $postmanager->persist($post);
 
-                    return $this->redirectToRoute('blog',[
+                    return $this->redirectToRoute('menuBlog',[
                         "message" => "Ajout avec succès"
                     ]);
                 }
@@ -52,7 +52,7 @@ class AddBlogController extends AbstractController
             }
         }
 
-        return $this->render('blog/AddModalBlog.html.twig', [
+        return $this->render('blog/AddBlog.html.twig', [
             'postTypes' => $postTypes,
             'validationErrors' => $validationErrors,
             'postExistsError' => $postExistsError,

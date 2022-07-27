@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AddClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/new", name="addClient", methods={"GET", "POST"} )
      */
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
                           EntityManagerInterface $manager, ValidatorInterface $validator): Response
@@ -67,13 +67,13 @@ class AddClientController extends AbstractController
                         $manager->persist($newMember);
                         $manager->flush();
                     }
-                    return $this->redirectToRoute('client_list',[
+                    return $this->redirectToRoute('menuClient',[
                         "message" => "Ajout avec succès"
                     ]);
                 }
         }
 
-        return $this->render('client/AddModalClient.html.twig', [
+        return $this->render('client/AddClient.html.twig', [
             'assosRoles' => $assosRoles,
             'validationErrors' => $validationErrors,
             'errorLoginExist' => $errorLoginExist,

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DetailOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/details&id={!idOrder}", name="detailOrdered")
+     * @Route("/ordered/show&id={!idOrder}", name="showOrdered")
      */
     public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
                           PurchaseRepository $purchaseRepository, PriceRepository $priceRepository): Response
@@ -52,7 +52,7 @@ class DetailOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('ordered/detail.html.twig', [
+        return $this->render('ordered/ShowOrdered.html.twig', [
             'ordered' => $order,
             'clientType' => $clientType,
             'purchaseList' => $purchaseList,

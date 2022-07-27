@@ -63,7 +63,7 @@
                         <div class="block_nav">
                             <a href="{{ path("home") }}">Accueil</a>
                             <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
-                            <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
+                            <a href="{{ path("menuBlog") }}">Posts&nbsp&&nbspEvents</a>
                         </div>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             {% if is_granted('ROLE_ASSOC') %}

@@ -4,7 +4,6 @@ namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
-use App\Repository\ClientTypeRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +58,7 @@ class SignInController extends AbstractController
             }
         }
 
-        return $this->render('connexion/signin.html.twig', [
+        return $this->render('connexion/Signin.html.twig', [
             "loginExist" => $loginExist
         ]);
     }
