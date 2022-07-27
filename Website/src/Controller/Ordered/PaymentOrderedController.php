@@ -46,7 +46,7 @@ class PaymentOrderedController extends AbstractController
             $clientType = $priceManager->getClientTypeUseForPrice($clientOrder->getClientType());
         }
 
-        /**
+        /*
          * Definir le montant pour chaque produit + montant total
          * tout ca dans un tableau
          */
@@ -76,7 +76,7 @@ class PaymentOrderedController extends AbstractController
             foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
                 if ($product->getQuantityStock() == 0) {
-                    return $this->redirectToRoute("menuOrder", [
+                    return $this->redirectToRoute("menuOrdered", [
                         "message" => "Le produit commandé n'est plus disponible !"
                     ]);
                 }
@@ -107,12 +107,12 @@ class PaymentOrderedController extends AbstractController
             $orderManager->addFidelityToClient($order);
 
             //rediriger vers l'interface de creation de commande
-            return $this->redirectToRoute("orderedCreate", [
+            return $this->redirectToRoute("createOrdered", [
                 "message" => "Commande réussie !"
             ]);
         }
 
-        return $this->render('ordered/payment.html.twig', [
+        return $this->render('ordered/PaymentOrdered.html.twig', [
             'listProduct' => $listProduct,
             'productQuantity' => $productOrderedIdTab,
             'montantProduct' => $montantProduct,

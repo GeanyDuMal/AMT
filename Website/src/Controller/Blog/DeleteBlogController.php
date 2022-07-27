@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/delete/{!id}", name="delete_blog", methods={"GET", "DELETE"})
+     * @Route("/blog/delete/{!id}", name="deleteBlog", methods={"GET", "DELETE"})
      */
     public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): JsonResponse
 {

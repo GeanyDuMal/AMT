@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/edit/{!id}", name="edit_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
                           ValidatorInterface $validator, AssociationRepository $associationRepository,
@@ -74,14 +74,14 @@ class EditClientController extends AbstractController
                         }
                     }
 
-                    return $this->redirectToRoute('client_list', [
+                    return $this->redirectToRoute('menuClient', [
                         "message" => "Modification avec succés"
                     ]);
                 }
             }
         }
 
-        return $this->render('client/EditModalClient.html.twig', [
+        return $this->render('client/EditClient.html.twig', [
             'assosRoles' => $assosRoles,
             'validationErrors' => $validationErrors,
             'errorLoginExist' => $errorLoginExist,

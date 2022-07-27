@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowProductController extends AbstractController
 {
     /**
-     * @Route("/product/{message?}", name="product_list",methods={"GET", "POST"} )
+     * @Route("/product/{message?}", name="menuProduct", methods={"GET", "POST"} )
      */
     public function show(EntityManagerInterface $manager, ProductRepository $productRepository, ?string $message = null): Response
     {
@@ -29,7 +29,7 @@ class ShowProductController extends AbstractController
         // On recupere tout les produits
         $products = $productRepository->findBy([], ["productType" => "ASC", "name" => "ASC"]);
 
-        return $this->render('product/productList.html.twig', [
+        return $this->render('product/MenuProduct.html.twig', [
             'products' => $products,
             'message' => $message,
             'clientTypeActual' => $clientTypeActual

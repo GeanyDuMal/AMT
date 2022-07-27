@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CreateOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/create/{message?}", name="orderedCreate")
+     * @Route("/ordered/create/{message?}", name="createOrdered")
      */
     public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository,
                           ClientRepository $clientRepository, string $message = null): Response
@@ -53,7 +53,7 @@ class CreateOrderedController extends AbstractController
         // Recupere tout les clients par ordre alphabetique
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
-        return $this->render('ordered/create.html.twig', [
+        return $this->render('ordered/CreateOrdered.html.twig', [
             "productList" => $allProductPositiveStock,
             "clientList" => $allClient,
             "message" => $message
