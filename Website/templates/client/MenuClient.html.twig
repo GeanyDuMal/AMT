@@ -33,7 +33,7 @@
 			</div>
 		{% endif %}
 		<div align="right">
-			<a href="{{ path('new_client') }}" class="btn btn-success">Ajouter</a>
+			<a href="{{ path('createClient') }}" class="btn btn-success">Ajouter</a>
 		</div>
 		<br>
 		{% if clients|length>0 %}
@@ -59,7 +59,7 @@
 					<td>{{ client.login }}</td>
 					<td>{{ client.clientType }}</td>
 					<td>
-						<a href="{{url('edit_client',{id:client.id})}}" class="btn btn-warning bg-warning" name="{{client.id}}">Modifier</a>
+						<a href="{{url('editClient',{id:client.id})}}" class="btn btn-warning bg-warning" name="{{client.id}}">Modifier</a>
 					</td>
 					<td>
 						<a id="toDelete" class="btn btn-primary bg-danger" data-id={{client.id}} >Supprimer</a>

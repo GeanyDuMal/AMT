@@ -48,7 +48,7 @@
     </div>
     {% if is_granted("ROLE_ASSOC") %}
     <div >
-        <a href="{{ path('add_blog') }}" class="btn btn-outline-primary rounded-0 ">Ajouter</a>
+        <a href="{{ path('createBlog') }}" class="btn btn-outline-primary rounded-0 ">Ajouter</a>
     </div>
         <br>
     {% endif %}
@@ -68,9 +68,9 @@
                                 {{ blog.description|slice(0, 30) }}...
                             </p>
                         </div>
-                        <a href="{{url('selected_blog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
+                        <a href="{{url('showBlog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
                         {% if is_granted("ROLE_ASSOC") %}
-                            <a href="{{ path("edit_blog",{"id": blog.id}) }}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
+                            <a href="{{ path("editBlog", {"id": blog.id}) }}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
                             <a id="toDelete" class="btn btn-outline-primary rounded-0 float-end">Supprimer</a>
                         {% endif %}
                     </div>

@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddBlogController extends AbstractController
+class CreateBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/add", name="addBlog")
+     * @Route("/blog/create", name="createBlog")
      */
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request,
                           ValidatorInterface $validator): Response
@@ -52,7 +52,7 @@ class AddBlogController extends AbstractController
             }
         }
 
-        return $this->render('blog/AddBlog.html.twig', [
+        return $this->render('blog/CreateBlog.html.twig', [
             'postTypes' => $postTypes,
             'validationErrors' => $validationErrors,
             'postExistsError' => $postExistsError,

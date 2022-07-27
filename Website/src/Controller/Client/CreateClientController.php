@@ -17,10 +17,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddClientController extends AbstractController
+class CreateClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/new", name="addClient", methods={"GET", "POST"} )
+     * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
      */
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
                           EntityManagerInterface $manager, ValidatorInterface $validator): Response
@@ -73,7 +73,7 @@ class AddClientController extends AbstractController
                 }
         }
 
-        return $this->render('client/AddClient.html.twig', [
+        return $this->render('client/CreateClient.html.twig', [
             'assosRoles' => $assosRoles,
             'validationErrors' => $validationErrors,
             'errorLoginExist' => $errorLoginExist,

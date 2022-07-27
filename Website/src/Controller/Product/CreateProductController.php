@@ -17,10 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddProductController extends AbstractController
+class CreateProductController extends AbstractController
 {
     /**
-     * @Route("/product/add", name="addProduct")
+     * @Route("/product/create", name="createProduct")
      */
     public function index(ProductRepository      $productRepository, ValidatorInterface $validator, Request $request,
                           EntityManagerInterface $manager): Response
@@ -69,7 +69,7 @@ class AddProductController extends AbstractController
                 }
             }
         }
-        return $this->render('product/AddProduct.html.twig', [
+        return $this->render('product/CreateProduct.html.twig', [
             'productTypes' => $productTypes,
             'validationErrors' => $validationErrors,
             'productExistsError' => $productExistsError,

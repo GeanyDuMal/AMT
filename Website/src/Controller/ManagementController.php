@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ManagementController extends AbstractController
 {
     /**
-     * @Route("/management/", name="management")
+     * @Route("/management/", name="menuManagement")
      */
     public function index(EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
         AssociationRepository $associationRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
@@ -127,7 +127,7 @@ class ManagementController extends AbstractController
             $message = "Les 3 derniers post ont été supprimés.";
         }
 
-        return $this->render('management/management.html.twig', [
+        return $this->render('management/MenuManagement.html.twig', [
             "message" => $message
         ]);
     }

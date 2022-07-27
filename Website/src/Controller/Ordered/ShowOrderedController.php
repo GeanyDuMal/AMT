@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DetailOrderedController extends AbstractController
+class ShowOrderedController extends AbstractController
 {
     /**
      * @Route("/ordered/show&id={!idOrder}", name="showOrdered")

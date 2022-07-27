@@ -31,14 +31,6 @@
 {% block body %}
     {# Home Page #}
 
-    {# Message #}
-    {% if message %}
-        <div class="alert alert-dismissible alert-info fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>{{ message }}!</strong>
-        </div>
-    {% endif %}
-
     {# Welcome title #}
     <h1 class="top-text">Bienvenue sur le site de l'AEDI !</h1>
     <h3 class="motto"><em>- Tout ce qu'il te faut se trouve ici -</em></h3>
@@ -113,7 +105,7 @@
                     <p>
                         Nos produits sont essentiellement des snacks (Oréo, Twix, Snickers...) et des boissons (Eau, Coca, Jus d'orange...)
                         <br>
-                        <i>N'hésitez pas à <a href="{{ path("product_list") }}"  class="link-danger">consulter nos produits</a> ou <a href="{{ path("blog") }}" class="link-danger">nos posts</a></i>
+                        <i>N'hésitez pas à <a href="{{ path("menuProduct") }}"  class="link-danger">consulter nos produits</a> ou <a href="{{ path("menuBlog") }}" class="link-danger">nos posts</a></i>
                         <br>
                         <br>
                         Des questions...?
