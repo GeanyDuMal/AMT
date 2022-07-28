@@ -18,7 +18,6 @@
 	
 	
 	<script src="/script/ordered/menuOrdered.js"></script>
-	<script src="/script/ordered/ajaxMenuOrdered.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -46,9 +45,6 @@
 						<th>Login</th>
 						<th>Type Client</th>
 						<th>Details</th>
-						{% if is_granted("ROLE_TRESORIER") %}
-							<th>Supprimer</th>
-						{% endif %}
 					</tr>
 				</thead>
 				<tbody>
@@ -80,11 +76,6 @@
 							<td>
 								<a class="btn btn-primary" href="{{ path("showOrdered",{'idOrder' : ordered.id}) }}">Info</a>
 							</td>
-						{% if is_granted("ROLE_TRESORIER") %}
-							<td>
-								<a id="toDelete" class="btn btn-primary">X</a>
-							</td>
-						{% endif %}
 
 					</tr>
 				{% endfor %}

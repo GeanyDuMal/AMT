@@ -11,6 +11,7 @@ use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,13 +21,13 @@ class ShowOrderedController extends AbstractController
      * @Route("/ordered/show&id={!idOrder}", name="showOrdered")
      */
     public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
-                          PurchaseRepository $purchaseRepository, PriceRepository $priceRepository): Response
+        PurchaseRepository $purchaseRepository, PriceRepository $priceRepository, Request $request): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
-        $orderManager = new OrderedManager($manager);
+        $orderedManager = new OrderedManager($manager);
         $priceManager = new PriceManager($manager);
         $priceList = [];
         $clientType = ClientType::ETUDIANT;
@@ -45,6 +46,23 @@ class ShowOrderedController extends AbstractController
                     $priceList = $priceList + [$purchase->getProduct()->getId() =>
                             $priceRepository->findOneBy(["product" => $purchase->getProduct(), "clientType" => $clientType])];
                 }
+
+                //en fonction du resultat du form, faire un refound ou une suppression seche
+                $inputParameterBag = $request->request;
+                $toCancel = $inputParameterBag->get("cancel");
+                $toRemove = $inputParameterBag->get("remove");
+
+                if ($toCancel || $toRemove){
+                    if($toCancel){
+                        $orderedManager->removeWithRestore($order);
+
+                    } else if($toRemove){
+                        $orderedManager->remove($order);
+                    }
+                    $this->redirectToRoute('menuOrdered', ["message" => "La commande a été supprimé avec succès."]);
+                }
+
+
             } else {
                 return $this->redirectToRoute('home');
             }
@@ -57,7 +75,7 @@ class ShowOrderedController extends AbstractController
             'clientType' => $clientType,
             'purchaseList' => $purchaseList,
             'priceList' => $priceList,
-            'montantTotal' => $orderManager->montantTotal($order)
+            'montantTotal' => $orderedManager->montantTotal($order)
         ]);
     }
 }
