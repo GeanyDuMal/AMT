@@ -55,3 +55,7 @@ fabric.properties
 
 # PHP Unit test
 .phpunit.result.cache
+
+# Symfony
+var/
+vendor/
