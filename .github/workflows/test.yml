@@ -12,8 +12,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-        cd .\Website 
-        composer install --prefer-dist --no-progress --no-suggest
+          cd Website 
+          composer install --prefer-dist --no-progress --no-suggest
 
       - name: PHPUnit
         uses: chindit/actions-phpunit-symfony@master
