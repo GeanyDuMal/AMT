@@ -74,7 +74,7 @@ jobs:
         run: |
           cd .\Website
           vendor/bin/requirements-checker
-
+          
       - name: Check the Symfony console
         run: |
           cd .\Website
