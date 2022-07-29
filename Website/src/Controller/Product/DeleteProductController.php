@@ -16,21 +16,17 @@ class DeleteProductController extends AbstractController
     /**
      * @Route("/product/delete/{!id}", name="deleteProduct", methods={"GET", "DELETE"})
      */
-    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): \Symfony\Component\HttpFoundation\RedirectResponse|JsonResponse
+    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): JsonResponse
     {
         if (!$this->isGranted(SymfonyRole::TRESORIER)) {
-            return $this->redirectToRoute("home");
+            return new JsonResponse(false);
         }
 
         $productManager = new ProductManager($manager);
         $product = $productRepository->find($id);
 
-        if ($product){
-            $productManager->remove($product);
-            return new JsonResponse(true);
-        } else {
-            return $this->redirectToRoute("home");
-        }
-
+        $productManager->remove($product);
+        
+        return new JsonResponse(true);
     }
 }

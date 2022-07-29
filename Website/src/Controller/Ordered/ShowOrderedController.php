@@ -31,7 +31,7 @@ class ShowOrderedController extends AbstractController
         $priceManager = new PriceManager($manager);
         $priceList = [];
         $clientType = ClientType::ETUDIANT;
-        $inputParameterBag = $request->request;
+
 
         if (is_numeric($idOrder)) {
             $order = $orderedRepository->find($idOrder);
@@ -47,7 +47,8 @@ class ShowOrderedController extends AbstractController
                             $priceRepository->findOneBy(["product" => $purchase->getProduct(), "clientType" => $clientType])];
                 }
 
-                // Suppression ou annulation
+                //en fonction du resultat du form, faire un refound ou une suppression seche
+                $inputParameterBag = $request->request;
                 $toCancel = $inputParameterBag->get("cancel");
                 $toRemove = $inputParameterBag->get("remove");
 
