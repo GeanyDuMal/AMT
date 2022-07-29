@@ -1,19 +1,112 @@
-# thanks to Renato66 for his Github Action
-
-name: Running Test on Pull Request
+name: Full CI process for Symfony 5
 on:
   pull_request:
-    types: ['opened', 'ready_for_review']
+    branches:
+      - master
+env:
+  ES_HTTP_PORT: 9209
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  symfony:
+    name: Symfony 5.4 (PHP 8.0.0)
+    # https://hub.docker.com/_/ubuntu/
+    runs-on: ubuntu-20.04
+    services:
+      # https://docs.docker.com/samples/library/mysql/
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: ['8.0']
     steps:
-      - uses: actions/checkout@v2
+      # —— Setup Github actions 🐙 —————————————————————————————————————————————
+      # https://github.com/actions/checkout (official)
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Install dependencies
+      # https://github.com/shivammathur/setup-php (community)
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0.0
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring
+        env:
+          update: true
+
+      - name: Check PHP Version
+        run: php -v
+
+      # https://github.com/zhulik/redis-action (community)
+      - name: Setup Redis with zhulik/redis-action
+        uses: zhulik/redis-action@1.1.0
+        with:
+          redis version: '5'
+
+      # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
+      - name: Validate composer.json and composer.lock
         run: |
-        cd .\Website 
-        composer install --prefer-dist --no-progress --no-suggest
+          cd .\Website
+          composer validate
 
-      - name: PHPUnit
-        uses: chindit/actions-phpunit-symfony@master
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          cd .\Website
+          make install
+
+      # —— Symfony 🎵 ——————————————————————————————————————————————————————————
+      - name: Check Symfony requirements
+        run: |
+          cd .\Website
+          vendor/bin/requirements-checker
+
+      - name: Check the Symfony console
+        run: |
+          cd .\Website
+          bin/console about
+          bin/console strangebuzz:version
+
+      ## —— Coding standards ✨ ————————————————————————————————————————————————
+      - name: Coding standards checks (php_codesniffer + php-cs-fixer)
+        run: make cs
+        if: matrix.php-versions == '8.0'
+
+      ## —— Static analysis ✨ —————————————————————————————————————————————————
+      - name: Static analysis of PHP code (PHPStan)
+        run: |
+          cd .\Website
+          bin/console about --env=prod
+          make static-analysis
+
+      ## —— JWT 💫 —————————————————————————————————————————————————————————————
+      - name: Generate the SSL keys
+        run: |
+          cd .\Website
+          bin/console lexik:jwt:generate-keypair
+
+      ## —— Tests ✅ ———————————————————————————————————————————————————————————
+      # We use the dev env here
+      - name: Load Doctrine fixtures and populate the Elasticsearch indexes
+        run: |
+          make load-fixtures
+          make populate
+
+      - name: Run functionnal and unit tests
+        run: |
+          cp phpunit.xml.ci phpunit.xml
+          make test-all
