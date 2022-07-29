@@ -5,14 +5,13 @@ on:
   pull_request:
     types: ['opened', 'ready_for_review']
 jobs:
-  build-test:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: php-actions/composer@v6
+      - uses: actions/checkout@v2
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v3
-        with:
-          bootstrap: Website/vendor/autoload.php
-          configuration: Website/phpunit.xml.dist
+      - name: Install dependencies
+        run: cd ./Website composer install --prefer-dist --no-progress --no-suggest
+
+      - name: PHPUnit
+        uses: chindit/actions-phpunit-symfony@master
