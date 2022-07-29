@@ -43,7 +43,7 @@ class ProfileController extends AbstractController
                 }
             }
 
-            return $this->render('connexion/profile.html.twig', [
+            return $this->render('connexion/Profile.html.twig', [
                 "user" => $client,
                 "edit" => $edit
             ]);

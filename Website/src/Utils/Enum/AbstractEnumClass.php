@@ -4,7 +4,7 @@ namespace App\Utils\Enum;
 
 use ReflectionClass;
 
-class AbstractEnumClass
+abstract class AbstractEnumClass
 {
     public static function getAll(): array
     {

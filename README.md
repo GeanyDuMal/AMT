@@ -8,8 +8,8 @@ En fonction de la gravité, vous pouvez mettre Minor, Medium ou Major dans le co
 ### <ins>Version</ins>
 Méthode de versionning : X.Y.Z <br>
 - X Correspond à une version non retro-compatible (PHP, Base de Données, Symfony)
-- Y Correspond à un ajout de fonctionnalité (et bug s'il y a)
-- Z Correspond à une correctionn de bug uniquement
+- Y Correspond à un ajout de fonctionnalité (et correction de bug s'il y a)
+- Z Correspond à une correction de bug uniquement
 
 ### <ins>Site<ins>
 Le site est disponible à cette adresse : 

@@ -5,10 +5,9 @@ namespace App\Controller\Client;
 use App\Entity\Client;
 use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
-use App\Repository\AssociationRoleRepository;
 use App\Repository\ClientRepository;
-use App\Repository\ClientTypeRepository;
 use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,10 +17,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddClientController extends AbstractController
+class CreateClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/new", name="new_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
      */
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
                           EntityManagerInterface $manager, ValidatorInterface $validator): Response
@@ -42,13 +41,13 @@ class AddClientController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), null);
+                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), 0);
 
             $validationErrors = $validator->validate($client);
 
             if($validationErrors->count() == 0)
                 if($clientManager->loginExists($client)){
-                    $errorLoginExist = "Login Existe déja";
+                    $errorLoginExist = "Login existe déja";
                 }else{
                     $clientManager->persist($client);
 
@@ -58,26 +57,27 @@ class AddClientController extends AbstractController
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if($client->getClientType() == "Association"){
+                    if($client->getClientType() == ClientType::ASSOCIATION){
 
-                        $newMember = $clientManager->makeMember($client, $request->get('assosRoles'));
+                        $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
 
-                        if($newMember->getRole() == "President"){
+                        if($newMember->getRole() == AssociationRole::PRESIDENT){
                             $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
                     }
-                    return $this->redirectToRoute('client_list',[
+                    return $this->redirectToRoute('menuClient',[
                         "message" => "Ajout avec succès"
                     ]);
                 }
         }
 
-        return $this->render('client/AddModalClient.html.twig', [
-                'assosRoles' => $assosRoles,
-                'validationErrors' => $validationErrors,
-                'errorLoginExist' => $errorLoginExist
+        return $this->render('client/CreateClient.html.twig', [
+            'assosRoles' => $assosRoles,
+            'validationErrors' => $validationErrors,
+            'errorLoginExist' => $errorLoginExist,
+            'clientTypes' => ClientType::getAll()
         ]);
     }
 }
