@@ -12,17 +12,17 @@ class Association
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Client::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
+     * @ORM\OneToOne(targetEntity=Client::class)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $member;
+    private Client $member;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private string $role;
 
-    public function getMember(): ?Client
+    public function getMember(): Client
     {
         return $this->member;
     }

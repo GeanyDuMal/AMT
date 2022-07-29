@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\OrderedRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,12 +18,12 @@ class Ordered
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?\DateTime $orderedAt;
+    private DateTime $orderedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
@@ -29,21 +32,31 @@ class Ordered
     private ?Client $client;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string")
      */
     private string $paymentType;
 
-    public function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true)
+     */
+    private Collection $purchases ;
+
+    public function __construct()
+    {
+        $this->purchases = new ArrayCollection();
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getOrderedAt(): ?\DateTime
+    public function getOrderedAt(): DateTime
     {
         return $this->orderedAt;
     }
 
-    public function setOrderedAt(\DateTime $orderedAt): self
+    public function setOrderedAt(DateTime $orderedAt): self
     {
         $this->orderedAt = $orderedAt;
 
@@ -70,6 +83,36 @@ class Ordered
     public function setPaymentType(string $paymentType): self
     {
         $this->paymentType = $paymentType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Purchase>
+     */
+    public function getPurchases(): Collection
+    {
+        return $this->purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): self
+    {
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases[] = $purchase;
+            $purchase->setOrdered($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): self
+    {
+        if ($this->purchases->removeElement($purchase)) {
+            // set the owning side to null (unless already changed)
+            if ($purchase->getOrdered() === $this) {
+                $purchase->setOrdered(null);
+            }
+        }
 
         return $this;
     }

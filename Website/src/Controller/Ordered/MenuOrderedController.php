@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MenuOrderedController extends AbstractController
 {
     /**
-     * @Route("/ordered/menu/{message?}", name="orderedMenu")
+     * @Route("/ordered/menu/{message?}", name="menuOrdered")
      */
     public function menu(EntityManagerInterface $manager, OrderedRepository $orderedRepository, string $message = null): Response
     {
@@ -35,7 +35,7 @@ class MenuOrderedController extends AbstractController
         }
 
 
-        return $this->render('ordered/menu.html.twig', [
+        return $this->render('ordered/MenuOrdered.html.twig', [
             "user" => $this->getUser(),
             "message" => $message,
             "orderedList" => $allOrder,

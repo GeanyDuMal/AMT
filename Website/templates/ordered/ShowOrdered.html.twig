@@ -47,12 +47,15 @@
                   Montant total : {{ montantTotal }}€
             </h4>
             <div class="block_button flex_horizontal centered_flex_vertical">
-                  <a href="{{ path("orderedMenu") }}">
+                  <a href="{{ path("menuOrdered") }}">
                         <img src="/img/icons/back.png" class="img">    
                   </a>
-                  {% if is_granted("ROLE_TRESORIER") %}
-                        <a class="btn btn-danger" onclick="return confirmDelete()">Supprimer</a>
-                  {% endif %}
+                  <form method="post">
+                        {% if is_granted("ROLE_TRESORIER") %}
+                              <button type="submit" class="btn btn-danger" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
+                              <button type="submit" class="btn btn-danger" name="remove" value="remove" onclick="return confirmDelete()">Supprimer</button>
+                        {% endif %}
+                  </form>
             </div>
       </div>
 {% endblock %}

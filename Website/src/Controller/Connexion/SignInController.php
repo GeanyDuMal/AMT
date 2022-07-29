@@ -4,7 +4,6 @@ namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
-use App\Repository\ClientTypeRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,14 +34,10 @@ class SignInController extends AbstractController
         if (!is_null($inputParameterBag->get("name"))) {
             $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
-            $client->setName(strtoupper(trim($inputParameterBag->get("name"))))
-                ->setFirstName(trim($inputParameterBag->get("firstName")))
-                ->setLogin(trim($inputParameterBag->get("login")))
-                ->setPassword($hashedPassword)
-                ->setClientType(ClientType::ETUDIANT)
-                ->setRoles([SymfonyRole::USER])
-                ->setFidelityPoint(0)
-                ->setBalance(0);
+            $clientManager->setData($client, $passwordHasher, strtoupper(trim($inputParameterBag->get("name"))),
+                trim($inputParameterBag->get("firstName")), trim($inputParameterBag->get("login")),
+                trim($inputParameterBag->get("password")), 0, null, ClientType::ETUDIANT,
+                0);
 
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));
 
@@ -63,7 +58,7 @@ class SignInController extends AbstractController
             }
         }
 
-        return $this->render('connexion/signin.html.twig', [
+        return $this->render('connexion/Signin.html.twig', [
             "loginExist" => $loginExist
         ]);
     }

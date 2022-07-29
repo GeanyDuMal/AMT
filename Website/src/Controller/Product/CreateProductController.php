@@ -6,9 +6,7 @@ use App\Entity\Price;
 use App\Entity\Product;
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
-use App\Repository\ClientTypeRepository;
 use App\Repository\ProductRepository;
-use App\Repository\ProductTypeRepository;
 use App\Utils\Enum\PaymentType;
 use App\Utils\Enum\ProductType;
 use App\Utils\Enum\SymfonyRole;
@@ -19,10 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddProductController extends AbstractController
+class CreateProductController extends AbstractController
 {
     /**
-     * @Route("/product/add", name="add_product")
+     * @Route("/product/create", name="createProduct")
      */
     public function index(ProductRepository      $productRepository, ValidatorInterface $validator, Request $request,
                           EntityManagerInterface $manager): Response
@@ -63,7 +61,7 @@ class AddProductController extends AbstractController
                             $priceManager->persist($memberPrice);
                             $priceManager->persist($studentPrice);
 
-                            return $this->redirectToRoute('product_list', [
+                            return $this->redirectToRoute('menuProduct', [
                                 "message" => "Ajout avec succès"
                             ]);
                         }
@@ -71,7 +69,7 @@ class AddProductController extends AbstractController
                 }
             }
         }
-        return $this->render('product/AddModalProduct.html.twig', [
+        return $this->render('product/CreateProduct.html.twig', [
             'productTypes' => $productTypes,
             'validationErrors' => $validationErrors,
             'productExistsError' => $productExistsError,

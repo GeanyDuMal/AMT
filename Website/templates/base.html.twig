@@ -62,30 +62,30 @@
                         {# Lien à modif #}
                         <div class="block_nav">
                             <a href="{{ path("home") }}">Accueil</a>
-                            <a href="{{ path("product_list") }}">Nos&nbspProduits</a>
-                            <a href="{{ path("blog") }}">Posts&nbsp&&nbspEvents</a>
+                            <a href="{{ path("menuProduct") }}">Nos&nbspProduits</a>
+                            <a href="{{ path("menuBlog") }}">Posts&nbsp&&nbspEvents</a>
                         </div>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             {% if is_granted('ROLE_ASSOC') %}
                                 <div class="block_nav">
-                                    <a href="{{ path("orderedCreate") }}">Commander</a>
+                                    <a href="{{ path("createOrdered") }}">Commander</a>
                                 </div>
                                 {% if is_granted('ROLE_TRESORIER') %}
                                     <div class="block_nav">
-                                        <a href="{{ path("orderedMenu") }}">Gestion&nbspCommande</a>
+                                        <a href="{{ path("menuOrdered") }}">Gestion&nbspCommande</a>
                                         <a href="{{ path("statistics") }}">Statistiques</a>
                                     </div>
                                     {% if is_granted('ROLE_PRESIDENT') %}
                                         <div class="block_nav">
-                                            <a href="{{ path("client_list") }}">Gestion&nbspClients</a>
+                                            <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
+                                            <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
                                         </div>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}
                         {# <a href="#">Random</a> #}
-                        {# Pas de bug si un seul mot #}
-                        {# &nbsp <-- solution #}
+                        {# &nbsp <-- remplace le ' ' dans le menu lateral #}
                     </div>
                 </div>
                 {# end hidden menu #}
