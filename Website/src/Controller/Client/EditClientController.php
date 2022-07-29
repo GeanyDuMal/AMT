@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/edit/{!id}", name="edit_client",methods={"GET", "POST"} )
+     * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
                           ValidatorInterface $validator, AssociationRepository $associationRepository,
@@ -42,10 +42,9 @@ class EditClientController extends AbstractController
             $clientManager = new ClientManager($manager);
             $associationManager = new AssociationManager($manager);
 
-
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
-                $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $client->getFidelityPoint());
+                $data->get("firstName"), $client->getLogin(), $data->get("password"),
+                $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $data->get("fidelityPoint"));
 
             $validationErrors = $validator->validate($client);
 
@@ -61,7 +60,7 @@ class EditClientController extends AbstractController
                      *  if admin changed the role of a member to another role
                      *  we have to change it too in association table
                      */
-                    $this->manageMember($manager, $clientManager, $associationRepository, $client, $request->get('assosRoles'));
+                    $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
                 if (strcmp($ChosenClientLogin, $client->getLogin()) != 0 && $clientManager->loginExists($client)) {
@@ -75,40 +74,39 @@ class EditClientController extends AbstractController
                         }
                     }
 
-                    return $this->redirectToRoute('client_list', [
+                    return $this->redirectToRoute('menuClient', [
                         "message" => "Modification avec succés"
                     ]);
                 }
             }
         }
 
-        return $this->render('client/EditModalClient.html.twig', [
+        return $this->render('client/EditClient.html.twig', [
             'assosRoles' => $assosRoles,
             'validationErrors' => $validationErrors,
             'errorLoginExist' => $errorLoginExist,
             'client' => $client,
-            'member' => $member
+            'member' => $member,
+            'clientTypes' => ClientType::getAll()
         ]);
     }
 
     /**
-     * @param EntityManagerInterface $manager
-     * @param ClientManager $clientManager
+     * @param AssociationManager $associationManager
      * @param AssociationRepository $associationRepository
      * @param Client $client
      * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(EntityManagerInterface $manager, ClientManager $clientManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation)
+    private function manageMember(AssociationManager $associationManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation): void
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 
         if ($clientMember) {
             $clientMember->setRole($roleAssociation);
         } else {
-            $clientMember = $clientManager->makeMember($client, $roleAssociation);
+            $clientMember = $associationManager->makeMember($client, $roleAssociation);
         }
-        $manager->persist($clientMember);
-        $manager->flush();
+        $associationManager->persist($clientMember);
     }
 }

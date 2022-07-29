@@ -38,7 +38,7 @@ symfony server:ca:install
 Ensuite il faut pour lancer :
 
 ````shell
-symfony serve -d
+symfony server -d
 ````
 
 Pour l'arrêter il suffit d'écrire:
@@ -94,8 +94,8 @@ symfony server:stop
 ## Pour Setup le projet complet avec le jeu d'essai : 
 - cd .\Website
 - composer install
+- composer require orm-fixtures --dev
 - php bin/console doctrine:database:create
 - php bin/console doctrine:migration:migrate
-- composer require orm-fixtures --dev
 - php bin/console doctrine:fixture:load
 

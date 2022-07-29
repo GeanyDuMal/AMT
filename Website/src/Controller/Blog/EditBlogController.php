@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/edit/{!id}", name="edit_blog",methods={"GET", "POST"})
+     * @Route("/blog/edit/{!id}", name="editBlog",methods={"GET", "POST"})
      */
     public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request,
                           EntityManagerInterface $manager): Response
@@ -53,7 +53,7 @@ class EditBlogController extends AbstractController
                 }else{
                     $postmanager->persist($post);
 
-                    return $this->redirectToRoute('blog', [
+                    return $this->redirectToRoute('menuBlog', [
                         "message" => "Modification avec succès"
                     ]);
                 }
@@ -61,7 +61,7 @@ class EditBlogController extends AbstractController
         }
 
 
-        return $this->render('blog/EditModalBlog.html.twig', [
+        return $this->render('blog/EditBlog.html.twig', [
             'postTypes' => $postTypes,
             'validationErrors' => $validationErrors,
             'postExistsError' => $postExistsError,

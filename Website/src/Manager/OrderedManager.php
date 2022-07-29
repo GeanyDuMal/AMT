@@ -29,6 +29,12 @@ class OrderedManager
         }
     }
 
+    public function remove(Ordered $ordered): void
+    {
+        $this->manager->remove($ordered);
+        $this->manager->flush();
+    }
+
     public function removeWithRestore(Ordered $order): void
     {
         $purchaseManager = new PurchaseManager($this->manager);
@@ -80,6 +86,7 @@ class OrderedManager
     {
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
         $priceRepository = $this->manager->getRepository(Price::class);
+        $priceManager = new PriceManager($this->manager);
         $montantTotal = 0;
         $allOrderPurchase = $purchaseRepository->findBy(["ordered" => $ordered]);
 
@@ -87,7 +94,7 @@ class OrderedManager
             $clientType = ClientType::ETUDIANT;
 
             if ($ordered->getClient() != null) {
-                $clientType = $ordered->getClient()->getClientType();
+                $clientType = $priceManager->getClientTypeUseForPrice($ordered->getClient()->getClientType());
             }
 
             $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
@@ -113,8 +120,10 @@ class OrderedManager
      */
     public function getAllowedPaymentType($purchaseList, Client $client = null): array
     {
+        $priceManager = new PriceManager($this->manager);
+
         if ($client != null) {
-            $clientType = $client->getClientType();
+            $clientType = $priceManager->getClientTypeUseForPrice($client->getClientType());
         } else {
             $clientType = ClientType::ETUDIANT;
         }

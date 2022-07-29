@@ -17,7 +17,7 @@ window.onload = function() {
 clientType.onchange = function (){
     var selectedOption = this[this.selectedIndex];
     var selectedText = selectedOption.text;
-    assosRoles.style.visibility = (selectedText === "Etudiant" ? "hidden" : "visible");
+    assosRoles.style.visibility = (selectedText === "Association" ? "visible" : "hidden");
 }
 
 /**
@@ -30,6 +30,8 @@ function communVerify(){
     const valueFirstName = form.firstName.value;
     const valueLogin = form.login.value;
     const valueBalance = form.balance.value;
+    const valueFidelityPoint = form.fidelityPoint.value;
+
     if (!valueName.trim()) {
         message += "Nom non renseigné\n";
     } else if (valueName.length < 3) {
@@ -47,17 +49,32 @@ function communVerify(){
         message += "Login trop court\n";
     }
 
-    balance = parseFloat(valueBalance);
-    if(valueBalance === "")
-        message += "Le solde ne doit pas être vide.\n ";
-    else if (balance < 0)
-        message += "Le solde doit être positif.\n ";
-    else if(Number.isNaN(balance)){
+    if(isNaN(valueBalance)){
         message += "Le solde doit être un nombre. ";
+    }else{
+        balance = parseFloat(valueBalance);
+
+        if(valueBalance === "")
+            message += "Le solde ne doit pas être vide.\n ";
+        else if (balance < 0)
+            message += "Le solde doit être positif.\n ";
+    }
+
+
+    if(isNaN(valueFidelityPoint)){
+        message += "Le nombre de points de fidélité doit être un nombre. ";
+    }else{
+        fidelityPoint = parseFloat(valueFidelityPoint);
+
+        if(valueFidelityPoint === "")
+            message += "Le nombre de point de fidélité ne doit pas être vide.\n ";
+        else if (fidelityPoint < 0)
+            message += "Le nombre de point de fidélité doit être positif.\n ";
     }
 
   return message;
 }
+
 function verifyEdit(){
     var message = "";
     message = communVerify();
@@ -73,6 +90,7 @@ function verifyEdit(){
         return true;
     }
 }
+
 function verifyAdd() {
     var message = "";
     message=communVerify();

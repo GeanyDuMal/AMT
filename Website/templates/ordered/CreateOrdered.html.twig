@@ -16,7 +16,7 @@
     {% if message %}
         <div class="alert alert-dismissible alert-success fade show">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>{{ message }}!</strong>
+            <strong>{{ message }}</strong>
         </div>
     {% endif %}
     <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command" onsubmit="disableButton()">
@@ -53,7 +53,7 @@
                 Valider la commande
             </button>
         </div>
-        <a href="{{ path("orderedMenu") }}">
+        <a href="{{ path("menuOrdered") }}">
             <img src="/img/icons/back.png" class="img" alt="" srcset="">    
         </a>
     </form>

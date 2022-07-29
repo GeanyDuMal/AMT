@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Interface de   Gestion{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/style/management/management.css">
+{% endblock %}
+
+{% block javascripts %}
+    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    {% if message %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ message }}</strong>
+        </div>
+    {% endif %}
+
+    <div class="flex_vertical centered_flex">
+        <h1 class="title_block">
+            Interface de Gestion
+        </h1>
+
+        <form action="" class="flex_vertical centered_flex" method="post" id="form_management" onsubmit="disableButton()">
+            <h2>
+                Purge
+            </h2>
+            <div class="centered_flex flex_horizontal block_control">
+                <button type="submit" name="clearCotisant" value="true" class="btn btn-primary disableable">
+                    Purger les cotisants
+                </button>
+                <div>
+                    Définir tout les cotisants comme étudiant.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button type="submit" name="clearAssociation" value="true" class="btn btn-primary disableable">
+                    Purger l'association
+                </button>
+                <div>
+                    Définir tout les membres de l'association comme étudiant (sauf le président).
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button type="submit" name="clearOldClient" value="true" class="btn btn-primary disableable">
+                    Purger les clients
+                </button>
+                <div>
+                    Supprimer les clients n'ayant effectué aucune action depuis 2 ans.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button type="submit" name="clearProduct" value="true" class="btn btn-primary disableable">
+                    Purger les produits
+                </button>
+                <div>
+                Supprimer les produits n'ayant plus été commandé depuis 1 an et dont le stock est vide.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button type="submit" name="clearOrder" value="true" class="btn btn-primary disableable">
+                    Purger les commandes
+                </button>
+                <div>
+                    Supprimer les commandes datant d'au moins 1 an sans client.
+                </div>
+            </div>
+            <div class="centered_flex flex_horizontal block_control">
+                <button type="submit" name="clearPost" value="true" class="btn btn-primary disableable">
+                    Purger les posts
+                </button>
+                <div>
+                    Supprimer les 3 posts les plus anciens.
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

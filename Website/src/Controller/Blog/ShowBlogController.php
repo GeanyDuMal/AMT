@@ -11,32 +11,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowBlogController extends AbstractController
 {
     /**
-     * @Route("/blog/{message?}", name="blog")
+     * @Route("/blog/show/{!id}", name="showBlog")
      */
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository,
-                          string $message = null): Response
-    {
-        $blogs = $postRepository->findBy([], ["id" => "DESC"]);
-
-        return $this->render('blog/index.html.twig',[
-          'blogs' => $blogs,
-          "message" => $message
-        ]);
-    }
-
-    /**
-     * @Route("/blog/show/{!id}", name="selected_blog")
-     */
-    public function showBlog($id, PostRepository $postRepository, EntityManagerInterface $manager): Response
+    public function showBlog($id, PostRepository $postRepository): Response
     {
         $blog = $postRepository->find($id);
 
         if ($blog){
-            return $this->render('blog/ShowOneBlog.html.twig',[
+            return $this->render('blog/ShowBlog.html.twig',[
                 'blog' => $blog,
             ]);
         }else{
-            return $this->redirectToRoute('blog');
+            return $this->redirectToRoute('menuBlog');
         }
     }
 }

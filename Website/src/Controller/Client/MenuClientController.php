@@ -8,12 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ShowClientController extends AbstractController
+class MenuClientController extends AbstractController
 {
     /**
-     * @Route("/admin/client/{message,}", name="client_list",methods={"GET", "POST"} )
+     * @Route("/admin/client/{message?}", name="menuClient",methods={"GET", "POST"} )
      */
-    public function show(ClientRepository $clientRepository, string $message = null): Response
+    public function show(ClientRepository $clientRepository, ?string $message): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute('home');
@@ -21,7 +21,7 @@ class ShowClientController extends AbstractController
 
         $clients = $clientRepository->findAll();
 
-        return $this->render('client/index.html.twig', [
+        return $this->render('client/MenuClient.html.twig', [
             'clients' => $clients,
             'message' => $message
         ]);

@@ -4,10 +4,8 @@ namespace App\Controller\Product;
 
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
-use App\Repository\ClientTypeRepository;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
-use App\Repository\ProductTypeRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\ProductType;
 use App\Utils\Enum\SymfonyRole;
@@ -21,7 +19,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EditProductController extends AbstractController
 {
     /**
-     * @Route("/product/edit/{!id}", name="edit_product")
+     * @Route("/product/edit/{!id}", name="editProduct")
      */
     public function index($id, ProductRepository $productRepository, ValidatorInterface $validator, Request $request,
                           EntityManagerInterface $manager, PriceRepository $priceRepository): Response
@@ -64,7 +62,7 @@ class EditProductController extends AbstractController
                             $priceManager->persist($memberPrice);
                             $priceManager->persist($studentPrice);
 
-                            return $this->redirectToRoute('product_list', [
+                            return $this->redirectToRoute('menuProduct', [
                                 "message" => "Modification avec succès"
                             ]);
                         }
@@ -72,7 +70,7 @@ class EditProductController extends AbstractController
                 }
             }
         }
-        return $this->render('product/EditModalProduct.html.twig', [
+        return $this->render('product/EditProduct.html.twig', [
             'productTypes' => $productTypes,
             'validationErrors' => $validationErrors,
             'productExistsError' => $productExistsError,
