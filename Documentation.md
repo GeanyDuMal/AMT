@@ -9,7 +9,7 @@
 
 ### Documentation : 
 
-- We used Symfony so everything is displayed in different package*
+- We used Symfony so everything is displayed in different package
 - You have to go to the package "Website" to access to all the file
 - In the .env file, you can set the adress of the database and the step of the app (dev or prod)
 - The test are done in the "tests" package they will be conducted with PHPUnit

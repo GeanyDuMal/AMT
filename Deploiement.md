@@ -2,16 +2,16 @@
 
 # Pour le deploiement il y a plusieurs choses à faire : 
 Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caractere :
-- Dans Webiste/config/packages/doctrine.yaml, rajouter cette ligne en dessous de 'url'
+- Dans config/packages/doctrine.yaml, rajouter cette ligne en dessous de 'url'
   ```YAML
     charset: UTF8
   ```
-- Il faudra créer une base de donnée (ou utiliser celle proposé par l'hebergeur) et importer le script Website/db_aedi.sql
-- Il faudra, dans le fichier Website/.env, modifier 2 choses : (vous pourrez également créer un .env.local)
+- Il faudra créer une base de donnée (ou utiliser celle proposé par l'hebergeur) et importer le script db_empty.sql
+- Il faudra, dans le fichier .env, modifier 2 choses : (vous pourrez également créer un .env.local)
   - Le APP_ENV qu'il faudra passer à prod (enleve le mode debug)
   - Le DATABASE_URL qu'il faudra configurer en fonction de ce que vous utilisez. Il y a plusieurs exemple selon la bases que vous utilisez
 - Il faudra créer un fichier .htaccess
-  - A la racine de Website (le notre est ci dessous) :
+  - A la racine (le notre est ci dessous) :
     ```Apache
     DirectoryIndex index.php
 
@@ -30,7 +30,7 @@ Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracter
     RewriteCond %{REQUEST_URI} .(?:css|js|jpe?g|gif|png)$ [NC]
     RewriteRule ^(.*)$ public/$1 [QSA,L]
     ```
-  - Le second qui permet de gerer les route avec Apache, est present dans Website/public/.htaccess
+  - Le second qui permet de gerer les route avec Apache, est present dans public/.htaccess
 - Afin de faire fonctionner la partie connexion en HTTPS, il faudra rajouter ce code entre la ligne 7 et 8 dans le fichier public/index.php :
   ```PHP
   if ($context['APP_ENV'] === "prod") {
