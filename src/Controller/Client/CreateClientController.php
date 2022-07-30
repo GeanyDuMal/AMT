@@ -62,7 +62,7 @@ class CreateClientController extends AbstractController
                         $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
 
                         if($newMember->getRole() == AssociationRole::PRESIDENT){
-                            $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
+                            $associationManager->removeOtherPresidents($newMember);
                         }
                         $manager->persist($newMember);
                         $manager->flush();

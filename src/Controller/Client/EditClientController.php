@@ -70,7 +70,7 @@ class EditClientController extends AbstractController
                     if ($client->getClientType() == ClientType::ASSOCIATION) {
                         $member = $associationRepository->findOneBy(["member" => $client]);
                         if ($member->getRole() == AssociationRole::PRESIDENT) {
-                            $associationManager->removeOtherPresidents($manager, $member, $clientRepository);
+                            $associationManager->removeOtherPresidents($member);
                         }
                     }
 

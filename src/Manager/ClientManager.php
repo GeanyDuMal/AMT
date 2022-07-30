@@ -26,11 +26,6 @@ class ClientManager
         $this->clientRepository = $this->manager->getRepository(Client::class);
     }
 
-    /**
-     * @param Client $client
-     * @return void
-     * Insert the Client in the Database
-     */
     public function persist(Client $client): void
     {
         $this->setPresidentIfNecessary($client);
@@ -43,12 +38,6 @@ class ClientManager
         $this->manager->flush();
     }
 
-    /**
-     * @param Client $client
-     * @return void
-     * Remove the Client and remove it from the table Association if necessary
-     * Doesn't remove the president or the Admin
-     */
     public function remove(Client $client): void
     {
         if (!in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
@@ -61,6 +50,20 @@ class ClientManager
         }
     }
 
+    /**
+     * @param Client $client
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param string $name
+     * @param string $firstName
+     * @param string $login
+     * @param string|null $password
+     * @param string $balance
+     * @param string|null $roleAssociationName
+     * @param string $clientType
+     * @param int|null $fidelityPoint
+     * @return void
+     * Create a client with verifying the data assigned
+     */
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
                             string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
                             ?int $fidelityPoint = 0): void
@@ -82,7 +85,6 @@ class ClientManager
             $client->setBalance(floatval($balance) + $nbReduction*(self::AMOUNT_BALANCE_SWITCH));
         }
         $client->setFidelityPoint($fidelityPoint);
-
 
         /*
             if password input exists, so it's the add page,
@@ -188,6 +190,12 @@ class ClientManager
         }
     }
 
+    /**
+     * @param float $amountOrder
+     * @param Client $client
+     * @return void
+     * Add the fidelityPoint to a client after an ordered
+     */
     public function addFidelityPoint(float $amountOrder, Client $client): void
     {
         $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
@@ -216,12 +224,12 @@ class ClientManager
      * @return void
      * Check if Balance and Fidelity Point are strictly positive
      */
-    public function verifyBalanceAndFidelity(Client $client)
+    public function verifyBalanceAndFidelity(Client $client): void
     {
         if ($client->getBalance() == null || floatval($client->getBalance()) < 0) {
             $client->setBalance(0);
         }
-        if ($client->getFidelityPoint() == null || !is_numeric($client->getFidelityPoint()) || $client->getFidelityPoint() < 0) {
+        if (!is_numeric($client->getFidelityPoint()) || $client->getFidelityPoint() < 0) {
             $client->setFidelityPoint(0);
         }
     }
@@ -232,7 +240,7 @@ class ClientManager
      * Verify if the limit of fidelity point is reached
      * If it's the case, it transforms the fidelity point in an amount into the balance
      */
-    public function fidelityPointLimitCheck(Client $client)
+    public function fidelityPointLimitCheck(Client $client): void
     {
         $limitFidelityPoint = 150;
         $amountTransferToBalance = 0.8; // 1 = 1€
@@ -243,6 +251,11 @@ class ClientManager
         }
     }
 
+    /**
+     * @param Client $client
+     * @return void
+     * If there is no President in the database, it will assign the current Client as a President
+     */
     private function setPresidentIfNecessary(Client $client): void
     {
         if (!(sizeof($this->clientRepository->findAll()) > 0)) {

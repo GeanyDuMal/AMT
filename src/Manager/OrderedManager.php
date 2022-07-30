@@ -35,6 +35,11 @@ class OrderedManager
         $this->manager->flush();
     }
 
+    /**
+     * @param Ordered $order
+     * @return void
+     * Remove the ordered, refound the product and the Client in function of this payment
+     */
     public function removeWithRestore(Ordered $order): void
     {
         $purchaseManager = new PurchaseManager($this->manager);
@@ -65,11 +70,14 @@ class OrderedManager
         foreach ($purchaseList as $purchase) {
             $purchaseManager->removeWithRestore($purchase);
         }
-        $this->manager->remove($order);
-        $this->manager->flush();
+        $this->remove($order);
     }
 
-
+    /**
+     * @param Ordered $order
+     * @return void
+     * Reduce the balance of the Client if he paid with his balance
+     */
     public function reduceBalanceIfNecessary(Ordered $order): void
     {
         $clientManager = new ClientManager($this->manager);
@@ -82,6 +90,10 @@ class OrderedManager
         }
     }
 
+    /**
+     * @param Ordered $ordered
+     * @return float The total amount of an ordered
+     */
     public function montantTotal(Ordered $ordered): float
     {
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
@@ -103,6 +115,11 @@ class OrderedManager
         return $montantTotal;
     }
 
+    /**
+     * @param Ordered $ordered
+     * @return void
+     * Increase the fidelity of the Client specified in the ordered
+     */
     public function addFidelityToClient(Ordered $ordered): void
     {
         if ($ordered->getClient() != null) {
@@ -116,7 +133,7 @@ class OrderedManager
     /**
      * @param $purchaseList [productId => quantity]
      * @param Client|null $client Client
-     * @return array[PaymentType] $paymentTypeList
+     * @return array[PaymentType] the payment type that are allowed fot this Ordered
      */
     public function getAllowedPaymentType($purchaseList, Client $client = null): array
     {
@@ -165,7 +182,6 @@ class OrderedManager
      * @return bool
      * Verify if the Date != null, PaymentType != null
      */
-    #[Pure]
     public function verifyOrder(Ordered $ordered): bool
     {
         return ($ordered->getOrderedAt() != null && $ordered->getPaymentType() != null);
