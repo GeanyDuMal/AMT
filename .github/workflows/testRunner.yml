@@ -1,9 +1,8 @@
 name: phpunit
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    types:
+      [opened, reopened]
 jobs:
   build:
     runs-on: ubuntu-latest
