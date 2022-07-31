@@ -1,0 +1,23 @@
+name: phpunit
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v1
+      - name: PHPUnit for Symfony
+        uses:
+          chindit/actions-phpunit-symfony@master
+
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: PHPUnit
+        uses: chindit/actions-phpunit-symfony@master
