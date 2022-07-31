@@ -142,6 +142,10 @@
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/twbs/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/beberlei/doctrineextensions" />
       <excludeFolder url="file://$MODULE_DIR$/Website/vendor/symfony/apache-pack" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/dom-crawler" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/twig-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/css-selector" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/browser-kit" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
