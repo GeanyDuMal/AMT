@@ -41,43 +41,43 @@
             <strong>{{ message }} !</strong>
         </div>
     {% endif %}
-<div class="container">
-    <div class="text-center my-5">
-        <h1 class="page__title">Posts & Events</h1>
-        <hr/>
-    </div>
-    {% if is_granted("ROLE_ASSOC") %}
-    <div >
-        <a href="{{ path('createBlog') }}" class="btn btn-outline-primary rounded-0 ">Ajouter</a>
-    </div>
-        <br>
-    {% endif %}
+    <div class="container">
+        <div class="text-center my-5">
+            <h1 class="page__title">Posts & Events</h1>
+            <hr/>
+        </div>
+        {% if is_granted("ROLE_ASSOC") %}
+        <div >
+            <a href="{{ path('createBlog') }}" class="btn btn-outline-primary rounded-0 ">Ajouter</a>
+        </div>
+            <br>
+        {% endif %}
 
-    <div class="row">
-    {% for blog in blogs  %}
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card mb-5 shadow-sm">
-                    <img src={{ blog.imageLink }} class="img-fluid"  alt=""/>
-                    <div class="card-body">
-                        <div id="idBlog" style="display: none">{{ blog.id }}</div>
-                        <div class="card-title">
-                            <h2>{{ blog.title }}</h2>
+        <div class="row">
+        {% for blog in blogs  %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card mb-5 shadow-sm">
+                        <img src={{ blog.imageLink }} class="img-fluid"  alt=""/>
+                        <div class="card-body">
+                            <div id="idBlog" style="display: none">{{ blog.id }}</div>
+                            <div class="card-title">
+                                <h2>{{ blog.title }}</h2>
+                            </div>
+                            <div class="card-text">
+                                <p>
+                                    {{ blog.description|slice(0, 30) }}...
+                                </p>
+                            </div>
+                            <a href="{{url('showBlog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
+                            {% if is_granted("ROLE_ASSOC") %}
+                                <a href="{{ path("editBlog", {"id": blog.id}) }}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
+                                <a id="toDelete" class="btn btn-outline-primary rounded-0 float-end">Supprimer</a>
+                            {% endif %}
                         </div>
-                        <div class="card-text">
-                            <p>
-                                {{ blog.description|slice(0, 30) }}...
-                            </p>
-                        </div>
-                        <a href="{{url('showBlog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
-                        {% if is_granted("ROLE_ASSOC") %}
-                            <a href="{{ path("editBlog", {"id": blog.id}) }}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
-                            <a id="toDelete" class="btn btn-outline-primary rounded-0 float-end">Supprimer</a>
-                        {% endif %}
                     </div>
                 </div>
-            </div>
-    {% endfor %}
+        {% endfor %}
+        </div>
     </div>
-</div>
 
 {% endblock %}

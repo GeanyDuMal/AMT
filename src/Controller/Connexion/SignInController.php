@@ -48,8 +48,8 @@ class SignInController extends AbstractController
              * alors on l'insere dans la base de donnée
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
-            if (!$clientManager->isNotFull($client) && !$clientManager->loginExists($client)
-                && $clientManager->dataCorrect($client) && (trim($inputParameterBag->get("password")) == $verifPassword)) {
+            if ($clientManager->verifyClient($client) && !$clientManager->loginExists($client)
+                && (trim($inputParameterBag->get("password")) == $verifPassword)) {
                 $clientManager->persist($client);
 
                 return $this->redirectToRoute('login');
