@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Ordered;
+use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
@@ -61,12 +62,20 @@ class PurchaseManager
         $this->manager->flush();
     }
 
-    #[Pure]
+    public function setData(Purchase $purchase, Product $product, int $quantity, Ordered $ordered): void
+    {
+        if ($product->getQuantityStock() >= $quantity){
+            $purchase->setQuantity($quantity)
+                ->setProduct($product)
+                ->setOrdered($ordered);
+        }
+    }
+
     public function verifyDisponibilityProduct(Purchase $purchase): bool
     {
         $product = $purchase->getProduct();
 
-        return ($product->getQuantityStock() >= $purchase->getQuantity());
+        return ($product->getQuantityStock() > 0 && $product->getQuantityStock() >= $purchase->getQuantity());
     }
 
     /**

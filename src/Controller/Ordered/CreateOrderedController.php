@@ -36,7 +36,7 @@ class CreateOrderedController extends AbstractController
                 $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
 
                 // Vérifie si l'on a commandé le produit $product
-                if ($quantity != 0) {
+                if (is_numeric($quantity) && $quantity > 0 && $quantity <= $product->getQuantityStock()) {
                     $productOrdered = $productOrdered + [$product->getId() => $quantity];
                 }
             }
