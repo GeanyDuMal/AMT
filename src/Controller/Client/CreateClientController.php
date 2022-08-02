@@ -31,8 +31,7 @@ class CreateClientController extends AbstractController
 
         $data = $request->request;
         $assosRoles = AssociationRole::getAll();
-        $errorLoginExist = "";
-        $validationErrors = "";
+        $message = "";
 
         if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
@@ -43,12 +42,10 @@ class CreateClientController extends AbstractController
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
                 $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), 0);
 
-            $validationErrors = $validator->validate($client);
-
-            if($validationErrors->count() == 0)
-                if($clientManager->loginExists($client)){
-                    $errorLoginExist = "Login existe déja";
-                }else{
+            if($clientManager->verifyClient($client)) {
+                if ($clientManager->loginExists($client)) {
+                    $message = "Login existe déja";
+                } else {
                     $clientManager->persist($client);
 
                     /*
@@ -57,26 +54,28 @@ class CreateClientController extends AbstractController
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if($client->getClientType() == ClientType::ASSOCIATION){
+                    if ($client->getClientType() == ClientType::ASSOCIATION) {
 
                         $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
 
-                        if($newMember->getRole() == AssociationRole::PRESIDENT){
+                        if ($newMember->getRole() == AssociationRole::PRESIDENT) {
                             $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
                     }
-                    return $this->redirectToRoute('menuClient',[
+                    return $this->redirectToRoute('menuClient', [
                         "message" => "Ajout avec succès"
                     ]);
                 }
+            } else {
+                $message = "Merci de vérifier votre saisie";
+            }
         }
 
         return $this->render('client/CreateClient.html.twig', [
             'assosRoles' => $assosRoles,
-            'validationErrors' => $validationErrors,
-            'errorLoginExist' => $errorLoginExist,
+            'message' => $message,
             'clientTypes' => ClientType::getAll()
         ]);
     }
