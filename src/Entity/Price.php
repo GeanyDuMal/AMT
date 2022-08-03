@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Price
 {
-
     /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="prices")
@@ -26,7 +25,6 @@ class Price
      * @Assert\NotNull(message="Le type client dans prix ne doit pas etre null")
      */
     private string $clientType;
-
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)

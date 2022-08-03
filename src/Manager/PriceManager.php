@@ -22,12 +22,18 @@ class PriceManager
         $this->priceRepository = $this->manager->getRepository(Price::class);
     }
 
-    public function persist(Price $price)
+    public function persist(Price $price): void
     {
         if ($this->verifyPrice($price)) {
             $this->manager->persist($price);
             $this->manager->flush();
         }
+    }
+
+    public function remove(Price $price): void
+    {
+        $this->manager->remove($price);
+        $this->manager->flush();
     }
 
     /**

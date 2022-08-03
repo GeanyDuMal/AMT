@@ -50,9 +50,10 @@ class EditProductController extends AbstractController
                     $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
 
                     if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
+                        $product->addPrice($memberPrice);
+                        $product->addPrice($studentPrice);
+
                         $productManager->persist($product);
-                        $priceManager->persist($memberPrice);
-                        $priceManager->persist($studentPrice);
 
                         return $this->redirectToRoute('menuProduct', [
                             "message" => "Modification effectué avec succès"
