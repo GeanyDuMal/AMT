@@ -58,7 +58,7 @@
                 <label>Type</label>
                 <select class="form-select" name="clientType" id="clientType" data-target="assosRoles"
                         data-source="path">
-                    {% if clientExists %}
+                    {% if client %}
                         {% for clientType in clientTypes %}
                             <option {% if clientType == client.clientType %} selected {% endif %}>
                                 {{ clientType }}

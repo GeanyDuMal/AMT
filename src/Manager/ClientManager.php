@@ -54,7 +54,7 @@ class ClientManager
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
-        if (!in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
+        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())){
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
