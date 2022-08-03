@@ -20,7 +20,7 @@ class ProductManager
 
     public function persist(Product $product): void
     {
-        if ($this->verifProduct($product)) {
+        if ($this->verifyProduct($product)) {
             $this->replaceImageIfEmpty($product);
 
             $this->manager->persist($product);
@@ -64,7 +64,7 @@ class ProductManager
             ->setProductType($productType);
     }
 
-    public function verifProduct(Product $product): bool
+    public function verifyProduct(Product $product): bool
     {
         return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "");
     }
