@@ -59,7 +59,7 @@ class ShowOrderedController extends AbstractController
                         $orderedManager->remove($order);
                     }
                     return $this->redirectToRoute('menuOrdered', [
-                        "message" => "La commande a été supprimé avec succès."
+                        "message" => "La commande a été supprimé avec succès"
                     ]);
                 }
 
