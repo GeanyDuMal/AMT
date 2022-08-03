@@ -21,19 +21,19 @@
 {% endblock %}
 
 {% block body %}
-    	<div class="content">
+	{% if message %}
+		<div class="alert alert-dismissible alert-success fade show">
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			<strong>{{ message }}!</strong>
+		</div>
+	{% endif %}
+		<div class="content">
 			<div class="content-header">
 				<h1>Liste des commandes</h1>
 			</div>
 			<div style="margin:5px">
 				<a href="{{ path('createOrdered') }}" class="btn btn-success">Ajouter</a>
 			</div>
-			{% if message %}
-				<div class="alert alert-dismissible alert-success fade show">
-					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-					<strong>{{ message }}!</strong>
-				</div>
-			{% endif %}
 		
 			{% if orderedList|length > 0 %}
 			<table id="ordered_table" class="table table-striped">

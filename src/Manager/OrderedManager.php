@@ -22,16 +22,28 @@ class OrderedManager
         $this->manager = $managerController;
     }
 
-    public function persist(Ordered $order): void
+    public function persist(Ordered $ordered): void
     {
-        if ($this->verifyOrder($order)) {
-            $this->manager->persist($order);
+        if ($this->verifyOrder($ordered)) {
+            $this->manager->persist($ordered);
             $this->manager->flush();
+        }
+
+        $purchaseManager = new PurchaseManager($this->manager);
+
+        foreach ($ordered->getPurchases() as $purchase){
+            $purchaseManager->persist($purchase);
         }
     }
 
     public function remove(Ordered $ordered): void
     {
+        $purchaseManager = new PurchaseManager($this->manager);
+
+        foreach ($ordered->getPurchases() as $purchase){
+            $purchaseManager->remove($purchase);
+        }
+
         $this->manager->remove($ordered);
         $this->manager->flush();
     }

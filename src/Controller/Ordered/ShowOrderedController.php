@@ -52,6 +52,7 @@ class ShowOrderedController extends AbstractController
                 $toRemove = $inputParameterBag->get("remove");
 
                 if ($toCancel || $toRemove){
+                    $manager->initializeObject($order->getPurchases());
                     if($toCancel){
                         $orderedManager->removeWithRestore($order);
 
@@ -59,7 +60,7 @@ class ShowOrderedController extends AbstractController
                         $orderedManager->remove($order);
                     }
                     return $this->redirectToRoute('menuOrdered', [
-                        "message" => "La commande a été supprimé avec succès."
+                        "message" => "La commande a été supprimé avec succès"
                     ]);
                 }
 

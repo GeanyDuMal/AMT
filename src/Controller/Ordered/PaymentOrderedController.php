@@ -88,7 +88,6 @@ class PaymentOrderedController extends AbstractController
             //Creer la commande
             $order = new Ordered();
             $orderManager->setData($order, $clientOrder, $paymentTypeChose, new DateTime("now"));
-            $orderManager->persist($order);
 
             //Creer tout les achats
             foreach ($productOrderedIdTab as $productId => $quantity) {
@@ -97,10 +96,9 @@ class PaymentOrderedController extends AbstractController
                 $purchase = new Purchase();
                 $purchaseManager->setData($purchase, $product, $quantity, $order);
 
-                if ($purchaseManager->verifyDisponibilityProduct($purchase)) {
-                    $purchaseManager->persist($purchase);
-                }
+                $order->addPurchase($purchase);
             }
+            $orderManager->persist($order);
 
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);
