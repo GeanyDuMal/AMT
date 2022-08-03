@@ -15,27 +15,15 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <ul>
-            {% if validationErrors is defined and validationErrors!="" %}
-                {% for i in 0..validationErrors.count()-1 %}
-                    <li>
-                        {{ validationErrors[i].message }}
-                    </li>
-                {% endfor %}
-            {% endif %}
-        </ul>
-    </div>
-
+    {% if message %}
+        <div class="alert alert-dismissible alert-info fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ message }}</strong>
+        </div>
+    {% endif %}
 
     <div class="container mt-5 ">
         <form action="" method="post" class="row g-2 " id='form_Client' onsubmit="disableButton()">
-            {% if errorLoginExist is defined and errorLoginExist!="" %}
-                <div class="alert alert-dismissible alert-danger">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ errorLoginExist }}.
-                </div>
-            {% endif %}
             <h1>Nouveau Client</h1>
             <div class="form-floating col-md-6">
                 <input type="text" name="name" class="form-control" id="floatingInput" placeholder="Nom">

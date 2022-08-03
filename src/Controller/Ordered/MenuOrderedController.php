@@ -21,8 +21,6 @@ class MenuOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $orderedManager = new OrderedManager($manager);
-
         /*
          * Recuperer toute les commandes avec leurs clients et leurs types
          * Tout faire en une seule requetes, plus opti

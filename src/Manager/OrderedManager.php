@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\PaymentType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 
@@ -69,6 +70,16 @@ class OrderedManager
         $this->manager->flush();
     }
 
+    public function setData(Ordered $ordered, Client $client, string $paymentType, ?DateTime $date): void
+    {
+        if (!$date){
+            $date = new DateTime("now");
+        }
+
+        $ordered->setClient($client)
+            ->setPaymentType($paymentType)
+            ->setOrderedAt($date);
+    }
 
     public function reduceBalanceIfNecessary(Ordered $order): void
     {

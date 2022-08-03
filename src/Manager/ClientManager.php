@@ -36,7 +36,7 @@ class ClientManager
         $this->setPresidentIfNecessary($client);
 
         $this->removeFromAssociationIfNecessary($client);
-        $this->verifyBalanceAndFidelity($client);
+        $this->correctBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
 
         $this->manager->persist($client);
@@ -51,6 +51,9 @@ class ClientManager
      */
     public function remove(Client $client): void
     {
+        /**
+         * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
+         */
         if (!in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
             $client->setClientType(ClientType::ETUDIANT);
 
@@ -127,7 +130,7 @@ class ClientManager
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
      */
-    public function dataCorrect(Client $client): bool
+    public function verifyClient(Client $client): bool
     {
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
@@ -140,8 +143,11 @@ class ClientManager
         $loginUpperFour = (strlen($client->getLogin()) > 4);
         $passwordUpperFour = (strlen($client->getPassword()) > 4);
 
+        $this->correctBalanceAndFidelity($client);
+
         return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
-            && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName);
+            && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
+            in_array($client->getClientType(), ClientType::getAll()));
     }
 
     /**
@@ -216,7 +222,7 @@ class ClientManager
      * @return void
      * Check if Balance and Fidelity Point are strictly positive
      */
-    public function verifyBalanceAndFidelity(Client $client)
+    public function correctBalanceAndFidelity(Client $client)
     {
         if ($client->getBalance() == null || floatval($client->getBalance()) < 0) {
             $client->setBalance(0);

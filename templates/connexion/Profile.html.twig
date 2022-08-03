@@ -42,7 +42,7 @@
                     Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
                 </h1>
 
-                {% if edit is same as("wrong_password") %}
+                {% if fail %}
                     <h2 class="message_information message_incorrect">
                         Votre mot de passe est incorrect
                     </h2>
@@ -56,8 +56,7 @@
                 <table class="table_information">
                     <tr>
                         <td>Solde :</td>
-                        <td>{{ user.balance }}
-                            €</td>
+                        <td>{{ user.balance }} €</td>
                     </tr>
                     <tr>
                         <td>Compteur de fidelité :</td>

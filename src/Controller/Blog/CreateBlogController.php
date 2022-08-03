@@ -27,18 +27,15 @@ class CreateBlogController extends AbstractController
 
         $data = $request->request;
         $postTypes = PostType::getAll();
-        $validationErrors = "";
         $postExistsError = "";
         $post = new Post();
         $postmanager = new PostManager($manager);
+        $message = "";
 
         if($data->count() > 0){
-            $postType = $data->get('postType');
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
 
-            $postmanager->setData($post, $postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
-            $validationErrors = $validator->validate($post);
-
-            if($validationErrors->count() == 0){
+            if($postmanager->verifyPost($post)){
                 if($postRepository->findBy(['title' => $post->getTitle()])){
                     $postExistsError = "Le post existe déjà.";
                 }else{
@@ -48,13 +45,14 @@ class CreateBlogController extends AbstractController
                         "message" => "Ajout avec succès"
                     ]);
                 }
-
+            } else {
+                $message = "Votre saisie contient une erreur, merci de vérifier votre saisie";
             }
         }
 
         return $this->render('blog/CreateBlog.html.twig', [
             'postTypes' => $postTypes,
-            'validationErrors' => $validationErrors,
+            'message' => $message,
             'postExistsError' => $postExistsError,
             'post' => $post
         ]);

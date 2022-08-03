@@ -89,4 +89,14 @@ class Post
 
         return $this;
     }
+
+    public function equals(Post $post): bool
+    {
+        return(
+          $this->getTitle() === $post->getTitle() &&
+          $this->getDescription() === $post->getDescription() &&
+          $this->getImageLink() === $post->getImageLink() &&
+          $this->getPostType() === $post->getPostType()
+        );
+    }
 }
