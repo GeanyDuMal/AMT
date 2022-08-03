@@ -89,13 +89,14 @@ class PaymentOrderedController extends AbstractController
             $order = new Ordered();
             $orderManager->setData($order, $clientOrder, $paymentTypeChose, new DateTime("now"));
 
-
             //Creer tout les achats
             foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
 
                 $purchase = new Purchase();
                 $purchaseManager->setData($purchase, $product, $quantity, $order);
+
+                $order->addPurchase($purchase);
             }
             $orderManager->persist($order);
 

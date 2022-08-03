@@ -52,6 +52,7 @@ class ShowOrderedController extends AbstractController
                 $toRemove = $inputParameterBag->get("remove");
 
                 if ($toCancel || $toRemove){
+                    $manager->initializeObject($order->getPurchases());
                     if($toCancel){
                         $orderedManager->removeWithRestore($order);
 
