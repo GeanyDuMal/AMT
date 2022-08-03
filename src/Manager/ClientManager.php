@@ -64,6 +64,24 @@ class ClientManager
         }
     }
 
+    /**
+     * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
+     * @param Client $client
+     * @return void
+     */
+    public function removeFromAssociationIfNecessary(Client $client): void
+    {
+        if ($client->getClientType() != ClientType::ASSOCIATION) {
+            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
+            // If client is present in table Association, it's not normal, so we remove it
+            if ($associationMember) {
+                $associationManager = new AssociationManager($this->manager);
+
+                $associationManager->remove($associationMember);
+            }
+        }
+    }
+
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
                             string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
                             ?int $fidelityPoint = 0): void
@@ -198,23 +216,6 @@ class ClientManager
     {
         $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
         $this->persist($client);
-    }
-
-    /**
-     * @param Client $client
-     * @return void
-     * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
-     */
-    public function removeFromAssociationIfNecessary(Client $client): void
-    {
-        if ($client->getClientType() != ClientType::ASSOCIATION) {
-            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
-            // If client is present in table Association, it's not normal, so we remove it
-            if ($associationMember) {
-                $this->manager->remove($associationMember);
-                $this->manager->flush();
-            }
-        }
     }
 
     /**

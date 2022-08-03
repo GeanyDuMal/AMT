@@ -24,7 +24,7 @@ class AssociationManager
 
     public function persist(Association $association): void
     {
-        $this->changeMemberTypeAdd($association);
+        $this->changeClientType($association, ClientType::ASSOCIATION);
 
         $this->manager->persist($association);
         $this->manager->flush();
@@ -32,28 +32,25 @@ class AssociationManager
 
     public function remove(Association $association): void
     {
-        $this->changeMemberTypeRemove($association);
+        $this->changeClientType($association, ClientType::ETUDIANT);
 
         $this->manager->remove($association);
         $this->manager->flush();
     }
 
-    public function changeMemberTypeAdd(Association $association): void
+    /**
+     * @param Association $association
+     * @param string $clientTypeToSet
+     */
+    public function changeClientType(Association $association, string $clientTypeToSet): void
     {
         $client = $association->getMember();
-        $client->setClientType(ClientType::ASSOCIATION);
+        if ($client->getClientType() != $clientTypeToSet){
+            $client->setClientType($clientTypeToSet);
 
-        $this->manager->persist($client);
-        $this->manager->flush();
-    }
-
-    public function changeMemberTypeRemove(Association $association): void
-    {
-        $client = $association->getMember();
-        $client->setClientType(ClientType::ETUDIANT);
-
-        $this->manager->persist($client);
-        $this->manager->flush();
+            $this->manager->persist($client);
+            $this->manager->flush();
+        }
     }
 
     /**
