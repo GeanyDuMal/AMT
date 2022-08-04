@@ -8,6 +8,7 @@ use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -33,6 +34,10 @@ class ClientManager
      */
     public function persist(Client $client): void
     {
+        if (!$client->getCreationDate()){
+            $client->setCreationDate(new DateTime('now'));
+        }
+
         $this->setPresidentIfNecessary($client);
 
         $this->removeFromAssociationIfNecessary($client);

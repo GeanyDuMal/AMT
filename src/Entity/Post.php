@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +37,11 @@ class Post
      * @ORM\Column(type="string", length=255)
      */
     private string $postType;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private DateTime $creationDate;
 
     public function getId(): int
     {
@@ -96,7 +102,21 @@ class Post
           $this->getTitle() === $post->getTitle() &&
           $this->getDescription() === $post->getDescription() &&
           $this->getImageLink() === $post->getImageLink() &&
-          $this->getPostType() === $post->getPostType()
+          $this->getPostType() === $post->getPostType() &&
+          $this->getCreationDate() === $post->getCreationDate()
         );
     }
+
+    public function getCreationDate(): DateTime
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(DateTime $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
 }

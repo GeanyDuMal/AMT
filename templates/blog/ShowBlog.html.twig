@@ -7,6 +7,7 @@
 {% block stylesheets %}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/blog/css/blog.css') }}">
     <style>
         .center {
             display: block;
@@ -19,17 +20,20 @@
 
 {% block body %}
     <div class="container mt-5 ">
-        <form id="blog_form" class="row g-2 " method="post" >
+        <div class="block row g-2 " method="post" >
             <h1>{{ blog.title }}</h1>
             <div class="col-md-12">
                <img style="max-width:50%;" class="img-responsive center"  src={{ blog.imageLink }}>
             </div>
             <div class="col-md-12">
-            <h3>Contenu :</h3>
+                <p>
+                    Post créé le {{ blog.creationDate | date('d/m/Y') }}
+                </p>
+                <h3>Contenu :</h3>
                 <p>
                     {{ blog.description }}
                 </p>
             </div>
-        </form>
+        </div>
     </div>
 {% endblock %}

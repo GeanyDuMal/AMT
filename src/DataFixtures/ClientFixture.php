@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Client;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,24 +20,26 @@ class ClientFixture extends Fixture
 
         $client = new Client();
         $client->setName("NATANELIC")
-                ->setFirstName("Romain")
-                ->setLogin("RomainGamer57")
-                ->setPassword("hiddenPassword")
-                ->setBalance(1.50)
-                ->setFidelityPoint(26)
-                ->setClientType($clientTypeAssociation)
-                ->setRoles([SymfonyRole::PRESIDENT]);
+            ->setFirstName("Romain")
+            ->setLogin("RomainGamer57")
+            ->setPassword("hiddenPassword")
+            ->setBalance(1.50)
+            ->setFidelityPoint(26)
+            ->setClientType($clientTypeAssociation)
+            ->setRoles([SymfonyRole::PRESIDENT])
+            ->setCreationDate(new DateTime('now'));
         $manager->persist($client);
 
         $client = new Client();
         $client->setName("MULLER")
-                ->setFirstName("Leane")
-                ->setLogin("LeaneLoli")
-                ->setPassword("Ayato")
-                ->setBalance(5)
-                ->setFidelityPoint(12)
-                ->setClientType($clientTypeAssociation)
-                ->setRoles([SymfonyRole::ASSOC]);
+            ->setFirstName("Leane")
+            ->setLogin("LeaneLoli")
+            ->setPassword("Ayato")
+            ->setBalance(5)
+            ->setFidelityPoint(12)
+            ->setClientType($clientTypeAssociation)
+            ->setRoles([SymfonyRole::ASSOC])
+            ->setCreationDate(new DateTime('now'));
         $manager->persist($client);
 
         $client = new Client();
@@ -47,7 +50,8 @@ class ClientFixture extends Fixture
             ->setBalance(0)
             ->setFidelityPoint(60)
             ->setClientType($clientTypeAssociation)
-            ->setRoles([SymfonyRole::TRESORIER]);
+            ->setRoles([SymfonyRole::TRESORIER])
+            ->setCreationDate(new DateTime('now'));
         $manager->persist($client);
 
         $client = new Client();
@@ -58,7 +62,8 @@ class ClientFixture extends Fixture
             ->setBalance(80)
             ->setFidelityPoint(0)
             ->setClientType($clientTypeAssociation)
-            ->setRoles([SymfonyRole::ASSOC]);
+            ->setRoles([SymfonyRole::ASSOC])
+            ->setCreationDate(new DateTime('now'));
         $manager->persist($client);
 
         $client = new Client();
@@ -69,7 +74,8 @@ class ClientFixture extends Fixture
             ->setBalance(0)
             ->setFidelityPoint(0)
             ->setClientType($clientTypeEtudiant)
-            ->setRoles([SymfonyRole::USER]);
+            ->setRoles([SymfonyRole::USER])
+            ->setCreationDate(new DateTime('now'));
         $manager->persist($client);
 
         $manager->flush();

@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Post;
 use App\Utils\Enum\PostType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use JetBrains\PhpStorm\Pure;
@@ -23,6 +24,10 @@ class PostManager
     {
         if ($this->verifyPost($post)) {
             $this->replaceImageIfEmpty($post);
+
+            if (!$post->getCreationDate()){
+                $post->setCreationDate(new DateTime('now'));
+            }
 
             $this->manager->persist($post);
             $this->manager->flush();
