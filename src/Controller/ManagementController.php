@@ -82,7 +82,8 @@ class ManagementController extends AbstractController
                 $clientManager->remove($client);
             }
 
-            $message = "Les clients sans commandes de moins de 2 ans ont été supprimés";
+            $message = "Les clients sans commandes de moins de 2 ans ont été supprimés 
+                et qui ont créé leur compte il y a 2 ans";
         }
 
         /**

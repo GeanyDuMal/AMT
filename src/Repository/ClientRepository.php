@@ -22,7 +22,7 @@ class ClientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Client[] Returns an array of Client that hasn't ordered anything for 2 years
+     * @return Client[] Returns an array of Client that hasn't ordered anything for 2 years and have a 2 years old account
      */
     public function findClientWithoutOrderedTwoYears(): array
     {
@@ -38,6 +38,7 @@ class ClientRepository extends ServiceEntityRepository
                 FROM App\Entity\Ordered Ordered, App\Entity\Client ClientInOrdered
                 WHERE Ordered.client = ClientInOrdered
                 AND Ordered.orderedAt >= :date
+                AND client.creationDate >= :date
                 )
             ")
             ->setParameter("date", $date);
