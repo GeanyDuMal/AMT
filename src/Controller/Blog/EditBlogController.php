@@ -32,7 +32,7 @@ class EditBlogController extends AbstractController
         $postmanager = new PostManager($manager);
         $message = "";
 
-        if ($data->count() > 0) {
+        if ($data->count() > 0 && $post) {
 
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
 
