@@ -15,7 +15,7 @@ class MenuBlogController extends AbstractController
      */
     public function index(PostRepository $postRepository, string $message = null): Response
     {
-        $blogs = $postRepository->findBy([], ["id" => "DESC"]);
+        $blogs = $postRepository->findBy([], ["creationDate" => "DESC"]);
 
         return $this->render('blog/MenuBlog.html.twig',[
           'blogs' => $blogs,
