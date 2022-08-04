@@ -14,7 +14,8 @@ final class Version20220804101918 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Migration concernant le version 2.1.0';
+        return 'Migration concernant le version 2.1.0 : 
+                - Ajout des dates de creations sur les clients et les posts';
     }
 
     public function up(Schema $schema): void
@@ -22,11 +23,17 @@ final class Version20220804101918 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE post ADD creation_date DATE NOT NULL');
         $this->addSql('UPDATE post SET creation_date = "2022-02-01"'); // Defini pour les posts déja existant la date de création du site, a modifier ensuite
+
+        $this->addSql('ALTER TABLE client ADD creation_date DATE NOT NULL');
+        $this->addSql('UPDATE client SET creation_date = "2022-02-01"'); // Defini pour les clients déja existant la date de création du site, a modifier ensuite
+
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE post DROP creation_date');
+
+        $this->addSql('ALTER TABLE client DROP creation_date');
     }
 }
