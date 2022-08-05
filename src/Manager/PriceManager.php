@@ -22,12 +22,18 @@ class PriceManager
         $this->priceRepository = $this->manager->getRepository(Price::class);
     }
 
-    public function persist(Price $price)
+    public function persist(Price $price): void
     {
-        if ($this->verifPrice($price)) {
+        if ($this->verifyPrice($price)) {
             $this->manager->persist($price);
             $this->manager->flush();
         }
+    }
+
+    public function remove(Price $price): void
+    {
+        $this->manager->remove($price);
+        $this->manager->flush();
     }
 
     /**
@@ -55,8 +61,7 @@ class PriceManager
             ->setProduct($product);
     }
 
-    #[Pure]
-    public function verifPrice(Price $price): bool
+    public function verifyPrice(Price $price): bool
     {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
     }

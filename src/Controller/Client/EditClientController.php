@@ -11,6 +11,7 @@ use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,8 +35,7 @@ class EditClientController extends AbstractController
         $data = $request->request;
         $client = $clientRepository->find($id);
         $assosRoles = AssociationRole::getAll();
-        $validationErrors = "";
-        $errorLoginExist = "";
+        $message = "";
         $member = $associationRepository->findOneBy(["member" => $client]);
 
         if ($data->count() > 0) {
@@ -46,10 +46,9 @@ class EditClientController extends AbstractController
                 $data->get("firstName"), $client->getLogin(), $data->get("password"),
                 $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $data->get("fidelityPoint"));
 
-            $validationErrors = $validator->validate($client);
 
-            if ($validationErrors->count() == 0) {
-                $ChosenClientLogin = $clientRepository->find($id)->getLogin();
+            if ($clientManager->verifyClient($client)) {
+                $storedClient = $clientRepository->find($id);
 
                 /*
                  * If we set the ClientType Association, we need to put the client in the table Association
@@ -63,8 +62,8 @@ class EditClientController extends AbstractController
                     $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
-                if (strcmp($ChosenClientLogin, $client->getLogin()) != 0 && $clientManager->loginExists($client)) {
-                    $errorLoginExist = "Ce login existe déja";
+                if (strcmp($storedClient->getLogin(), $client->getLogin()) == 0 || $clientManager->loginExists($client)) {
+                    $message = "Ce login existe déja";
                 } else {
                     $clientManager->persist($client);
                     if ($client->getClientType() == ClientType::ASSOCIATION) {
@@ -83,8 +82,7 @@ class EditClientController extends AbstractController
 
         return $this->render('client/EditClient.html.twig', [
             'assosRoles' => $assosRoles,
-            'validationErrors' => $validationErrors,
-            'errorLoginExist' => $errorLoginExist,
+            'message' => $message,
             'client' => $client,
             'member' => $member,
             'clientTypes' => ClientType::getAll()

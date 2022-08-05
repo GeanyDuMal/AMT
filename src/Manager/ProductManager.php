@@ -20,11 +20,17 @@ class ProductManager
 
     public function persist(Product $product): void
     {
-        if ($this->verifProduct($product)) {
+        if ($this->verifyProduct($product)) {
             $this->replaceImageIfEmpty($product);
 
             $this->manager->persist($product);
             $this->manager->flush();
+
+            $priceManager = new PriceManager($this->manager);
+
+            foreach ($product->getPrices() as $price){
+                $priceManager->persist($price);
+            }
         }
     }
 
@@ -37,11 +43,16 @@ class ProductManager
     {
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
         $purchaseManager = new PurchaseManager($this->manager);
+        $priceManager = new PriceManager($this->manager);
         $purchaseLinked = $purchaseRepository->findBy(["product" => $product]);
 
         //On supprime les achats liés au produit supprimé
         foreach ($purchaseLinked as $purchase){
             $purchaseManager->remove($purchase);
+        }
+
+        foreach ($product->getPrices() as $price){
+            $priceManager->remove($price);
         }
 
         $this->manager->remove($product);
@@ -64,7 +75,7 @@ class ProductManager
             ->setProductType($productType);
     }
 
-    public function verifProduct(Product $product): bool
+    public function verifyProduct(Product $product): bool
     {
         return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "");
     }

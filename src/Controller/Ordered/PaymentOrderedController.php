@@ -43,7 +43,10 @@ class PaymentOrderedController extends AbstractController
         //Si l'on a select un client, alors on conserve celui ci + son type
         if ($idClient != "null") {
             $clientOrder = $clientRepository->find($idClient);
-            $clientType = $priceManager->getClientTypeUseForPrice($clientOrder->getClientType());
+
+            if ($clientOrder){
+                $clientType = $priceManager->getClientTypeUseForPrice($clientOrder->getClientType());
+            }
         }
 
         /*
@@ -84,24 +87,18 @@ class PaymentOrderedController extends AbstractController
 
             //Creer la commande
             $order = new Ordered();
-            $order->setClient($clientOrder)
-                ->setOrderedAt(new DateTime("now"))
-                ->setPaymentType($paymentTypeChose);
-            $orderManager->persist($order);
+            $orderManager->setData($order, $clientOrder, $paymentTypeChose, new DateTime("now"));
 
             //Creer tout les achats
             foreach ($productOrderedIdTab as $productId => $quantity) {
                 $product = $productRepository->find($productId);
 
                 $purchase = new Purchase();
-                $purchase->setProduct($product)
-                    ->setOrdered($order)
-                    ->setQuantity($quantity);
+                $purchaseManager->setData($purchase, $product, $quantity, $order);
 
-                if ($purchaseManager->verifyDisponibilityProduct($purchase)) {
-                    $purchaseManager->persist($purchase);
-                }
+                $order->addPurchase($purchase);
             }
+            $orderManager->persist($order);
 
             $orderManager->reduceBalanceIfNecessary($order);
             $orderManager->addFidelityToClient($order);

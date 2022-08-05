@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\Post;
+use App\Utils\Enum\PostType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use JetBrains\PhpStorm\Pure;
@@ -20,8 +22,12 @@ class PostManager
 
     public function persist(Post $post): void
     {
-        if ($this->verifPost($post)) {
+        if ($this->verifyPost($post)) {
             $this->replaceImageIfEmpty($post);
+
+            if (!$post->getCreationDate()){
+                $post->setCreationDate(new DateTime('now'));
+            }
 
             $this->manager->persist($post);
             $this->manager->flush();
@@ -34,16 +40,24 @@ class PostManager
         $this->manager->flush();
     }
 
+    public function verifyPost(Post $post): bool {
+        return (
+            in_array($post->getPostType(), PostType::getAll()) &&
+            $post->getTitle() != "" &&
+            $post->getDescription() != ""
+        );
+    }
+
     /**
      * @param Post $post
      * @param string $postType
      * @param String $postTitle
      * @param String $postDescription
-     * @param String $imageLink
+     * @param string|null $imageLink
      * @return void
      */
     public function setData(Post   $post, string $postType, string $postTitle,
-                            string $postDescription, string $imageLink): void
+                            string $postDescription, ?string $imageLink): void
     {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
@@ -51,14 +65,9 @@ class PostManager
         $post->setPostType($postType);
     }
 
-    public function verifPost(Post $post): bool
-    {
-        return ($post->getTitle() != "" && $post->getDescription() != "");
-    }
-
     public function replaceImageIfEmpty(Post $post): void
     {
-        if ($post->getImageLink() == null || $post->getImageLink() == "") {
+        if ($post->getImageLink() == "") {
             $post->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
     }

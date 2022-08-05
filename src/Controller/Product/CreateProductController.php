@@ -32,47 +32,42 @@ class CreateProductController extends AbstractController
         $data = $request->request;
         $product = new Product();
         $productTypes = ProductType::getAll();
-        $validationErrors = "";
-        $productExistsError = "";
+        $message = "";
 
         if ($data->count() > 0) {
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
             $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
-            $validationErrors = $validator->validate($product);
 
-            if ($validationErrors->count() == 0) {
+            if ($productManager->verifyProduct($product)) {
                 if ($productRepository->findBy(['name' => $product->getName()])) {
-                    $productExistsError = "Le produit existe déjà";
+                    $message = "Le produit existe déjà";
                 } else {
                     $memberPrice = new Price();
                     $studentPrice = new Price();
 
                     $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
-                    $validationErrors = $validator->validate($memberPrice);
 
-                    if ($validationErrors->count() == 0) {
-                        $validationErrors = $validator->validate($studentPrice);
+                    if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
+                        $product->addPrice($memberPrice);
+                        $product->addPrice($studentPrice);
 
-                        if ($validationErrors->count() == 0) {
-                            $productManager->persist($product);
+                        $productManager->persist($product);
 
-                            $priceManager->persist($memberPrice);
-                            $priceManager->persist($studentPrice);
-
-                            return $this->redirectToRoute('menuProduct', [
-                                "message" => "Ajout avec succès"
-                            ]);
-                        }
+                        return $this->redirectToRoute('menuProduct', [
+                            "message" => "Ajout avec succès"
+                        ]);
                     }
                 }
+            } else {
+                $message = "Merci de verifier votre saise";
             }
         }
+
         return $this->render('product/CreateProduct.html.twig', [
             'productTypes' => $productTypes,
-            'validationErrors' => $validationErrors,
-            'productExistsError' => $productExistsError,
+            'message' => $message,
             'produit' => $product
         ]);
     }

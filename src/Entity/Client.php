@@ -83,6 +83,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private array $roles = [];
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $creationDate;
+
     public function getId(): int
     {
         return $this->id;
@@ -217,5 +222,17 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername(): string
     {
         return $this->getUserIdentifier();
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
     }
 }

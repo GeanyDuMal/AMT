@@ -27,53 +27,48 @@ class EditProductController extends AbstractController
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
+
         $data = $request->request;
         $product = $productRepository->find($id);
-        $productTypes = ProductType::getAll();
-        $typeMember = ClientType::ASSOCIATION;
-        $typeStudent = ClientType::ETUDIANT;
-        $memberPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => $typeMember]);
-        $studentPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => $typeStudent]);
-
-        $validationErrors = "";
-        $productExistsError = "";
+        $memberPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ASSOCIATION]);
+        $studentPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ETUDIANT]);
+        $message = "";
 
         if ($data->count() > 0) {
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
             $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
-            $validationErrors = $validator->validate($product);
 
-            if ($validationErrors->count() == 0) {
-                $ChosenProductName = $productRepository->find($id)->getName();
+            if ($productManager->verifyProduct($product)) {
+                $storedProductName = $productRepository->find($id)->getName();
                 $newProductName = $product->getName();
 
-                if (strcmp($ChosenProductName, $newProductName) != 0 && $productRepository->findOneBy(['name' => $newProductName])) {
-                    $productExistsError = "Produit existe déja";
+                if (!($newProductName === $storedProductName) && $productRepository->findOneBy(['name' => $newProductName])) {
+                    $message = "Le produit existe déja";
                 } else {
                     $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
-                    $validationErrors = $validator->validate($memberPrice);
 
-                    if ($validationErrors->count() == 0) {
-                        $validationErrors = $validator->validate($studentPrice);
-                        if ($validationErrors->count() == 0) {
-                            $productManager->persist($product);
-                            $priceManager->persist($memberPrice);
-                            $priceManager->persist($studentPrice);
+                    if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
+                        $product->addPrice($memberPrice);
+                        $product->addPrice($studentPrice);
 
-                            return $this->redirectToRoute('menuProduct', [
-                                "message" => "Modification avec succès"
-                            ]);
-                        }
+                        $productManager->persist($product);
+
+                        return $this->redirectToRoute('menuProduct', [
+                            "message" => "Modification effectué avec succès"
+                        ]);
+                    } else {
+                        $message = "Merci de verifier votre saisie";
                     }
                 }
+            } else {
+                $message = "Merci de verifier votre saisie";
             }
         }
         return $this->render('product/EditProduct.html.twig', [
-            'productTypes' => $productTypes,
-            'validationErrors' => $validationErrors,
-            'productExistsError' => $productExistsError,
+            'productTypes' => ProductType::getAll(),
+            'message' => $message,
             'product' => $product,
             'studentPrice' => $studentPrice->getPrice(),
             'memberPrice' => $memberPrice->getPrice()

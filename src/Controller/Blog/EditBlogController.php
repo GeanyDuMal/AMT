@@ -30,41 +30,34 @@ class EditBlogController extends AbstractController
         $post = $postRepository->find($id);
         $postTypes = PostType::getAll();
         $postmanager = new PostManager($manager);
-        $validationErrors = "";
-        $postExistsError = "";
+        $message = "";
 
-        if ($data->count() > 0) {
-            $postType = $data->get('postType');
+        if ($data->count() > 0 && $post) {
 
-            $postmanager->setData($post, $postType, $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
-            $validationErrors = $validator->validate($post);
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
 
-            if ($validationErrors->count() == 0) {
-                $selectedPostName = $postRepository->find($id)->getTitle();
-                $editedPostName = $post->getTitle();
-                $selectedPostDescription = $postRepository->find($id)->getDescription();
-                $editedPostDescription = $post->getDescription();
+            if ($postmanager->verifyPost($post)) {
+                $originalPost = $postRepository->find($id);
 
-                if (strcmp($selectedPostName, $editedPostName) != 0 &&
-                    strcmp($selectedPostDescription, $editedPostDescription) != 0 &&
-                    $postRepository->findOneBy(['title' => $post->getTitle()]))
+                if ($post->equals($originalPost))
                 {
-                    $postExistsError = "Le post existe déjà.";
+                    $message = "Le post existe déjà.";
                 }else{
                     $postmanager->persist($post);
 
                     return $this->redirectToRoute('menuBlog', [
-                        "message" => "Modification avec succès"
+                        "message" => "Modification effectué avec succès"
                     ]);
                 }
+            } else {
+                $message = "Votre saisie contient une erreur, merci de vérifier votre saisie";
             }
         }
 
 
         return $this->render('blog/EditBlog.html.twig', [
             'postTypes' => $postTypes,
-            'validationErrors' => $validationErrors,
-            'postExistsError' => $postExistsError,
+            'message' => $message,
             'post' => $post
         ]);
     }

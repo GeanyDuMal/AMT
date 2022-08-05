@@ -8,6 +8,7 @@ use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -28,10 +29,14 @@ class ClientManager
 
     public function persist(Client $client): void
     {
+        if (!$client->getCreationDate()){
+            $client->setCreationDate(new DateTime('now'));
+        }
+
         $this->setPresidentIfNecessary($client);
 
         $this->removeFromAssociationIfNecessary($client);
-        $this->verifyBalanceAndFidelity($client);
+        $this->correctBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
 
         $this->manager->persist($client);
@@ -40,13 +45,34 @@ class ClientManager
 
     public function remove(Client $client): void
     {
-        if (!in_array((SymfonyRole::PRESIDENT || "ROLE_ADMIN"), $client->getRoles())){
+        /**
+         * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
+         */
+        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())){
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
 
             $this->manager->remove($client);
             $this->manager->flush();
+        }
+    }
+
+    /**
+     * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
+     * @param Client $client
+     * @return void
+     */
+    public function removeFromAssociationIfNecessary(Client $client): void
+    {
+        if ($client->getClientType() != ClientType::ASSOCIATION) {
+            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
+            // If client is present in table Association, it's not normal, so we remove it
+            if ($associationMember) {
+                $associationManager = new AssociationManager($this->manager);
+
+                $associationManager->remove($associationMember);
+            }
         }
     }
 
@@ -63,7 +89,7 @@ class ClientManager
      * @param int|null $fidelityPoint
      * @return void
      * Create a client with verifying the data assigned
-     */
+     */    
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
                             string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
                             ?int $fidelityPoint = 0): void
@@ -129,7 +155,7 @@ class ClientManager
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
      */
-    public function dataCorrect(Client $client): bool
+    public function verifyClient(Client $client): bool
     {
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
@@ -142,8 +168,11 @@ class ClientManager
         $loginUpperFour = (strlen($client->getLogin()) > 4);
         $passwordUpperFour = (strlen($client->getPassword()) > 4);
 
+        $this->correctBalanceAndFidelity($client);
+
         return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
-            && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName);
+            && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
+            in_array($client->getClientType(), ClientType::getAll()));
     }
 
     /**
@@ -200,23 +229,6 @@ class ClientManager
     {
         $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
         $this->persist($client);
-    }
-
-    /**
-     * @param Client $client
-     * @return void
-     * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
-     */
-    public function removeFromAssociationIfNecessary(Client $client): void
-    {
-        if ($client->getClientType() != ClientType::ASSOCIATION) {
-            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
-            // If client is present in table Association, it's not normal, so we remove it
-            if ($associationMember) {
-                $this->manager->remove($associationMember);
-                $this->manager->flush();
-            }
-        }
     }
 
     /**

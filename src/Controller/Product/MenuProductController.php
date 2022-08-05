@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ShowProductController extends AbstractController
+class MenuProductController extends AbstractController
 {
     /**
      * @Route("/product/{message?}", name="menuProduct", methods={"GET", "POST"} )

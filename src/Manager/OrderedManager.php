@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\PaymentType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 
@@ -21,16 +22,28 @@ class OrderedManager
         $this->manager = $managerController;
     }
 
-    public function persist(Ordered $order): void
+    public function persist(Ordered $ordered): void
     {
-        if ($this->verifyOrder($order)) {
-            $this->manager->persist($order);
+        if ($this->verifyOrder($ordered)) {
+            $this->manager->persist($ordered);
             $this->manager->flush();
+        }
+
+        $purchaseManager = new PurchaseManager($this->manager);
+
+        foreach ($ordered->getPurchases() as $purchase){
+            $purchaseManager->persist($purchase);
         }
     }
 
     public function remove(Ordered $ordered): void
     {
+        $purchaseManager = new PurchaseManager($this->manager);
+
+        foreach ($ordered->getPurchases() as $purchase){
+            $purchaseManager->remove($purchase);
+        }
+
         $this->manager->remove($ordered);
         $this->manager->flush();
     }
@@ -71,6 +84,17 @@ class OrderedManager
             $purchaseManager->removeWithRestore($purchase);
         }
         $this->remove($order);
+    }
+
+    public function setData(Ordered $ordered, Client $client, string $paymentType, ?DateTime $date): void
+    {
+        if (!$date){
+            $date = new DateTime("now");
+        }
+
+        $ordered->setClient($client)
+            ->setPaymentType($paymentType)
+            ->setOrderedAt($date);
     }
 
     /**

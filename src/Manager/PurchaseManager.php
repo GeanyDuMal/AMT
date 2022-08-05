@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Ordered;
+use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
@@ -29,22 +30,10 @@ class PurchaseManager
     /**
      * @param Purchase $purchase
      * @return void
-     * Remove the purchase <br>
-     * If the ordered linked contains only 1 purchase, we remove the ordered too
      */
     public function remove(Purchase $purchase): void
     {
-        $orderedRepository = $this->manager->getRepository(Ordered::class);
-        $purchaseRepository = $this->manager->getRepository(Purchase::class);
-        $orderedManager = new OrderedManager($this->manager);
-
-        $ordered = $orderedRepository->find($purchase->getOrdered());
-        $purchaseLinked = $purchaseRepository->findBy(["ordered" => $ordered]);
-
         $this->manager->remove($purchase);
-        if (sizeof($purchaseLinked) == 1){
-            $orderedManager->remove($ordered);
-        }
 
         $this->manager->flush();
     }
@@ -61,12 +50,20 @@ class PurchaseManager
         $this->manager->flush();
     }
 
-    #[Pure]
+    public function setData(Purchase $purchase, Product $product, int $quantity, Ordered $ordered): void
+    {
+        if ($product->getQuantityStock() >= $quantity){
+            $purchase->setQuantity($quantity)
+                ->setProduct($product)
+                ->setOrdered($ordered);
+        }
+    }
+
     public function verifyDisponibilityProduct(Purchase $purchase): bool
     {
         $product = $purchase->getProduct();
 
-        return ($product->getQuantityStock() >= $purchase->getQuantity());
+        return ($product->getQuantityStock() > 0 && $product->getQuantityStock() >= $purchase->getQuantity());
     }
 
     /**

@@ -15,53 +15,44 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <ul>
-            {% if validationErrors is defined and validationErrors!="" %}
-                {% for i in 0..validationErrors.count()-1 %}
-                    <li>{{ validationErrors[i].message }}</li>
-                {% endfor %}
-            {% endif %}
-        </ul>
-    </div>
-    {% set clientExists=client is defined %}
-    {% set memberExists=member is not null %}
-    <div class="container mt-5">
+    {% if message %}
+        <div class="alert alert-dismissible alert-info fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ message }}</strong>
+        </div>
+    {% endif %}
 
+    <div class="container mt-5">
         <form action="" method="post" class="row g-3" id='form_Client' onsubmit="disableButton()">
-            {% if errorLoginExist is defined and errorLoginExist!="" %}
-                <div class="alert alert-dismissible alert-danger">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ errorLoginExist }}.
-                </div>
-            {% endif %}
             <h1>Modification</h1>
             <div class="form-floating col-md-6">
-                <input type="text" name="name"  class="form-control" id="floatingInput" placeholder="Nom" value={% if clientExists %}{{ client.name}} {% endif  %}>
+                <input type="text" name="name"  class="form-control" id="floatingInput" placeholder="Nom" value={% if client %}{{ client.name}} {% endif  %}>
                 <label for="floatingInput">Nom</label>
             </div>
             <div class="form-floating col-md-6">
-                <input type="text" name="firstName"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if clientExists %}{{ client.firstName}} {% endif  %}>
+                <input type="text" name="firstName"  class="form-control" id="floatingInput" placeholder="Prénom" value={% if client %}{{ client.firstName}} {% endif  %}>
                 <label for="floatingInput">Prénom</label>
             </div>
             <br>
             <div class="form-floating mb-3">
-                <input type="text" name="login" class="form-control" id="floatingInput" name="login" placeholder="Login" disabled value={% if clientExists %}{{ client.login}} {% endif  %}>
+                <input type="text" name="login" class="form-control" id="floatingInput" name="login" placeholder="Login" disabled value={% if client %}{{ client.login}} {% endif  %}>
                 <label for="floatingInput">Login</label>
             </div>
             <br>
-
+            <p>
+                Compte créé le {{ client.creationDate | date('d/m/Y') }}
+            </p>
             <div class="form-group col-md-6">
                 <label>Solde</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text">€</span>
-                    <input type="text" name="balance" class="form-control" aria-label="Amount (to the nearest euro)" value={% if clientExists %}{{ client.balance}} {% else %}0{% endif  %}>
+                    <input type="text" name="balance" class="form-control" aria-label="Amount (to the nearest euro)" value={% if client %}{{ client.balance}} {% else %}0{% endif  %}>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <label>Point Fidélité</label>
                 <div class="input-group mb-3">
-                    <input type="text" name="fidelityPoint" class="form-control" value={% if clientExists %}{{ client.fidelityPoint}} {% else %}0{% endif  %}>
+                    <input type="text" name="fidelityPoint" class="form-control" value={% if client %}{{ client.fidelityPoint}} {% else %}0{% endif  %}>
                 </div>
             </div>
 
@@ -69,7 +60,7 @@
                 <label>Type</label>
                 <select class="form-select" name="clientType" id="clientType" data-target="assosRoles"
                         data-source="path">
-                    {% if clientExists %}
+                    {% if client %}
                         {% for clientType in clientTypes %}
                             <option {% if clientType == client.clientType %} selected {% endif %}>
                                 {{ clientType }}
@@ -81,11 +72,11 @@
             <div class="form-group col-md-12" id="roles">
                 <label>Role</label>
                 <select name="assosRoles" id="assosRoles" class="form-control linked-select"  id="clientType">
-                    {% if memberExists %}
+                    {% set memberRoleName = null %}
+                    {% if member %}
                         {% set memberRoleName = member.role %}
-                    {% else %}
-                        {% set memberRoleName = null %}
                     {% endif %}
+
                     {% for assosRole in assosRoles %}
                         <option {% if assosRole == memberRoleName %} selected {% endif %} >
                             {{assosRole}}
