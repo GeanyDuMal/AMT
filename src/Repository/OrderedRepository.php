@@ -31,7 +31,10 @@ class OrderedRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAllOrderAndClientAndClientType()
+    /**
+     * @return Ordered[] with Client loaded
+     */
+    public function findAllOrderAndClientAndClientType(): array
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.client', 'c')
@@ -40,7 +43,10 @@ class OrderedRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function quantityThisWeeksCommands()
+    /**
+     * @return int number of Ordered this week
+     */
+    public function quantityThisWeeksCommands(): int
     {
         $thisWeek = date('W');
         return $this->createQueryBuilder('a')
@@ -51,7 +57,10 @@ class OrderedRepository extends ServiceEntityRepository
             ->getResult()[0];
     }
 
-    public function thisWeekOrdered()
+    /**
+     * @return Ordered[] done this week
+     */
+    public function thisWeekOrdered(): array
     {
         $thisWeek = date('W');
         $purchase = $this->getEntityManager()->createQuery("
@@ -62,24 +71,16 @@ class OrderedRepository extends ServiceEntityRepository
         return $purchase->getResult();
     }
 
-    public function thisMonthOrdered()
+    /**
+     * @return Ordered[] done this month
+     */
+    public function thisMonthOrdered(): array
     {
         $thisMonth = date('m');
         $purchase = $this->getEntityManager()->createQuery("
             SELECT Ordered
             FROM App\Entity\Ordered Ordered
             WHERE MONTH(Ordered.orderedAt) = $thisMonth
-            ");
-        return $purchase->getResult();
-    }
-
-    public function thisYearOrdered()
-    {
-        $thisYear = date('Y');
-        $purchase = $this->getEntityManager()->createQuery("
-            SELECT Ordered
-            FROM App\Entity\Ordered Ordered
-            WHERE YEAR(Ordered.orderedAt) = $thisYear
             ");
         return $purchase->getResult();
     }

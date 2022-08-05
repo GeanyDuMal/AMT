@@ -180,6 +180,18 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -222,17 +234,5 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername(): string
     {
         return $this->getUserIdentifier();
-    }
-
-    public function getCreationDate(): ?\DateTimeInterface
-    {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(\DateTimeInterface $creationDate): self
-    {
-        $this->creationDate = $creationDate;
-
-        return $this;
     }
 }

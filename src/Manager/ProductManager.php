@@ -35,9 +35,9 @@ class ProductManager
     }
 
     /**
+     * Remove the Product and all the Purchase linked
      * @param Product $product
      * @return void
-     * Remove the Product and all the Purchase linked
      */
     public function remove(Product $product): void
     {
@@ -75,12 +75,21 @@ class ProductManager
             ->setProductType($productType);
     }
 
+    /**
+     * @param Product $product
+     * @return bool
+     */
     public function verifyProduct(Product $product): bool
     {
         return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "");
     }
 
-    public function restockProduct(Product $product, $quantityToRestock)
+    /**
+     * @param Product $product
+     * @param int $quantityToRestock
+     * @return void
+     */
+    public function restockProduct(Product $product, int $quantityToRestock): void
     {
         if ($quantityToRestock > 0) {
             $product->setQuantityStock($product->getQuantityStock() + $quantityToRestock);
@@ -88,9 +97,13 @@ class ProductManager
         }
     }
 
+    /**
+     * @param Product $product
+     * @return void
+     */
     public function replaceImageIfEmpty(Product $product)
     {
-        if ($product->getImageLink() == null || $product->getImageLink() == "") {
+        if ($product->getImageLink() == "") {
             $product->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
     }

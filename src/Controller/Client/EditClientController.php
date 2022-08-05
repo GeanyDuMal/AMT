@@ -44,7 +44,7 @@ class EditClientController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $client->getLogin(), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"), $data->get("clientType"), $data->get("fidelityPoint"));
+                $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
 
 
             if ($clientManager->verifyClient($client)) {

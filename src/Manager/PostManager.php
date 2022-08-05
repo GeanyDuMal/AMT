@@ -40,6 +40,10 @@ class PostManager
         $this->manager->flush();
     }
 
+    /**
+     * @param Post $post
+     * @return bool
+     */
     public function verifyPost(Post $post): bool {
         return (
             in_array($post->getPostType(), PostType::getAll()) &&
@@ -65,6 +69,10 @@ class PostManager
         $post->setPostType($postType);
     }
 
+    /**
+     * @param Post $post
+     * @return void
+     */
     public function replaceImageIfEmpty(Post $post): void
     {
         if ($post->getImageLink() == "") {

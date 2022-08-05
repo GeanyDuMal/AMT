@@ -36,7 +36,7 @@ class SignInController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, strtoupper(trim($inputParameterBag->get("name"))),
                 trim($inputParameterBag->get("firstName")), trim($inputParameterBag->get("login")),
-                trim($inputParameterBag->get("password")), 0, null, ClientType::ETUDIANT,
+                trim($inputParameterBag->get("password")), 0, ClientType::ETUDIANT, null,
                 0);
 
             $verifPassword = trim($inputParameterBag->get("confirmPassword"));

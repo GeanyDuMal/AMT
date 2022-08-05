@@ -36,7 +36,7 @@ class ClientManager
         $this->setPresidentIfNecessary($client);
 
         $this->removeFromAssociationIfNecessary($client);
-        $this->correctBalanceAndFidelity($client);
+        $this->verifyBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
 
         $this->manager->persist($client);
@@ -59,7 +59,7 @@ class ClientManager
     }
 
     /**
-     * Remove the line in the table Association if the Client was in and doesn't have anymore the type "Association"
+     * Remove the line in the table Association if the Client was in and doesn't have the type "Association" anymore
      * @param Client $client
      * @return void
      */
@@ -77,6 +77,7 @@ class ClientManager
     }
 
     /**
+     * Create a client with verifying the data assigned
      * @param Client $client
      * @param UserPasswordHasherInterface $passwordHasher
      * @param string $name
@@ -88,10 +89,9 @@ class ClientManager
      * @param string $clientType
      * @param int|null $fidelityPoint
      * @return void
-     * Create a client with verifying the data assigned
-     */    
+     */
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, ?string $password, string $balance, ?string $roleAssociationName, string $clientType,
+                            string $login, ?string $password, string $balance, string $clientType, ?string $roleAssociationName,
                             ?int $fidelityPoint = 0): void
     {
         $client->setName(strtoupper($name))
@@ -123,10 +123,10 @@ class ClientManager
     }
 
     /**
-     * @param Client $client
-     * @return bool
      * Check if the differents attributes aren't empty
      * Don't check the attribute balance, fidelityPoint and clientType
+     * @param Client $client
+     * @return bool
      */
     public function isNotFull(Client $client): bool
     {
@@ -136,9 +136,9 @@ class ClientManager
     }
 
     /**
+     * Check if the login is already assign to someone in the Database
      * @param Client $client
      * @return bool
-     * Check if the login is already assign to someone in the Database
      */
     public function loginExists(Client $client): bool
     {
@@ -148,12 +148,12 @@ class ClientManager
     }
 
     /**
-     * @param Client $client
-     * @return bool
-     * Allow to verify the data :
+     * Verify the data :
      * Check if the password contains a special character
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
+     * @param Client $client
+     * @return bool
      */
     public function verifyClient(Client $client): bool
     {
@@ -168,7 +168,7 @@ class ClientManager
         $loginUpperFour = (strlen($client->getLogin()) > 4);
         $passwordUpperFour = (strlen($client->getPassword()) > 4);
 
-        $this->correctBalanceAndFidelity($client);
+        $this->verifyBalanceAndFidelity($client);
 
         return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
             && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
@@ -176,9 +176,9 @@ class ClientManager
     }
 
     /**
+     * Verify if the password contains regex and have the good size
      * @param String password
      * @return boolean
-     * verify if the password contains regex and have the good size
      */
     public function verifPassword(string $password): bool
     {
@@ -188,6 +188,7 @@ class ClientManager
     }
 
     /**
+     * Define the @SymfonyRole Corresponding to the Client
      * @param Client $client
      * @param string|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
      * @return void
@@ -220,10 +221,10 @@ class ClientManager
     }
 
     /**
+     * Add the fidelityPoint to a client after an ordered
      * @param float $amountOrder
      * @param Client $client
      * @return void
-     * Add the fidelityPoint to a client after an ordered
      */
     public function addFidelityPoint(float $amountOrder, Client $client): void
     {
@@ -232,9 +233,9 @@ class ClientManager
     }
 
     /**
+     * Check if Balance and Fidelity Point are strictly positive
      * @param Client $client
      * @return void
-     * Check if Balance and Fidelity Point are strictly positive
      */
     public function verifyBalanceAndFidelity(Client $client): void
     {
@@ -247,10 +248,10 @@ class ClientManager
     }
 
     /**
-     * @param Client $client
-     * @return void
      * Verify if the limit of fidelity point is reached
      * If it's the case, it transforms the fidelity point in an amount into the balance
+     * @param Client $client
+     * @return void
      */
     public function fidelityPointLimitCheck(Client $client): void
     {
@@ -264,9 +265,9 @@ class ClientManager
     }
 
     /**
+     * If there is no President in the database, it will assign the current Client as a President
      * @param Client $client
      * @return void
-     * If there is no President in the database, it will assign the current Client as a President
      */
     private function setPresidentIfNecessary(Client $client): void
     {

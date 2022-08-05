@@ -40,6 +40,7 @@ class AssociationManager
     }
 
     /**
+     * Modify the client type of Association->member
      * @param Association $association
      * @param string $clientTypeToSet
      */
@@ -49,7 +50,7 @@ class AssociationManager
         if ($client->getClientType() != $clientTypeToSet){
             $client->setClientType($clientTypeToSet);
 
-            $clientManager = new ClientManager($manager);
+            $clientManager = new ClientManager($this->manager);
             $clientManager->persist($client);
         }
     }
@@ -58,11 +59,8 @@ class AssociationManager
      * Verify in the table Association if there is already a president
      * If there is one or more (which isn't possible, but it prevents bug)
      * It removes every President
-     */
-    /**
      * @param Association $associationMember
      * @return void
-     * Remove every presisent
      */
     public function removeOtherPresidents(Association $associationMember): void
     {
@@ -85,11 +83,10 @@ class AssociationManager
 
 
     /**
-     * return a Member made from the Client in parameter and a Role
+     * Return a Member made from the Client in parameter and a Role
      * @param Client $client
      * @param string $role
      * @return Association
-     * Create an Association entity with a client and a role
      */
     public function makeMember(Client $client, string $role): Association
     {
