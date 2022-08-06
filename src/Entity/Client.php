@@ -235,4 +235,16 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->getUserIdentifier();
     }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
 }

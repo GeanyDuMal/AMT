@@ -36,7 +36,7 @@ class ClientManager
         $this->setPresidentIfNecessary($client);
 
         $this->removeFromAssociationIfNecessary($client);
-        $this->verifyBalanceAndFidelity($client);
+        $this->correctBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
 
         $this->manager->persist($client);
@@ -168,7 +168,7 @@ class ClientManager
         $loginUpperFour = (strlen($client->getLogin()) > 4);
         $passwordUpperFour = (strlen($client->getPassword()) > 4);
 
-        $this->verifyBalanceAndFidelity($client);
+        $this->correctBalanceAndFidelity($client);
 
         return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
             && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
@@ -237,7 +237,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function verifyBalanceAndFidelity(Client $client): void
+    public function correctBalanceAndFidelity(Client $client)
     {
         if ($client->getBalance() == null || floatval($client->getBalance()) < 0) {
             $client->setBalance(0);
