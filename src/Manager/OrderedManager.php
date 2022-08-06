@@ -48,6 +48,11 @@ class OrderedManager
         $this->manager->flush();
     }
 
+    /**
+     * Remove the ordered, refound the product and the Client in function of this payment
+     * @param Ordered $order
+     * @return void
+     */
     public function removeWithRestore(Ordered $order): void
     {
         $purchaseManager = new PurchaseManager($this->manager);
@@ -78,10 +83,16 @@ class OrderedManager
         foreach ($purchaseList as $purchase) {
             $purchaseManager->removeWithRestore($purchase);
         }
-        $this->manager->remove($order);
-        $this->manager->flush();
+        $this->remove($order);
     }
 
+    /**
+     * @param Ordered $ordered
+     * @param Client $client
+     * @param string $paymentType
+     * @param DateTime|null $date
+     * @return void
+     */
     public function setData(Ordered $ordered, Client $client, string $paymentType, ?DateTime $date): void
     {
         if (!$date){
@@ -93,6 +104,11 @@ class OrderedManager
             ->setOrderedAt($date);
     }
 
+    /**
+     * Reduce the balance of the Client if he paid with his balance
+     * @param Ordered $order
+     * @return void
+     */
     public function reduceBalanceIfNecessary(Ordered $order): void
     {
         $clientManager = new ClientManager($this->manager);
@@ -105,6 +121,10 @@ class OrderedManager
         }
     }
 
+    /**
+     * @param Ordered $ordered
+     * @return float The total amount of an ordered
+     */
     public function montantTotal(Ordered $ordered): float
     {
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
@@ -126,6 +146,11 @@ class OrderedManager
         return $montantTotal;
     }
 
+    /**
+     * Increase the fidelity of the Client specified in the ordered
+     * @param Ordered $ordered
+     * @return void
+     */
     public function addFidelityToClient(Ordered $ordered): void
     {
         if ($ordered->getClient() != null) {
@@ -137,9 +162,9 @@ class OrderedManager
     }
 
     /**
-     * @param $purchaseList [productId => quantity]
+     * @param array $purchaseList [productId => quantity]
      * @param Client|null $client Client
-     * @return array[PaymentType] $paymentTypeList
+     * @return array An array of payment type that are allowed fot this Ordered
      */
     public function getAllowedPaymentType($purchaseList, Client $client = null): array
     {
@@ -184,11 +209,10 @@ class OrderedManager
     }
 
     /**
+     * Verify if the Date != null, PaymentType != null
      * @param Ordered $ordered
      * @return bool
-     * Verify if the Date != null, PaymentType != null
      */
-    #[Pure]
     public function verifyOrder(Ordered $ordered): bool
     {
         return ($ordered->getOrderedAt() != null && $ordered->getPaymentType() != null);

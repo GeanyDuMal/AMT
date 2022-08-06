@@ -37,14 +37,13 @@ class PriceManager
     }
 
     /**
+     * Set both price in one time
      * @param Price $memberPrice
      * @param Price $studentPrice
      * @param Product $product
      * @param String $memberPriceAmount
      * @param String $studentPriceAmount
      * @return void
-     * Only price for member and student beacause we only set up 2 types,
-     * if more needed, you have to change it
      */
     public function setData(Price  $memberPrice, Price $studentPrice, Product $product, string $memberPriceAmount,
                             string $studentPriceAmount) : void
@@ -61,15 +60,19 @@ class PriceManager
             ->setProduct($product);
     }
 
+    /**
+     * @param Price $price
+     * @return bool
+     */
     public function verifyPrice(Price $price): bool
     {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
     }
 
     /**
+     * Retourne le type de prix concerné par le type de client passé en paramètre
      * @param string $clientType
      * @return string
-     * Retourne le type de prix concerné par le type de client passé en paramètre
      */
     public function getClientTypeUseForPrice(string $clientType): string
     {

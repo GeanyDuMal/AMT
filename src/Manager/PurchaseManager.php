@@ -27,10 +27,6 @@ class PurchaseManager
         }
     }
 
-    /**
-     * @param Purchase $purchase
-     * @return void
-     */
     public function remove(Purchase $purchase): void
     {
         $this->manager->remove($purchase);
@@ -38,6 +34,11 @@ class PurchaseManager
         $this->manager->flush();
     }
 
+    /**
+     * Remove and restore the product quantity and the client if function of the payment type
+     * @param Purchase $purchase
+     * @return void
+     */
     public function removeWithRestore(Purchase $purchase): void
     {
         $product = $purchase->getProduct();
@@ -50,6 +51,13 @@ class PurchaseManager
         $this->manager->flush();
     }
 
+    /**
+     * @param Purchase $purchase
+     * @param Product $product
+     * @param int $quantity
+     * @param Ordered $ordered
+     * @return void
+     */
     public function setData(Purchase $purchase, Product $product, int $quantity, Ordered $ordered): void
     {
         if ($product->getQuantityStock() >= $quantity){
@@ -59,6 +67,10 @@ class PurchaseManager
         }
     }
 
+    /**
+     * @param Purchase $purchase
+     * @return bool
+     */
     public function verifyDisponibilityProduct(Purchase $purchase): bool
     {
         $product = $purchase->getProduct();
@@ -67,11 +79,11 @@ class PurchaseManager
     }
 
     /**
+     * Remove the quantity of the product ordered
      * @param Purchase $purchase
      * @return void
-     * Remove the quantity of the product ordered
      */
-    public function removeProductQuantity(Purchase $purchase)
+    public function removeProductQuantity(Purchase $purchase): void
     {
         $product = $purchase->getProduct();
         $product->setQuantityStock($product->getQuantityStock() - $purchase->getQuantity());
