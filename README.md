@@ -9,6 +9,12 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 
+### <ins>GitHub Actions<ins>
+
+[![Assign Reviewer](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/affectingReviewerPullRequest.yml/badge.svg)](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/affectingReviewerPullRequest.yml)
+
+[![Managing New Issue](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/labelingIssues.yml/badge.svg)](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/labelingIssues.yml)
+
 ### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>
 En fonction de la gravité, vous pouvez mettre Minor, Medium ou Critical dans le commentaire afin de le signaler à l'aide d'un label
