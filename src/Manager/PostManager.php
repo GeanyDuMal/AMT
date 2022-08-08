@@ -40,14 +40,6 @@ class PostManager
         $this->manager->flush();
     }
 
-    public function verifyPost(Post $post): bool {
-        return (
-            in_array($post->getPostType(), PostType::getAll()) &&
-            $post->getTitle() != "" &&
-            $post->getDescription() != ""
-        );
-    }
-
     /**
      * @param Post $post
      * @return bool
