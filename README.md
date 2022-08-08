@@ -1,6 +1,14 @@
 # Site pour l'AEDI
 
-[![Auto Label](https://github.com/Renato66/auto-label/workflows/Labeling%20new%20issue/badge.svg)](https://github.com/Renato66/auto-label)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+
+![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
+![Symfony](https://img.shields.io/badge/symfony-%23000000.svg?style=for-the-badge&logo=symfony&logoColor=white)
+
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+
 ### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>
 En fonction de la gravité, vous pouvez mettre Minor, Medium ou Critical dans le commentaire afin de le signaler à l'aide d'un label
@@ -19,8 +27,11 @@ Ce site permet de :
 * S'inscrire avec un login et un mot de passe
 * Créer des produits avec un stock 
 * Créer des commandes
-* Gerer les clients avec des roles
+* Gérer les clients avec des rôles
 * Créer des posts avec un systeme de blog
 
-### <ins>Base de données<ins>
-![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+### <ins>Utilisation<ins>
+Pour découvrir comment utiliser le site, veuillez vous référer au [document suivant](./Documentation.md)
+
+### <ins>Deploiement<ins>
+Pour découvrir comment nous avons déployé le site, veuillez vous référer au [document suivant](./Deploiement.md)
