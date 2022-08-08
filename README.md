@@ -21,3 +21,6 @@ Ce site permet de :
 * Créer des commandes
 * Gerer les clients avec des roles
 * Créer des posts avec un systeme de blog
+
+### <ins>Base de données<ins>
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
