@@ -25,12 +25,21 @@ class ProductManager
 
             $this->manager->persist($product);
             $this->manager->flush();
+        }
+    }
 
-            $priceManager = new PriceManager($this->manager);
+    /**
+     * A utiliser uniquement lors d'une update
+     * @param Product $product
+     * @return void
+     */
+    public function persistCascade(Product $product)
+    {
+        $this->persist($product);
+        $priceManager = new PriceManager($this->manager);
 
-            foreach ($product->getPrices() as $price){
-                $priceManager->persist($price);
-            }
+        foreach ($product->getPrices() as $price){
+            $priceManager->persist($price);
         }
     }
 
@@ -106,5 +115,27 @@ class ProductManager
         if ($product->getImageLink() == "") {
             $product->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
+    }
+
+
+
+    /**
+     * @param string $link
+     * @return string The link where the picture is stored
+     */
+    public function downloadPicture(string $link): string
+    {
+        $lastProduct = $this->productRepository->findOneBy([], ["id" => "DESC"]);
+        $newId = 1;
+
+        if ($lastProduct){
+            $newId = $lastProduct->getId()+1;
+        }
+
+        $location = "/img/entity/product/img_".$newId.".png";
+
+        $pictureUtils = new PictureUtils();
+
+        return $pictureUtils->downloadPicture($link, $location);
     }
 }

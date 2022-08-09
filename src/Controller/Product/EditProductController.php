@@ -38,7 +38,7 @@ class EditProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
+            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $product->getImageLink());
 
             if ($productManager->verifyProduct($product)) {
                 $storedProductName = $productRepository->find($id)->getName();
@@ -53,7 +53,7 @@ class EditProductController extends AbstractController
                         $product->addPrice($memberPrice);
                         $product->addPrice($studentPrice);
 
-                        $productManager->persist($product);
+                        $productManager->persistCascade($product);
 
                         return $this->redirectToRoute('menuProduct', [
                             "message" => "Modification effectué avec succès"
