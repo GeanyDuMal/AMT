@@ -7,6 +7,7 @@ use App\Utils\Enum\PostType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use Exception;
 
 class PostManager
 {
@@ -78,5 +79,25 @@ class PostManager
         if ($post->getImageLink() == "") {
             $post->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
         }
+    }
+
+    /**
+     * @param string $link
+     * @return string The link where the picture is stored
+     */
+    public function downloadPicture(string $link): string
+    {
+        $lastPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+        $newId = 1;
+
+        if ($lastPost){
+            $newId = $lastPost->getId()+1;
+        }
+
+        $location = "/img/entity/post/img_".$newId.".png";
+
+        $pictureUtils = new PictureUtils();
+
+        return $pictureUtils->downloadPicture($link, $location);
     }
 }

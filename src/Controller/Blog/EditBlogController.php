@@ -19,7 +19,7 @@ class EditBlogController extends AbstractController
     /**
      * @Route("/blog/edit/{!id}", name="editBlog",methods={"GET", "POST"})
      */
-    public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request,
+    public function index($id, PostRepository $postRepository, Request $request,
                           EntityManagerInterface $manager): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
@@ -34,12 +34,12 @@ class EditBlogController extends AbstractController
 
         if ($data->count() > 0 && $post) {
 
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'), $post->getCreationDate());
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getImageLink(), $post->getCreationDate());
 
             if ($postmanager->verifyPost($post)) {
-                $originalPost = $postRepository->find($id);
+                $originalPost = $postRepository->findOneBy(['title' => $post->getTitle(), 'description' => $post->getDescription()]);
 
-                if ($post->equals($originalPost))
+                if ($originalPost)
                 {
                     $message = "Le post existe déjà.";
                 }else{
