@@ -7,7 +7,6 @@ use App\Utils\Enum\PostType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use JetBrains\PhpStorm\Pure;
 
 class PostManager
 {
@@ -61,12 +60,13 @@ class PostManager
      * @return void
      */
     public function setData(Post   $post, string $postType, string $postTitle,
-                            string $postDescription, ?string $imageLink): void
+                            string $postDescription, ?string $imageLink, DateTime $creationDate): void
     {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
         $post->setImageLink($imageLink);
         $post->setPostType($postType);
+        $post->setCreationDate($creationDate);
     }
 
     /**

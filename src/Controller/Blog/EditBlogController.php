@@ -34,7 +34,7 @@ class EditBlogController extends AbstractController
 
         if ($data->count() > 0 && $post) {
 
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'), $post->getCreationDate());
 
             if ($postmanager->verifyPost($post)) {
                 $originalPost = $postRepository->find($id);
