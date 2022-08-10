@@ -120,3 +120,11 @@ function verifyAdd() {
         return true;
     }
 }
+
+/**
+ * Change the visibility of the area to set the imageLink
+ */
+form.imageLinkState.onchange = function (){
+    var selectedOption = this[this.selectedIndex];
+    form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
+}

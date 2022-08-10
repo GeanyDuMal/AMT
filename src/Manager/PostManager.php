@@ -86,15 +86,26 @@ class PostManager
 
     /**
      * @param string $link
+     * @param Post|null $postActual (default = null)
      * @return string The link where the picture is stored
      */
-    public function downloadPicture(string $link): string
+    public function downloadPicture(string $link, ?Post $postActual = null): string
     {
-        $lastPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+        /**
+         * @newId corresponds a l'ID de $postActual s'il est enregistré sinon le dernier ID enregistré+1
+         */
         $newId = 1;
 
-        if ($lastPost){
-            $newId = $lastPost->getId()+1;
+        if ($postActual){
+            $storedPost = $this->postRepository->findOneBy([
+                'title' => $postActual->getTitle(),
+                'description' => $postActual->getDescription()]);
+        } else {
+            $storedPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+        }
+
+        if ($storedPost){
+            $newId = $storedPost->getId()+1;
         }
 
         $location = "/img/entity/post/img_".$newId.".png";

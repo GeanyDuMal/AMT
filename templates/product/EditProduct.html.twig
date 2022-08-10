@@ -7,6 +7,7 @@
 {% block stylesheets %}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/product/product.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -43,6 +44,21 @@
             <div class="form-floating col-md-6">
                 <input type="text" name="studentPrice" class="form-control" id="floatingInput" placeholder="Prix Etudiant" value={{ studentPrice }} />
                 <label for="floatingInput">Prix Etudiant</label>
+            </div>
+            <h5>Image</h5>
+            <div class="form-group col-md-6">
+                <select name="imageLinkState" class="form-floating form-control linked-select">
+                    <option value="keep" selected>
+                        Conserver l'image actuelle
+                    </option>
+                    <option value="edit">
+                        Modifier l'image
+                    </option>
+                </select>
+            </div>
+            <div class="form-floating col-md-12" id="imageLinkArea">
+                <input type="text" name="imageLink" class="form-control" placeholder="URL de l'image"  value=""> <br>
+                <label for="floatingInput">Lien de l'image</label>
             </div>
             <h5>Type de produits</h5>
             <div class="form-group col-md-12" >

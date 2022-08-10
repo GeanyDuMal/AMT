@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Entity\Post;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
@@ -110,12 +111,23 @@ class ProductManager
 
     /**
      * @param string $link
+     * @param Product|null $productActual (default = null)
      * @return string The link where the picture is stored
      */
-    public function downloadPicture(string $link): string
+    public function downloadPicture(string $link, ?Product $productActual = null): string
     {
-        $lastProduct = $this->productRepository->findOneBy([], ["id" => "DESC"]);
+        /**
+         * @newId corresponds a l'ID de $productActual s'il est enregistré sinon le dernier ID enregistré+1
+         */
         $newId = 1;
+
+        if ($productActual){
+            $lastProduct = $this->productRepository->findOneBy([
+                'name' => $productActual->getName(),
+                'productType' => $productActual->getProductType()]);
+        } else {
+            $lastProduct = $this->productRepository->findOneBy([], ["id" => "DESC"]);
+        }
 
         if ($lastProduct){
             $newId = $lastProduct->getId()+1;
