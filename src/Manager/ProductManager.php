@@ -21,7 +21,6 @@ class ProductManager
     public function persist(Product $product): void
     {
         if ($this->verifyProduct($product)) {
-            $this->replaceImageIfEmpty($product);
 
             $this->manager->persist($product);
             $this->manager->flush();
@@ -54,6 +53,9 @@ class ProductManager
         $purchaseManager = new PurchaseManager($this->manager);
         $priceManager = new PriceManager($this->manager);
         $purchaseLinked = $purchaseRepository->findBy(["product" => $product]);
+        $pictureUtils = new PictureUtils();
+
+        $pictureUtils->deletePicture($product->getImageLink());
 
         //On supprime les achats liés au produit supprimé
         foreach ($purchaseLinked as $purchase){
@@ -105,19 +107,6 @@ class ProductManager
             $this->persist($product);
         }
     }
-
-    /**
-     * @param Product $product
-     * @return void
-     */
-    public function replaceImageIfEmpty(Product $product)
-    {
-        if ($product->getImageLink() == "") {
-            $product->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
-        }
-    }
-
-
 
     /**
      * @param string $link

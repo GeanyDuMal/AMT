@@ -36,6 +36,9 @@ class PostManager
 
     public function remove(Post $post): void
     {
+        $pictureUtils = new PictureUtils();
+        $pictureUtils->deletePicture($post->getImageLink());
+
         $this->manager->remove($post);
         $this->manager->flush();
     }
@@ -57,11 +60,11 @@ class PostManager
      * @param string $postType
      * @param String $postTitle
      * @param String $postDescription
-     * @param string|null $imageLink
+     * @param string $imageLink
      * @return void
      */
     public function setData(Post   $post, string $postType, string $postTitle,
-                            string $postDescription, ?string $imageLink, DateTime $creationDate): void
+                            string $postDescription, string $imageLink, DateTime $creationDate): void
     {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
