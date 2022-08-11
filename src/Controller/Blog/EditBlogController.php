@@ -3,6 +3,7 @@
 namespace App\Controller\Blog;
 
 
+use App\Manager\PictureUtils;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
@@ -37,12 +38,19 @@ class EditBlogController extends AbstractController
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getImageLink(), $post->getCreationDate());
 
             if ($postmanager->verifyPost($post)) {
-                $originalPost = $postRepository->findOneBy(['title' => $post->getTitle(), 'description' => $post->getDescription()]);
+                $originalPost = $postRepository->findOneBy([
+                    'title' => $post->getTitle(),
+                    'description' => $post->getDescription(),
+                ]);
 
                 if ($originalPost)
                 {
-                    $message = "Le post existe déjà.";
-                }else{
+                    $message = "Le post ne comporte aucune modification ou existe déjà.";
+                } else {
+                    if ($data->get('imageLinkState') === "edit"){
+                        $postmanager->switchPicture($post, $data->get('imageLink'));
+                    }
+
                     $postmanager->persist($post);
 
                     return $this->redirectToRoute('menuBlog', [

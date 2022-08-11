@@ -114,4 +114,26 @@ class PostManager
 
         return $pictureUtils->downloadPicture($link, $location);
     }
+
+    /**
+     * @param Post $post
+     * @param string $newPictureLink
+     * @return void
+     */
+    public function switchPicture(Post $post, string $newPictureLink)
+    {
+        $actualLink = $post->getImageLink();
+        $pictureUtils = new PictureUtils();
+
+        /**
+         * TODO: sera a supprimer une fois que toutes les images auront été migrées
+         * Permet de gerer les cas des anciennes images
+         */
+        if (str_starts_with($actualLink, "http")) {
+            $actualLink = "/img/entity/post/img_".$post->getId().".png";
+        }
+
+        $pictureUtils->deletePicture($actualLink);
+        $post->setImageLink($pictureUtils->downloadPicture($newPictureLink, $actualLink));
+    }
 }

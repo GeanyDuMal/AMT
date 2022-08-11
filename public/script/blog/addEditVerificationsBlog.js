@@ -19,7 +19,7 @@ function verifyPost(){
         if (!imageLinkValue.trim()){
             message += "Lien non renseigné\n ";
         } else if (!imageLinkValue.startsWith('http')){
-            message += "Lien ne correspondant pas à un lien classique (http / https)\n ";
+            message += "Lien ne correspondant pas à un lien classique \n(http / https)\n ";
         }
     }
 

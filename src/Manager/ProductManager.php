@@ -139,4 +139,26 @@ class ProductManager
 
         return $pictureUtils->downloadPicture($link, $location);
     }
+
+    /**
+     * @param Product $product
+     * @param string $newPictureLink
+     * @return void
+     */
+    public function switchPicture(Product $product, string $newPictureLink)
+    {
+        $actualLink = $product->getImageLink();
+        $pictureUtils = new PictureUtils();
+
+        /**
+         * TODO: sera a supprimer une fois que toutes les images auront été migrées
+         * Permet de gerer les cas des anciennes images
+         */
+        if (str_starts_with($actualLink, "http")) {
+            $actualLink = "/img/entity/product/img_".$product->getId().".png";
+        }
+
+        $pictureUtils->deletePicture($actualLink);
+        $product->setImageLink($pictureUtils->downloadPicture($newPictureLink, $actualLink));
+    }
 }

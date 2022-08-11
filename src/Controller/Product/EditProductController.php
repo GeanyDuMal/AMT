@@ -45,8 +45,12 @@ class EditProductController extends AbstractController
                 $newProductName = $product->getName();
 
                 if (!($newProductName === $storedProductName) && $productRepository->findOneBy(['name' => $newProductName])) {
-                    $message = "Le produit existe déja";
+                    $message = "Le produit ne comporte aucune modification ou existe déja.";
                 } else {
+                    if ($data->get('imageLinkState') === "edit"){
+                        $productManager->switchPicture($product, $data->get('imageLink'));
+                    }
+
                     $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
 
                     if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {

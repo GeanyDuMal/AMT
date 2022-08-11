@@ -32,9 +32,7 @@
                 <label for="floatingInput">Titre</label>
             </div>
             <div class="form-floating col-md-12">
-                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description">
-                    {{ post.description }}
-                </textarea>
+                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description">{{ post.description|trim }}</textarea>
                 <label for="floatingTextarea2">Description</label>
                 <br>
             </div>
