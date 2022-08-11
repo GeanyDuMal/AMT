@@ -154,7 +154,7 @@ class ProductManager
          * TODO: sera a supprimer une fois que toutes les images auront été migrées
          * Permet de gerer les cas des anciennes images
          */
-        if (str_starts_with($actualLink, "http")) {
+        if (str_starts_with($actualLink, "http") || str_contains($actualLink, 'placeholder')) {
             $actualLink = "/img/entity/product/img_".$product->getId().".png";
         }
 

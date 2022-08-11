@@ -126,10 +126,10 @@ class PostManager
         $pictureUtils = new PictureUtils();
 
         /**
-         * TODO: sera a supprimer une fois que toutes les images auront été migrées
+         * TODO: "str_starts_with($actualLink, "http")" sera a supprimer une fois que toutes les images auront été migrées
          * Permet de gerer les cas des anciennes images
          */
-        if (str_starts_with($actualLink, "http")) {
+        if (str_starts_with($actualLink, "http") || str_contains($actualLink, 'placeholder')) {
             $actualLink = "/img/entity/post/img_".$post->getId().".png";
         }
 
