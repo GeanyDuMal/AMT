@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Manager;
+namespace App\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

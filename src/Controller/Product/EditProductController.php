@@ -44,7 +44,7 @@ class EditProductController extends AbstractController
                 $storedProductName = $productRepository->find($id)->getName();
                 $newProductName = $product->getName();
 
-                if (!($newProductName === $storedProductName) && $productRepository->findOneBy(['name' => $newProductName])) {
+                if (($newProductName === $storedProductName) && $productRepository->findOneBy(['name' => $newProductName])) {
                     $message = "Le produit ne comporte aucune modification ou existe déja.";
                 } else {
                     if ($data->get('imageLinkState') === "edit"){

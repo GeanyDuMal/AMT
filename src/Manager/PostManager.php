@@ -4,10 +4,10 @@ namespace App\Manager;
 
 use App\Entity\Post;
 use App\Utils\Enum\PostType;
+use App\Utils\PictureUtils;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Exception;
 
 class PostManager
 {
