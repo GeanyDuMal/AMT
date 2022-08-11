@@ -6,6 +6,8 @@ function verifyProduct(){
     const stockValue = form.productStock.value;
     const memberPrice = form.memberPrice.value;
     const studentPrice = form.studentPrice.value;
+    const imageLinkValue = form.imageLink.value;
+    const imageLinkStateValue = form.imageLinkState.value;
 
     if (!nameValue.trim()) {
         message += "Nom du produit non renseigné\n";
@@ -33,6 +35,14 @@ function verifyProduct(){
     else if(isNaN(studentPriceValue)){
         message += "Le prix des étudiants doit être un nombre. ";    }
 
+    if (imageLinkStateValue === "edit"){
+        if (!imageLinkValue.trim()){
+            message += "Lien non renseigné\n ";
+        } else if (!imageLinkValue.startsWith('http')){
+            message += "Lien ne correspondant pas à un lien classique \n(http / https)\n ";
+        }
+    }
+
     if (message !== "") {
         Swal.fire({
             title: 'Incomplet !',
@@ -44,4 +54,12 @@ function verifyProduct(){
     } else {
         return true;
     }
+}
+
+/**
+ * Change the visibility of the area to set the imageLink
+ */
+form.imageLinkState.onchange = function (){
+    var selectedOption = this[this.selectedIndex];
+    form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
 }
