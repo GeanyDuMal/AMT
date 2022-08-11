@@ -38,25 +38,16 @@ class EditBlogController extends AbstractController
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getImageLink(), $post->getCreationDate());
 
             if ($postmanager->verifyPost($post)) {
-                $originalPost = $postRepository->findOneBy([
-                    'title' => $post->getTitle(),
-                    'description' => $post->getDescription(),
-                ]);
 
-                if ($originalPost)
-                {
-                    $message = "Le post ne comporte aucune modification ou existe déjà.";
-                } else {
-                    if ($data->get('imageLinkState') === "edit"){
-                        $postmanager->switchPicture($post, $data->get('imageLink'));
-                    }
-
-                    $postmanager->persist($post);
-
-                    return $this->redirectToRoute('menuBlog', [
-                        "message" => "Modification effectué avec succès"
-                    ]);
+                if ($data->get('imageLinkState') === "edit"){
+                    $postmanager->switchPicture($post, $data->get('imageLink'));
                 }
+
+                $postmanager->persist($post);
+
+                return $this->redirectToRoute('menuBlog', [
+                    "message" => "Modification effectué avec succès"
+                ]);
             } else {
                 $message = "Votre saisie contient une erreur, merci de vérifier votre saisie";
             }
