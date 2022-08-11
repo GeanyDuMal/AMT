@@ -2,9 +2,9 @@
 
 namespace App\Manager;
 
-use App\Entity\Post;
 use App\Entity\Product;
 use App\Entity\Purchase;
+use App\Utils\PictureUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
