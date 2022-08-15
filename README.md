@@ -29,7 +29,7 @@ Méthode de versionning : X.Y.Z <br>
 Le site est disponible à cette adresse : 
 https://aedi.lescigales.org
 
-Ce site permet de :
+Ce site permet de : 
 * S'inscrire avec un login et un mot de passe
 * Créer des produits avec un stock 
 * Créer des commandes
