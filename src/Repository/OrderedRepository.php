@@ -44,9 +44,9 @@ class OrderedRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return int number of Ordered this week
+     * @return array number of Ordered this week
      */
-    public function quantityThisWeeksCommands(): int
+    public function quantityThisWeeksCommands(): array
     {
         $thisWeek = date('W');
         return $this->createQueryBuilder('a')

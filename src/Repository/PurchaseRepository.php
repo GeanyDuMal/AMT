@@ -22,9 +22,9 @@ class PurchaseRepository extends ServiceEntityRepository
 
     /**
      * @param Product $product
-     * @return int Number of purchase for the $product
+     * @return array Number of purchase for the $product
      */
-    public function getQuantityByProduct(Product $product): int
+    public function getQuantityByProduct(Product $product): array
     {
         return $this->createQueryBuilder('a')
             ->select("SUM( a.quantity ) as somme")
