@@ -80,21 +80,16 @@ symfony server:stop
       composer require orm-fixtures --dev
 
 ### Creer une classe pour generer le jeu de données
-<br>NOM DE LA classe TonObjetFixtures
 
       php bin/console make:fixtures
+
+ex: ClientFixture
 
 ### Executer l'importation du jeu de données
 
       php bin/console doctrine:fixture:load
 
-
-
-
 ## Pour Setup le projet complet avec le jeu d'essai : 
-- composer install
-- composer require orm-fixtures --dev
-- php bin/console doctrine:database:create
-- php bin/console doctrine:migration:migrate
-- php bin/console doctrine:fixture:load
+Lancer le fichier [initialize.sh](initialize.sh)
 
+     ./initialize.sh
