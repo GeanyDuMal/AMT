@@ -29,3 +29,7 @@
     top: 5rem;
     right:1%;
 }
+
+#imageLinkArea{
+    visibility: hidden;
+}

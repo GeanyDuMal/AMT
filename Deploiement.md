@@ -1,12 +1,12 @@
 ## Toute les manipulations indiqué ne seront pas faites dans le repository mais seront à faire une fois le projet téléchargé
 
 # Pour le deploiement il y a plusieurs choses à faire : 
-Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caractere :
+Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracteres :
 - Dans config/packages/doctrine.yaml, rajouter cette ligne en dessous de 'url'
   ```YAML
     charset: UTF8
   ```
-- Il faudra créer une base de donnée (ou utiliser celle proposé par l'hebergeur) et importer le script db_empty.sql
+- Il faudra créer une base de données (ou utiliser celle proposé par l'hebergeur) et importer le script db_empty.sql
 - Il faudra, dans le fichier .env, modifier 2 choses : (vous pourrez également créer un .env.local)
   - Le APP_ENV qu'il faudra passer à prod (enleve le mode debug)
   - Le DATABASE_URL qu'il faudra configurer en fonction de ce que vous utilisez. Il y a plusieurs exemple selon la bases que vous utilisez

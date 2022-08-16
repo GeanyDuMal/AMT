@@ -40,8 +40,8 @@ class CreateClientController extends AbstractController
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("assosRoles"),  $data->get("clientType"), 0);
-
+                $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
+                
             if($clientManager->verifyClient($client)) {
                 if ($clientManager->loginExists($client)) {
                     $message = "Login existe déja";
@@ -58,8 +58,8 @@ class CreateClientController extends AbstractController
 
                         $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
 
-                        if ($newMember->getRole() == AssociationRole::PRESIDENT) {
-                            $associationManager->removeOtherPresidents($manager, $newMember, $clientRepository);
+                        if($newMember->getRole() == AssociationRole::PRESIDENT){
+                            $associationManager->removeOtherPresidents($newMember);
                         }
                         $manager->persist($newMember);
                         $manager->flush();

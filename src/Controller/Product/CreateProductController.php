@@ -38,7 +38,9 @@ class CreateProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
+            $link = $productManager->downloadPicture($data->get("imageLink"));
+
+            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $link);
 
             if ($productManager->verifyProduct($product)) {
                 if ($productRepository->findBy(['name' => $product->getName()])) {
@@ -50,10 +52,10 @@ class CreateProductController extends AbstractController
                     $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
 
                     if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
-                        $product->addPrice($memberPrice);
-                        $product->addPrice($studentPrice);
-
                         $productManager->persist($product);
+
+                        $priceManager->persist($memberPrice);
+                        $priceManager->persist($studentPrice);
 
                         return $this->redirectToRoute('menuProduct', [
                             "message" => "Ajout avec succès"

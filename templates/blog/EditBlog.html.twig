@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Modification de Post
+{% endblock %}
+
 {%  block javascripts %}
     <script type="text/javascript" src="/script/blog/addEditVerificationsBlog.js"></script>
     <script type="text/javascript" src="/script/generic/formGenericFunction.js"></script>
@@ -8,11 +12,12 @@
 {% block stylesheets %}
     <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/blog/css/blog.css') }}">
 {% endblock %}
 
 {% block body %}
     <div>
-        {% if messsage != "" %}
+        {% if message != "" %}
             <div class="alert alert-dismissible alert-info fade show">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 <strong>{{ message }}</strong>
@@ -21,24 +26,32 @@
     </div>
     <div class="container mt-5">
         <form id="blog_form" action="" class="row g-2 " method="post" onsubmit="disableButton()">
-            <h1>Nouveau post</h1>
+            <h1>Modification de post</h1>
             <div class="form-floating col-md-12">
-                <input type="text" name="postTitle" class="form-control" id="floatingInput" placeholder="Titre"  value="{{ post.title }}"> <br>
+                <input type="text" name="postTitle" class="form-control" id="floatingInput" placeholder="Titre" value="{{ post.title }}"> <br>
                 <label for="floatingInput">Titre</label>
             </div>
             <div class="form-floating col-md-12">
-                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description">
-                    {{ post.description }}
-                </textarea>
+                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description">{{ post.description|trim }}</textarea>
                 <label for="floatingTextarea2">Description</label>
                 <br>
             </div>
-            <div class="form-floating col-md-12">
-                <input type="text" name="imageLink" placeholder="image" class="form-control" id="floatingInput" value="{{ post.imageLink }}"> <br>
-                <label for="floatingInput">Image</label>
+            <div class="form-group col-md-6">
+                <select name="imageLinkState" class="form-floating form-control linked-select">
+                    <option value="keep" selected>
+                        Conserver l'image actuelle
+                    </option>
+                    <option value="edit">
+                        Modifier l'image
+                    </option>
+                </select>
+            </div>
+            <div class="form-floating col-md-12" id="imageLinkArea">
+                <input type="text" name="imageLink" class="form-control" placeholder="URL de l'image"  value=""> <br>
+                <label for="floatingInput">Lien de l'image</label>
             </div>
             <div class="form-group col-md-12">
-                <select name="postType"  class="form-control linked-select">
+                <select name="postType" class="form-control linked-select">
                     {% for postType in postTypes %}
                         <option {% if postType == post.postType %} selected {% endif %}>
                             {{ postType }}

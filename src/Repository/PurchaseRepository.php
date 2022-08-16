@@ -20,7 +20,11 @@ class PurchaseRepository extends ServiceEntityRepository
         parent::__construct($registry, Purchase::class);
     }
 
-    public function getQuantityByProduct(Product $product)
+    /**
+     * @param Product $product
+     * @return array Number of purchase for the $product
+     */
+    public function getQuantityByProduct(Product $product): array
     {
         return $this->createQueryBuilder('a')
             ->select("SUM( a.quantity ) as somme")
@@ -30,33 +34,10 @@ class PurchaseRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function salesRevenueOverAll()
-    {
-        $purchase = $this->getEntityManager()->createQuery("
-            SELECT SUM(Price.price*Purchase.quantity) as revenue
-            FROM App\Entity\Price Price , App\Entity\Purchase Purchase, App\Entity\Ordered Ordered
-            WHERE Purchase.ordered = Ordered.id
-            AND Purchase.product = Price.product
-            AND Price.clientType = Association
-            ");
-        return $purchase->getResult()[0];
-    }
-
-    public function salesRevenueThisWeek()
-    {
-        $thisWeek = date('W');
-        $purchase = $this->getEntityManager()->createQuery("
-            SELECT SUM(Price.price*Purchase.quantity) as revenue,WEEK(Ordered.orderedAt) week
-            FROM App\Entity\Price Price, App\Entity\Purchase Purchase, App\Entity\Ordered Ordered
-            WHERE Purchase.ordered = Ordered.id
-            AND Purchase.product = Price.product
-            AND Price.clientType = Association
-            AND WEEK(Ordered.orderedAt)= $thisWeek
-        ");
-        return $purchase->getResult()[0];
-    }
-
-    public function salesRevenueThisMonth()
+    /**
+     * @return int Amount of sales for this month
+     */
+    public function salesRevenueThisMonth(): int
     {
         $thisMonth = date('m');
         $purchase = $this->getEntityManager()->createQuery("

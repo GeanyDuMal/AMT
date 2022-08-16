@@ -17,18 +17,12 @@
 
 {% block body %}
     <div>
-        <ul>
-            {% if validationErrors is defined and validationErrors!="" %}
-                {% for i in 0..validationErrors.count()-1 %}
-                    <li>
-                        {{ validationErrors[i].message }}
-                    </li>
-                {% endfor %}
-            {% endif %}
-            {% if productExistsError is defined and productExistsError != "" %}
-                    {{ productExistsError }}
-            {% endif %}
-        </ul>
+        {% if message != "" %}
+            <div class="alert alert-dismissible alert-info fade show">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>{{ message }}</strong>
+            </div>
+        {% endif %}
     </div>
     <div class="container mt-5 ">
         <form id="product_form" action="" class="row g-2" method="post" onsubmit="disableButton()">

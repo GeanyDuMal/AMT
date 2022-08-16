@@ -27,3 +27,7 @@
   padding: 5px;
 }
 /*# sourceMappingURL=blog.css.map */
+
+#imageLinkArea{
+  visibility: hidden;
+}

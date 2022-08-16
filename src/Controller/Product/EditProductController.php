@@ -38,29 +38,27 @@ class EditProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $data->get("imageLink"));
+            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $product->getImageLink());
 
             if ($productManager->verifyProduct($product)) {
-                $storedProductName = $productRepository->find($id)->getName();
-                $newProductName = $product->getName();
 
-                if (!($newProductName === $storedProductName) && $productRepository->findOneBy(['name' => $newProductName])) {
-                    $message = "Le produit existe déja";
+                if ($data->get('imageLinkState') === "edit"){
+                    $productManager->switchPicture($product, $data->get('imageLink'));
+                }
+
+                $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
+
+                if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
+                    $product->addPrice($memberPrice);
+                    $product->addPrice($studentPrice);
+
+                    $productManager->persistCascade($product);
+
+                    return $this->redirectToRoute('menuProduct', [
+                        "message" => "Modification effectué avec succès"
+                    ]);
                 } else {
-                    $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
-
-                    if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
-                        $product->addPrice($memberPrice);
-                        $product->addPrice($studentPrice);
-
-                        $productManager->persist($product);
-
-                        return $this->redirectToRoute('menuProduct', [
-                            "message" => "Modification effectué avec succès"
-                        ]);
-                    } else {
-                        $message = "Merci de verifier votre saisie";
-                    }
+                    $message = "Merci de verifier votre saisie";
                 }
             } else {
                 $message = "Merci de verifier votre saisie";

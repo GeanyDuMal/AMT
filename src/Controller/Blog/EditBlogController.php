@@ -3,6 +3,7 @@
 namespace App\Controller\Blog;
 
 
+use App\Manager\PictureUtils;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
@@ -19,7 +20,7 @@ class EditBlogController extends AbstractController
     /**
      * @Route("/blog/edit/{!id}", name="editBlog",methods={"GET", "POST"})
      */
-    public function index($id, PostRepository $postRepository, ValidatorInterface $validator, Request $request,
+    public function index($id, PostRepository $postRepository, Request $request,
                           EntityManagerInterface $manager): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
@@ -34,21 +35,19 @@ class EditBlogController extends AbstractController
 
         if ($data->count() > 0 && $post) {
 
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getImageLink(), $post->getCreationDate());
 
             if ($postmanager->verifyPost($post)) {
-                $originalPost = $postRepository->find($id);
 
-                if ($post->equals($originalPost))
-                {
-                    $message = "Le post existe déjà.";
-                }else{
-                    $postmanager->persist($post);
-
-                    return $this->redirectToRoute('menuBlog', [
-                        "message" => "Modification effectué avec succès"
-                    ]);
+                if ($data->get('imageLinkState') === "edit"){
+                    $postmanager->switchPicture($post, $data->get('imageLink'));
                 }
+
+                $postmanager->persist($post);
+
+                return $this->redirectToRoute('menuBlog', [
+                    "message" => "Modification effectué avec succès"
+                ]);
             } else {
                 $message = "Votre saisie contient une erreur, merci de vérifier votre saisie";
             }

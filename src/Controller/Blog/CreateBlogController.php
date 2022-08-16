@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +19,7 @@ class CreateBlogController extends AbstractController
     /**
      * @Route("/blog/create", name="createBlog")
      */
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request,
-                          ValidatorInterface $validator): Response
+    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response
     {
         if (!$this->isGranted('ROLE_ASSOC')){
             return $this->redirectToRoute('home');
@@ -33,7 +33,9 @@ class CreateBlogController extends AbstractController
         $message = "";
 
         if($data->count() > 0){
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $data->get('imageLink'));
+            $emplacementImage = $postmanager->downloadPicture($data->get('imageLink'));
+
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $emplacementImage, new DateTime("now"));
 
             if($postmanager->verifyPost($post)){
                 if($postRepository->findBy(['title' => $post->getTitle()])){
