@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220804101918 extends AbstractMigration
+final class Version210 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,7 +26,6 @@ final class Version20220804101918 extends AbstractMigration
 
         $this->addSql('ALTER TABLE client ADD creation_date DATE NOT NULL');
         $this->addSql('UPDATE client SET creation_date = "2022-02-01"'); // Defini pour les clients déja existant la date de création du site, a modifier ensuite
-
     }
 
     public function down(Schema $schema): void
