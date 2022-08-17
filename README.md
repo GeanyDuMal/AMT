@@ -15,6 +15,11 @@
 
 [![Managing New Issue](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/labelingIssues.yml/badge.svg)](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/labelingIssues.yml)
 
+### <ins>Usage</ins>
+Ce site est developpé avec PHP et Symfony. Voici les versions actuelles : <br>
+PHP : 8.0.0 <br>
+Symfony : 5.4.10 
+
 ### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>
 En fonction de la gravité, vous pouvez mettre Minor, Medium ou Critical dans le commentaire afin de le signaler à l'aide d'un label
@@ -35,9 +40,6 @@ Ce site permet de :
 * Créer des commandes
 * Gérer les clients avec des rôles
 * Créer des posts avec un systeme de blog
-
-### <ins>Utilisation<ins>
-Pour découvrir comment utiliser le site, veuillez vous référer au [document suivant](./Documentation.md)
 
 ### <ins>Deploiement<ins>
 Pour découvrir comment nous avons déployé le site, veuillez vous référer au [document suivant](./Deploiement.md)

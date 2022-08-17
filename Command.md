@@ -16,20 +16,15 @@
      
      symfony new {nom du projet} --version={version} --full
 
-
-
 ### Lancer le serveur pour pouvoir acceder a la page web
      
 #### Avec PHP      
       php -S localhost:8000 -t public
 
-
 ### Lancer le serveur pour pouvoir acceder a la page web en HTTPS avec Symfony
 
 ##### Pré-requis:
 Installation du certificat HTTPS:
-
-
 
 ````shell
 symfony server:ca:install
@@ -46,15 +41,12 @@ Pour l'arrêter il suffit d'écrire:
 ````shell
 symfony server:stop
 ````
-     
-     
 
 ### Creer un controller avec sa template
 <br>Penser a renommer la route de cette maniere : 
      @Route("/xxx", name="xxx")
 
       php bin/console make:controller
-
 
 ## Database 
 ### Creer la base de données (penser a remplir le .env auparavant)
@@ -65,7 +57,6 @@ symfony server:stop
 <br>Pour la creation des champs, suivre ce qui est ecrit dans l'invite de commande
             
       php bin/console make:entity
-
 
 ### Transformer les classes PHP en migration pour du SQL
             
@@ -88,6 +79,10 @@ ex: ClientFixture
 ### Executer l'importation du jeu de données
 
       php bin/console doctrine:fixture:load
+
+## Executer les tests
+
+     php bin/phpunit
 
 ## Pour Setup le projet complet avec le jeu d'essai : 
 Lancer le fichier [initialize.sh](initialize.sh)
