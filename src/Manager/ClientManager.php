@@ -4,13 +4,13 @@ namespace App\Manager;
 
 use App\Entity\Association;
 use App\Entity\Client;
+use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -52,6 +52,7 @@ class ClientManager
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
+            $this->deletePasswordForgotRequest($client);
 
             $this->manager->remove($client);
             $this->manager->flush();
@@ -282,6 +283,22 @@ class ClientManager
 
             $this->manager->persist($association);
             $this->manager->flush();
+        }
+    }
+
+    /**
+     * Delete the PasswordForgotRequest for the $client if the request exist
+     * @param Client $client
+     * @return void
+     */
+    public function deletePasswordForgotRequest(Client $client): void
+    {
+        $passwordForgotRequestManager = new PasswordForgotRequestManager($this->manager);
+
+        $passwordForgotRequest = $this->manager->getRepository(PasswordForgotRequest::class)->findOneBy(["client" => $client]);
+
+        if ($passwordForgotRequest){
+            $passwordForgotRequestManager->remove($passwordForgotRequest);
         }
     }
 }

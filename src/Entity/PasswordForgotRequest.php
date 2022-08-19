@@ -13,7 +13,7 @@ class PasswordForgotRequest
 {
     /**
      * @ORM\Id
-     * @ORM\OneToOne(targetEntity=Client::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Client::class, cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private Client $client;
