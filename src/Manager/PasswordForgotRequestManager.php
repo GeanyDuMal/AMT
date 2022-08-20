@@ -2,8 +2,11 @@
 
 namespace App\Manager;
 
+use App\Entity\Client;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\PasswordForgotRequestRepository;
+use App\Utils\Enum\ClientType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PasswordForgotRequestManager
@@ -40,7 +43,7 @@ class PasswordForgotRequestManager
         $code = "";
 
         for ($i = 0; $i < 8; $i++) {
-            $code = $code . $characters[rand(0, strlen($characters))];
+            $code = $code . $characters[rand(0, strlen($characters)-1)];
         }
 
         $passwordForgotRequest->setConfirmationCode($code);
@@ -54,5 +57,29 @@ class PasswordForgotRequestManager
     public function verifyConfirmationCode(PasswordForgotRequest $passwordForgotRequest, string $confirmationCode): bool
     {
         return ($passwordForgotRequest->getConfirmationCode() === trim($confirmationCode));
+    }
+
+    /**
+     * Verify if a request for this account already exist
+     * @param Client $client
+     * @return bool
+     */
+    public function verifyExist(Client $client): bool
+    {
+        return ($this->passwordForgotRequestRepository->findOneBy(["client" => $client]) != null);
+    }
+
+    /**
+     * Remove the old request if one exist
+     * @param Client $client
+     * @return void
+     */
+    public function removeOldIfExist(Client $client)
+    {
+        if ($this->verifyExist($client)){
+            $passwordForgotRequest = $this->passwordForgotRequestRepository->findOneBy(["client" => $client]);
+
+            $this->remove($passwordForgotRequest);
+        }
     }
 }
