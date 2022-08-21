@@ -12,8 +12,6 @@
 {% endblock %}
 
 {% block javascripts %}
-	{{ parent() }}
-	<script type="text/javascript" src="{{ asset('script/client/index.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('script/client/ajaxMenuClient.js') }}"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
@@ -43,7 +41,6 @@
 				<th width="10%">ID</th>
 				<th width="15%">Nom</th>
 				<th width="15%">Prénom</th>
-				<th width="15%">Login</th>
 				<th width="15%">Type du client</th>
 				<th scope="col" width="5%">Modifier</th>
 				<th scope="col" width="5%">Supprimer</th>
@@ -56,7 +53,6 @@
 					<td>{{ client.id }}</td>
 					<td>{{ client.name }}</td>
 					<td>{{ client.firstname }}</td>
-					<td>{{ client.login }}</td>
 					<td>{{ client.clientType }}</td>
 					<td>
 						<a href="{{url('editClient',{id:client.id})}}" class="btn btn-warning bg-warning" name="{{client.id}}">Modifier</a>
@@ -71,7 +67,7 @@
 		</table>
 			{% else %}
 				<div class="alert alert-info alert-dismissible fade show">
-					<strong>Info!</strong> il n y a pas encore des clients.
+					<strong>Info !</strong> il n'y a pas encore de client.
 					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				</div>
 		{% endif %}

@@ -45,7 +45,7 @@
             <select name="client_commande" id="">
                 <option value="null">Choisir un Client</option>
                 {% for client in clientList %}
-                    <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }} / {{ client.login }}</option>
+                    <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }}</option>
                 {% endfor %}
             </select>
 
