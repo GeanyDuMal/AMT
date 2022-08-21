@@ -32,9 +32,9 @@ class PasswordForgotController extends AbstractController
 
         if ($clientName && $clientFirstName && $clientLogin){
             $client = $clientRepository->findOneBy([
-                "name" => $clientName,
-                "firstName" => $clientFirstName,
-                "login" => $clientLogin
+                "name" => trim(strtoupper($clientName)),
+                "firstName" => trim($clientFirstName),
+                "login" => trim($clientLogin)
             ]);
 
             if ($client){
