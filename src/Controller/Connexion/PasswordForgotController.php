@@ -31,6 +31,7 @@ class PasswordForgotController extends AbstractController
         $clientLogin = $inputParameterBag->get('clientLogin');
 
         if ($clientName && $clientFirstName && $clientLogin){
+
             $client = $clientRepository->findOneBy([
                 "name" => trim(strtoupper($clientName)),
                 "firstName" => trim($clientFirstName),

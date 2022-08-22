@@ -43,17 +43,17 @@ class SignInController extends AbstractController
 
             /*
              * Si le form n'est pas vide,
-             * que le login n'existe pas
+             * que le client n'existe pas
              * et que les infos sont correctes
-             * alors on l'insere dans la base de donnée
+             * alors on l'insere dans la base de données
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
-            if ($clientManager->verifyClient($client) && !$clientManager->loginExists($client)
+            if ($clientManager->verifyClient($client) && !$clientManager->clientExists($client)
                 && (trim($inputParameterBag->get("password")) == $verifPassword)) {
                 $clientManager->persist($client);
 
                 return $this->redirectToRoute('login');
-            } else if ($clientManager->loginExists($client)) {
+            } else if ($clientManager->clientExists($client)) {
                 $loginExist = true;
             }
         }

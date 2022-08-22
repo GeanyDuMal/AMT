@@ -137,15 +137,20 @@ class ClientManager
     }
 
     /**
-     * Check if the login is already assign to someone in the Database
+     * Check if the client already exist in the Database
      * @param Client $client
      * @return bool
      */
-    public function loginExists(Client $client): bool
+    public function clientExists(Client $client): bool
     {
-        $duplicata = $this->clientRepository->findOneBy(["login" => $client->getLogin()]);
+        $duplicataLogin = $this->clientRepository->findOneBy(["login" => $client->getLogin()]);
+        $duplicataNameFirstName = $this->clientRepository->findOneBy([
+            "name" => $client->getName(),
+            "firstName" => $client->getFirstName()
+        ]);
 
-        return !is_null($duplicata);
+
+        return !is_null($duplicataLogin) && !is_null($duplicataNameFirstName);
     }
 
     /**
