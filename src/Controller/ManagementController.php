@@ -9,6 +9,7 @@ use App\Manager\ProductManager;
 use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
 use App\Repository\OrderedRepository;
+use App\Repository\PasswordForgotRequestRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\AssociationRole;
@@ -27,7 +28,7 @@ class ManagementController extends AbstractController
      */
     public function index(EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
         AssociationRepository $associationRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
-        ProductRepository $productRepository): Response
+        ProductRepository $productRepository, PasswordForgotRequestRepository $passwordForgotRequestRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)){
             return $this->redirectToRoute('home');
@@ -35,6 +36,7 @@ class ManagementController extends AbstractController
 
         $inputParameterBag = $request->request;
         $message = null;
+        $requestList = $passwordForgotRequestRepository->findAll();
 
         /**
          * Purge des cotisants
@@ -128,8 +130,13 @@ class ManagementController extends AbstractController
             $message = "Les 3 derniers post ont été supprimés.";
         }
 
-        return $this->render('management/MenuManagement.html.twig', [
-            "message" => $message
+        if ($inputParameterBag->get("resetPassword") != "") {
+            
+        }
+
+            return $this->render('management/MenuManagement.html.twig', [
+            "message" => $message,
+            "requestList" => $requestList
         ]);
     }
 }

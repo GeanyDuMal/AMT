@@ -28,7 +28,7 @@ class SignInController extends AbstractController
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client;
-        $loginExist = false;
+        $clientExist = false;
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
         if (!is_null($inputParameterBag->get("name"))) {
@@ -54,12 +54,12 @@ class SignInController extends AbstractController
 
                 return $this->redirectToRoute('login');
             } else if ($clientManager->clientExists($client)) {
-                $loginExist = true;
+                $clientExist = true;
             }
         }
 
         return $this->render('connexion/Signin.html.twig', [
-            "loginExist" => $loginExist
+            "clientExist" => $clientExist
         ]);
     }
 }

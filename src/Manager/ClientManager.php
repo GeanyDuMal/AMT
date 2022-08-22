@@ -149,8 +149,7 @@ class ClientManager
             "firstName" => $client->getFirstName()
         ]);
 
-
-        return !is_null($duplicataLogin) && !is_null($duplicataNameFirstName);
+        return !is_null($duplicataLogin) || !is_null($duplicataNameFirstName);
     }
 
     /**
