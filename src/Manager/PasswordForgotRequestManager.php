@@ -8,6 +8,7 @@ use App\Repository\PasswordForgotRequestRepository;
 use App\Utils\Enum\ClientType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordForgotRequestManager
 {
@@ -23,6 +24,8 @@ class PasswordForgotRequestManager
     public function persist(PasswordForgotRequest $passwordForgotRequest): void
     {
         $this->manager->persist($passwordForgotRequest);
+        $this->manager->persist($passwordForgotRequest->getClient());
+
         $this->manager->flush();
     }
 
@@ -81,5 +84,24 @@ class PasswordForgotRequestManager
 
             $this->remove($passwordForgotRequest);
         }
+    }
+
+    /**
+     * @param PasswordForgotRequest $passwordForgotRequest
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @return void
+     */
+    public function generateNewPassword(PasswordForgotRequest $passwordForgotRequest, UserPasswordHasherInterface $passwordHasher): void
+    {
+        $client = $passwordForgotRequest->getClient();
+        $clientManager = new ClientManager($this->manager);
+
+        // Generate a new code
+        $this->generateCode($passwordForgotRequest);
+
+        $client->setPassword($passwordHasher->hashPassword($client, trim($passwordForgotRequest->getConfirmationCode()).'.'));
+
+        $clientManager->persist($client);
+        $clientManager->deletePasswordForgotRequest($client);
     }
 }

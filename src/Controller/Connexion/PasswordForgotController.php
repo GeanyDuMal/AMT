@@ -52,7 +52,7 @@ class PasswordForgotController extends AbstractController
 
                 $message = "Votre demande de mot de passe à été créée. Voici le code à conserver : "
                     . $passwordForgotRequest->getConfirmationCode() .
-                    ". \n Merci de vous rapprocher de l'administrateur ou du président de l'association afin que ce dernier
+                    " Merci de vous rapprocher de l'administrateur ou du président de l'association afin que ce dernier
                      vous transmette votre nouveau mot de passe";
             } else {
                 $message = "Les informations saisient ne correspondent à aucun client";

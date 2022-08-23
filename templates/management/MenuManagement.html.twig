@@ -85,7 +85,7 @@
                             Reinitialiser
                         </button>
                         <div class="under_block">
-                            <select name="" id="">
+                            <select name="passwordRequest" id="">
                                 {% for request in requestList %}
                                     <option value="{{ request.client.id }}">{{ request.client.name }} {{ request.client.firstName }}</option>
                                 {% endfor %}
