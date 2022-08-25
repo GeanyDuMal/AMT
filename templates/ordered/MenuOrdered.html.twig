@@ -42,7 +42,6 @@
 						<th>ID</th>
 						<th>Date et Heure</th>
 						<th>Nom Client</th>
-						<th>Login</th>
 						<th>Type Client</th>
 						<th>Details</th>
 					</tr>
@@ -60,9 +59,6 @@
 							<td>
 								{{ ordered.client.name }} {{ ordered.client.firstName }}
 							</td>
-							<td >
-								{{ ordered.client.login }}
-							</td>
 							<td>
 								{{ ordered.client.clientType }}
 							</td>
@@ -70,8 +66,9 @@
 							<td>
 								Client non renseigné
 							</td>
-							<td>NA</td>
-							<td>NA</td>
+							<td>
+								NA
+							</td>
 						{% endif %}
 							<td>
 								<a class="btn btn-primary" href="{{ path("showOrdered",{'idOrder' : ordered.id}) }}">Info</a>

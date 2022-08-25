@@ -43,8 +43,8 @@ class CreateClientController extends AbstractController
                 $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
                 
             if($clientManager->verifyClient($client)) {
-                if ($clientManager->loginExists($client)) {
-                    $message = "Login existe déja";
+                if ($clientManager->clientExists($client)) {
+                    $message = "Ce client existe déja";
                 } else {
                     $clientManager->persist($client);
 
