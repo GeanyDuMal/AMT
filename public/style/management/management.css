@@ -6,7 +6,7 @@
 .flex_horizontal {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .centered_flex {
@@ -35,10 +35,25 @@
     width: 100%;
     padding: 0 5%;
     margin-bottom: 15px;
-    justify-content: space-around;
 }
 
     .block_control>*{
         width: 47.5%;
         min-height: 40px;
     }
+
+.under_block{
+    display: flex;
+    flex-direction: row;
+}
+
+.select{
+    margin: 10px;
+    max-width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+    .under_block{
+        flex-direction: column;
+    }
+}

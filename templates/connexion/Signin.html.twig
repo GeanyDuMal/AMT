@@ -79,9 +79,9 @@
                         <label for="floating">Confirmation</label>
                   </div>
 
-                  {% if loginExist %}
+                  {% if clientExist %}
                         <div class="alert alert-dismissible alert-primary">
-                              Le login que vous avez saisi existe déjà
+                              Le Login ou le Nom et Prénom existent déjà
                         </div>
                   {% endif %}
 
@@ -90,6 +90,15 @@
                               S'inscrire
                         </button>
                   </div>
+                  <div class="text_block">
+                      <p class="d-flex justify-content-center">
+                          <em> 150 point de fidelité = 0.8€ </em>
+                      </p>
+                      <p>
+                          Vos informations tels que votre login ou votre mot de passe sont privées.<br>
+                          Veuillez ne jamais les divulger.
+                      </p>
+                </div>
             </form>
             {# End Form #}
 

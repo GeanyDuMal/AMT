@@ -29,6 +29,9 @@
 }
 
 /* End Client Info */
+.text_block{
+    margin: 0 10px;
+}
 
 .btn{
     width: fit-content;

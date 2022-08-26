@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Manager\ClientManager;
 use App\Manager\OrderedManager;
+use App\Manager\PasswordForgotRequestManager;
 use App\Manager\PostManager;
 use App\Manager\ProductManager;
 use App\Repository\AssociationRepository;
 use App\Repository\ClientRepository;
 use App\Repository\OrderedRepository;
+use App\Repository\PasswordForgotRequestRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\AssociationRole;
@@ -18,6 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ManagementController extends AbstractController
@@ -25,9 +28,10 @@ class ManagementController extends AbstractController
     /**
      * @Route("/management/", name="menuManagement")
      */
-    public function index(EntityManagerInterface $manager, Request $request, ClientRepository $clientRepository,
-        AssociationRepository $associationRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
-        ProductRepository $productRepository): Response
+    public function index(EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $passwordHasher,
+        ClientRepository $clientRepository, AssociationRepository $associationRepository, PostRepository $postRepository,
+        OrderedRepository $orderedRepository, ProductRepository $productRepository,
+        PasswordForgotRequestRepository $passwordForgotRequestRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)){
             return $this->redirectToRoute('home');
@@ -35,6 +39,7 @@ class ManagementController extends AbstractController
 
         $inputParameterBag = $request->request;
         $message = null;
+        $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
 
         /**
          * Purge des cotisants
@@ -128,8 +133,26 @@ class ManagementController extends AbstractController
             $message = "Les 3 derniers post ont été supprimés.";
         }
 
-        return $this->render('management/MenuManagement.html.twig', [
-            "message" => $message
+        /**
+         * Reinitialisation du mot de passe d'un client
+         */
+        if ($inputParameterBag->get("resetPassword") != "") {
+            $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
+            $confirmationCode = $inputParameterBag->get("confirmationCode");
+            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
+
+
+            if ($passwordForgotRequest && ($confirmationCode === $passwordForgotRequest->getConfirmationCode())){
+                $passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $passwordHasher);
+
+                $message = "Le nouveau mot de passe est \"".$passwordForgotRequest->getConfirmationCode().".\" Merci de le modifier à la prochaine connexion";
+                $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
+            }
+        }
+
+            return $this->render('management/MenuManagement.html.twig', [
+            "message" => $message,
+            "requestList" => $requestList
         ]);
     }
 }

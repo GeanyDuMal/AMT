@@ -62,7 +62,7 @@ class EditClientController extends AbstractController
                     $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
-                if (strcmp($storedClient->getLogin(), $client->getLogin()) == 0 || $clientManager->loginExists($client)) {
+                if (strcmp($storedClient->getLogin(), $client->getLogin()) == 0 || $clientManager->clientExists($client)) {
                     $message = "Ce login existe déja";
                 } else {
                     $clientManager->persist($client);

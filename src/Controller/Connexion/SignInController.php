@@ -28,7 +28,7 @@ class SignInController extends AbstractController
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client;
-        $loginExist = false;
+        $clientExist = false;
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
         if (!is_null($inputParameterBag->get("name"))) {
@@ -43,23 +43,23 @@ class SignInController extends AbstractController
 
             /*
              * Si le form n'est pas vide,
-             * que le login n'existe pas
+             * que le client n'existe pas
              * et que les infos sont correctes
-             * alors on l'insere dans la base de donnée
+             * alors on l'insere dans la base de données
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
-            if ($clientManager->verifyClient($client) && !$clientManager->loginExists($client)
+            if ($clientManager->verifyClient($client) && !$clientManager->clientExists($client)
                 && (trim($inputParameterBag->get("password")) == $verifPassword)) {
                 $clientManager->persist($client);
 
                 return $this->redirectToRoute('login');
-            } else if ($clientManager->loginExists($client)) {
-                $loginExist = true;
+            } else if ($clientManager->clientExists($client)) {
+                $clientExist = true;
             }
         }
 
         return $this->render('connexion/Signin.html.twig', [
-            "loginExist" => $loginExist
+            "clientExist" => $clientExist
         ]);
     }
 }
