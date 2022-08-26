@@ -26,11 +26,16 @@ final class Version210 extends AbstractMigration
 
         $this->addSql('ALTER TABLE client ADD creation_date DATE NOT NULL');
         $this->addSql('UPDATE client SET creation_date = "2022-02-01"'); // Defini pour les clients déja existant la date de création du site, a modifier ensuite
+
+        $this->addSql('CREATE TABLE password_forgot_request (client_id INT NOT NULL, date DATE NOT NULL, confirmation_code VARCHAR(255) NOT NULL, PRIMARY KEY(client_id))');
+        $this->addSql('ALTER TABLE password_forgot_request ADD CONSTRAINT FK_FD4D596519EB6921 FOREIGN KEY (client_id) REFERENCES client (id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP TABLE password_forgot_request');
+
         $this->addSql('ALTER TABLE post DROP creation_date');
 
         $this->addSql('ALTER TABLE client DROP creation_date');
