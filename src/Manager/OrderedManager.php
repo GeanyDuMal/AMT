@@ -24,14 +24,18 @@ class OrderedManager
 
     public function persist(Ordered $ordered): void
     {
+        $purchases = null;
         if ($this->verifyOrder($ordered)) {
+            $purchases = $ordered->getPurchases();
+            $this->clearPurchases($ordered);
+
             $this->manager->persist($ordered);
             $this->manager->flush();
         }
 
         $purchaseManager = new PurchaseManager($this->manager);
 
-        foreach ($ordered->getPurchases() as $purchase){
+        foreach ($purchases as $purchase){
             $purchaseManager->persist($purchase);
         }
     }
@@ -88,12 +92,12 @@ class OrderedManager
 
     /**
      * @param Ordered $ordered
-     * @param Client $client
+     * @param Client|null $client
      * @param string $paymentType
      * @param DateTime|null $date
      * @return void
      */
-    public function setData(Ordered $ordered, Client $client, string $paymentType, ?DateTime $date): void
+    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date): void
     {
         if (!$date){
             $date = new DateTime("now");
@@ -216,5 +220,18 @@ class OrderedManager
     public function verifyOrder(Ordered $ordered): bool
     {
         return ($ordered->getOrderedAt() != null && $ordered->getPaymentType() != null);
+    }
+
+    /**
+     * Remove the purchases from the current $ordered
+     * This method don't persist the $ordered
+     * @param Ordered $ordered
+     * @return void
+     */
+    public function clearPurchases(Ordered $ordered): void
+    {
+        foreach ($ordered->getPurchases() as $purchase){
+            $ordered->removePurchase($purchase);
+        }
     }
 }
