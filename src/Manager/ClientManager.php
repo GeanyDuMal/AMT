@@ -162,10 +162,8 @@ class ClientManager
      */
     public function verifyClient(Client $client): bool
     {
-
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-        $containsSpecialPassword = $this->verifPassword($client->getPassword());
         $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
         $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
 
@@ -176,7 +174,7 @@ class ClientManager
 
         $this->correctBalanceAndFidelity($client);
 
-        return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
+        return ($loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
             && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
             in_array($client->getClientType(), ClientType::getAll()));
     }
@@ -186,7 +184,7 @@ class ClientManager
      * @param String password
      * @return boolean
      */
-    public function verifPassword(string $password): bool
+    public function verifyPassword(string $password): bool
     {
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 

@@ -34,7 +34,7 @@ class ProfileController extends AbstractController
 
             // Verifie que les champs soient bien rempli et que le nouveau mot de passe et la confirmation soient différent
             if ($oldPassword && $newPassword && ($newPassword === $confirmPassword) && !($oldPassword === $newPassword) &&
-                $clientManager->verifPassword($newPassword)) {
+                $clientManager->verifyPassword($newPassword)) {
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
                 if (password_verify($oldPassword, $this->getUser()->getPassword())) {
                     $hashedPassword = $passwordHasher->hashPassword($client, $newPassword);
