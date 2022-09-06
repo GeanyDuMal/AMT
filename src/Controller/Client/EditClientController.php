@@ -47,9 +47,8 @@ class EditClientController extends AbstractController
                 $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
 
 
-            if ($clientManager->verifyClient($client)) {
-                $storedClient = $clientRepository->find($id);
-
+            // Verify the confirmity of a client and verify that the login correspond to the stored one
+            if ($clientManager->verifyClient($client) && strcmp($client->getLogin(), $data->get('login'))) {
                 /*
                  * If we set the ClientType Association, we need to put the client in the table Association
                  */
@@ -62,21 +61,17 @@ class EditClientController extends AbstractController
                     $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
-                if (strcmp($storedClient->getLogin(), $client->getLogin()) == 0 || $clientManager->clientExists($client)) {
-                    $message = "Ce login existe déja";
-                } else {
-                    $clientManager->persist($client);
-                    if ($client->getClientType() == ClientType::ASSOCIATION) {
-                        $member = $associationRepository->findOneBy(["member" => $client]);
-                        if ($member->getRole() == AssociationRole::PRESIDENT) {
-                            $associationManager->removeOtherPresidents($member);
-                        }
+                $clientManager->persist($client);
+                if ($client->getClientType() == ClientType::ASSOCIATION) {
+                    $member = $associationRepository->findOneBy(["member" => $client]);
+                    if ($member->getRole() == AssociationRole::PRESIDENT) {
+                        $associationManager->removeOtherPresidents($member);
                     }
-
-                    return $this->redirectToRoute('menuClient', [
-                        "message" => "Modification avec succés"
-                    ]);
                 }
+
+                return $this->redirectToRoute('menuClient', [
+                    "message" => "Modification avec succés"
+                ]);
             }
         }
 

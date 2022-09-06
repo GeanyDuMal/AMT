@@ -162,6 +162,7 @@ class ClientManager
      */
     public function verifyClient(Client $client): bool
     {
+
         $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
         $containsSpecialPassword = $this->verifPassword($client->getPassword());
