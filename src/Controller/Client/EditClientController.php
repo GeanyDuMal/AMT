@@ -70,7 +70,7 @@ class EditClientController extends AbstractController
                 }
 
                 return $this->redirectToRoute('menuClient', [
-                    "message" => "Modification avec succés"
+                    "message" => "Modification effectué avec succès"
                 ]);
             }
         }
