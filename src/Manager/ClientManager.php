@@ -209,7 +209,7 @@ class ClientManager
                     case AssociationRole::PRESIDENT:
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
-                    case AssociationRole::TRESORIER:
+                    case (AssociationRole::TRESORIER || AssociationRole::VICE_PRESIDENT):
                         $client->setRoles([SymfonyRole::TRESORIER]);
                         break;
                     case AssociationRole::SECRETAIRE:
@@ -244,7 +244,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function correctBalanceAndFidelity(Client $client)
+    public function correctBalanceAndFidelity(Client $client): void
     {
         if ($client->getBalance() == null || floatval($client->getBalance()) < 0) {
             $client->setBalance(0);
