@@ -36,6 +36,7 @@ class EditClientController extends AbstractController
         $assosRoles = AssociationRole::getAll();
         $message = "";
         $member = $associationRepository->findOneBy(["member" => $client]);
+        $allowEdit = $this->isGranted($client->getRoles()[0]);
 
         if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
@@ -63,7 +64,7 @@ class EditClientController extends AbstractController
                 $clientManager->persist($client);
                 if ($client->getClientType() == ClientType::ASSOCIATION) {
                     $member = $associationRepository->findOneBy(["member" => $client]);
-                    if ($member->getRole() == AssociationRole::PRESIDENT) {
+                    if ($member->getRole() == AssociationRole::PRESIDENT && $allowEdit) {
                         $associationManager->removeOtherPresidents($member);
                     }
                 }
@@ -79,6 +80,7 @@ class EditClientController extends AbstractController
             'message' => $message,
             'client' => $client,
             'member' => $member,
+            'allowEdit' => $allowEdit,
             'clientTypes' => ClientType::getAll()
         ]);
     }
