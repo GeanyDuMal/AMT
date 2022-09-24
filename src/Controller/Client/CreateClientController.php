@@ -22,10 +22,9 @@ class CreateClientController extends AbstractController
     /**
      * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
      */
-    public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
-                          EntityManagerInterface $manager, ValidatorInterface $validator): Response
+    public function index(UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)){
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)){
             return $this->redirectToRoute('home');
         }
 

@@ -23,7 +23,7 @@ class ShowOrderedController extends AbstractController
     public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
         PurchaseRepository $purchaseRepository, PriceRepository $priceRepository, Request $request): Response
     {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
             return $this->redirectToRoute('home');
         }
 
