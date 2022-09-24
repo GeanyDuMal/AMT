@@ -15,7 +15,7 @@ class MenuClientController extends AbstractController
      */
     public function show(ClientRepository $clientRepository, ?string $message): Response
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
 

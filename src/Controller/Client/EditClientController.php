@@ -25,10 +25,9 @@ class EditClientController extends AbstractController
      * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
-                          ValidatorInterface $validator, AssociationRepository $associationRepository,
-                          ClientRepository $clientRepository): Response
+                          AssociationRepository $associationRepository, ClientRepository $clientRepository): Response
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
 

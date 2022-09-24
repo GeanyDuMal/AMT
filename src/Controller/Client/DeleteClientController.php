@@ -19,7 +19,7 @@ class DeleteClientController extends AbstractController
      */
     public function index($id, EntityManagerInterface $manager, ClientRepository $clientRepository): RedirectResponse|JsonResponse
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
 
