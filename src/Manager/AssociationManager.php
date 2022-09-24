@@ -81,7 +81,6 @@ class AssociationManager
         }
     }
 
-
     /**
      * Return a Member made from the Client in parameter and a Role
      * @param Client $client
@@ -96,5 +95,26 @@ class AssociationManager
         $newMember->setRole($role);
 
         return $newMember;
+    }
+
+    public function getLowerOrEqualAssociationRole(Client $client): array
+    {
+        $association = $this->associationRepository->findOneBy(["member" => $client]);
+        $roles = [];
+        $associationRoles = AssociationRole::getAll();
+
+        // We use this way to filter because AssociationRole are ordered
+        if ($client->getRoles()[0] != "ROLE_ADMIN"){
+            foreach ($associationRoles as $role){
+                $roles[] = $role;
+                if ($role == $association->getRole()){
+                    break;
+                }
+            }
+        } else {
+            $roles = $associationRoles;
+        }
+
+        return $roles;
     }
 }
