@@ -33,15 +33,14 @@ class EditClientController extends AbstractController
 
         $data = $request->request;
         $client = $clientRepository->find($id);
-        $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
-        $member = $associationRepository->findOneBy(["member" => $client]);
-        $associationManager = new AssociationManager($manager);
-        $assosRoles = $associationManager->getLowerOrEqualAssociationRole($user);
+        $assosRoles = AssociationRole::getAll();
         $message = "";
+        $member = $associationRepository->findOneBy(["member" => $client]);
         $allowEdit = $this->isGranted($client->getRoles()[0]);
 
         if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
+            $associationManager = new AssociationManager($manager);
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $client->getLogin(), $data->get("password"),
