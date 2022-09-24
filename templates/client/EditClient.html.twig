@@ -85,7 +85,7 @@
                 </select>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary disableable" onclick="return verifyEdit()" style="margin-bottom: 25px;">
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyEdit()" style="margin-bottom: 25px;" {% if not allowEdit %} disabled {% endif %}>
                 Enregistrer
             </button>
         </form>
