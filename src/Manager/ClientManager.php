@@ -206,11 +206,14 @@ class ClientManager
             case ClientType::ASSOCIATION:
             {
                 switch ($roleAssociation) {
-                    case "President":
+                    case AssociationRole::PRESIDENT:
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
-                    case "Tresorier":
+                    case AssociationRole::TRESORIER:
                         $client->setRoles([SymfonyRole::TRESORIER]);
+                        break;
+                    case AssociationRole::SECRETAIRE:
+                        $client->setRoles([SymfonyRole::SECRETAIRE]);
                         break;
                     default:
                         $client->setRoles([SymfonyRole::ASSOC]);
