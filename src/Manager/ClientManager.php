@@ -20,6 +20,8 @@ class ClientManager
     public ClientRepository $clientRepository;
     const AMOUNT_FIDELITY_SWITCH = 150;
     const AMOUNT_BALANCE_SWITCH = 0.80;
+    const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
+
 
     public function __construct(EntityManagerInterface $managerController)
     {
@@ -154,7 +156,6 @@ class ClientManager
 
     /**
      * Verify the data :
-     * Check if the password contains a special character
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
      * @param Client $client
@@ -162,10 +163,9 @@ class ClientManager
      */
     public function verifyClient(Client $client): bool
     {
-        $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-        $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
-        $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
+        $containsSpecialName = strpbrk($client->getName(), self::REGEX_SPECIAL);
+        $containsSpecialFirstName = strpbrk($client->getFirstName(), self::REGEX_SPECIAL);
 
         $nameUpperTwo = (strlen($client->getName()) > 2);
         $firstNameUpperTwo = (strlen($client->getFirstName()) > 2);
@@ -186,9 +186,7 @@ class ClientManager
      */
     public function verifyPassword(string $password): bool
     {
-        $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
-
-        return (strpbrk(trim($password), $regexSpecial) && strlen(trim($password)) >= 5);
+        return (strpbrk(trim($password), self::REGEX_SPECIAL) && strlen(trim($password)) >= 5);
     }
 
     /**

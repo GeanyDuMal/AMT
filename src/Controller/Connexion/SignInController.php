@@ -38,7 +38,7 @@ class SignInController extends AbstractController
                 trim($inputParameterBag->get("password")), 0, ClientType::ETUDIANT, null,
                 0);
 
-            $verifPassword = trim($inputParameterBag->get("confirmPassword"));
+            $confirmPassword = trim($inputParameterBag->get("confirmPassword"));
 
             /*
              * Si le form n'est pas vide,
@@ -48,13 +48,15 @@ class SignInController extends AbstractController
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
             if ($clientManager->verifyClient($client) && !$clientManager->clientExists($client)
-                && (trim($inputParameterBag->get("password")) == $verifPassword)
+                && (trim($inputParameterBag->get("password")) == $confirmPassword)
                 && $clientManager->verifyPassword($inputParameterBag->get("password"))) {
-                $clientManager->persist($client);
 
+                $clientManager->persist($client);
                 return $this->redirectToRoute('login');
             } else if ($clientManager->clientExists($client)) {
                 $message = "Ce client existe déjà";
+            } else if (!$clientManager->verifyPassword($inputParameterBag->get("password"))) {
+                $message = "Votre mot de passe ne respecte pas les règles imposés";
             } else {
                 $message = "Merci de vérifier votre saisie";
             }
