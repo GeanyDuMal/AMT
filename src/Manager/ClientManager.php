@@ -31,9 +31,7 @@ class ClientManager
 
     public function persist(Client $client): void
     {
-        if (!$client->getCreationDate()){
-            $client->setCreationDate(new DateTime('now'));
-        }
+        $this->defineCreationDateIfNecessary($client);
 
         $this->setPresidentIfNecessary($client);
 
@@ -303,6 +301,18 @@ class ClientManager
 
         if ($passwordForgotRequest){
             $passwordForgotRequestManager->remove($passwordForgotRequest);
+        }
+    }
+
+    /**
+     * If the $client doesn't exist in database, we set him the creationDate attribute to now
+     * @param Client $client
+     * @return void
+     */
+    private function defineCreationDateIfNecessary(Client $client): void
+    {
+        if (!$this->clientExists($client)){
+            $client->setCreationDate(new DateTime('now'));
         }
     }
 }
