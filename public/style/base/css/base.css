@@ -25,6 +25,11 @@ body {
   background-color: #212529;
   z-index: 999; }
 
+/* All the element of the nav */
+.navbar * {
+  margin: 0 2%;
+}
+
 /* line 42, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar {
   height: 100%;
@@ -40,19 +45,24 @@ body {
   padding-top: 70px; }
 
 /* line 56, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
-.sidebar a {
-  padding: 0 0 0 2.5%;
+.sidebar a , .navbar a {
   text-decoration: none;
-  margin-top: 1%;
-  margin-bottom: 1%;
   font-size: 25px;
   color: #818181;
   display: block;
-  transition: 0.3s; }
+  transition: 0.3s;
+}
+
+.sidebar a {
+  padding: 0 0 0 2.5%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
 
 /* line 67, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
-.sidebar a:hover {
-  color: #f2f2f2; }
+.sidebar a:hover, .navbar a:hover {
+  color: #f2f2f2;
+}
 
 /* line 71, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
 .sidebar .closebtn {
@@ -66,14 +76,11 @@ body {
 .block_nav {
   border-bottom: #999999 1px solid; }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  /* line 85, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
-  .sidebar {
-    padding-top: 15px; }
-  /* line 89, ../../Github_clones/Website_AEDI/Website/public/style/base/scss/base.scss */
-  .sidebar a {
-    font-size: 18px; } }
+@media screen and (max-width: 450px) {
+  .sidebar a ,.navbar a {
+    font-size: 18px;
+  }
+}
 
 /* End Navbar */
 /* Footer */
