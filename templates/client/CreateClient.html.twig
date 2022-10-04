@@ -10,7 +10,11 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
+    {# Bootstrap CSS Import #}
+    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+    {# End Bootstrap CSS Import #}
+
     <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
 
