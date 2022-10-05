@@ -33,10 +33,12 @@
 <body>
     {# ---- Navbar ---- #}
     {% block navbar %}
-        <div class="pos-f-t">
-            <nav class="navbar navbar-dark position-fixed">
-                <button onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <div>
+            <nav class="navbar position-fixed">
+                <button onclick="openNav()" type="button" id="burger-nav">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
                 <a href="{{ path("home") }}">
                     <img src="/img/logo_menu.png" width="auto" height="50" alt="logo-menu" border="0"></a>

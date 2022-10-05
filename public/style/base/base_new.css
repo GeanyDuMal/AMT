@@ -65,6 +65,21 @@ body {
     background-color: var(--light-grey) !important;
 }
 
+#burger-nav {
+    display: flex;
+    flex-direction: column;
+    background: inherit;
+    border: none;
+}
+
+#burger-nav span {
+    width: 30px;
+    height: 3px;
+    background-color: var(--white);
+    margin: 3px 0;
+    border-radius: 10px;
+}
+
 .flex_vertical {
     display: flex;
     flex-direction: column;
@@ -136,7 +151,7 @@ h4 {
     width: 100%;
 }
 
-.sidebar a , .navbar a {
+.sidebar a, .navbar a {
     text-decoration: none;
     font-size: 25px;
     color: var(--light-grey);
@@ -179,7 +194,7 @@ h4 {
 }
 
 @media screen and (max-width: 450px) {
-    .sidebar a ,.navbar a {
+    .sidebar a, .navbar a {
         font-size: 18px;
     }
 }
