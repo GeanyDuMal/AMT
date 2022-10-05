@@ -16,13 +16,19 @@ a:hover, a:active {
     color: var(--primary-light);
 }
 
+.back-arrow-sidebar {
+    margin-top: 1rem;
+    width: auto;
+    height: 50px;
+}
+
 body {
     padding: 0;
     margin: 0;
     font-family: "Segoe UI", sans-serif;
 }
 
-.block_nav {
+.block-sidebar {
     border-bottom: #999999 1px solid;
 }
 
@@ -70,6 +76,7 @@ body {
     flex-direction: column;
     background: inherit;
     border: none;
+    cursor: pointer;
 }
 
 #burger-nav span {
@@ -91,13 +98,34 @@ body {
     justify-content: space-between;
 }
 
-footer {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    padding: 1rem 0;
-    text-align: center;
+.footer {
     background-color: var(--dark-grey);
+    bottom: 0;
+    color: var(--white);
+    padding: 1rem 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+.footer a {
+    color: var(--white);
+}
+
+.footer a:hover {
+    color: var(--primary);
+}
+
+.footer-link {
+    margin: 1rem;
+    text-align: center;
+    padding: 0;
+}
+
+.footer-link li {
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 h4 {
@@ -128,7 +156,6 @@ h4 {
     justify-content: space-between;
 }
 
-/* All the element of the nav */
 .navbar * {
     margin: 0 2%;
 }
@@ -145,10 +172,6 @@ h4 {
     overflow-y: hidden;
     transition: 0.5s;
     padding-top: 70px;
-}
-
-.sidebar-open {
-    width: 100%;
 }
 
 .sidebar a, .navbar a {
@@ -169,22 +192,20 @@ h4 {
     color: var(--white);
 }
 
-.sidebar .closebtn {
+.sidebar .close-btn {
     position: absolute;
     top: 0;
     right: auto;
     margin-left: 0;
+    cursor: pointer;
 }
 
-.social {
-    margin: 1rem;
-    text-align: center;
+.sidebar-content {
+    margin-right: 1em;
 }
 
-.social li {
-    display: inline-block;
-    padding-right: 10px;
-    padding-left: 10px;
+.sidebar-open {
+    width: 100%;
 }
 
 .title {
