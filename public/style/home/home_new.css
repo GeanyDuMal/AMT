@@ -1,0 +1,70 @@
+.top-text {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3em;
+    color: #212529;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.top-text-sub {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 10px;
+}
+
+.body-text {
+    margin-top: 3vw;
+    text-align: center;
+}
+
+.carousel img {
+    width: auto;
+}
+
+.carousel-fade .carousel-inner .item {
+    opacity: 0;
+    -webkit-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -o-transition-property: opacity;
+    transition-property: opacity;
+}
+
+.carousel-fade .carousel-inner .active {
+    opacity: 1;
+}
+
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+    left: 0;
+    opacity: 0;
+    z-index: 1;
+}
+
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+    opacity: 1;
+}
+
+.carousel-fade .carousel-control {
+    z-index: 2;
+}
+
+.carousel-inner {
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (min-width: 850px) {
+    .carousel {
+        display: block;
+    }
+
+    .carousel-inner {
+        height: 75vh;
+    }
+}
+
+.imgiut {
+    width: 100%;
+    height: auto;
+}
