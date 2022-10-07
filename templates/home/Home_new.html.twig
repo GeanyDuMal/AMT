@@ -31,15 +31,15 @@
 
     {# Carousel #}
      <section class="slider-wrapper">
-        <button class="slide-arrow" id="slide-arrow-prev">
+        <button class="slide-arrow" id="slide-arrow-prev" onclick="switchCarouselItem()">
             &#8249;
         </button>
-        <button class="slide-arrow" id="slide-arrow-next">
+        <button class="slide-arrow" id="slide-arrow-next" onclick="switchCarouselItem()">
             &#8250;
         </button>
 
         <ul class="slides-container" id="slides-container">
-            <li class="slide">
+            <li class="slide slide-active">
                 <img src="/img/home/iut.jpg" alt="">
             </li>
             <li class="slide">
