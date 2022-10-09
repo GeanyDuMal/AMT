@@ -50,8 +50,8 @@
             </li>
         </ul>
      </section>
-
     {# End Carousel #}
+
     {# Intro #}
     <p class="body-text">
         Envie d'en apprendre un peu plus sur nous ?
@@ -61,82 +61,69 @@
     {# End Intro #}
 
     {# Accordion #}
-    <div class="accordion" id="accordionExample">
+    <div class="accordion-general">
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    A Propos
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-                <div class="accordion-body">
-                    <p>
-                        L'AEDI est une association étudiante, ayant pour but d'organiser des évènements au sein du Département Informatique.
-                        <br><br>
-                        Notre Local se trouve au fond du 3ème étage du bâtiment E, en E35
-                        <br><br>
-                        Venez nous rendre visite ! ;)
-                    </p>                
-                </div>
+            <button class="accordion-button">
+                A Propos
+            </button>
+            <div class="accordion-content">
+                <p>
+                    L'AEDI est une association étudiante, ayant pour but d'organiser des évènements au sein du Département Informatique.
+                    <br><br>
+                    Notre Local se trouve au fond du 3ème étage du bâtiment E, en E35
+                    <br><br>
+                    Venez nous rendre visite ! ;)
+                </p>
             </div>
         </div>
-
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Nos Produits
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="">
-                <div class="accordion-body">
+            <button class="accordion-button">
+                Nos Produits
+            </button>
+            <div class="accordion-content">
+                <p>
+                    Nos produits sont essentiellement des snacks (Oréo, Twix, Snickers...) et des boissons (Eau, Coca, Jus d'orange...)
+                    <br>
+                    <i>N'hésitez pas à <a href="{{ path("menuProduct") }}"  class="link-danger">consulter nos produits</a> ou <a href="{{ path("menuBlog") }}" class="link-danger">nos posts</a></i>
+                    <br>
+                    <br>
+                    Des questions...?
+                    <i><a href="mailto:assoc.aedi.metz@gmail.com" class="link-danger">Nous Contacter</a></i>
+                    <br>
+                </p>
+            </div>
+        </div>
+        <div class="accordion-item active-accordion">
+            <button class="accordion-button">
+                Notre Adresse
+            </button>
+            <div class="accordion-content">
+                <div class="mapouter">
+                    <div class="gmap_canvas">
+                        <iframe width="100%" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=iut%20metz%20saulcy&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+                </div>
+                <div>
                     <p>
-                        Nos produits sont essentiellement des snacks (Oréo, Twix, Snickers...) et des boissons (Eau, Coca, Jus d'orange...)
-                        <br>
-                        <i>N'hésitez pas à <a href="{{ path("menuProduct") }}"  class="link-danger">consulter nos produits</a> ou <a href="{{ path("menuBlog") }}" class="link-danger">nos posts</a></i>
-                        <br>
-                        <br>
-                        Des questions...?
-                        <i><a href="mailto:assoc.aedi.metz@gmail.com" class="link-danger">Nous Contacter</a></i>
-                        <br>
+                        L'institut universitaire de technologie de Metz est situé sur l’île du Saulcy ainsi qu’au Technopôle de Metz-Grigy. Il fait partie de l’université de Lorraine.
                     </p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                    Notre Adresse
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="">
-                <div class="accordion-body">
-                    <div class="mapouter">
-                        <div class="gmap_canvas">
-                            <iframe width="100%" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=iut%20metz%20saulcy&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-                        </div>
+                    <em>57000 Metz, France </em>
+                    <div>
+                        <a href="http://iut-metz.univ-lorraine.fr" target="blank" class="link-danger">Visiter le site de l'IUT de Metz
+                            <br><img src="http://iut-metz.univ-lorraine.fr/sites/default/files/inline-images/logo-iut-metz.png" alt="logo univ lorraine" style="width: 200px;height: auto;margin-top:10px;">
+                        </a>
                     </div>
                     <div>
                         <p>
-                            L'institut universitaire de technologie de Metz est situé sur l’île du Saulcy ainsi qu’au Technopôle de Metz-Grigy. Il fait partie de l’université de Lorraine.
-                        </p>
-                        <em>57000 Metz, France </em>
-                        <div>
-                            <a href="http://iut-metz.univ-lorraine.fr" target="blank" class="link-danger">Visiter le site de l'IUT de Metz
-                                <br><img src="http://iut-metz.univ-lorraine.fr/sites/default/files/inline-images/logo-iut-metz.png" alt="logo univ lorraine" style="width: 200px;height: auto;margin-top:10px;">
-                            </a>
-                        </div>
-                        <div>
-                            <p>
-                                Vous pouvez créer un ticket sur <a href="https://github.com/GeanyDuMal/AEDI_Support/issues/new" target="new">
+                            Vous pouvez créer un ticket sur <a href="https://github.com/GeanyDuMal/AEDI_Support/issues/new" target="new">
                                 le support</a> du site si vous avez une requête ou un problème.
-                            </p>
-                        </div>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     {# End Accordion #}
 
     {# Script for the RGPD #}

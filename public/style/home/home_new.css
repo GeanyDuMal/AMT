@@ -16,3 +16,32 @@
     margin-top: 3vw;
     text-align: center;
 }
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion-button {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+.active-accordion .accordion-button, .accordion-button:hover {
+    background-color: var(--primary-low-opacity);
+}
+
+.accordion-content {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+    transition: display 0.5s ease-out;
+}
+
+.active-accordion .accordion-content {
+    display: block;
+}
