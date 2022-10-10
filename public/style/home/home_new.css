@@ -34,14 +34,18 @@
     background-color: var(--primary-low-opacity);
 }
 
+.accordion-general * {
+    font: inherit;
+}
+
 .accordion-content {
     padding: 0 18px;
     background-color: white;
-    display: none;
+    max-height: 0;
     overflow: hidden;
-    transition: display 0.5s ease-out;
+    transition: max-height 0.4s 0s ;
 }
 
 .active-accordion .accordion-content {
-    display: block;
+    max-height: 1000px;
 }
