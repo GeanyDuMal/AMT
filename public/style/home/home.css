@@ -1,23 +1,3 @@
-.top-text {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 3em;
-    color: #212529;
-    margin: 0 10px;
-    text-align: center;
-}
-
-.top-text-sub {
-    text-align: center;
-    font-size: 1.5em;
-    margin: 0 10px;
-}
-
-.body-text {
-    margin-top: 3vw;
-    text-align: center;
-}
-
-/* Style the buttons that are used to open and close the accordion panel */
 .accordion-button {
     background-color: #eee;
     color: #444;
@@ -48,4 +28,27 @@
 
 .active-accordion .accordion-content {
     max-height: 1000px;
+}
+
+.body-text {
+    margin-top: 3vw;
+    text-align: center;
+}
+
+#img-iut {
+    max-width: 80vw;
+}
+
+.top-text {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3em;
+    color: #212529;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.top-text-sub {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 10px;
 }
