@@ -1,85 +1,51 @@
-/* End Colors */
-/* line 23, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-
-/* End Global */
-/* Navbar */
-/* line 30, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.navbar {
-  /* position: fixed; */
-  top: 0;
-  width: 100%;
-  background-color: #212529; }
-
-/* End Navbar */
-/* Page Title */
-/* line 85, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
 .top-text {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 3em;
-  color: #212529;
-  margin-top: 10px;
-  text-align: center; }
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3em;
+    color: #212529;
+    margin: 0 10px;
+    text-align: center;
+}
 
-/* line 93, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.motto {
-  text-align: center;
-  font-size: 1.5em; }
+.top-text-sub {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 10px;
+}
 
-/* line 98, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.body__text {
-  margin-top: 3vw;
-  text-align: center; }
+.body-text {
+    margin-top: 3vw;
+    text-align: center;
+}
 
-/* End Page Title */
-/* Img Iut */
-/* line 106, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel img {
-  width: auto; }
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion-button {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
 
-/* line 111, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel-fade .carousel-inner .item {
-  opacity: 0;
-  -webkit-transition-property: opacity;
-  -moz-transition-property: opacity;
-  -o-transition-property: opacity;
-  transition-property: opacity; }
+.active-accordion .accordion-button, .accordion-button:hover {
+    background-color: var(--primary-low-opacity);
+}
 
-/* line 119, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel-fade .carousel-inner .active {
-  opacity: 1; }
+.accordion-general * {
+    font: inherit;
+}
 
-/* line 123, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel-fade .carousel-inner .active.left,
-.carousel-fade .carousel-inner .active.right {
-  left: 0;
-  opacity: 0;
-  z-index: 1; }
+.accordion-content {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s 0s ;
+}
 
-/* line 129, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel-fade .carousel-inner .next.left,
-.carousel-fade .carousel-inner .prev.right {
-  opacity: 1; }
-
-/* line 134, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel-fade .carousel-control {
-  z-index: 2; }
-
-/* line 138, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.carousel-inner {
-  display: flex;
-  align-items: center; }
-
-@media only screen and (min-width: 850px) {
-  /* line 144, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-  .carousel {
-    display: block; }
-  /* line 148, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-  .carousel-inner {
-    height: 75vh; } }
-
-/* line 153, ../../Github_clones/Website_AEDI/Website/public/style/home/scss/home.scss */
-.imgiut {
-  width: 100%;
-  height: auto; }
-
-/*# sourceMappingURL=home.css.map */
+.active-accordion .accordion-content {
+    max-height: 1000px;
+}
