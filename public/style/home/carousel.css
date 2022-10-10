@@ -1,13 +1,13 @@
-.slider-wrapper {
+.carousel {
     margin: 1rem;
     position: relative;
     overflow: hidden;
-    height: 82vh;
+    max-height: 82vh;
 }
 
 .slides-container {
     width: 100%;
-    height: inherit;
+    max-height: inherit;
     display: flex;
     list-style: none;
     margin: 0;

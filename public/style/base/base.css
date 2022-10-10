@@ -5,7 +5,8 @@
     --light-grey: #b9b9b9;
     --primary-dark: #4c0d00;
     --primary: #861a00;
-    --primary-light: #ad1f01;
+    --primary-light: #b2452e;
+    --primary-low-opacity: rgba(76, 13, 0, 0.2);
 }
 
 a {

@@ -17,54 +17,31 @@
     text-align: center;
 }
 
-.carousel img {
-    width: auto;
-}
-
-.carousel-fade .carousel-inner .item {
-    opacity: 0;
-    -webkit-transition-property: opacity;
-    -moz-transition-property: opacity;
-    -o-transition-property: opacity;
-    transition-property: opacity;
-}
-
-.carousel-fade .carousel-inner .active {
-    opacity: 1;
-}
-
-.carousel-fade .carousel-inner .active.left,
-.carousel-fade .carousel-inner .active.right {
-    left: 0;
-    opacity: 0;
-    z-index: 1;
-}
-
-.carousel-fade .carousel-inner .next.left,
-.carousel-fade .carousel-inner .prev.right {
-    opacity: 1;
-}
-
-.carousel-fade .carousel-control {
-    z-index: 2;
-}
-
-.carousel-inner {
-    display: flex;
-    align-items: center;
-}
-
-@media only screen and (min-width: 850px) {
-    .carousel {
-        display: block;
-    }
-
-    .carousel-inner {
-        height: 75vh;
-    }
-}
-
-.imgiut {
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion-button {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
     width: 100%;
-    height: auto;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+.active-accordion .accordion-button, .accordion-button:hover {
+    background-color: var(--primary-low-opacity);
+}
+
+.accordion-content {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+    transition: display 0.5s ease-out;
+}
+
+.active-accordion .accordion-content {
+    display: block;
 }
