@@ -88,15 +88,19 @@ body {
     border-radius: 10px;
 }
 
-.flex_vertical {
-    display: flex;
-    flex-direction: column;
+.flex-centered {
+    align-items: center;
 }
 
-.flex_horizontal {
+.flex-horizontal {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.flex-vertical {
+    display: flex;
+    flex-direction: column;
 }
 
 .footer {
@@ -129,6 +133,11 @@ body {
     padding-left: 10px;
 }
 
+.form-group {
+    width: 100%;
+    font-size: 1rem;
+}
+
 h4 {
     font-size: 1.5rem;
     margin-top: 0;
@@ -145,6 +154,18 @@ h4 {
 
 .icon:hover {
     color: var(--primary);
+}
+
+.input {
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.75rem;
+}
+
+.input-label {
+    display: block;
+    font-size: 1.5rem;
+    font-family: "Bebas Neue", sans-serif;
 }
 
 .navbar {
