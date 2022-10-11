@@ -170,7 +170,7 @@ class OrderedManager
      * @param Client|null $client Client
      * @return array An array of payment type that are allowed fot this Ordered
      */
-    public function getAllowedPaymentType($purchaseList, Client $client = null): array
+    public function getAllowedPaymentType(array $purchaseList, Client $client = null): array
     {
         $priceManager = new PriceManager($this->manager);
 

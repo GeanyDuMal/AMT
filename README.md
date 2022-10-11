@@ -43,3 +43,9 @@ Ce site permet de :
 
 ### <ins>Deploiement<ins>
 Pour découvrir comment nous avons déployé le site, veuillez vous référer au [document suivant](./Deploiement.md)
+
+
+### <ins>Support<ins>
+Le repository qui suit servira de support afin que les clients et utilisateurs puissent créer des tickets pour remonter des problemes ou demander des améliorations
+
+<a>https://github.com/GeanyDuMal/AEDI_Support</a>
