@@ -10,7 +10,7 @@ blocksProduct.forEach(block => {
       var btnUp = block.querySelector("div .block_button .btn_plus");
       var btnDown = block.querySelector("div .block_button .btn_minus");
       var compteur = block.querySelector("div .input_quantity");
-      var quantityAvailable = parseInt(block.querySelector(".flex_vertical .quantity_block .quantity_value").innerHTML);
+      var quantityAvailable = parseInt(block.querySelector(".flex-vertical .quantity_block .quantity_value").innerHTML);
 
       btnUp.addEventListener("click", () => {
             if (quantityAvailable > parseInt(compteur.value)) {

@@ -1,87 +1,69 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}
     Connexion
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/connexion/connexion.css">
-
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    {# Icons #}
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    {# End Google Fonts #}
+    <link rel="stylesheet" href="{{ asset('style/connexion/connexion.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/script/connexion/login.js"></script>
-    <script src="/script/generic/formGenericFunction.js"></script>
-
-    {# Bootstrap JS Import #}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    {# End Bootstrap JS Import #}
+    <script src="{{ asset('script/connexion/login.js') }}"></script>
+    <script src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
 {% block body %}
-    <div class="flex_vertical centered_flex">
-        {% block navbar %}{% endblock %}
+    <div class="flex-vertical flex-centered">
+        {% block navbar %}
+        {% endblock %}
 
         {# Top bar #}
-        <div class="top">
-            <h1 class="top-text">Connexion</h1>
+        <div class="navbar top">
             <a href="{{ path("home") }}">
-            <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
+                <img class="back-arrow" src="{{ asset('img/icons/back_w.png') }}" alt="back arrow">
+            </a>
+            <h1 class="top-text">Connexion</h1>
+            <div class="back-arrow"></div>
         </div>
         {# End Top bar #}
 
+        <form action="" class="flex-vertical flex-centered" method="post" id="form-login" onsubmit="disableButton()">
+            <img src="{{ asset('img/connexion/user.png') }}" id="img_profile" alt="">
 
-        <form action="" class="flex_vertical centered_flex" method="post" id="form_login" onsubmit="disableButton()">
-            <img src="/img/connexion/user.png" alt="" id="img_profile">
-            
-            {# Form Inputs with floatig label #}
-            <div class="form-floating">
-                <input type="text" name="login" class="form-control" value="{{ lastLogin }}" placeholder="Email">
-                <label for="floating">Login</label>
+            <div class="form-group">
+                <label for="login" class="input-label">Login</label>
+                <input type="text" name="login" class="input form-input" value="{{ lastLogin }}">
             </div>
 
-            <div class="form-floating">
-                <input type="password" name="password" class="form-control" placeholder="Password">
-                <label for="floating">Mot De Passe</label>
+            <div class="form-group">
+                <label for="password" class="input-label">Mot De Passe</label>
+                <input type="password" name="password" class="input form-input">
             </div>
             {# End Form Inputs with floatig label #}
 
             {# Message d'erreur #}
             {% if error %}
-                <div class="alert alert-dismissible alert-primary">
-                    Login ou mot de passe incorrect
+                <div class="form-group flex-horizontal flex-centered">
+                    <div class="message message-incorrect">
+                        Login ou mot de passe incorrect
+                    </div>
                 </div>
             {% endif %}
             {# End erreur #}
 
-            <div class="flex_vertical centered_flex">
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputLogin()">
                     Se Connecter
                 </button>
             </div>
         </form>
 
-        <div class="text_bottom">
+        <div class="text-bottom">
             Pas encore Client ? <a href="{{ path('signin') }}">Inscrivez vous</a>
         </div>
-        <div class="text_bottom">
+        <div class="text-bottom">
             <a href="{{ path('passwordForgot') }}">Mot de passe oublié ?</a>
         </div>
     </div>
