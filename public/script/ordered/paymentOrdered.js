@@ -7,6 +7,5 @@ if (form.querySelectorAll("button").length === 1){
 }
 
 function preventPayment() {
-    return confirm("Attention, toute commande effectuée ne pourras etre remboursée, etes vous sûr des elements que vous " +
-        "avez saisi ?")
+    return confirm("Attention, toute commande effectuée ne pourras etre remboursée, etes vous sûr des elements que vous avez saisi ?")
 }
