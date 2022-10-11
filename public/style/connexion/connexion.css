@@ -3,19 +3,12 @@
       height: auto;
 }
 
-.container {
-      margin-top: 3vh;
-}
-
-
-
-.form-input {
-      width: 99%;
-      text-align: justify;
-}
-
 .form-input:focus {
       outline: none;
+}
+
+.top {
+      margin-bottom: 3vh;
 }
 
 .top-text {
@@ -25,36 +18,8 @@
       margin-top: 10px;
 }
 
-
-/*********************************************************/
-
-
-/*
-.message_information {
-      padding: 5px;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin: 10px;
-}
-
-.message_correct {
-      color: rgb(58, 189, 79);
-}
-
-.message_incorrect {
-      color: rgb(189, 64, 64);
-}
-*/
-
-form{
-      border: #dbdbdb solid 2px;
-      border-radius: 10px;
-      padding: 5px;
-}
-
-form>* {
-      margin-top: 10px;
-      width: 60vw;
+.text-bottom > * {
+      margin: 0 10px;
 }
 
 #img_profile {
@@ -79,17 +44,14 @@ form>* {
       transition: box-shadow 0.2s;
 }
 
-.text_bottom {
+.text-bottom {
       display: flex;
-      margin-top: 15px;
       font-size: 1.2rem;
       text-align: center;
-      margin-bottom: 15px;
+      margin: 10px 0;
 }
 
-.text_bottom>* {
-      margin: 0 10px;
-}
+/***********        Pas utilisé sur Login          *****************/
 
 @media(max-width: 800px) {
       .input_text {
@@ -121,9 +83,9 @@ form>* {
             font-size: 1rem;
       }
 }
-
 /*Modif du style de SweetAlert*/
+/*
 .swal2-html-container ul {
       width: fit-content;
       text-align: left;
-}
+}*/

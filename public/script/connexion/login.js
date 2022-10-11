@@ -2,7 +2,7 @@
  * Va verifier les input dans le form
  */
 function verifyInputLogin() {
-      var form = document.querySelector("#form_login");
+      var form = document.querySelector("#form-login");
 
       var valueLogin = form.login.value;
       var valuePassword = form.password.value;
