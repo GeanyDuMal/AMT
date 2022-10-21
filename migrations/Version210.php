@@ -15,7 +15,8 @@ final class Version210 extends AbstractMigration
     public function getDescription(): string
     {
         return 'Migration concernant le version 2.1.0 : 
-                - Ajout des dates de creations sur les clients et les posts';
+                - Ajout des dates de creations sur les clients et les posts
+                - Création de la table password_forgot_request';
     }
 
     public function up(Schema $schema): void
@@ -34,7 +35,7 @@ final class Version210 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE password_forgot_request');
+        $this->addSql('DROP TABLE IF EXISTS password_forgot_request');
 
         $this->addSql('ALTER TABLE post DROP creation_date');
 

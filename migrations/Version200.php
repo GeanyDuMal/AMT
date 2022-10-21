@@ -14,7 +14,8 @@ final class Version200 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Migration pour la version 2.0.0';
+        return 'Migration pour la version 2.0.0 :
+         - Création de toutes les tables';
     }
 
     public function up(Schema $schema): void
