@@ -20,6 +20,8 @@ class ClientManager
     public ClientRepository $clientRepository;
     const AMOUNT_FIDELITY_SWITCH = 150;
     const AMOUNT_BALANCE_SWITCH = 0.80;
+    const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
+
 
     public function __construct(EntityManagerInterface $managerController)
     {
@@ -29,9 +31,7 @@ class ClientManager
 
     public function persist(Client $client): void
     {
-        if (!$client->getCreationDate()){
-            $client->setCreationDate(new DateTime('now'));
-        }
+        $this->defineCreationDateIfNecessary($client);
 
         $this->setPresidentIfNecessary($client);
 
@@ -154,7 +154,6 @@ class ClientManager
 
     /**
      * Verify the data :
-     * Check if the password contains a special character
      * Check if the different input are the right lenght
      * Check if the name and first name doesn't contain a special character
      * @param Client $client
@@ -162,11 +161,9 @@ class ClientManager
      */
     public function verifyClient(Client $client): bool
     {
-        $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
 
-        $containsSpecialPassword = $this->verifPassword($client->getPassword());
-        $containsSpecialName = strpbrk($client->getName(), $regexSpecial);
-        $containsSpecialFirstName = strpbrk($client->getFirstName(), $regexSpecial);
+        $containsSpecialName = strpbrk($client->getName(), self::REGEX_SPECIAL);
+        $containsSpecialFirstName = strpbrk($client->getFirstName(), self::REGEX_SPECIAL);
 
         $nameUpperTwo = (strlen($client->getName()) > 2);
         $firstNameUpperTwo = (strlen($client->getFirstName()) > 2);
@@ -175,7 +172,7 @@ class ClientManager
 
         $this->correctBalanceAndFidelity($client);
 
-        return ($containsSpecialPassword && $loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
+        return ($loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
             && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
             in_array($client->getClientType(), ClientType::getAll()));
     }
@@ -185,11 +182,9 @@ class ClientManager
      * @param String password
      * @return boolean
      */
-    public function verifPassword(string $password): bool
+    public function verifyPassword(string $password): bool
     {
-        $regexSpecial = "#$%^&*()+=-[]';,./{}|:<>?~";
-
-        return (strpbrk(trim($password), $regexSpecial) && strlen(trim($password)) >= 5);
+        return (strpbrk(trim($password), self::REGEX_SPECIAL) && strlen(trim($password)) >= 5);
     }
 
     /**
@@ -207,11 +202,14 @@ class ClientManager
             case ClientType::ASSOCIATION:
             {
                 switch ($roleAssociation) {
-                    case "President":
+                    case AssociationRole::PRESIDENT:
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
-                    case "Tresorier":
+                    case (AssociationRole::TRESORIER || AssociationRole::VICE_PRESIDENT):
                         $client->setRoles([SymfonyRole::TRESORIER]);
+                        break;
+                    case AssociationRole::SECRETAIRE:
+                        $client->setRoles([SymfonyRole::SECRETAIRE]);
                         break;
                     default:
                         $client->setRoles([SymfonyRole::ASSOC]);
@@ -242,7 +240,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function correctBalanceAndFidelity(Client $client)
+    public function correctBalanceAndFidelity(Client $client): void
     {
         if ($client->getBalance() == null || floatval($client->getBalance()) < 0) {
             $client->setBalance(0);
@@ -303,6 +301,18 @@ class ClientManager
 
         if ($passwordForgotRequest){
             $passwordForgotRequestManager->remove($passwordForgotRequest);
+        }
+    }
+
+    /**
+     * If the $client doesn't exist in database, we set him the creationDate attribute to now
+     * @param Client $client
+     * @return void
+     */
+    private function defineCreationDateIfNecessary(Client $client): void
+    {
+        if (!$this->clientExists($client)){
+            $client->setCreationDate(new DateTime('now'));
         }
     }
 }

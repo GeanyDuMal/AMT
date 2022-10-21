@@ -40,15 +40,22 @@
     {% block navbar %}
         <div class="pos-f-t">
             <nav class="navbar navbar-dark position-fixed">
-                <button style="margin-left: 0.5rem;" onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button onclick="openNav()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a href="{{ path("home") }}">
                     <img src="/img/logo_menu.png" width="auto" height="50" alt="logo-menu" border="0"></a>
                 </a>
-                <a href="{{ path("profile") }}">
-                    <img style="margin-right: 0.5rem;" src="/img/icons/user_w.png" width="40" height="40" class="d-inline-block" alt="user" border="0"></a>
-                </a>
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path("profile") }}">
+                        Profil
+                    </a>
+                {% else %}
+                    <a href="{{ path("login") }}">
+                        Se connecter
+                    </a>
+                {% endif %}
             </nav>
         </div>
 
@@ -59,7 +66,6 @@
                     <img style="margin-top: 1rem;" src="/img/icons/back_w.png" alt="Arrow" width="auto" height="50"></a>
                     <div style="margin-right: 1em;">
 
-                        {# Lien à modif #}
                         <div class="block_nav">
                             <a href="{{ path("home") }}">Accueil</a>
                             <a href="{{ path("menuProduct") }}">Nos&nbspProduits</a>
@@ -70,21 +76,24 @@
                                 <div class="block_nav">
                                     <a href="{{ path("createOrdered") }}">Commander</a>
                                 </div>
-                                {% if is_granted('ROLE_TRESORIER') %}
+                                {% if is_granted('ROLE_SECRETAIRE') %}
                                     <div class="block_nav">
-                                        <a href="{{ path("menuOrdered") }}">Gestion&nbspCommande</a>
                                         <a href="{{ path("statistics") }}">Statistiques</a>
+                                        <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
                                     </div>
-                                    {% if is_granted('ROLE_PRESIDENT') %}
+                                    {% if is_granted('ROLE_TRESORIER') %}
                                         <div class="block_nav">
-                                            <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
-                                            <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
+                                            <a href="{{ path("menuOrdered") }}">Gestion&nbspCommande</a>
                                         </div>
+                                        {% if is_granted('ROLE_PRESIDENT') %}
+                                            <div class="block_nav">
+                                                <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
+                                            </div>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}
-                        {# <a href="#">Random</a> #}
                         {# &nbsp <-- remplace le ' ' dans le menu lateral #}
                     </div>
                 </div>
@@ -93,11 +102,8 @@
         {% endblock %}
         {# ---- End Navbar ---- #}
 
-
-
     {% block body %}
     {% endblock %}
-
 
     {# Footer #}
     {% block footer %}
@@ -107,12 +113,17 @@
                     <div class="column-xs-12">
                         <ul class="social">
                             <li>
-                                <a href="https://www.linkedin.com/company/go-info/" target="_blank" rel="noopener noreferrer">
+                                <a href="https://www.linkedin.com/company/go-info/" target="new" rel="noopener noreferrer">
                                     <span class="fab fa-linkedin-in icon icon-red"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="https://discord.gg/RFCFkWPvsU" target="_blank" rel="noopener noreferrer">
+                                <a href="https://github.com/GeanyDuMal/AEDI_Support" target="new" rel="noopener noreferrer" style="color: white">
+                                    Support
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://discord.gg/RFCFkWPvsU" target="new" rel="noopener noreferrer">
                                     <span class="fab fa-discord icon"></span>
                                 </a>
                             </li>

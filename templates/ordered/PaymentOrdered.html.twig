@@ -51,7 +51,10 @@
 
                   {% for paymentType in paymentTypeList %}
                         <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary" onclick="return preventPayment()">
-                              {{ paymentType }}
+                            {{ paymentType }}
+                            {% if paymentType == "Carte Bancaire" %}
+                                <br> + {{ ((montantTotal//2)+1) * 5 }}cts
+                            {% endif %}
                         </button>
                   {% endfor %}
             </form>

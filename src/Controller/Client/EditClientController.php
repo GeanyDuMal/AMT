@@ -25,31 +25,31 @@ class EditClientController extends AbstractController
      * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
-                          ValidatorInterface $validator, AssociationRepository $associationRepository,
-                          ClientRepository $clientRepository): Response
+                          AssociationRepository $associationRepository, ClientRepository $clientRepository): Response
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
         $client = $clientRepository->find($id);
-        $assosRoles = AssociationRole::getAll();
-        $message = "";
+        $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
         $member = $associationRepository->findOneBy(["member" => $client]);
+        $associationManager = new AssociationManager($manager);
+        $assosRoles = $associationManager->getLowerOrEqualAssociationRole($user);
+        $message = "";
+        $allowEdit = $this->isGranted($client->getRoles()[0]);
 
         if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
-            $associationManager = new AssociationManager($manager);
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $client->getLogin(), $data->get("password"),
                 $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
 
 
-            if ($clientManager->verifyClient($client)) {
-                $storedClient = $clientRepository->find($id);
-
+            // Verify the confirmity of a client and verify that the login correspond to the stored one
+            if ($clientManager->verifyClient($client) && strcmp($client->getLogin(), $data->get('login'))) {
                 /*
                  * If we set the ClientType Association, we need to put the client in the table Association
                  */
@@ -62,21 +62,17 @@ class EditClientController extends AbstractController
                     $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
                 }
 
-                if (strcmp($storedClient->getLogin(), $client->getLogin()) == 0 || $clientManager->clientExists($client)) {
-                    $message = "Ce login existe déja";
-                } else {
-                    $clientManager->persist($client);
-                    if ($client->getClientType() == ClientType::ASSOCIATION) {
-                        $member = $associationRepository->findOneBy(["member" => $client]);
-                        if ($member->getRole() == AssociationRole::PRESIDENT) {
-                            $associationManager->removeOtherPresidents($member);
-                        }
+                $clientManager->persist($client);
+                if ($client->getClientType() == ClientType::ASSOCIATION) {
+                    $member = $associationRepository->findOneBy(["member" => $client]);
+                    if ($member->getRole() == AssociationRole::PRESIDENT && $allowEdit) {
+                        $associationManager->removeOtherPresidents($member);
                     }
-
-                    return $this->redirectToRoute('menuClient', [
-                        "message" => "Modification avec succés"
-                    ]);
                 }
+
+                return $this->redirectToRoute('menuClient', [
+                    "message" => "Modification effectué avec succès"
+                ]);
             }
         }
 
@@ -85,6 +81,7 @@ class EditClientController extends AbstractController
             'message' => $message,
             'client' => $client,
             'member' => $member,
+            'allowEdit' => $allowEdit,
             'clientTypes' => ClientType::getAll()
         ]);
     }

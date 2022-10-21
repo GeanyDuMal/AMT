@@ -28,18 +28,17 @@ class SignInController extends AbstractController
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client;
-        $clientExist = false;
+        $message = "";
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
         if (!is_null($inputParameterBag->get("name"))) {
-            $hashedPassword = $passwordHasher->hashPassword($client, trim($inputParameterBag->get("password")));
 
             $clientManager->setData($client, $passwordHasher, strtoupper(trim($inputParameterBag->get("name"))),
                 trim($inputParameterBag->get("firstName")), trim($inputParameterBag->get("login")),
                 trim($inputParameterBag->get("password")), 0, ClientType::ETUDIANT, null,
                 0);
 
-            $verifPassword = trim($inputParameterBag->get("confirmPassword"));
+            $confirmPassword = trim($inputParameterBag->get("confirmPassword"));
 
             /*
              * Si le form n'est pas vide,
@@ -49,17 +48,22 @@ class SignInController extends AbstractController
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
             if ($clientManager->verifyClient($client) && !$clientManager->clientExists($client)
-                && (trim($inputParameterBag->get("password")) == $verifPassword)) {
-                $clientManager->persist($client);
+                && (trim($inputParameterBag->get("password")) == $confirmPassword)
+                && $clientManager->verifyPassword($inputParameterBag->get("password"))) {
 
+                $clientManager->persist($client);
                 return $this->redirectToRoute('login');
             } else if ($clientManager->clientExists($client)) {
-                $clientExist = true;
+                $message = "Ce client existe déjà";
+            } else if (!$clientManager->verifyPassword($inputParameterBag->get("password"))) {
+                $message = "Votre mot de passe ne respecte pas les règles imposés";
+            } else {
+                $message = "Merci de vérifier votre saisie";
             }
         }
 
         return $this->render('connexion/Signin.html.twig', [
-            "clientExist" => $clientExist
+            "message" => $message
         ]);
     }
 }

@@ -22,29 +22,30 @@ class CreateClientController extends AbstractController
     /**
      * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
      */
-    public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher, Request $request,
-                          EntityManagerInterface $manager, ValidatorInterface $validator): Response
+    public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher,
+                          Request $request, EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)){
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)){
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
-        $assosRoles = AssociationRole::getAll();
+        $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
+        $associationManager = new AssociationManager($manager);
+        $assosRoles = $associationManager->getLowerOrEqualAssociationRole($user);
         $message = "";
 
         if ($data->count() > 0) {
             $clientManager = new ClientManager($manager);
-            $associationManager = new AssociationManager($manager);
             $client = new Client();
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                 $data->get("firstName"), $data->get("login"), $data->get("password"),
                 $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
                 
-            if($clientManager->verifyClient($client)) {
+            if($clientManager->verifyClient($client) && $clientManager->verifyPassword($data->get("password"))) {
                 if ($clientManager->clientExists($client)) {
-                    $message = "Ce client existe déja";
+                    $message = "Ce client existe déjà";
                 } else {
                     $clientManager->persist($client);
 

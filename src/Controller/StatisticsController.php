@@ -22,7 +22,7 @@ class StatisticsController extends AbstractController
     public function index(ProductRepository $productRepository, PostRepository $postRepository, PurchaseRepository $purchaseRepository,
                           OrderedRepository $orderedRepository, ClientRepository $clientRepository, EntityManagerInterface $manager): Response
     {
-        if (!$this->isGranted(SymfonyRole::TRESORIER)){
+        if (!$this->isGranted(SymfonyRole::ASSOC)){
             return $this->redirectToRoute('home');
         }
 

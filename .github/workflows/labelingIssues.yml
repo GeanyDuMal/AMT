@@ -15,7 +15,6 @@ jobs:
           ignore-comments: true
           labels-synonyms: '{
             "Minor":["Minor"],
-            "Medium":["Medium"],
             "Critical":["Critical"]
           }'
 #          labels-not-allowed: '["good first issue"]'

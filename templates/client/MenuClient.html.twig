@@ -5,18 +5,17 @@
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
 	<link rel='stylesheet' href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
 	<link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-	<script type="text/javascript" src="{{ asset('script/client/ajaxMenuClient.js') }}"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
+	<script type="text/javascript" src="{{ asset('script/client/ajaxMenuClient.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -27,7 +26,7 @@
 		{% if message %}
 			<div class="alert alert-dismissible alert-success">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-				<strong>{{ message }}!</strong>
+				<strong>{{ message }}</strong>
 			</div>
 		{% endif %}
 		<div align="right">
