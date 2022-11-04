@@ -5,25 +5,13 @@
 {% endblock %} 
 
 {% block stylesheets %}
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <link rel="stylesheet" href="/style/connexion/connexion.css">
-    <link rel="stylesheet" href="/style/connexion/profile.css">
-
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    {# End Google Fonts #}
-    
+    <link rel="stylesheet" href="{{ asset('style/connexion/connexion.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/connexion/profile.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/script/connexion/profile.js"></script>
-    <script src="/script/generic/formGenericFunction.js"></script>
+    <script src="{{ asset('script/connexion/profile.js') }}"></script>
+    <script src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block navbar %}
@@ -32,10 +20,12 @@
 {% block body %}
     <div class="flex_vertical centered_flex principal_block">
         {# Top bar #}
-        <div class="top">
+        <div class="navbar top">
+            <a href="{{ path("home") }}">
+                <img class="back-arrow" src="{{ asset('img/icons/back_w.png') }}" alt="back arrow">
+            </a>
             <h1 class="top-text">Profil</h1>
-            <a href={{ path('home') }}>
-            <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
+            <div class="back-arrow"></div>
         </div>
         {# End Top bar #}
 
@@ -43,7 +33,7 @@
             <div class="client-info">
                 <img src="/img/connexion/user.png" alt="" id="img_profile">
 
-                <h1 class="text_block">
+                <h1 class="text-block">
                     Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
                 </h1>
 
@@ -58,7 +48,7 @@
                 {% endif %}
 
                 {# Client Informations #}
-                <table class="table_information">
+                <table class="table-information">
                     <tr>
                         <td>Solde :</td>
                         <td>{{ user.balance }} €</td>
@@ -79,7 +69,7 @@
                     <h4>
                         Rappel
                     </h4>
-                    <div class="text_block">
+                    <div class="text-block">
                         <p class="d-flex justify-content-center">
                             <em> 150 point de fidelité = 0.8€ </em>
                         </p>
@@ -91,19 +81,21 @@
                 {# End Points #}
 
                 {# Options #}
-                <button class="btn btn-secondary" onclick="openCloseEditForm()">
-                    Modifier le mot de passe
-                </button>
-                <a href="{{ path('logout') }}">
-                    <button class="btn btn-primary disableable">
-                        Se déconnecter
+                <div class="btn-block">
+                    <button class="btn btn-secondary" onclick="openCloseEditForm()">
+                        Modifier le mot de passe
                     </button>
-                </a>
-                <a href="{{ path('deleteProfile') }}" >
-                    <button class="btn btn-secondary disableable" onclick="return warningSuppressionAccount()">
-                        Supprimer son compte
-                    </button>
-                </a>
+                    <a href="{{ path('logout') }}">
+                        <button class="btn btn-primary disableable">
+                            Se déconnecter
+                        </button>
+                    </a>
+                    <a href="{{ path('deleteProfile') }}" >
+                        <button class="btn btn-secondary disableable" onclick="return warningSuppressionAccount()">
+                            Supprimer son compte
+                        </button>
+                    </a>
+                </div>
                 {# End Options #}
             </div>
         </div>
@@ -112,23 +104,23 @@
     {# Edit Password #}
     <form class="edit_password flex_vertical centered_flex secondary_block" onsubmit="disableButton()" method="post" id="form_edit_password">
         <div class="edit-password">
-            <div class="form-floating">
-                <input type="password" name="oldPassword" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Ancien mot de passe</label>
+            <div class="form-group">
+                <label for="password" class="input-label">Ancien mot de passe</label>
+                <input type="password" name="oldPassword" class="form-input">
             </div>
 
-            <div class="form-floating">
-                <input type="password" name="newPassword" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Nouveau mot de passe</label>
-                <ul class="list_require">
+            <div class="form-group">
+                <label for="password" class="input-label">Nouveau mot de passe</label>
+                <input type="password" name="newPassword" class="form-input">
+                <ul class="list-require">
                     <li>Au moins 5 caractères</li>
                     <li>Au moins 1 caractère spécial</li>
                 </ul>
             </div>
 
-            <div class="form-floating">
-                <input type="password" name="confirmPassword" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Confirmation du nouveau mot de passe</label>
+            <div class="form-group">
+                <label for="password" class="input-label">Confirmation du nouveau mot de passe</label>
+                <input type="password" name="confirmPassword" class="form-input">
             </div>
 
             <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputEditPassword()">

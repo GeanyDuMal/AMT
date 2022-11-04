@@ -1,6 +1,7 @@
 .back-arrow {
       width: 40px;
       height: auto;
+
 }
 
 .form-input:focus {
@@ -27,21 +28,13 @@
       max-width: 110px;
 }
 
-.list_require {
+.list-require {
       margin: 0;
-}
-
-.list_require li {
-      font-size: 0.8rem;
+      font-size: 18px;
 }
 
 .btn {
-      text-align: center;
       width: 100%;
-      padding: 5px;
-      cursor: pointer;
-      border-radius: 10px;
-      transition: box-shadow 0.2s;
 }
 
 .text-bottom {
@@ -54,28 +47,7 @@
 /***********        Pas utilisé sur Login          *****************/
 
 @media(max-width: 800px) {
-      .input_text {
-            min-height: fit-content;
-            justify-items: end;
-      }
-
-      .input_text * {
-            width: 70vw;
-            max-width: 750px;
-            height: 10vw;
-      }
-
-      .input_text label {
-            font-size: 1.5rem;
-            height: fit-content;
-      }
-
-      .input_text input {
-            font-size: 1.2rem;
-      }
-
-      .list_require li {
-            font-size: 0.9rem;
+      .list-require li {
             height: max-content;
       }
 
