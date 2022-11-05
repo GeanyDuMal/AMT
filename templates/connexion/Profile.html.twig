@@ -31,7 +31,7 @@
 
         <div class="hiding">
             <div class="client-info">
-                <img src="/img/connexion/user.png" alt="" id="img_profile">
+                <img src="{{ asset('img/connexion/user.png') }}" alt="" id="img_profile">
 
                 <h1 class="text-block">
                     Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
@@ -69,8 +69,8 @@
                     <h4>
                         Rappel
                     </h4>
-                    <div class="text-block">
-                        <p class="d-flex justify-content-center">
+                    <div class="flex-vertical">
+                        <p class="text-block">
                             <em> 150 point de fidelité = 0.8€ </em>
                         </p>
                         <p>
@@ -102,7 +102,7 @@
     </div>
 
     {# Edit Password #}
-    <form class="edit_password flex_vertical centered_flex secondary_block" onsubmit="disableButton()" method="post" id="form_edit_password">
+    <form class="edit_password flex_vertical centered_flex secondary_block" onsubmit="disableButton()" method="post" id="form-edit-password">
         <div class="edit-password">
             <div class="form-group">
                 <label for="password" class="input-label">Ancien mot de passe</label>

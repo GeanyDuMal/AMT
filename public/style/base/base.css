@@ -23,6 +23,10 @@ a:hover, a:active {
     height: 50px;
 }
 
+.block-form-group {
+    width: 100%;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -113,6 +117,7 @@ body {
     position: relative;
     text-align: center;
     width: 100%;
+    margin-top: 10px;
 }
 
 .footer a {

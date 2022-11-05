@@ -5,103 +5,80 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/connexion/connexion.css">
-
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    {# Icons #}
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    {# End Google Fonts #}
+    <link rel="stylesheet" href="{{ asset('style/connexion/connexion.css') }}">
 {% endblock %}
 
 
 {% block javascripts %}
-    <script src="/script/connexion/signin.js"></script>
-    <script src="/script/generic/formGenericFunction.js"></script>
-
-    {# Bootstrap JS Import #}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    {# End Bootstrap JS Import #}
+    <script src="{{ asset('script/connexion/signin.js') }}"></script>
+    <script src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-    <div class="flex-vertical centered_flex">
+    <div class="flex-vertical flex-centered">
         {# Top bar #}
         {% block navbar %}{% endblock %}
-        <div class="top">
+        <div class="navbar top">
+            <a href="{{ path("home") }}">
+                <img class="back-arrow" src="{{ asset('img/icons/back_w.png') }}" alt="back arrow">
+            </a>
             <h1 class="top-text">Inscription</h1>
-            <a href={{ path('home') }}>
-                <img class="back-arrow" src="\img\icons\back_w.png" alt="back arrow"></a>
+            <div class="back-arrow"></div>
         </div>
         {# End Top bar #}
 
         {# Form Start #}
-        <form action="" method="post" class="flex_vertical centered_flex" id="form_signin" onsubmit="disableButton()">
-            <img src="/img/connexion/user.png" alt="" id="img_profile">
-            <div class="flex_horizontal">
-                <div class="form-floating col-md-6">
-                    <input type="text" name="name" autofocus class="form-control" placeholder="Nom">
-                    <label for="floating">Nom</label>
+        <form action="" method="post" class="flex-vertical flex-centered" id="form-signin" onsubmit="disableButton()">
+            <img src="{{ asset('img/connexion/user.png') }}" alt="" id="img_profile">
+
+            <div class="flex-horizontal block-form-group">
+                <div class="form-group">
+                    <label for="name" class="input-label">Nom</label>
+                    <input type="text" name="name" class="form-input" value="">
                 </div>
-                <div class="form-floating col-md-6">
-                    <input type="text" name="firstName" autofocus class="form-control" placeholder="Prenom">
-                    <label for="floating">Prénom</label>
+                <div class="form-group">
+                    <label for="firstName" class="input-label">Prénom</label>
+                    <input type="text" name="firstName" class="form-input" value="">
                 </div>
             </div>
 
-            <div class="form-floating">
-                <input type="text" name="login" autofocus class="form-control" placeholder="Login">
-                <label for="floating">Login</label>
+            <div class="form-group">
+                <label for="login" class="input-label">Login</label>
+                <input type="text" name="login" class="form-input" value="">
                 <ul class="list-require">
                     <li>Au moins 5 caractères</li>
                 </ul>
             </div>
 
-            <div class="form-floating">
-                <input type="password" name="password" autofocus class="form-control" placeholder="Password">
-                <label for="floating">Mot De Passe</label>
-                <ul class="list-require">
-                    <li>Au moins 5 caractères</li>
-                    <li>Au moins 1 caractère spécial</li>
-                </ul>
-            </div>
-
-            <div class="form-floating">
-                <input type="password" name="confirmPassword" autofocus class="form-control" placeholder="Password">
-                <label for="floating">Confirmation</label>
+            <div class="flex-horizontal block-form-group">
+                <div class="form-group">
+                    <label for="password" class="input-label">Mot De Passe</label>
+                    <input type="password" name="password" class="form-input">
+                    <ul class="list-require">
+                        <li>Au moins 5 caractères</li>
+                        <li>Au moins 1 caractère spécial</li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" class="input-label">Confirmation</label>
+                    <input type="password" name="confirmPassword" class="form-input">
+                </div>
             </div>
 
             {% if message %}
-                <div class="alert alert-dismissible alert-info fade show">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    <strong>{{ message }}</strong>
+                <div class="form-group flex-horizontal flex-centered">
+                    <div class="message message-incorrect">
+                        {{ message }}
+                    </div>
                 </div>
             {% endif %}
 
-            <div class="flex_vertical centered_flex">
-                <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputSignin()">
-                    S'inscrire
-                </button>
-            </div>
-            <div class="text_block">
-                <p class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputSignin()">
+                S'inscrire
+            </button>
+
+            <div class="flex-vertical">
+                <p class="text-block">
                     <em> 150 point de fidelité = 0.8€ </em>
                 </p>
                 <p>
@@ -112,7 +89,7 @@
         </form>
         {# End Form #}
 
-        <div class="text_bottom">
+        <div class="text-bottom">
             Déja Client ? <a href="{{ path('login') }}">Connectez vous</a>
         </div>
     </div>

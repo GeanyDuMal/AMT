@@ -44,6 +44,11 @@
       margin: 10px 0;
 }
 
+.text-block {
+      margin: 0 10px;
+      text-align: center;
+}
+
 /***********        Pas utilisé sur Login          *****************/
 
 @media(max-width: 800px) {
@@ -51,13 +56,13 @@
             height: max-content;
       }
 
-      .btn, .text_bottom {
+      .btn, .text-bottom {
             font-size: 1rem;
       }
 }
 /*Modif du style de SweetAlert*/
-/*
+
 .swal2-html-container ul {
       width: fit-content;
       text-align: left;
-}*/
+}

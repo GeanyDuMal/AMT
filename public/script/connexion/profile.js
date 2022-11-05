@@ -1,4 +1,4 @@
-var form = document.querySelector("#form_edit_password");
+var form = document.querySelector("#form-edit-password");
 
 function verifyInputEditPassword() {
     let message = "<ul>";
