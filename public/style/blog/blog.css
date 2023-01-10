@@ -18,10 +18,24 @@
   overflow: clip;
 }
 
+.show-post-image-container img {
+  max-width: 50vw;
+  max-height: 60vh;
+  height: auto;
+}
+
+.show-blog-text {
+  max-width: 60vw;
+}
 
 @media screen and (max-width: 600px) {
   .list-card {
     align-items: center;
     flex-direction: column;
+  }
+
+  .show-blog-text {
+    max-width: 80vw;
+    font-size: 1.25rem;
   }
 }

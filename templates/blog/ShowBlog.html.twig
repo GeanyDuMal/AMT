@@ -5,31 +5,17 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
-    <link rel='stylesheet' href="{{ asset('style/blog/css/blog.css') }}">
-    <style>
-        .center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-        }
-    </style>
+    <link rel='stylesheet' href="{{ asset('style/blog/blog.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5 ">
-        <div class="block row g-2 " method="post" >
+    <div class="flex-vertical flex-centered">
+        <div class="flex-vertical flex-centered">
             <h1>{{ blog.title }}</h1>
-            <div class="col-md-12">
-               <img style="max-width:50%;" class="img-responsive center"  src={{ blog.imageLink }}>
+            <div class="show-post-image-container">
+                <img src={{ blog.imageLink }}>
             </div>
-            <div class="col-md-12">
+            <div class="flex-vertical show-blog-text">
                 <p>
                     Post créé le {{ blog.creationDate | date('d/m/Y') }}
                 </p>
@@ -39,5 +25,8 @@
                 </p>
             </div>
         </div>
+        <a href="{{ path("menuBlog") }}">
+            <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+        </a>
     </div>
 {% endblock %}
