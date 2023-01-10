@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="/style/blog/css/blog.css" rel="stylesheet"/>
+    <link href="{{ asset('style/blog/blog.css') }}" rel="stylesheet"/>
 
     {# Google Fonts #}
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -68,8 +68,16 @@
                                 </button>
                             </a>
                             {% if is_granted("ROLE_ASSOC") %}
-                                <a href="{{ path("editBlog", {"id": blog.id}) }}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
-                                <a id="toDelete" class="btn btn-outline-primary rounded-0 float-end">Supprimer</a>
+                                <a href="{{ path("editBlog", {"id": blog.id}) }}">
+                                    <button class="btn btn-secondary">
+                                        Modifier
+                                    </button>
+                                </a>
+                                <a id="toDelete">
+                                    <button class="btn btn-secondary">
+                                        Supprimer
+                                    </button>
+                                </a>
                             {% endif %}
                         </div>
                     </div>
