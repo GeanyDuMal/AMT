@@ -80,7 +80,7 @@ class PostManager
     public function replaceImageIfEmpty(Post $post): void
     {
         if ($post->getImageLink() == "") {
-            $post->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
+            $post->setImageLink('/img/entity/placeholder.png');
         }
     }
 
@@ -91,28 +91,32 @@ class PostManager
      */
     public function downloadPicture(string $link, ?Post $postActual = null): string
     {
-        /**
-         * @newId corresponds a l'ID de $postActual s'il est enregistré sinon le dernier ID enregistré+1
-         */
-        $newId = 1;
+        if ($link != ("" || null)){
+            /**
+             * @newId corresponds a l'ID de $postActual s'il est enregistré sinon le dernier ID enregistré+1
+             */
+            $newId = 1;
 
-        if ($postActual){
-            $storedPost = $this->postRepository->findOneBy([
-                'title' => $postActual->getTitle(),
-                'description' => $postActual->getDescription()]);
+            if ($postActual){
+                $storedPost = $this->postRepository->findOneBy([
+                    'title' => $postActual->getTitle(),
+                    'description' => $postActual->getDescription()]);
+            } else {
+                $storedPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+            }
+
+            if ($storedPost){
+                $newId = $storedPost->getId()+1;
+            }
+
+            $location = "/img/entity/post/img_".$newId.".png";
+
+            $pictureUtils = new PictureUtils();
+
+            return $pictureUtils->downloadPicture($link, $location);
         } else {
-            $storedPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+            return "";
         }
-
-        if ($storedPost){
-            $newId = $storedPost->getId()+1;
-        }
-
-        $location = "/img/entity/post/img_".$newId.".png";
-
-        $pictureUtils = new PictureUtils();
-
-        return $pictureUtils->downloadPicture($link, $location);
     }
 
     /**

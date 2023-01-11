@@ -49,7 +49,7 @@
                             <img src={{ blog.imageLink }}>
                         </div>
                         <div class="card-text">
-                            <div id="idBlog" hidden>{{ blog.id }}</div>
+                            <input type="hidden" id="idBlog" value="{{ blog.id }}">
                             <div class="card-title">
                                 <p>
                                     {{ blog.title }}
@@ -60,23 +60,25 @@
                                     {{ blog.description|slice(0, 40) }}...
                                 </p>
                             </div>
-                            <a href="{{ url('showBlog',{id:blog.id}) }}" >
-                                <button class="btn btn-primary">
-                                    Lire plus
-                                </button>
-                            </a>
-                            {% if is_granted("ROLE_ASSOC") %}
-                                <a href="{{ path("editBlog", {"id": blog.id}) }}">
-                                    <button class="btn btn-secondary">
-                                        Modifier
+                            <div class="flex-horizontal flex-centered show-blog-btn-block">
+                                <a href="{{ url('showBlog',{id:blog.id}) }}" >
+                                    <button class="btn btn-primary">
+                                        Lire plus
                                     </button>
                                 </a>
-                                <a id="toDelete">
-                                    <button class="btn btn-secondary">
-                                        Supprimer
-                                    </button>
-                                </a>
-                            {% endif %}
+                                {% if is_granted("ROLE_ASSOC") %}
+                                    <a href="{{ path("editBlog", {"id": blog.id}) }}">
+                                        <button class="btn btn-secondary">
+                                            Modifier
+                                        </button>
+                                    </a>
+                                    <a id="toDelete">
+                                        <button class="btn btn-secondary">
+                                            Supprimer
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>

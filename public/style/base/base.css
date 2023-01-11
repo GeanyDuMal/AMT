@@ -138,7 +138,6 @@ body {
 .flex-horizontal {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 
 .flex-overflow {
@@ -205,6 +204,11 @@ form > * {
     font-size: 1rem;
     font-weight: 400;
     padding: 0.75rem;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.form-input:focus {
+    outline: none;
 }
 
 h4 {
@@ -229,6 +233,12 @@ h4 {
     display: block;
     font-size: 1.5rem;
     font-family: "Bebas Neue", sans-serif;
+}
+
+.list-card {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-around;
 }
 
 .message {
@@ -317,6 +327,7 @@ h4 {
     width: 100%;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 45px;
+    margin: 10px;
     text-align: center;
 }
 

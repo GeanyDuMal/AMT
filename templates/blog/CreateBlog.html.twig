@@ -1,55 +1,61 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Création d'un Post
+{% endblock %}
+
 {%  block javascripts %}
-    <script type="text/javascript" src="/script/blog/addEditVerificationsBlog.js"></script>
-    <script type="text/javascript" src="/script/generic/formGenericFunction.js"></script>
+    <script type="text/javascript" src="{{ asset('script/blog/addEditVerificationsBlog.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/blog/blog.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div>
-        {% if message != "" %}
-            <div class="alert alert-dismissible alert-info fade show">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>{{ message }}</strong>
+    <div class="flex-vertical flex-centered main-block">
+        <h2 class="title">
+            Création d'un Post
+        </h2>
+        <div>
+            {% if message != "" %}
+                <div class="form-group flex-horizontal flex-centered">
+                    <div class="message message-incorrect">
+                        Erreur dans la saisie des informations
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        {# Form Start #}
+        <form action="" method="post" class="flex-vertical flex-centered" id="form-blog" onsubmit="disableButton()">
+            <div class="form-group">
+                <label class="input-label">Titre du Post</label>
+                <input type="text" name="postTitle" class="form-input" value="">
             </div>
-        {% endif %}
-    </div>
-    <div class="container mt-5 ">
-        <form id="blog_form" action="" class="row g-2 " method="post" onsubmit="disableButton()">
-            <h1>Nouveau post</h1>
-            <div class="form-floating col-md-12">
-                <input type="text" name="postTitle" class="form-control" id="floatingInput" placeholder="Titre" value=""> <br>
-                <label for="floatingInput">Titre</label>
+            <div class="form-group">
+                <label class="input-label">Description</label>
+                <textarea rows="5" class="form-input" name="postDescription" id="floatingTextarea2"></textarea>
             </div>
-            <div class="form-floating col-md-12">
-                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description"></textarea>
-                <label for="floatingTextarea2">Description</label>
-                <br>
+            <div class="form-group">
+                <label class="input-label">Lien de l'image</label>
+                <input type="text" name="imageLink" class="form-input" value="">
             </div>
-            <div class="form-floating col-md-12">
-                <input type="text" name="imageLink" placeholder="image" class="form-control" id="floatingInput" value=""> <br>
-                <label for="floatingInput">Image</label>
-            </div>
-            <div class="form-group col-md-12">
-                <select name="postType"  class="form-control linked-select">
+            <div class="form-group">
+                <label class="input-label">Type de Post</label>
+                <select name="postType"  class="form-input">
                     {% for postType in postTypes %}
                         <option> {{ postType }} </option>
                     {% endfor %}
                 </select>
-                <br>
             </div>
             <button type="submit" class="btn btn-primary disableable" onclick="return verifyPost()">
                 Créer
             </button>
         </form>
+        {# End Form #}
+        <a href="{{ path("menuBlog") }}">
+            <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+        </a>
     </div>
 {% endblock %}
