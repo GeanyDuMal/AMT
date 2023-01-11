@@ -44,7 +44,10 @@ function verifyPost(){
  * Change the visibility of the area to set the imageLink
  */
 if (form.imageLinkState){
-    form.imageLinkState.onchange = function (){
+/*    var selectedOption = form.imageLinkState[form.imageLinkState.selectedIndex];
+    form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
+*/
+    form.imageLinkState.onclose = function (){
         var selectedOption = this[this.selectedIndex];
         form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
     }
