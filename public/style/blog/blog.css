@@ -2,19 +2,11 @@
   max-width: 1320px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.card-subblock {
-  display: flex;
-  flex-direction: column;
+  margin-top: 1%;
 }
 
 .card-text-description {
   overflow: clip;
-}
-
-.main-block {
-  margin-top: 1%;
 }
 
 .show-blog-main {

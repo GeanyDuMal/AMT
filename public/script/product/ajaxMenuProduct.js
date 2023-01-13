@@ -1,11 +1,11 @@
 /**
- * delete a product using jquery-ajax
+ * Delete a Product with AJAX
  */
-$(".product_block").on("click", "#toDelete", function() {
-    var tr = $(this).closest(".product_block");
+$(".card").on("click", "#toDelete", function() {
+    var nodeProduct = this.closest(".card");
 
     if (confirm('Voulez-vous supprimer ce produit ? ')) {
-        const id = $(this).data("id");
+        const id = nodeProduct.querySelector("#idProduct").value;
 
         fetch('/product/delete/'+ id, { method: 'DELETE'} )
             .then(function (resp) {
@@ -14,7 +14,7 @@ $(".product_block").on("click", "#toDelete", function() {
                     title: 'Nice',
                     text: 'Suppression avec succès',
                 })
-                tr.remove();
+                nodeProduct.remove();
             });
     }
 });
