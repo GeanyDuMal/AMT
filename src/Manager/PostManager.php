@@ -96,6 +96,10 @@ class PostManager
          */
         $newId = 1;
 
+        if (trim($link) == '') {
+            $link = '/';
+        }
+
         if ($postActual){
             $storedPost = $this->postRepository->findOneBy([
                 'title' => $postActual->getTitle(),
