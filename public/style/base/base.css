@@ -32,6 +32,11 @@ a:hover, a:active {
 
 .block-form-group {
     width: 100%;
+    display: flex;
+}
+
+.block-form-group > .form-group {
+
 }
 
 body {
@@ -130,6 +135,11 @@ body {
     align-items: flex-start;
 }
 
+.flex-align-self-left {
+    display: flex;
+    align-self: flex-start;
+}
+
 .flex-centered {
     align-items: center;
     justify-content: center;
@@ -188,13 +198,20 @@ form {
 }
 
 form > * {
-    margin-top: 10px;
+    margin: 5px 0;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     width: 100%;
+}
+
+.form-group-title {
+    display: block;
+    font-size: 2rem;
+    font-family: "Bebas Neue", sans-serif;
+    margin-bottom: 0;
 }
 
 .form-input {
@@ -342,3 +359,10 @@ h4 {
         width: 70vw;
     }
 }
+
+@media screen and (max-width: 800px) {
+    .block-form-group {
+        flex-wrap: wrap;
+    }
+}
+

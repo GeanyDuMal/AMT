@@ -11,8 +11,8 @@ $(".card").on("click", "#toDelete", function() {
             .then(function (resp) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Nice',
-                    text: 'Suppression avec succès',
+                    title: 'Supprimé',
+                    text: 'Suppression effectué avec succès',
                 })
                 nodeProduct.remove();
             });

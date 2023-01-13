@@ -5,13 +5,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
-    {# End Bootstrap CSS Import #}
+    <link rel='stylesheet' href="{{ asset('style/product/product.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -28,42 +22,65 @@
             </div>
         {% endif %}
     </div>
-    <div class="container mt-5 ">
-        <form id="product_form" action="" class="row g-2" method="post" onsubmit="disableButton()">
-            <h1>Nouveau produit</h1>
-                <div class="form-floating col-md-12">
-                    <input type="text" name="productName" class="form-control field-long" id="floatingInput" placeholder="Nom du produit"/>
-                    <label for="floatingInput">Nom du produit</label>
+    <div class="flex-vertical flex-centered main-block">
+        <h2 class="title">
+            Nouveau Produit
+        </h2>
+        <div>
+            {% if message != "" %}
+                <div class="form-group flex-horizontal flex-centered">
+                    <div class="message message-incorrect">
+                        Erreur dans la saisie des informations
+                    </div>
                 </div>
-                <div class="form-floating col-md-6">
-                    <input type="text" name="productStock" class="form-control" id="floatingInput" placeholder="Quantité en stock"/>
-                    <label for="floatingInput">Quantité en stock</label>
+            {% endif %}
+        </div>
+        {# Form Start #}
+        <form method="post" class="flex-vertical flex-centered" id="form-product" onsubmit="disableButton()">
+            <div class="form-group">
+                <label class="input-label">Nom du produit</label>
+                <input type="text" name="productName" class="form-input" value="">
+            </div>
+            <div class="block-form-group flex-horizontal">
+                <div class="form-group">
+                    <label class="input-label">Quantité en stock</label>
+                    <input type="text" name="productStock" class="form-input" value="">
                 </div>
-                <div class="form-floating col-md-6">
-                    <input type="text" name="imageLink" class="form-control" id="floatingInput"  placeholder="Lien de l'image"/>
-                    <label for="floatingInput">Lien de l'image</label>
+                <div class="form-group">
+                    <label class="input-label">Lien de l'image</label>
+                    <input type="text" name="imageLink" class="form-input" value="">
                 </div>
-            <h5>Tarification</h5>
-                <div class="form-floating col-md-6">
-                    <input type="text" name="memberPrice" class="form-control" id="floatingInput" placeholder="Prix Membres"/>
-                    <label for="floatingInput">Prix Membres</label>
+            </div>
+            <p class="form-group-title flex-align-self-left">
+                Tarification
+            </p>
+            <div class="block-form-group flex-horizontal">
+                <div class="form-group">
+                    <label class="input-label">Prix Membre</label>
+                    <input type="text" name="memberPrice" class="form-input" value="">
                 </div>
-
-                <div class="form-floating col-md-6">
-                    <input type="text" name="studentPrice" class="form-control" id="floatingInput" placeholder="Prix Etudiant"/>
-                    <label for="floatingInput">Prix Etudiant</label>
+                <div class="form-group">
+                    <label class="input-label">Prix Etudiant</label>
+                    <input type="text" name="studentPrice" class="form-input" value="">
                 </div>
-            <h5>Type de produits</h5>
-            <div class="form-group col-md-12" >
-                <select name="productType" class="form-control linked-select">
+            </div>
+            <div class="form-group">
+                <label class="input-label">Type de produit</label>
+                <select name="productType"  class="form-input">
                     {% for productType in productTypes %}
                         <option> {{ productType }} </option>
                     {% endfor %}
                 </select>
             </div>
-                <button class="btn btn-primary disableable" type="submit" onclick="return verifyProduct()">
-                    Ajouter
-                </button>
+
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyProduct()">
+                Créer
+            </button>
         </form>
+        {# End Form #}
+        <a href="{{ path("menuProduct") }}">
+            <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+        </a>
     </div>
+
 {% endblock %}
