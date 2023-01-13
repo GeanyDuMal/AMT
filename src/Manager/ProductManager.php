@@ -93,7 +93,8 @@ class ProductManager
      */
     public function verifyProduct(Product $product): bool
     {
-        return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "");
+        return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != ""
+            && $product->getImageLink() != null);
     }
 
     /**
@@ -120,6 +121,10 @@ class ProductManager
          * @newId corresponds a l'ID de $productActual s'il est enregistré sinon le dernier ID enregistré+1
          */
         $newId = 1;
+
+        if (trim($link) == '') {
+            $link = '/';
+        }
 
         if ($productActual){
             $lastProduct = $this->productRepository->findOneBy([

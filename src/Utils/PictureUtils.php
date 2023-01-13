@@ -16,6 +16,10 @@ class PictureUtils
      */
     public function downloadPicture(string $link, string $location): string
     {
+        if (trim($link) == '') {
+            $link = '/';
+        }
+
         $locationUsed = $this->adaptLocation($location);
 
         try {

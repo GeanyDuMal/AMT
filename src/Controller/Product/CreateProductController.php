@@ -60,6 +60,8 @@ class CreateProductController extends AbstractController
                         return $this->redirectToRoute('menuProduct', [
                             "message" => "Ajout avec succès"
                         ]);
+                    } else {
+                        $message = "Merci de verifier votre saise";
                     }
                 }
             } else {
