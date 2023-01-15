@@ -91,32 +91,32 @@ class PostManager
      */
     public function downloadPicture(string $link, ?Post $postActual = null): string
     {
-        if ($link != ("" || null)){
-            /**
-             * @newId corresponds a l'ID de $postActual s'il est enregistré sinon le dernier ID enregistré+1
-             */
-            $newId = 1;
+        /**
+         * @newId corresponds a l'ID de $postActual s'il est enregistré sinon le dernier ID enregistré+1
+         */
+        $newId = 1;
 
-            if ($postActual){
-                $storedPost = $this->postRepository->findOneBy([
-                    'title' => $postActual->getTitle(),
-                    'description' => $postActual->getDescription()]);
-            } else {
-                $storedPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
-            }
-
-            if ($storedPost){
-                $newId = $storedPost->getId()+1;
-            }
-
-            $location = "/img/entity/post/img_".$newId.".png";
-
-            $pictureUtils = new PictureUtils();
-
-            return $pictureUtils->downloadPicture($link, $location);
-        } else {
-            return "";
+        if (trim($link) == ('' || null)) {
+            $link = '/';
         }
+
+        if ($postActual){
+            $storedPost = $this->postRepository->findOneBy([
+                'title' => $postActual->getTitle(),
+                'description' => $postActual->getDescription()]);
+        } else {
+            $storedPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+        }
+
+        if ($storedPost){
+            $newId = $storedPost->getId()+1;
+        }
+
+        $location = "/img/entity/post/img_".$newId.".png";
+
+        $pictureUtils = new PictureUtils();
+
+        return $pictureUtils->downloadPicture($link, $location);
     }
 
     /**
