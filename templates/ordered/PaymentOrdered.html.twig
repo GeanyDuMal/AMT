@@ -3,22 +3,16 @@
 {% block title %}Paiement{% endblock %}
 
 {% block stylesheets %}
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <link rel="stylesheet" href="/style/ordered/create.css">
-    <link rel="stylesheet" href="/style/ordered/payment.css">
+    <link rel="stylesheet" href="{{ asset('style/ordered/ordered.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/script/ordered/paymentOrdered.js"></script>
-    <script src="/script/generic/formGenericFunction.js"></script>
+    <script src="{{  asset('script/ordered/paymentOrdered.js') }}"></script>
+    <script src="{{  asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-      <div class="flex_vertical centered_flex_vertical">
+      <div class="flex-vertical flex-centered">
             {% if client %}
                   <div class="block_client">
                         <h2>
@@ -33,26 +27,25 @@
                   </div>
             {% endif %}
             
-            <div class="block_all_product flex_horizontal centered_flex_horizontal">
+            <div class="list-card flex-horizontal flex-overflow flex-centered">
             {% for product in listProduct %}
-                  <div class="block_product">
-                        <h2>
+                  <div class="card">
+                      <div class="card-text">
+                          <p class="card-title">
                               {{ product.name }}
-                        </h2>
-                        <div>
-                              Quantité : {{ productQuantity[product.id] }} | Prix Unitaire : {{ montantProduct[product.id]/productQuantity[product.id] }}€
-                        </div>
-                        <div>
-                              
-                        </div>
+                          </p>
+                          <div>
+                              Quantité : {{ productQuantity[product.id] }} |
+                              Prix Unitaire : {{ montantProduct[product.id]/productQuantity[product.id] }}€
+                          </div>
+                      </div>
                   </div>
             {% endfor %}
             </div>
             <h2>
                   Montant total : {{ montantTotal }}€
             </h2>
-            <form method="post" class="block_button_payment" onsubmit="disableButton()">
-
+            <form method="post" class="flex-horizontal flex-centered tab-button-payment" onsubmit="disableButton()">
                   {% for paymentType in paymentTypeList %}
                         <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary" onclick="return preventPayment()">
                             {{ paymentType }}
@@ -62,8 +55,8 @@
                         </button>
                   {% endfor %}
             </form>
-            <a href="{{ path("createOrdered") }}">
-                  <img src="/img/icons/back.png" class="img" alt="" srcset="">    
-            </a>
+          <a href="{{ path("createOrdered") }}">
+              <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+          </a>
       </div>
 {% endblock %}

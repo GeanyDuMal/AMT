@@ -391,6 +391,7 @@ h4 {
 @media screen and (max-width: 800px) {
     .card {
         width: 70vw;
+        margin: 10px;
     }
 
     .block-form-group {
