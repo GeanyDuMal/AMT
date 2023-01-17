@@ -34,6 +34,7 @@ function communVerify(){
     if (form.fidelityPoint){
         valueFidelityPoint = form.fidelityPoint.value;
     }
+    console.log(form.fidelityPoint)
 
     if (!valueName.trim()) {
         message += "Nom non renseigné\n";
@@ -66,14 +67,14 @@ function communVerify(){
 
     if (valueFidelityPoint){
         if(isNaN(valueFidelityPoint)){
-            message += "Le nombre de points de fidélité doit être un nombre. ";
+            message += "Les points de fidélité doivent être un nombre. ";
         }else{
             fidelityPoint = parseFloat(valueFidelityPoint);
 
             if(valueFidelityPoint === "")
-                message += "Le nombre de point de fidélité ne doit pas être vide.\n ";
+                message += "Les points de fidélité ne doivent pas être vide.\n ";
             else if (fidelityPoint < 0)
-                message += "Le nombre de point de fidélité doit être positif.\n ";
+                message += "Les points de fidélité doivent être positif.\n ";
         }
     }
 
