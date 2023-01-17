@@ -4,30 +4,37 @@
  * avec la valeur dispo max a l'initialisation de la page
  *    prevent si un utilisateur modifie cette valeur manuellement
  */
-var blocksProduct = document.querySelectorAll(".block_product");
+var blocksProduct = document.querySelectorAll(".card");
 
 blocksProduct.forEach(block => {
-      var btnUp = block.querySelector("div .block_button .btn_plus");
-      var btnDown = block.querySelector("div .block_button .btn_minus");
-      var compteur = block.querySelector("div .input_quantity");
-      var quantityAvailable = parseInt(block.querySelector(".flex-vertical .quantity_block .quantity_value").innerHTML);
+      var btnUp = block.querySelector(".btn-plus");
+      var btnDown = block.querySelector(".btn-minus");
+      var inputQuantityOrdered = block.querySelector(".quantity-ordered");
+      var quantityAvailable = parseInt(block.querySelector(".quantity-product-available").innerHTML);
 
       btnUp.addEventListener("click", () => {
-            if (quantityAvailable > parseInt(compteur.value)) {
-                  compteur.value = parseInt(compteur.value)+1;
+            let valueCompteur = parseInt(inputQuantityOrdered.value)
+
+            if (quantityAvailable > valueCompteur) {
+                  inputQuantityOrdered.value = valueCompteur + 1;
             }            
       })
+
       btnDown.addEventListener("click", () => {
-            if(parseInt(compteur.value) > 0){
-                  compteur.value = parseInt(compteur.value)-1;
+            let valueCompteur = parseInt(inputQuantityOrdered.value)
+
+            if(valueCompteur > 0){
+                  inputQuantityOrdered.value  = valueCompteur - 1;
             }
       })
 
-      compteur.addEventListener("change", () => {
-            if(parseInt(compteur.value) < 0){
-                  compteur.value = 0;
-            }else if(parseInt(compteur.value) > quantityAvailable){
-                  compteur.value = quantityAvailable;
+      inputQuantityOrdered.addEventListener("change", () => {
+            let valueCompteur = parseInt(inputQuantityOrdered.value)
+
+            if(parseInt(valueCompteur) < 0){
+                  inputQuantityOrdered.value  = 0;
+            }else if(valueCompteur > quantityAvailable){
+                  inputQuantityOrdered.value = quantityAvailable;
             }
       })
 });
@@ -38,7 +45,7 @@ blocksProduct.forEach(block => {
  */
 function checkQuantityInput() {
       var notEmpty = false;
-      var allInput = document.querySelectorAll(".input_quantity");
+      var allInput = document.querySelectorAll(".quantity-ordered");
       allInput.forEach(input =>{
             if (!notEmpty){
                   if (input.value > 0){
@@ -46,11 +53,12 @@ function checkQuantityInput() {
                   }
             }
       })
+
       if (!notEmpty){
             Swal.fire({
                   icon: 'error',
                   title: 'Aucun produit',
-                  text: 'Merci de selectionner un produit pour valider une commande',
+                  text: 'Merci de sélectionner un produit pour valider une commande',
             })
       }
       return notEmpty;

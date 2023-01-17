@@ -1,10 +1,3 @@
-.main-block {
-  max-width: 1320px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1%;
-}
-
 .card-text-description {
   overflow: clip;
 }
@@ -19,11 +12,6 @@
   max-width: 50vw;
   max-height: 50vh;
   height: auto;
-}
-
-.show-blog-btn-block {
-  display: flex;
-  justify-content: space-between;
 }
 
 .show-blog-text {

@@ -69,7 +69,7 @@
                                 {% endfor %}
                             </p>
                         </div>
-                        <div class="flex-horizontal flex-centered show-prod-btn-block">
+                        <div class="flex-horizontal flex-centered card-buttons">
                             {% if is_granted("ROLE_ASSOC") %}
                                 <a href="{{ path("editProduct", {"id": product.id}) }}">
                                     <button class="btn btn-secondary">

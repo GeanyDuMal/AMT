@@ -3,6 +3,7 @@
     --black: #000;
     --dark-grey: #212529;
     --light-grey: #b9b9b9;
+    --ultra-light-grey: #dedede;
     --primary-dark: #4c0d00;
     --primary: #d52500;
     --primary-light: #b2452e;
@@ -123,6 +124,26 @@ body {
 .card-title, .card-title > * {
     font-size: 1.75rem;
     margin: 0;
+}
+
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-buttons > .btn {
+    width: 100%;
+    margin: 0 5px;
+}
+
+.card-buttons > .btn:first-child{
+    margin: 0 5px;
+    margin-left: 0;
+}
+
+.card-buttons > .btn:last-child{
+    margin: 0 5px;
+    margin-right: 0;
 }
 
 .card img {
@@ -255,7 +276,13 @@ h4 {
 .list-card {
     width: 100%;
     align-items: flex-start;
-    justify-content: space-around;
+}
+
+.main-block {
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
 }
 
 .message {
@@ -355,12 +382,17 @@ h4 {
 }
 
 @media screen and (max-width: 600px) {
-    .card {
-        width: 70vw;
+    .list-card {
+        align-items: center;
+        flex-direction: column;
     }
 }
 
 @media screen and (max-width: 800px) {
+    .card {
+        width: 70vw;
+    }
+
     .block-form-group {
         flex-wrap: wrap;
     }

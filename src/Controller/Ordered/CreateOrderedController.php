@@ -30,24 +30,31 @@ class CreateOrderedController extends AbstractController
         // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProductPositiveStock = $productRepository->findAllPositiveStock();
 
-        // Recupere toutes les quantités de produit selectionné
-        if ($allProductPositiveStock){
+        if ($request->request->count() > 0) {
+            // Recupere toutes les quantités de produit selectionné
             foreach ($allProductPositiveStock as $product) {
-                $quantity = $inputParameterBag->get("quantity_product_" . $product->getId());
+                $quantity = $inputParameterBag->get("quantityOrdered_" . $product->getId());
 
                 // Vérifie si l'on a commandé le produit $product
                 if (is_numeric($quantity) && $quantity > 0 && $quantity <= $product->getQuantityStock()) {
                     $productOrdered = $productOrdered + [$product->getId() => $quantity];
+                } else if ($quantity != 0) {
+                    $message = "Merci de vérifier la saisie des quantités";
                 }
             }
-        }
 
-        // Si l'on a commandé au moins 1 produit
-        if ($productOrdered) {
-            return $this->redirectToRoute("orderedPayment", [
-                "productOrderedSerialized" => serialize($productOrdered),
-                "idClient" => $inputParameterBag->get("client_commande")
-            ]);
+
+            // Si l'on a commandé au moins 1 produit
+            if (!$message) {
+                if ($productOrdered) {
+                    return $this->redirectToRoute("orderedPayment", [
+                        "productOrderedSerialized" => serialize($productOrdered),
+                        "idClient" => $inputParameterBag->get("orderedClient")
+                    ]);
+                } else {
+                    $message = 'Merci de saisir au moins 1 produit';
+                }
+            }
         }
 
         // Recupere tout les clients par ordre alphabetique
