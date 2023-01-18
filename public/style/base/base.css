@@ -278,6 +278,11 @@ h4 {
     align-items: flex-start;
 }
 
+.list-ul {
+    margin: 0;
+    font-size: 18px;
+}
+
 .main-block {
     max-width: 1320px;
     margin-left: auto;
@@ -367,12 +372,23 @@ h4 {
     width: 100%;
 }
 
+.text-small {
+    font-size: 18px;
+}
+
 .title {
     width: 100%;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 45px;
     margin: 10px;
     text-align: center;
+}
+
+
+/* Correction de Sweet Alert */
+.swal2-html-container ul {
+    width: fit-content;
+    text-align: left;
 }
 
 @media screen and (max-width: 450px) {

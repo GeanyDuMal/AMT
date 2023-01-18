@@ -43,7 +43,7 @@
                 <label for="login" class="input-label">Login</label>
                 <input type="text" name="login" class="form-input" disabled value="{% if client %}{{ client.login }}{% endif %}">
                 {% if not client %}
-                    <ul class="list-require">
+                    <ul class="list-ul">
                         <li>Au moins 5 caractères</li>
                     </ul>
                 {% endif %}

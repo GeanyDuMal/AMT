@@ -59,7 +59,7 @@ function verifyInputEditPassword() {
 }
 
 function openCloseEditForm() {
-    form.classList.toggle("open_menu");
+    form.classList.toggle("open-menu");
 }
 
 function warningSuppressionAccount(){

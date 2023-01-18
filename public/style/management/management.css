@@ -1,35 +1,4 @@
-.flex_vertical {
-    display: flex;
-    flex-direction: column;
-}
-
-.flex_horizontal {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-.centered_flex {
-    align-items: center;
-}
-
-.btn {
-    text-align: center;
-    width: 100%;
-    padding: 5px;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: box-shadow 0.2s;
-}
-
-.title_block{
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 3rem;
-    text-decoration: underline;
-}
-
-.block_control{
+.block-control {
     align-items: center;
     min-height: 70px;
     width: 100%;
@@ -37,23 +6,44 @@
     margin-bottom: 15px;
 }
 
-    .block_control>*{
-        width: 47.5%;
-        min-height: 40px;
-    }
-
-.under_block{
-    display: flex;
-    flex-direction: row;
+.block-control > .btn {
+    margin-right: 5px;
 }
 
-.select{
-    margin: 10px;
-    max-width: 50%;
+.block-control > * {
+    width: 47.5%;
+    min-height: 40px;
+}
+
+.btn {
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: box-shadow 0.2s;
+}
+
+.title-block {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    text-decoration: underline;
+}
+
+.request-choice {
+    width: fit-content;
+}
+
+.request-choice > * {
 }
 
 @media only screen and (max-width: 600px) {
-    .under_block{
-        flex-direction: column;
+    .main-block {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    form {
+        width: 80vw;
     }
 }

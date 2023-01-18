@@ -1,64 +1,119 @@
-.back-arrow {
-      width: 40px;
-      height: auto;
-
+.edit-password .form-group {
+      margin-top: 10px;
 }
 
-.top {
-      margin-bottom: 3vh;
+.edit-password button {
+      margin-top: 10px;
 }
 
-.top-text {
+.edit-password li {
+      text-align: left;
+}
+
+#img-profile {
+      width: 25%;
+      max-width: 110px;
+}
+
+.main-block {
+      z-index: 2;
+      width: 100vw;
+}
+
+.message > * {
+      margin: 0 5px
+}
+
+/* Each item of the replacement navbar */
+.navbar-replace > * {
+      min-width: 50px;
+}
+
+.navbar-replace-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 40px;
       color: var(--white);
       margin-top: 10px;
 }
 
-.text-bottom > * {
-      margin: 0 10px;
-}
-
-#img_profile {
-      width: 25%;
-      max-width: 110px;
-}
-
-.list-require {
-      margin: 0;
-      font-size: 18px;
-}
-
-.btn {
-      width: 100%;
-}
-
-.text-bottom {
-      display: flex;
-      font-size: 1.2rem;
-      text-align: center;
-      margin: 10px 0;
-}
-
-.text-block {
-      margin: 0 10px;
+.profile-title {
+      font-size: 1.75rem;
+      margin: 10px;
       text-align: center;
 }
 
-/***********        Pas utilisé sur Login          *****************/
-
-@media(max-width: 800px) {
-      .list-require li {
-            height: max-content;
-      }
-
-      .btn, .text-bottom {
-            font-size: 1rem;
-      }
+.secondary-block {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      margin: 20px auto;
+      text-align: center;
+      z-index: 1;
+      width: 70vw;
 }
-/*Modif du style de SweetAlert*/
 
-.swal2-html-container ul {
-      width: fit-content;
+.secondary-block.open-menu {
+      opacity: 1;
+      position: relative;
+      height: fit-content;
+      animation: slide-in-top 0.5s cubic-bezier(0, 0, 0, 1);
+}
+
+.spacing > * {
+      margin: 5px;
+}
+
+.table-information {
+      border-collapse: separate;
+      border-spacing: 20px;
+      border: solid 3px var(--dark-grey);
+      border-radius: 10px;
+      margin: 0 auto 15px;
+      width: 500px;
       text-align: left;
+}
+
+.text-small {
+      margin: 5px;
+      text-align: center;
+}
+
+.top {
+      margin-bottom: 3vh;
+}
+
+.table-information tr td {
+      font-size: 18px;
+      padding: 0;
+}
+
+/* Mobile Version Table Information Responsive */
+@media (max-width: 650px) {
+      .table-information {
+            font-size: 4vw;
+            width: 80%;
+            padding: 0;
+      }
+}
+
+/*        KEYFRAME          */
+@keyframes slide-in-top {
+      0% {
+            height: 0;
+            opacity: 0;
+            transform: translateY(-1000px);
+      }
+
+      1% {
+            height: fit-content;
+      }
+
+      50% {
+            opacity: 0;
+      }
+
+      100% {
+            transform: translateY(0px);
+            opacity: 1;
+      }
 }

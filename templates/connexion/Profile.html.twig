@@ -6,7 +6,6 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/connexion/connexion.css') }}">
-    <link rel="stylesheet" href="{{ asset('style/connexion/profile.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -18,115 +17,117 @@
     {% endblock %}
     
 {% block body %}
-    <div class="flex_vertical centered_flex principal_block">
+    <div class="flex-vertical flex-centered">
         {# Top bar #}
-        <div class="navbar top">
+        <div class="navbar navbar-replace top">
             <a href="{{ path("home") }}">
-                <img class="back-arrow" src="{{ asset('img/icons/back_w.png') }}" alt="back arrow">
+                <img class="back-arrow-sidebar" src="{{ asset('img/icons/back_w.png') }}" alt="back arrow">
             </a>
-            <h1 class="top-text">Profil</h1>
-            <div class="back-arrow"></div>
+            <h1 class="navbar-replace-title">Profil</h1>
+            <div class="back-arrow-sidebar"></div>
         </div>
         {# End Top bar #}
 
-        <div class="hiding">
-            <div class="client-info">
-                <img src="{{ asset('img/connexion/user.png') }}" alt="" id="img_profile">
+        <div class="flex-vertical flex-centered main-block">
+            <div class="hiding">
+                <div class="flex-vertical flex-centered">
+                    <img src="{{ asset('img/connexion/user.png') }}" alt="" id="img-profile">
+                    <h1 class="profile-title">
+                        Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
+                    </h1>
 
-                <h1 class="text-block">
-                    Bienvenue {{ user.name }} {{ user.firstName }} / {{ user.login }}
-                </h1>
+                    {% if fail %}
+                        <h2 class="message message-incorrect">
+                            Votre mot de passe est incorrect
+                        </h2>
+                    {% elseif edit %}
+                        <h2 class="message message-correct">
+                            Modification effectuée avec succès
+                        </h2>
+                    {% endif %}
 
-                {% if fail %}
-                    <h2 class="message message_incorrect">
-                        Votre mot de passe est incorrect
-                    </h2>
-                {% elseif edit %}
-                    <h2 class="message message_correct">
-                        Modification effectuée avec succès
-                    </h2>
-                {% endif %}
+                    {# Client Informations #}
+                    <table class="table-information">
+                        <tr>
+                            <td>Solde :</td>
+                            <td>{{ user.balance }} €</td>
+                        </tr>
+                        <tr>
+                            <td>Compteur de fidelité :</td>
+                            <td>{{ user.fidelityPoint }}</td>
+                        </tr>
+                        <tr>
+                            <td>Statut :</td>
+                            <td>{{ user.clientType }}</td>
+                        </tr>
 
-                {# Client Informations #}
-                <table class="table-information">
-                    <tr>
-                        <td>Solde :</td>
-                        <td>{{ user.balance }} €</td>
-                    </tr>
-                    <tr>
-                        <td>Compteur de fidelité :</td>
-                        <td>{{ user.fidelityPoint }}</td>
-                    </tr>
-                    <tr>
-                        <td>Statut :</td>
-                        <td>{{ user.clientType }}</td>
-                    </tr>
+                    </table>
+                    {# End Client Informations #}
 
-                </table>
-                {# End Client Informations #}
-
-                {# Points #}
+                    {# Points #}
                     <h4>
                         Rappel
                     </h4>
-                    <div class="flex-vertical">
-                        <p class="text-block">
+                    <div class="flex-vertical flex-centered">
+                        <p class="text-small">
                             <em> 150 point de fidelité = 0.8€ </em>
                         </p>
-                        <p>
+                        <p class="text-small">
                             Vos informations tels que votre login ou votre mot de passe sont privées.<br>
                             Veuillez ne jamais les divulger.
                         </p>
                     </div>
-                {# End Points #}
+                    {# End Points #}
 
-                {# Options #}
-                <div class="btn-block">
-                    <button class="btn btn-secondary" onclick="openCloseEditForm()">
-                        Modifier le mot de passe
-                    </button>
-                    <a href="{{ path('logout') }}">
-                        <button class="btn btn-primary disableable">
-                            Se déconnecter
+                    {# Options #}
+                    <div class="flex-horizontal flex-centered spacing flex-overflow">
+                        <button class="btn btn-secondary" onclick="openCloseEditForm()">
+                            Modifier le mot de passe
                         </button>
-                    </a>
-                    <a href="{{ path('deleteProfile') }}" >
-                        <button class="btn btn-secondary disableable" onclick="return warningSuppressionAccount()">
-                            Supprimer son compte
-                        </button>
-                    </a>
+                        <a href="{{ path('logout') }}">
+                            <button class="btn btn-primary disableable">
+                                Se déconnecter
+                            </button>
+                        </a>
+                        <a href="{{ path('deleteProfile') }}" >
+                            <button class="btn btn-secondary disableable" onclick="return warningSuppressionAccount()">
+                                Supprimer son compte
+                            </button>
+                        </a>
+                    </div>
+                    {# End Options #}
                 </div>
-                {# End Options #}
             </div>
         </div>
+        {# Edit Password #}
+        <form class="flex-vertical flex-centered secondary-block" onsubmit="disableButton()" method="post" id="form-edit-password">
+            <div class="edit-password">
+                <div class="form-group">
+                    <label for="password" class="input-label">Ancien mot de passe</label>
+                    <input type="password" name="oldPassword" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="input-label">Nouveau mot de passe</label>
+                    <input type="password" name="newPassword" class="form-input">
+                    <ul class="list-ul">
+                        <li>Au moins 5 caractères</li>
+                        <li>Au moins 1 caractère spécial</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="input-label">Confirmation du nouveau mot de passe</label>
+                    <input type="password" name="confirmPassword" class="form-input">
+                </div>
+
+                <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputEditPassword()">
+                    Valider
+                </button>
+            </div>
+        </form>
+        {# End Edit Password #}
     </div>
 
-    {# Edit Password #}
-    <form class="edit_password flex_vertical centered_flex secondary_block" onsubmit="disableButton()" method="post" id="form-edit-password">
-        <div class="edit-password">
-            <div class="form-group">
-                <label for="password" class="input-label">Ancien mot de passe</label>
-                <input type="password" name="oldPassword" class="form-input">
-            </div>
 
-            <div class="form-group">
-                <label for="password" class="input-label">Nouveau mot de passe</label>
-                <input type="password" name="newPassword" class="form-input">
-                <ul class="list-require">
-                    <li>Au moins 5 caractères</li>
-                    <li>Au moins 1 caractère spécial</li>
-                </ul>
-            </div>
-
-            <div class="form-group">
-                <label for="password" class="input-label">Confirmation du nouveau mot de passe</label>
-                <input type="password" name="confirmPassword" class="form-input">
-            </div>
-
-            <button type="submit" class="btn btn-primary disableable" onclick="return verifyInputEditPassword()">
-                Valider
-            </button>
-        </div>
-    </form>
-    {# End Edit Password #}
 {% endblock %}
