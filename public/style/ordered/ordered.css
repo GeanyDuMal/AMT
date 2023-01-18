@@ -27,10 +27,6 @@ form {
     margin-left: 2px;
 }
 
-.main-block {
-    max-width: 100vw; /* Surcharge */
-}
-
 .tab-button-payment {
     align-items: unset;
 }

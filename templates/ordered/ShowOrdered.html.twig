@@ -1,12 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-      {# Bootstrap CSS Import #}
-      <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-      <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-      {# End Bootstrap CSS Import #}
-
-    <link rel="stylesheet" href="/style/ordered/detail.css">
+    <link rel="stylesheet" href="{{ asset('style/ordered/ordered.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -16,10 +11,7 @@
 {% block title %}Detail de la commande{% endblock %}
 
 {% block body %}
-      <div class="flex_vertical centered_flex_vertical">
-            <div id="idCommande" style="display:none">
-                  {{ ordered.id }}
-            </div>
+      <div class="flex-vertical flex-centered">
             <h3>
                   Commande n° {{ ordered.id }} 
                   {% if ordered.client %}
@@ -29,20 +21,22 @@
             <h4>
                   Commande de type {{ clientType }} reglé avec {{ ordered.paymentType }}
             </h4>
-            <div class="flex_horizontal centered_flex_horizontal block_all_purchase">
+            <div class="list-card flex-horizontal flex-centered">
                   {% for purchase in purchaseList %}
-                        <div class="block_product flex_vertical">
-                              <h3>
-                                    Produit : {{ purchase.product.name }}
-                              </h3>
-                              <div>
-                                    Quantité : {{ purchase.quantity }}
-                              </div>
-                              <div>
-                                    Prix unitaire : {{priceList[purchase.product.id].price }}€
-                              </div>
-                              <div>
-                                    Prix total : {{priceList[purchase.product.id].price * purchase.quantity }}€
+                        <div class="card">
+                              <div class="card-text">
+                                    <p class="card-title">
+                                          {{ purchase.product.name }}
+                                    </p>
+                                    <div>
+                                          Quantité : {{ purchase.quantity }}
+                                    </div>
+                                    <div>
+                                          Prix unitaire : {{ priceList[purchase.product.id].price }}€
+                                    </div>
+                                    <div>
+                                          Prix total : {{ priceList[purchase.product.id].price * purchase.quantity }}€
+                                    </div>
                               </div>
                         </div>
                   {% endfor %}
@@ -50,14 +44,14 @@
             <h4>
                   Montant total : {{ montantTotal }}€
             </h4>
-            <div class="block_button flex_horizontal centered_flex_vertical">
+            <div class="flex-horizontal flex-centered">
                   <a href="{{ path("menuOrdered") }}">
-                        <img src="/img/icons/back.png" class="img">    
+                        <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
                   </a>
                   <form method="post">
                         {% if is_granted("ROLE_TRESORIER") %}
-                              <button type="submit" class="btn btn-danger" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
-                              <button type="submit" class="btn btn-danger" name="remove" value="remove" onclick="return confirmDelete()">Supprimer</button>
+                              <button type="submit" class="btn btn-secondary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
+                              <button type="submit" class="btn btn-secondary" name="remove" value="remove" onclick="return confirmDelete()">Supprimer</button>
                         {% endif %}
                   </form>
             </div>
