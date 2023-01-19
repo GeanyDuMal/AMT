@@ -1,6 +1,6 @@
 var clientType = document.querySelector("#clientType");
 var assosRoles = document.querySelector("#roles");
-var form = document.querySelector("#form_Client");
+var form = document.querySelector("#form-client");
 
 /**
  * hide the combobox of association roles if it's not a member
@@ -30,7 +30,11 @@ function communVerify(){
     const valueFirstName = form.firstName.value;
     const valueLogin = form.login.value;
     const valueBalance = form.balance.value;
-    const valueFidelityPoint = form.fidelityPoint.value;
+    let valueFidelityPoint = null
+    if (form.fidelityPoint){
+        valueFidelityPoint = form.fidelityPoint.value;
+    }
+    console.log(form.fidelityPoint)
 
     if (!valueName.trim()) {
         message += "Nom non renseigné\n";
@@ -39,9 +43,9 @@ function communVerify(){
     }
 
     if (!valueFirstName.trim()) {
-        message += "Prenom non renseigné\n";
+        message += "Prénom non renseigné\n";
     } else if (valueFirstName.length < 3) {
-        message += "Prenom trop court\n";
+        message += "Prénom trop court\n";
     }
     if (!valueLogin.trim()) {
         message += "Login non renseigné\n";
@@ -61,15 +65,17 @@ function communVerify(){
     }
 
 
-    if(isNaN(valueFidelityPoint)){
-        message += "Le nombre de points de fidélité doit être un nombre. ";
-    }else{
-        fidelityPoint = parseFloat(valueFidelityPoint);
+    if (valueFidelityPoint){
+        if(isNaN(valueFidelityPoint)){
+            message += "Les points de fidélité doivent être un nombre. ";
+        }else{
+            fidelityPoint = parseFloat(valueFidelityPoint);
 
-        if(valueFidelityPoint === "")
-            message += "Le nombre de point de fidélité ne doit pas être vide.\n ";
-        else if (fidelityPoint < 0)
-            message += "Le nombre de point de fidélité doit être positif.\n ";
+            if(valueFidelityPoint === "")
+                message += "Les points de fidélité ne doivent pas être vide.\n ";
+            else if (fidelityPoint < 0)
+                message += "Les points de fidélité doivent être positif.\n ";
+        }
     }
 
   return message;
@@ -119,12 +125,4 @@ function verifyAdd() {
     } else {
         return true;
     }
-}
-
-/**
- * Change the visibility of the area to set the imageLink
- */
-form.imageLinkState.onchange = function (){
-    var selectedOption = this[this.selectedIndex];
-    form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
 }

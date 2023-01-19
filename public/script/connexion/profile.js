@@ -1,4 +1,4 @@
-var form = document.querySelector("#form_edit_password");
+var form = document.querySelector("#form-edit-password");
 
 function verifyInputEditPassword() {
     let message = "<ul>";
@@ -59,7 +59,7 @@ function verifyInputEditPassword() {
 }
 
 function openCloseEditForm() {
-    form.classList.toggle("open_menu");
+    form.classList.toggle("open-menu");
 }
 
 function warningSuppressionAccount(){

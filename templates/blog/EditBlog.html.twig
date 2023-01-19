@@ -5,39 +5,41 @@
 {% endblock %}
 
 {%  block javascripts %}
-    <script type="text/javascript" src="/script/blog/addEditVerificationsBlog.js"></script>
-    <script type="text/javascript" src="/script/generic/formGenericFunction.js"></script>
+    <script type="text/javascript" src="{{ asset('script/blog/addEditVerificationsBlog.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel='stylesheet' href="{{ asset('style/bootstrap.css') }}">
-    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
-    <link rel='stylesheet' href="{{ asset('style/blog/css/blog.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/blog/blog.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div>
-        {% if message != "" %}
-            <div class="alert alert-dismissible alert-info fade show">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>{{ message }}</strong>
+    <div class="flex-vertical flex-centered main-block">
+        <h2 class="title">
+            Modification d'un Post
+        </h2>
+        <div>
+            {% if message != "" %}
+                <div class="form-group flex-horizontal flex-centered">
+                    <div class="message message-incorrect">
+                        Erreur dans la saisie des informations
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        {# Form Start #}
+        <form action="" method="post" class="flex-vertical flex-centered" id="form-blog" onsubmit="disableButton()">
+            <div class="form-group">
+                <label class="input-label">Titre du Post</label>
+                <input type="text" name="postTitle" class="form-input" value="{{ post.title }}">
             </div>
-        {% endif %}
-    </div>
-    <div class="container mt-5">
-        <form id="blog_form" action="" class="row g-2 " method="post" onsubmit="disableButton()">
-            <h1>Modification de post</h1>
-            <div class="form-floating col-md-12">
-                <input type="text" name="postTitle" class="form-control" id="floatingInput" placeholder="Titre" value="{{ post.title }}"> <br>
-                <label for="floatingInput">Titre</label>
+            <div class="form-group">
+                <label class="input-label">Description</label>
+                <textarea rows="5" class="form-input" name="postDescription" id="floatingTextarea2">{{ post.description|trim }}</textarea>
             </div>
-            <div class="form-floating col-md-12">
-                <textarea style="height: 150px;" rows="5" class="form-control" name="postDescription" id="floatingTextarea2" placeholder="Description">{{ post.description|trim }}</textarea>
-                <label for="floatingTextarea2">Description</label>
-                <br>
-            </div>
-            <div class="form-group col-md-6">
-                <select name="imageLinkState" class="form-floating form-control linked-select">
+            <div class="form-group">
+                <label class="input-label">Modification de l'image</label>
+                <select name="imageLinkState" class="form-input">
                     <option value="keep" selected>
                         Conserver l'image actuelle
                     </option>
@@ -46,22 +48,27 @@
                     </option>
                 </select>
             </div>
-            <div class="form-floating col-md-12" id="imageLinkArea">
-                <input type="text" name="imageLink" class="form-control" placeholder="URL de l'image"  value=""> <br>
-                <label for="floatingInput">Lien de l'image</label>
+            <div class="form-group" id="imageLinkArea" style="visibility: hidden;">
+                <label class="input-label">Lien de l'image</label>
+                <input type="text" name="imageLink" class="form-input" value="">
             </div>
-            <div class="form-group col-md-12">
-                <select name="postType" class="form-control linked-select">
+            <div class="form-group">
+                <label class="input-label">Type de Post</label>
+                <select name="postType"  class="form-input">
                     {% for postType in postTypes %}
-                        <option {% if postType == post.postType %} selected {% endif %}>
+                        <option {% if postType is same as(post.postType) %} selected {% endif %}>
                             {{ postType }}
                         </option>
                     {% endfor %}
-                </select> <br>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary disableable" onclick="return verifyPost()">
                 Modifier
             </button>
         </form>
+        {# End Form #}
+        <a href="{{ path("menuBlog") }}">
+            <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+        </a>
     </div>
 {% endblock %}

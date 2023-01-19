@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Interface de   Gestion{% endblock %}
+{% block title %}
+    Interface de Gestion
+{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/management/management.css">
+    <link rel="stylesheet" href="{{ asset('style/management/management.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -18,17 +19,17 @@
         </div>
     {% endif %}
 
-    <div class="flex_vertical centered_flex">
-        <h1 class="title_block">
+    <div class="flex-vertical flex-centered main-block">
+        <h1 class="title-block">
             Interface de Gestion
         </h1>
 
-        <form action="" class="flex_vertical centered_flex" method="post" id="form_management" onsubmit="disableButton()">
-            <div class="flex_vertical centered_flex">
+        <form action="" class="flex-vertical flex-centered" method="post" id="form_management" onsubmit="disableButton()">
+            <div class="flex-vertical flex-centered">
                 <h2>
                     Purge
                 </h2>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearCotisant" value="true" class="btn btn-primary disableable">
                         Purger les cotisants
                     </button>
@@ -36,7 +37,7 @@
                         Définir tout les cotisants comme étudiant.
                     </div>
                 </div>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearAssociation" value="true" class="btn btn-primary disableable">
                         Purger l'association
                     </button>
@@ -44,7 +45,7 @@
                         Définir tout les membres de l'association comme étudiant (sauf le président).
                     </div>
                 </div>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearOldClient" value="true" class="btn btn-primary disableable">
                         Purger les clients
                     </button>
@@ -52,7 +53,7 @@
                         Supprimer les clients n'ayant effectué aucune action depuis 2 ans.
                     </div>
                 </div>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearProduct" value="true" class="btn btn-primary disableable">
                         Purger les produits
                     </button>
@@ -60,7 +61,7 @@
                         Supprimer les produits n'ayant plus été commandé depuis 1 an et dont le stock est vide.
                     </div>
                 </div>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearOrder" value="true" class="btn btn-primary disableable">
                         Purger les commandes
                     </button>
@@ -68,7 +69,7 @@
                         Supprimer les commandes datant d'au moins 1 an sans client.
                     </div>
                 </div>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearPost" value="true" class="btn btn-primary disableable">
                         Purger les posts
                     </button>
@@ -79,18 +80,18 @@
                 <h2>
                     Reinitialisation de mot de passe
                 </h2>
-                <div class="centered_flex flex_horizontal block_control">
+                <div class="flex-horizontal flex-centered flex-overflow block-control">
                     {% if requestList|length > 0 %}
                         <button type="submit" name="resetPassword" value="true" class="btn btn-primary disableable">
                             Reinitialiser
                         </button>
-                        <div class="under_block">
-                            <select name="passwordRequest" id="">
+                        <div class="flex-horizontal flex-centered flex-overflow request-choice">
+                            <select name="passwordRequest" id="" class="form-input form-select">
                                 {% for request in requestList %}
                                     <option value="{{ request.client.id }}">{{ request.client.name }} {{ request.client.firstName }}</option>
                                 {% endfor %}
                             </select>
-                            <input type="text" name="confirmationCode" placeholder="Code de confirmation">
+                            <input type="text" name="confirmationCode" placeholder="Code de confirmation" class="form-input">
                         </div>
                     {% else %}
                         <p>

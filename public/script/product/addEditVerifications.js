@@ -1,4 +1,4 @@
-var form=document.querySelector("#product_form")
+var form=document.querySelector("#form-product")
 
 function verifyProduct(){
     let message = "";
@@ -7,7 +7,13 @@ function verifyProduct(){
     const memberPrice = form.memberPrice.value;
     const studentPrice = form.studentPrice.value;
     const imageLinkValue = form.imageLink.value;
-    const imageLinkStateValue = form.imageLinkState.value;
+    let imageLinkStateValue = ""
+    let imageLinkStateSet = form.imageLinkState
+
+    if (imageLinkStateSet) {
+        imageLinkStateValue = form.imageLinkState.value;
+    }
+
 
     if (!nameValue.trim()) {
         message += "Nom du produit non renseigné\n";
@@ -35,7 +41,7 @@ function verifyProduct(){
     else if(isNaN(studentPriceValue)){
         message += "Le prix des étudiants doit être un nombre. ";    }
 
-    if (imageLinkStateValue === "edit"){
+    if (imageLinkStateSet && imageLinkStateValue === "edit"){
         if (!imageLinkValue.trim()){
             message += "Lien non renseigné\n ";
         } else if (!imageLinkValue.startsWith('http')){

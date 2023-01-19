@@ -1,0 +1,42 @@
+.card {
+    background: var(--ultra-light-grey);
+}
+
+.card-buttons {
+    margin-top: 5px;
+}
+
+#client-select {
+    width: fit-content;
+}
+
+form {
+    width: 95%; /* Surcharge */
+    border: none; /* Surcharge */
+}
+
+.form-input {
+    width: 100%;
+}
+
+.form-input-like-text {
+    border: none;
+    background: inherit;
+    font: inherit;
+    width: 20%;
+    margin-left: 2px;
+}
+
+.tab-button-payment {
+    align-items: unset;
+}
+
+.tab-button-payment > .btn {
+    margin: 0 10px;
+}
+
+@media screen and (min-width: 800px) {
+    .card {
+        width: 15%; /* Surcharge */
+    }
+}

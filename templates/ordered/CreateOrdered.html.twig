@@ -3,58 +3,68 @@
 {% block title %}Effectuer une commande{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/bootstrap.css">
-    <link rel="stylesheet" href="/style/ordered/create.css">
+    <link rel="stylesheet" href="{{ asset('style/ordered/ordered.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/ordered/createOrdered.css') }}">
 {% endblock %}
 
 {% block javascripts %}    
-    <script src="/script/ordered/createOrdered.js"></script>
-    <script src="/script/generic/formGenericFunction.js"></script>
+    <script src="{{  asset('script/ordered/createOrdered.js') }}"></script>
+    <script src="{{  asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-    {% if message %}
-        <div class="alert alert-dismissible alert-success fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>{{ message }}</strong>
-        </div>
-    {% endif %}
-    <form method="POST" class="flex_vertical centered_flex_vertical" id="form_command" onsubmit="disableButton()">
-        <div class="flex_horizontal centered_flex_horizontal block_all_product">
-        {% for product in productList %}
-            <div class="block_product flex_vertical">
-                <div class="flex_vertical">
-                    <h3>
-                        {{ product.name }}
-                    </h3>
-                    <div class="quantity_block">
-                        <em>Quantité dispo : <span class="quantity_value">{{ product.quantityStock }}</em>
-                    </div>
-                </div>
-                <div>
-                    <input type="number" name="quantity_product_{{ product.id }}" class="input_quantity" step="1" value="0" min="0">
-                    <div class="block_button">
-                        <div class="btn btn-secondary btn_minus">-</div>
-                        <div class="btn btn-secondary btn_plus">+</div>
-                    </div>
+    <div class="flex-vertical flex-centered main-block">
+        <h2 class="title">
+            Création d'une Commande
+        </h2>
+        {% if message != "" %}
+            <div class="form-group flex-horizontal flex-centered">
+                <div class="message message-incorrect">
+                    {{ message }}
                 </div>
             </div>
-        {% endfor %}
-        </div>
-        <div class="flex_vertical centered_flex_vertical block_bottom_create">
-            <select name="client_commande" id="">
+        {% endif %}
+        <form method="post" class="flex-vertical flex-centered" id="form-ordered" onsubmit="disableButton()">
+            <select name="orderedClient" class="form-input" id="client-select">
                 <option value="null">Choisir un Client</option>
                 {% for client in clientList %}
                     <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }}</option>
                 {% endfor %}
             </select>
+            <div class="flex-horizontal flex-overflow flex-centered list-card">
+            {% for product in productList %}
+                <div class="card">
+                    <div class="card-text">
+                        <p class="card-title">
+                            {{ product.name }}
+                        </p>
+                        <div>
+                            Disponible : <span class="quantity-product-available">{{ product.quantityStock }}</span>
+                        </div>
 
-            <button type="submit" class="btn btn-primary disableable" onclick="return checkQuantityInput()">
-                Valider la commande
-            </button>
-        </div>
-        <a href="{{ path("menuOrdered") }}">
-            <img src="/img/icons/back.png" class="img" alt="" srcset="">    
-        </a>
-    </form>
+                        <div class="flex-horizontal">
+                            <div>
+                                Commandé :
+                            </div>
+                            <input type="number" class="form-input-like-text quantity-ordered" name="quantityOrdered_{{ product.id }}" value="0">
+                        </div>
+                        <div class="card-buttons">
+                            <div class="btn btn-primary btn-minus">-</div>
+                            <div class="btn btn-primary btn-plus">+</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <div class="flex-vertical flex-centered">
+                <button type="submit" class="btn btn-primary disableable" onclick="return checkQuantityInput()">
+                    Valider la commande
+                </button>
+            </div>
+            <a href="{{ path("home") }}">
+                <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+            </a>
+        </form>
+    </div>
 {% endblock %}

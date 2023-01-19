@@ -80,7 +80,7 @@ class PostManager
     public function replaceImageIfEmpty(Post $post): void
     {
         if ($post->getImageLink() == "") {
-            $post->setImageLink('https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png');
+            $post->setImageLink('/img/entity/placeholder.png');
         }
     }
 
@@ -96,7 +96,7 @@ class PostManager
          */
         $newId = 1;
 
-        if (trim($link) == '') {
+        if (trim($link) == ('' || null)) {
             $link = '/';
         }
 

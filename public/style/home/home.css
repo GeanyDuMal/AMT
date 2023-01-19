@@ -1,0 +1,58 @@
+.accordion-button {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+.active-accordion .accordion-button, .accordion-button:hover {
+    background-color: var(--primary-low-opacity);
+}
+
+.accordion-general * {
+    font: inherit;
+}
+
+.accordion-content {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s 0s ;
+}
+
+.active-accordion .accordion-content {
+    max-height: 1000px;
+}
+
+.body-text {
+    margin-top: 3vw;
+    text-align: center;
+}
+
+#img-iut {
+    max-width: 80vw;
+}
+
+.top-text {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3em;
+    color: #212529;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.top-text-sub {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 0 10px;
+}
+
+.bottom-text {
+    margin: 0 10px;
+}

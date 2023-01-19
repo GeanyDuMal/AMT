@@ -1,77 +1,81 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="/style/blog/css/blog.css" rel="stylesheet"/>
-    
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.css" rel="stylesheet"/>
-    {# Icons #}
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
+    <link href="{{ asset('style/blog/blog.css') }}" rel="stylesheet"/>
 
     {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    {# End Google Fonts #}
-    <style>
-        .card img {
-            height: 280px;
-        }
-    </style>
 {% endblock %}
 
 {% block javascripts %}
-    {# Bootstrap JS Import #}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    {# JS Import #}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    {# End Bootstrap JS Import #}
 
-    <script src="/script/blog/ajaxMenuBlog.js"></script>
+    <script src="{{ asset('script/blog/ajaxMenuBlog.js') }}"></script>
 {% endblock %}
 
 {% block title %}Blog{% endblock %}
 
 {% block body %}
     {% if message %}
-        <div class="alert alert-dismissible alert-success fade show">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>{{ message }} !</strong>
+        <div class="flex-horizontal flex-centered">
+            <div class="message message-incorrect">
+                {{ message }}
+            </div>
         </div>
     {% endif %}
-    <div class="container">
-        <div class="text-center my-5">
-            <h1 class="page__title">Posts & Events</h1>
-            <hr/>
+    <div class="main-block flex-vertical flex-centered">
+        <div>
+            <h1 class="title">
+                Posts & Events
+            </h1>
         </div>
         {% if is_granted("ROLE_ASSOC") %}
-        <div >
-            <a href="{{ path('createBlog') }}" class="btn btn-outline-primary rounded-0 ">Ajouter</a>
+        <div class="">
+            <a href="{{ path('createBlog') }}">
+                <button class="btn btn-primary">
+                    Ajouter
+                </button>
+            </a>
         </div>
-            <br>
+        <br>
         {% endif %}
 
-        <div class="row">
+        <div class="list-card flex-horizontal flex-centered flex-overflow">
         {% for blog in blogs  %}
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card mb-5 shadow-sm">
-                        <img src={{ blog.imageLink }} class="img-fluid"  alt=""/>
-                        <div class="card-body">
-                            <div id="idBlog" style="display: none">{{ blog.id }}</div>
-                            <div class="card-title">
-                                <h2>{{ blog.title }}</h2>
-                            </div>
-                            <div class="card-text">
-                                <p>
-                                    {{ blog.description|slice(0, 30) }}...
-                                </p>
-                            </div>
-                            <a href="{{url('showBlog',{id:blog.id})}}" class="btn btn-outline-primary rounded-0 float-end">Lire plus</a>
+                <div class="card">
+                    <div class="flex-vertical flex-centered">
+                        <img src={{ blog.imageLink }}>
+                    </div>
+                    <div class="card-text">
+                        <input type="hidden" id="idBlog" value="{{ blog.id }}">
+                        <div class="card-title">
+                            <p>
+                                {{ blog.title }}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="card-text-description">
+                                {{ blog.description|slice(0, 40) }}...
+                            </p>
+                        </div>
+                        <div class="flex-horizontal flex-centered card-buttons">
+                            <a href="{{ url('showBlog',{id:blog.id}) }}" >
+                                <button class="btn btn-primary">
+                                    Lire plus
+                                </button>
+                            </a>
                             {% if is_granted("ROLE_ASSOC") %}
-                                <a href="{{ path("editBlog", {"id": blog.id}) }}" class="btn btn-outline-primary rounded-0 float-end">Modifier</a>
-                                <a id="toDelete" class="btn btn-outline-primary rounded-0 float-end">Supprimer</a>
+                                <a href="{{ path("editBlog", {"id": blog.id}) }}">
+                                    <button class="btn btn-secondary">
+                                        Modifier
+                                    </button>
+                                </a>
+                                <a id="toDelete">
+                                    <button class="btn btn-secondary">
+                                        Supprimer
+                                    </button>
+                                </a>
                             {% endif %}
                         </div>
                     </div>

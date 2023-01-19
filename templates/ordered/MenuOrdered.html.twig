@@ -3,7 +3,12 @@
 {% block title %}Menu Commande{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/style/ordered/menu.css">
+    <link rel="stylesheet" href="{{ asset('style/ordered/ordered.css') }}">
+
+	{# Bootstrap CSS Import #}
+	<link href="/style/bootstrap.min.css" rel="stylesheet"/>
+	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
+	{# End Bootstrap CSS Import #}
 
 	{# Import #}
 	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
@@ -17,7 +22,7 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 	
 	
-	<script src="/script/ordered/menuOrdered.js"></script>
+	<script src="{{ asset('script/ordered/menuOrdered.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -27,7 +32,7 @@
 			<strong>{{ message }}!</strong>
 		</div>
 	{% endif %}
-		<div class="content">
+		<div class="content main-block">
 			<div class="content-header">
 				<h1>Liste des commandes</h1>
 			</div>

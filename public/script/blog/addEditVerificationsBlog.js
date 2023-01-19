@@ -1,11 +1,14 @@
-var form=document.querySelector("#blog_form")
+var form=document.querySelector("#form-blog")
 
 function verifyPost(){
     let message = "";
     const titleValue = form.postTitle.value;
     const descriptionValue = form.postDescription.value;
     const imageLinkValue = form.imageLink.value;
-    const imageLinkStateValue = form.imageLinkState.value;
+    let imageLinkStateValue = ""
+    if (form.imageLinkState) {
+        imageLinkStateValue = form.imageLinkState.value;
+    }
 
     if (!titleValue.trim()) {
         message += "Titre du post non renseigné\n";
@@ -15,7 +18,8 @@ function verifyPost(){
         message += "Description du post non renseignée\n ";
     }
 
-    if (imageLinkStateValue === "edit"){
+
+    if (form.imageLinkState && imageLinkStateValue === "edit"){
         if (!imageLinkValue.trim()){
             message += "Lien non renseigné\n ";
         } else if (!imageLinkValue.startsWith('http')){
@@ -39,7 +43,12 @@ function verifyPost(){
 /**
  * Change the visibility of the area to set the imageLink
  */
-form.imageLinkState.onchange = function (){
-    var selectedOption = this[this.selectedIndex];
+if (form.imageLinkState){
+/*    var selectedOption = form.imageLinkState[form.imageLinkState.selectedIndex];
     form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
+*/
+    form.imageLinkState.onclose = function (){
+        var selectedOption = this[this.selectedIndex];
+        form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
+    }
 }

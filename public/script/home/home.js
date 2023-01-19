@@ -1,9 +1,10 @@
-function openNav() {
-    document.getElementById("mySidebar").style.width = "100%";
-    // document.getElementById("main").style.marginLeft = "100%";
-}
+let accordionItems = document.querySelectorAll(".accordion-item")
 
-function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    // document.getElementById("main").style.marginLeft = "0";
+for (let item of accordionItems) {
+    item.addEventListener("click", function() {
+        let active = document.querySelector(".active-accordion")
+        active.classList.toggle("active-accordion");
+        this.classList.toggle("active-accordion");
+        return true
+    });
 }
