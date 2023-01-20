@@ -4,281 +4,88 @@
 {% endblock %}
 
 {% block stylesheets %}
-{# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-    <!-- Custom styles for this template-->
     <link rel='stylesheet' href="{{ asset('style/statistiques/statistique.css') }}">
 
-    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     {# Google Fonts #}
-        <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     {# End Google Fonts #}
 {% endblock %}
 
 {% block body %}
+    <div class="main-block flex-vertical flex-centered">
+        <div>
+            <h1 class="title">
+                Statistiques
+            </h1>
+        </div>
+        <div class="list-card flex-horizontal flex-centered flex-overflow">
+            <div class="card flex-vertical flex-centered card-1">
+                <div class="card-title">
+                    Chiffre d'affaire (Semaine)
+                </div>
+                <div class="card-text">
+                    {% if salesRevenueThisWeek is not null  %}
+                        {{ salesRevenueThisWeek }}
+                    {% else %}
+                        0
+                    {% endif %} €
+                </div>
+            </div>
 
-     <div  id="content-wrapper" class="d-flex flex-column">
-                  <h1 class="h3 mb-2 text-gray-800 text-center" style="font-family: 'Bebas Neue', sans-serif;font-size: 40px;">Statistiques</h1>
+            <div class="card flex-vertical flex-centered card-4">
+                <div class="card-title">
+                    Dépense moyenne par Client (Semaine)
+                </div>
+                <div class="card-text">
+                    {% if averagePerStudent is null %}
+                        0
+                    {% else %}
+                        {{ averagePerStudent }}
+                    {% endif %} €
+                </div>
+            </div>
 
-         <div class="container-fluid">
-             <div class="row">
-             <!-- Earnings (Weekly) Card  -->
-             <div class="col-xl-3 col-md-6 mb-4">
-                 <div class="card border-left-success shadow h-100 py-2">
-                     <div class="card-body">
-                         <div class="row no-gutters align-items-center">
-                             <div class="col mr-2">
-                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                     Chiffre d'affaire (Semaine)</div>
-                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                 {% if salesRevenueThisWeek is not null  %}
-                                    {{ salesRevenueThisWeek }}
-                                   {% else %}
-                                   0
-                                  {% endif %} €</div>
-                             </div>
-                             <div class="col-auto">
-                                 <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+            <div class="card flex-vertical flex-centered card-2">
+                <div class="card-title">
+                    Chiffre d'affaire (Mois)
+                </div>
+                <div class="card-text">
+                    {% if salesRevenueThisMonth is not null  %}
+                        {{ salesRevenueThisMonth }}
+                    {% else %}
+                        0
+                    {% endif %} €
+                </div>
+            </div>
 
-             <!-- Earnings (Monthly) Card Example -->
-             <div class="col-xl-3 col-md-6 mb-4">
-                 <div class="card border-left-primary shadow h-100 py-2">
-                     <div class="card-body">
-                         <div class="row no-gutters align-items-center">
-                             <div class="col mr-2">
-                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                     Chiffre d'affaire (Mois)</div>
-                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                 {% if salesRevenueThisMonth is not null  %}
-                                     {{ salesRevenueThisMonth }}
-                                 {% else %}
-                                     0
-                                 {% endif %} €</div>
-                             </div>
-                             <div class="col-auto">
-                                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+            <div class="card flex-vertical flex-centered card-3">
+                <div class="card-title">
+                    Nombre de Post
+                </div>
+                <div class="card-text">
+                    {{ postsNumber }}
+                </div>
+            </div>
 
-             <div class="col-xl-3 col-md-6 mb-4">
-                 <div class="card border-left-info shadow h-100 py-2">
-                     <div class="card-body">
-                         <div class="row no-gutters align-items-center">
-                             <div class="col mr-2">
-                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1"> Nombre de POSTS
-                                 </div>
-                                 <div class="row no-gutters align-items-center">
-                                     <div class="col-auto">
-                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ postsNumber }}</div>
-                                     </div>
-
-                                 </div>
-                             </div>
-                             <div class="col-auto">
-                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-
-             <!-- Pending Requests Card Example -->
-             <div class="col-xl-3 col-md-6 mb-4">
-                 <div class="card border-left-warning shadow h-100 py-2">
-                     <div class="card-body">
-                         <div class="row no-gutters align-items-center">
-                             <div class="col mr-2">
-                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                     Nombre de clients</div>
-                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ countClients }}</div>
-                             </div>
-                             <div class="col-auto">
-                                 <i class="fas fa-comments fa-2x text-gray-300"></i>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-             <div class="row">
-                  <div class="col-xl-8 col-lg-7">
-                      <!-- Area Chart -->
-                      <div class="card shadow mb-4">
-                          <div class="card-header py-3">
-                              <h6 class="m-0 font-weight-bold text-primary">Nombre de commandes par jour</h6>
-                          </div>
-                          <div class="card-body font-weight-bold">
-                          <p style="display:inline"> Dépense moyenne par étudiant :
-                            <p style="display:inline" class="text-success">
-                              {% if averagePerStudent is null %}
-                               0 €
-                              {% else %}
-                              {{ averagePerStudent }} €
-                              {% endif %}
-                              </p>
-                          </p>
-                              <div class="chart-area">
-                                  <canvas id="everydayPurchase"></canvas>
-                              </div>
-                              <hr>
-                          </div>
-                      </div>
-                  </div>
-                      <!-- Donut Chart -->
-                      <div class="col-xl-4 col-lg-5">
-                          <div class="card shadow mb-4">
-                              <!-- Card Header - Dropdown -->
-                              <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Quantité achetée par produit</h6>
-                              </div>
-                              <!-- Card Body -->
-                              <div class="card-body">
-                                  <div class="chart-pie pt-4">
-                                      <canvas id="MostBoughtProduct"></canvas>
-                                  </div>
-                                  <hr>
-                              </div>
-                          </div>
-                             <div class="col-lg-13 mb-4">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Produits en seuil d'alerte</h6>
-                                </div>
-                                <div class="card-body">
-                                    {% for product in noStock %}
-                                    <h4 class="small font-weight-bold">{{ product.name }} <span
-                                            class="float-right">{{ product.quantityStock }}</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{ product.quantityStock  }}%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    {% endfor %}
-
-                      </div>
+            <div class="card flex-vertical flex-centered card-4">
+                <div class="card-title">
+                    Nombre de Client
+                </div>
+                <div class="card-text">
+                    {{ countClients }}
+                </div>
+            </div>
+        </div>
+        <div class="chart-area">
+            <canvas id="everydayPurchase"></canvas>
+        </div>
+    </div>
 
 
-                  </div>
 
-                    </div>
-             </div>
-         </div>
-     </div>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        $('.datepicker').datepicker({
-            clearBtn: true,
-            format: "dd/mm/yyyy"
-        });
-        let MostBoughtProduct = document.getElementById('MostBoughtProduct').getContext('2d');
-        let myChart = new Chart(MostBoughtProduct, {
-            type: 'pie',
-            data: {
-                labels: {{ productName|raw }},
-                datasets: [{
-                    label: '# Commandes',
-                    data: {{ productSum|raw }},
-                    backgroundColor: [
-                        '#e74a3b',
-                        '#36b9cc',
-                        '#4e73df',
-                        '#1cc88a',
-                        '#f6c23e',
-                        '#858796',
-                        '#5a5c69',
-                        'MediumSpringGreen',
-                        'OrangeRed',
-                        "Tan",
-                        "Snow",
-                        'Salmon'
-                    ],
-                }]
-            },
-            options:{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            font: {
-                                size: 20
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        let everydayPurchase = document.getElementById('everydayPurchase');
-        let everydayPurchaseChart=new Chart(everydayPurchase,{
-            type: "bar",
-            data:{
-                labels: {{ thisWeek|raw }},
-                datasets: [{
-                    data: {{ orderCount|raw }},
-                    backgroundColor:  [
-                        'RebeccaPurple',
-                        'Tomato',
-                        'Yellow',
-                        'orange',
-                        'SeaGreen',
-                        'SteelBlue',
-                        'White'
-                    ],
-                }],
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            font: {
-                                size: 20,
-                                family:'vazir'
-                            }
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            font: {
-                                size: 20,
-                                family:'vazir'
-                            }
-                        }
-                    }
-                }
-
-            }
-
-            }
-
-        )
-    </script>
 {% endblock %}
