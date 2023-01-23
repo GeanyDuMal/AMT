@@ -3,48 +3,47 @@
 {% block title %}Menu Commande{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('style/ordered/ordered.css') }}">
-
-	{# Bootstrap CSS Import #}
-	<link href="/style/bootstrap.min.css" rel="stylesheet"/>
-	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-	{# End Bootstrap CSS Import #}
-
-	{# Import #}
+	{# CSS pour les tableaux  #}
+	<link rel='stylesheet' href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+	<link rel='stylesheet' href="{{ asset('style/base/table.css') }}">
+
+	<link rel="stylesheet" href="{{ asset('style/ordered/ordered.css') }}">
 {% endblock %}
 
 {% block javascripts %}
-	{# Import #}
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-	
 	
 	<script src="{{ asset('script/ordered/menuOrdered.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-	{% if message %}
-		<div class="alert alert-dismissible alert-success fade show">
-			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-			<strong>{{ message }}!</strong>
+	<div class="main-block flex-vertical flex-centered">
+		<h2 class="title">
+			Liste des commandes
+		</h2>
+		<div>
+			{% if message != "" %}
+				<div class="flex-horizontal flex-centered">
+					<div class="message message-incorrect">
+						{{ message }}
+					</div>
+				</div>
+			{% endif %}
 		</div>
-	{% endif %}
-		<div class="content main-block">
-			<div class="content-header">
-				<h1>Liste des commandes</h1>
-			</div>
-			<div style="margin:5px">
-				<a href="{{ path('createOrdered') }}" class="btn btn-success">Ajouter</a>
-			</div>
-		
-			{% if orderedList|length > 0 %}
-			<table id="ordered_table" class="table table-striped">
+		<div class="flex-align-self-left">
+			<a href="{{ path('createOrdered') }}">
+				<button class="btn btn-primary">
+					Ajouter
+				</button>
+			</a>
+		</div>
+		{% if orderedList|length > 0 %}
+			<table id="ordered-table" class="table">
 				<thead>
-					<tr class="table-primary">
-						<th>ID</th>
+					<tr>
 						<th>Date et Heure</th>
 						<th>Nom Client</th>
 						<th>Type Client</th>
@@ -52,48 +51,43 @@
 					</tr>
 				</thead>
 				<tbody>
-				{% for ordered in orderedList %}
-					<tr>
-						<td id="idCell">
-							{{ ordered.id }}
-						</td>
-						<td>
-							{{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
-						</td>
-						{% if ordered.client %}
+					{% for ordered in orderedList %}
+						<tr>
 							<td>
-								{{ ordered.client.name }} {{ ordered.client.firstName }}
+								{{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
 							</td>
+							{% if ordered.client %}
+								<td>
+									{{ ordered.client.name }} {{ ordered.client.firstName }}
+								</td>
+								<td>
+									{{ ordered.client.clientType }}
+								</td>
+							{% else %}
+								<td>
+									Client non renseigné
+								</td>
+								<td>
+									NA
+								</td>
+							{% endif %}
 							<td>
-								{{ ordered.client.clientType }}
+								<a href="{{ path("showOrdered",{idOrder: ordered.id}) }}">
+									<button class="btn btn-secondary">
+										Info
+									</button>
+								</a>
 							</td>
-						{% else %}
-							<td>
-								Client non renseigné
-							</td>
-							<td>
-								NA
-							</td>
-						{% endif %}
-							<td>
-								<a class="btn btn-primary" href="{{ path("showOrdered",{'idOrder' : ordered.id}) }}">Info</a>
-							</td>
-
-					</tr>
-				{% endfor %}
-
+						</tr>
+					{% endfor %}
 				</tbody>
 			</table>
-			{% else %}
-				<div class="alert alert-info alert-dismissible fade show">
-					<p>
-						<strong>Info!</strong>
-					</p>
-					<p>
-						Il n'y a pas encore des Commandes.
-					</p>
-					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		{% else %}
+			<div class="flex-horizontal flex-centered">
+				<div class="message message-incorrect">
+					Il n'y a pas encore de client.
 				</div>
-			{% endif %}
-		</div>
+			</div>
+		{% endif %}
+	</div>
 {% endblock %}

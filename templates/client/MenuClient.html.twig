@@ -9,9 +9,9 @@
 	{# CSS pour les tableaux  #}
 	<link rel='stylesheet' href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+	<link rel='stylesheet' href="{{ asset('style/base/table.css') }}">
 
 	<link rel='stylesheet' href="{{ asset('style/client/client.css') }}">
-	<link rel='stylesheet' href="{{ asset('style/base/table.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -63,7 +63,7 @@
 					<td>{{ client.firstname }}</td>
 					<td class="hide-phone">{{ client.clientType }}</td>
 					<td>
-						<a href="{{url('editClient',{id:client.id})}}">
+						<a href="{{ path('editClient',{id: client.id}) }}">
 							<button class="btn btn-secondary">
 								Modifier
 							</button>
@@ -81,19 +81,12 @@
 			{% endfor %}
 			</tbody>
 		</table>
-			{% else %}
-				{% if message != "" %}
-					<div class="form-group flex-horizontal flex-centered">
-						<div class="message message-incorrect">
-							{{ message }}
-						</div>
-					</div>
-				{% endif %}
-				<div class="flex-horizontal flex-centered">
-					<div class="message message-incorrect">
-						Il n'y a pas encore de client.
-					</div>
+		{% else %}
+			<div class="flex-horizontal flex-centered">
+				<div class="message message-incorrect">
+					Il n'y a pas encore de client.
 				</div>
+			</div>
 		{% endif %}
 	</div>
 {% endblock %}
