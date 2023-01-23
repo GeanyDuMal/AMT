@@ -7,6 +7,7 @@
     --primary-dark: #4c0d00;
     --primary: #d52500;
     --primary-light: #b2452e;
+    --primary-ultra-light: #e1a89d;
     --primary-low-opacity: rgba(76, 13, 0, 0.2);
 }
 
@@ -124,6 +125,7 @@ body {
 .card-title, .card-title > * {
     font-size: 1.75rem;
     margin: 0;
+    text-align: center;
 }
 
 .card-buttons {

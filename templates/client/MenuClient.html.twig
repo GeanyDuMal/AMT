@@ -5,13 +5,12 @@
 {% endblock %}
 
 {% block stylesheets %}
-	{# Bootstrap CSS Import #}
-	<link href="/style/bootstrap.min.css" rel="stylesheet"/>
-	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-	{# End Bootstrap CSS Import #}
 
+	{# CSS pour les tableaux  #}
 	<link rel='stylesheet' href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 	<link rel='stylesheet' href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+	<link rel='stylesheet' href="{{ asset('style/base/table.css') }}">
+
 	<link rel='stylesheet' href="{{ asset('style/client/client.css') }}">
 {% endblock %}
 
@@ -24,56 +23,70 @@
 {% endblock %}
 
 {% block body %}
-	<div class="content main-block">
-		<div class="content-header">
-			<h1>Liste des clients</h1>
+	<div class="main-block flex-vertical flex-centered">
+		<h2 class="title">
+			Liste des clients
+		</h2>
+		<div>
+			{% if message != "" %}
+				<div class="flex-horizontal flex-centered">
+					<div class="message message-incorrect">
+						{{ message }}
+					</div>
+				</div>
+			{% endif %}
 		</div>
-		{% if message %}
-			<div class="alert alert-dismissible alert-success">
-				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-				<strong>{{ message }}</strong>
-			</div>
-		{% endif %}
-		<div align="right">
-			<a href="{{ path('createClient') }}" class="btn btn-success">Ajouter</a>
+		<div class="flex-align-self-left">
+			<a href="{{ path('createClient') }}">
+				<button class="btn btn-primary">
+					Ajouter
+				</button>
+			</a>
 		</div>
 		<br>
-		{% if clients|length>0 %}
-		<table id="client_table" class="table table-striped">
-			<thead bgcolor="#6cd8dc">
-			<tr class="table-primary">
-				<th width="10%">ID</th>
-				<th width="15%">Nom</th>
-				<th width="15%">Prénom</th>
-				<th width="15%">Type du client</th>
-				<th scope="col" width="5%">Modifier</th>
-				<th scope="col" width="5%">Supprimer</th>
+		{% if clients|length > 0 %}
+		<table id="client-table" class="table">
+			<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th class="hide-phone">Type du client</th>
+				<th>Modifier</th>
+				<th>Supprimer</th>
 			</tr>
 			</thead>
 			<tbody>
 			{% for client in clients %}
 				{% if app.user.login!=client.login %}
 				<tr id="data">
-					<td>{{ client.id }}</td>
 					<td>{{ client.name }}</td>
 					<td>{{ client.firstname }}</td>
-					<td>{{ client.clientType }}</td>
+					<td class="hide-phone">{{ client.clientType }}</td>
 					<td>
-						<a href="{{url('editClient',{id:client.id})}}" class="btn btn-warning bg-warning" name="{{client.id}}">Modifier</a>
+						<a href="{{ path('editClient',{id: client.id}) }}">
+							<button class="btn btn-secondary">
+								Modifier
+							</button>
+						</a>
 					</td>
 					<td>
-						<a id="toDelete" class="btn btn-primary bg-danger" data-id={{client.id}}> Supprimer</a>
+						<a id="to-delete" data-id={{client.id}}>
+							<button class="btn btn-secondary">
+								Supprimer
+							</button>
+						</a>
 					</td>
 				</tr>
 				{% endif %}
 			{% endfor %}
 			</tbody>
 		</table>
-			{% else %}
-				<div class="alert alert-info alert-dismissible fade show">
-					<strong>Info !</strong> il n'y a pas encore de client.
-					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		{% else %}
+			<div class="flex-horizontal flex-centered">
+				<div class="message message-incorrect">
+					Il n'y a pas encore de client.
 				</div>
+			</div>
 		{% endif %}
 	</div>
 {% endblock %}
