@@ -39,7 +39,6 @@ class ManagementController extends AbstractController
 
         $inputParameterBag = $request->request;
         $message = null;
-        $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
 
         /**
          * Purge des cotisants
@@ -142,15 +141,16 @@ class ManagementController extends AbstractController
             $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
 
 
-            if ($passwordForgotRequest && ($confirmationCode === $passwordForgotRequest->getConfirmationCode())){
+            if ($passwordForgotRequest && $passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)){
                 $passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $passwordHasher);
 
                 $message = "Le nouveau mot de passe est \"".$passwordForgotRequest->getConfirmationCode().".\" Merci de le modifier à la prochaine connexion";
-                $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
             }
         }
 
-            return $this->render('management/MenuManagement.html.twig', [
+        $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
+
+        return $this->render('management/MenuManagement.html.twig', [
             "message" => $message,
             "requestList" => $requestList
         ]);
