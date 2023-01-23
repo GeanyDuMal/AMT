@@ -1,0 +1,17 @@
+.table {
+    max-width: 80vw;
+}
+
+.table > thead {
+    background-color: var(--primary-ultra-light);
+}
+
+.table > tbody > tr > td {
+    border-bottom: solid black 1px;
+    width: 15vw;
+    text-align: center;
+}
+
+.table > tbody > .even {
+    background-color: var(--ultra-light-grey);
+}
