@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
-
     <head>
         <meta charset="UTF-8">
-        <title>
-            {% block title %}
-                404
-            {% endblock %}
-        </title>
+        {% block title %}
+            404
+        {% endblock %}
 
         {% block stylesheets %}
-            <link rel="stylesheet" href="/style/404_page/style.css">
+            <link rel="stylesheet" href="{{ asset('style/404_page/404_page.css') }}">
         {% endblock %}
 
         {% block javascripts %}
             <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-            <script src="/script/404_page/script.js"></script>
+            <script src="{{ asset('script/404_page/script.js') }}"></script>
         {% endblock %}
 
     </head>
@@ -23,7 +20,7 @@
     <body>
         {% block body %}
             <div class="box">
-                <div class="box__ghost">
+                <div class="box-ghost">
                     <div class="symbol"></div>
                     <div class="symbol"></div>
                     <div class="symbol"></div>
@@ -31,12 +28,12 @@
                     <div class="symbol"></div>
                     <div class="symbol"></div>
 
-                    <div class="box__ghost-container">
-                        <div class="box__ghost-eyes">
-                            <div class="box__eye-left"></div>
-                            <div class="box__eye-right"></div>
+                    <div class="box-ghost-container">
+                        <div class="box-ghost-eyes">
+                            <div class="box-eye-left"></div>
+                            <div class="box-eye-right"></div>
                         </div>
-                        <div class="box__ghost-bottom">
+                        <div class="box-ghost-bottom">
                             <div></div>
                             <div></div>
                             <div></div>
@@ -44,16 +41,16 @@
                             <div></div>
                         </div>
                     </div>
-                    <div class="box__ghost-shadow"></div>
+                    <div class="box-ghost-shadow"></div>
                 </div>
 
-                <div class="box__description">
-                    <div class="box__description-container">
-                        <div class="box__description-title">Ooooops!</div>
-                        <div class="box__description-text">Il semblerais que nous n'ayons pas pu trouver la page que vous cherchez.</div>
+                <div class="box-description">
+                    <div class="box-description-container">
+                        <div class="box-description-title">Ooooops!</div>
+                        <div class="box-description-text">Il semblerais que nous n'ayons pas pu trouver la page que vous cherchez.</div>
                     </div>
 
-                    <a href="javascript:history.go(-1)" class="box__button">Retour</a>
+                    <a href="{{ path('home') }}" class="box-button">Retour</a>
 
                 </div>
 

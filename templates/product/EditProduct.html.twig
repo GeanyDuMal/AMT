@@ -5,12 +5,6 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {# Bootstrap CSS Import #}
-    <link href="/style/bootstrap.min.css" rel="stylesheet"/>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.12/css/all.css'>
-    {# End Bootstrap CSS Import #}
-
-    <link rel='stylesheet' href="{{ asset('style/client/index.css') }}">
     <link rel='stylesheet' href="{{ asset('style/product/product.css') }}">
 {% endblock %}
 
@@ -20,14 +14,6 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        {% if message != "" %}
-            <div class="alert alert-dismissible alert-info fade show">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>{{ message }}</strong>
-            </div>
-        {% endif %}
-    </div>
     <div class="flex-vertical flex-centered main-block">
         <h2 class="title">
             Modification de Produit
