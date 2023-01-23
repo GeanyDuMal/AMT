@@ -11,7 +11,7 @@ $(document).mousemove(function (event) {
   mouseX = event.pageX / -pageX;
   xAxis = -mouseX * 100 - 100;
 
-  $('.box__ghost-eyes').css({ 'transform': 'translate(' + xAxis + '%,-' + yAxis + '%)' });
+  $('.box-ghost-eyes').css({ 'transform': 'translate(' + xAxis + '%,-' + yAxis + '%)' });
 
   //console.log('X: ' + xAxis);
 
