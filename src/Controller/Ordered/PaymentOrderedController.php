@@ -14,6 +14,7 @@ use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,13 @@ class PaymentOrderedController extends AbstractController
         $clientType = ClientType::ETUDIANT;
         $inputParameterBag = $request->request;
         $listProduct = [];
-        $productOrderedIdTab = unserialize($productOrderedSerialized);
+        try {
+            $productOrderedIdTab = unserialize($productOrderedSerialized);
+        } catch (Exception $e) {
+            return $this->redirectToRoute('createOrdered', [
+                "message" => "Une erreur est survenue, merci de réessayer"
+            ]);
+        }
 
         //Si l'on a select un client, alors on conserve celui ci + son type
         if ($idClient != "null") {
