@@ -42,7 +42,9 @@ class PaymentOrderedController extends AbstractController
         try {
             $productOrderedIdTab = unserialize($productOrderedSerialized);
         } catch (Exception $e) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('createOrdered', [
+                "message" => "Une erreur est survenue, merci de réessayer"
+            ]);
         }
 
         //Si l'on a select un client, alors on conserve celui ci + son type
