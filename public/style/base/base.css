@@ -8,7 +8,8 @@
     --primary: #d52500;
     --primary-light: #b2452e;
     --primary-ultra-light: #e1a89d;
-    --primary-low-opacity: rgba(76, 13, 0, 0.2);
+    --primary-low-opacity: rgba(0, 49, 76, 0.2);
+    --info-background: rgba(0, 105, 128, 0.2);
 }
 
 a {
@@ -299,6 +300,11 @@ h4 {
 .message-incorrect {
     color: var(--primary-light);
     background-color: var(--primary-low-opacity);
+}
+
+.message-information {
+    color: #006980;
+    background-color: var(--info-background);
 }
 
 .navbar {
