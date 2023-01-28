@@ -27,10 +27,14 @@ class MenuProductController extends AbstractController
         }
 
         // On recupere tout les produits
-        $products = $productRepository->findBy([], ["productType" => "ASC", "name" => "ASC"]);
+        $productsAvailable = $productRepository->findAllPositiveStock();
+        $productsUnavailable = $productRepository->findAllEmptyStock();
+
+
 
         return $this->render('product/MenuProduct.html.twig', [
-            'products' => $products,
+            'productsAvailable' => $productsAvailable,
+            'productsUnavailable' => $productsUnavailable,
             'message' => $message,
             'clientTypeActual' => $clientTypeActual
         ]);
