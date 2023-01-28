@@ -36,6 +36,20 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return Product[] Returns an array of Product objects
+     * Return all the product with a positive stock
+     */
+    public function findAllEmptyStock(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.quantityStock = 0')
+            ->orderBy('p.productType, p.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
      * @return Product[]
      */
     public function findProductEmptyWithoutCommandOneYear(): array

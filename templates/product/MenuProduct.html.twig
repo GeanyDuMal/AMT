@@ -40,7 +40,7 @@
         {% endif %}
 
         <div class="list-card flex-horizontal flex-centered flex-overflow">
-            {% for product in products %}
+            {% for product in productsAvailable %}
                 <div class="card">
                     <img src={{ product.imageLink }}>
                     <div class="card-text">
@@ -61,6 +61,48 @@
                                 Quantité en stock : {{ product.quantityStock }}
                             </p>
                         {% endif %}
+                        <div class="product-price">
+                            <p>
+                                Prix :
+                                {% for price in product.prices %}
+                                    {% if price.clientType == clientTypeActual%}
+                                        {{ price.price }}€
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="flex-horizontal flex-centered card-buttons">
+                            {% if is_granted("ROLE_ASSOC") %}
+                                <a href="{{ path("editProduct", {"id": product.id}) }}">
+                                    <button class="btn btn-secondary">
+                                        Modifier
+                                    </button>
+                                </a>
+                                <a id="toDelete">
+                                    <button class="btn btn-secondary">
+                                        Supprimer
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for product in productsUnavailable %}
+                <div class="card">
+                    <img src={{ product.imageLink }}>
+                    <div class="card-text">
+                        <input type="hidden" id="idProduct" value="{{ product.id }}">
+                        <div class="card-title">
+                            <p>
+                                {{ product.name }}
+                            </p>
+                        </div>
+                        <p class="product-quantity">
+                            <b style="color:red;">
+                                Stock épuisé
+                            </b>
+                        </p>
                         <div class="product-price">
                             <p>
                                 Prix :
