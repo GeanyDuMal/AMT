@@ -99,6 +99,20 @@ class ProductManager
 
     /**
      * @param Product $product
+     * @return bool
+     */
+    public function verifyEditedProductAlreadyExist(Product $product): bool
+    {
+        $idProduct = $product->getId();
+        $nameProduct = $product->getName();
+
+        $productSameName = $this->productRepository->findOneBy(['name' => $nameProduct]);
+
+        return ($productSameName && !($idProduct == $productSameName->getId()) && ($productSameName->getName() == $nameProduct));
+    }
+
+    /**
+     * @param Product $product
      * @param int $quantityToRestock
      * @return void
      */
