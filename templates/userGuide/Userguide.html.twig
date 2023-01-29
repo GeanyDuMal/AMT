@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Guide Utilisateur
+{% endblock %} 
+
+{% block stylesheets %}
+
+{% endblock %}
+    
+{% block body %}
+    <div class="main-block flex-centered flex-vertical">
+        <div>
+            <h1 class="title">
+                Guide Utilisateur
+            </h1>
+        </div>
+        <div>
+            <div>
+                Utilisateur
+            </div>
+            <div>
+                En tant qu'utilisateur, vous pouvez observer les produits disponibles ainsi que voir les posts effectué par l'association.<br>
+                Vous pouvez également créer un compte afin de conserver des points de fidélité après chaque achat.
+            </div>
+        </div>
+        <div>
+            <div>
+                Membre de l'association
+            </div>
+            <div>
+                <div>
+                    Commandes
+                </div>
+                <div>
+                    En tant que membre de l'association, vous pouvez realiser des commandes. <br>
+                    Pour cela, aller dans l'onglet "Commander" puis selectionner le client auquel vous voulez affecter la commande.
+                    Il faut au préalable que le client ai créé un compte sur le site. Vous indiquerez ensuite le nombre de chaque produit souhaité <br>
+                </div>
+            </div>
+            <div>
+                <div>
+                    Produit
+                </div>
+                <div>
+                    En tant que membre de l'association, vous pouvez créer et modifier des produits. <br>
+                    Pour cela, aller dans l'onglet "Produits".<br>
+                    Vous avez un bouton "Ajouter" et pour chaque produit existant, vous avez un bouton "Modifier" pour editer les informations actuelles d'un produit
+                </div>
+            </div>
+            <div>
+                <div>
+                    Blog
+                </div>
+                <div>
+                    En tant que membre de l'association, vous pouvez créer et modifier des post . <br>
+                    Pour cela, aller dans l'onglet "Post".<br>
+                    Vous avez un bouton "Ajouter" et pour chaque post existant, vous avez un bouton "Modifier" pour editer les informations actuelles d'un post
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
