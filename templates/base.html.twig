@@ -58,15 +58,16 @@
                     <a href="{{ path("home") }}">Accueil</a>
                     <a href="{{ path("menuProduct") }}">Nos&nbspProduits</a>
                     <a href="{{ path("menuBlog") }}">Posts&nbsp&&nbspEvents</a>
+                    <a href="{{ path("userGuide") }}">Guide&nbspd'utilisation</a>
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     {% if is_granted('ROLE_ASSOC') %}
                         <div class="block-sidebar">
                             <a href="{{ path("createOrdered") }}">Commander</a>
+                            <a href="{{ path("statistics") }}">Statistiques</a>
                         </div>
                         {% if is_granted('ROLE_SECRETAIRE') %}
                             <div class="block-sidebar">
-                                <a href="{{ path("statistics") }}">Statistiques</a>
                                 <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
                             </div>
                             {% if is_granted('ROLE_TRESORIER') %}
