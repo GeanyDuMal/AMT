@@ -13,7 +13,6 @@
 
 [![Assign Reviewer](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/affectingReviewerPullRequest.yml/badge.svg)](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/affectingReviewerPullRequest.yml)
 
-[![Managing New Issue](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/labelingIssues.yml/badge.svg)](https://github.com/GeanyDuMal/Website_AEDI/actions/workflows/labelingIssues.yml)
 
 ### <ins>Usage</ins>
 Ce site est developpé avec PHP et Symfony. Voici les versions actuelles : <br>
