@@ -40,7 +40,7 @@ class EditClientController extends AbstractController
         $message = "";
         $allowEdit = $this->isGranted($client->getRoles()[0]);
 
-        if ($data->count() > 0) {
+        if ($allowEdit && $data->count() > 0) {
             $clientManager = new ClientManager($manager);
 
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
@@ -65,7 +65,7 @@ class EditClientController extends AbstractController
                 $clientManager->persist($client);
                 if ($client->getClientType() == ClientType::ASSOCIATION) {
                     $member = $associationRepository->findOneBy(["member" => $client]);
-                    if ($member->getRole() == AssociationRole::PRESIDENT && $allowEdit) {
+                    if ($member->getRole() == AssociationRole::PRESIDENT) {
                         $associationManager->removeOtherPresidents($member);
                     }
                 }
@@ -74,6 +74,10 @@ class EditClientController extends AbstractController
                     "message" => "Modification effectué avec succès"
                 ]);
             }
+        } else if (!$allowEdit){
+            return $this->redirectToRoute('menuClient',[
+                'message' => 'Vous n\'avez pas l\'autorisation de modifier ce client',
+            ]);
         }
 
         return $this->render('client/EditClient.html.twig', [
