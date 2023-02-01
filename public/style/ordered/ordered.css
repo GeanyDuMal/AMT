@@ -40,3 +40,9 @@ form {
         width: 15%; /* Surcharge */
     }
 }
+
+@media screen and (max-width: 450px) {
+    .hide-phone {
+        display: none;
+    }
+}
