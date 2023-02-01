@@ -44,7 +44,8 @@
 			<table id="ordered-table" class="table">
 				<thead>
 					<tr>
-						<th>Date et Heure</th>
+						<th>N° </th>
+						<th class="hide-phone">Date et Heure</th>
 						<th>Nom Client</th>
 						<th>Type Client</th>
 						<th>Details</th>
@@ -54,6 +55,9 @@
 					{% for ordered in orderedList %}
 						<tr>
 							<td>
+								{{ ordered.id }}
+							</td>
+							<td class="hide-phone">
 								{{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
 							</td>
 							{% if ordered.client %}
