@@ -29,8 +29,12 @@ class CreateOrderedController extends AbstractController
 
         // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProductPositiveStock = $productRepository->findAllPositiveStock();
+        // Recupere tout les clients par ordre alphabetique
+        $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
         if ($request->request->count() > 0) {
+            $message = '';
+
             // Recupere toutes les quantités de produit selectionné
             foreach ($allProductPositiveStock as $product) {
                 $quantity = $inputParameterBag->get("quantityOrdered_" . $product->getId());
@@ -43,9 +47,8 @@ class CreateOrderedController extends AbstractController
                 }
             }
 
-
-            // Si l'on a commandé au moins 1 produit
             if (!$message) {
+                // Si l'on a commandé au moins 1 produit
                 if ($productOrdered) {
                     return $this->redirectToRoute("orderedPayment", [
                         "productOrderedSerialized" => serialize($productOrdered),
@@ -56,9 +59,6 @@ class CreateOrderedController extends AbstractController
                 }
             }
         }
-
-        // Recupere tout les clients par ordre alphabetique
-        $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
         return $this->render('ordered/CreateOrdered.html.twig', [
             "productList" => $allProductPositiveStock,
