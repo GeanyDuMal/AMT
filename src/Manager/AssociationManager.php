@@ -64,7 +64,7 @@ class AssociationManager
      */
     public function removeOtherPresidents(Association $associationMember): void
     {
-        $members = $this->associationRepository->find(["role" => AssociationRole::PRESIDENT]);
+        $members = $this->associationRepository->findBy(["role" => AssociationRole::PRESIDENT]);
 
         foreach ($members as $otherMember) {
             if ($associationMember->getMember() !== $otherMember->getMember()) {
