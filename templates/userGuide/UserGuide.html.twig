@@ -5,18 +5,18 @@
 {% endblock %} 
 
 {% block stylesheets %}
-
+    <link rel='stylesheet' href='{{ asset('style/userGuide/userGuide.css') }}'>
 {% endblock %}
     
 {% block body %}
-    <div class="main-block flex-centered flex-vertical">
+    <div class="main-block flex-vertical">
         <div>
             <h1 class="title">
                 Guide Utilisateur
             </h1>
         </div>
-        <div>
-            <div>
+        <div class="block-parts">
+            <div class="block-title">
                 Utilisateur
             </div>
             <div>
@@ -25,12 +25,12 @@
             </div>
         </div>
         {% if is_granted('ROLE_ASSOC') %}
-            <div>
-                <div>
+            <div class="block-parts">
+                <div class="block-title">
                     Membre de l'association
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         Produit
                     </div>
                     <div>
@@ -39,8 +39,8 @@
                         Vous avez un bouton "Ajouter" et pour chaque produit existant, vous avez un bouton "Modifier" pour editer les informations actuelles d'un produit
                     </div>
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         Blog
                     </div>
                     <div>
@@ -49,18 +49,18 @@
                         Vous avez un bouton "Ajouter" et pour chaque post existant, vous avez un bouton "Modifier" pour editer les informations actuelles d'un post
                     </div>
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         Commandes
                     </div>
                     <div>
                         En tant que membre de l'association, vous pouvez réaliser des commandes. <br>
-                        Pour cela, aller dans l'onglet "Commander" puis selectionner le client auquel vous voulez affecter la commande.
+                        Pour cela, aller dans l'onglet "Commander" puis selectionner le client auquel vous voulez affecter la commande.<br>
                         Il faut au préalable que le client ai créé un compte sur le site. Vous indiquerez ensuite le nombre de chaque produit souhaité <br>
                     </div>
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         Statistiques
                     </div>
                     <div>
@@ -71,57 +71,55 @@
             </div>
         {% endif %}
         {% if is_granted('ROLE_SECRETAIRE') %}
-            <div>
-                <div>
+            <div class="block-parts">
+                <div class="block-title">
                     Secrétaire de l'association
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         Gestion des clients
                     </div>
                     <div>
-                        En tant que secrétaire de l'association, vous avez accès au menu de gestion des clients. Ce menu va
-                        vous permettre de filter les clients dans l'ordre croissant/décroissant sur une colonne particulière.
-                        Vous allez aussi pouvoir filter les client avec la barre de recherche au dessus du tableau.
-                        Pour chaque client, vous pourrez modifier ses informations autres que sont login et son mot de passe.
-                        Vous aurez également la possibilité de supprimer le client ainsi que toute ses apparations dans des commandes.
+                        En tant que secrétaire de l'association, vous avez accès au menu de gestion des clients. <br>
+                        Ce menu va vous permettre de filter les clients dans l'ordre croissant/décroissant sur une colonne particulière. <br>
+                        Vous allez aussi pouvoir filter les client avec la barre de recherche au dessus du tableau. <br>
+                        Pour chaque client, vous pourrez modifier ses informations autres que sont login et son mot de passe. <br>
+                        Vous aurez également la possibilité de supprimer le client ainsi que toute ses apparations dans des commandes. <br>
                         Ces options ne seront disponible que pour un client ayant un role inferieur ou égal à vous.
                     </div>
                 </div>
             </div>
         {% endif %}
         {% if is_granted('ROLE_TRESORIER') %}
-            <div>
-                <div>
+            <div class="block-parts">
+                <div class="block-title">
                     Trésorier de l'association
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         Gestion des commandes
                     </div>
                     <div>
-                        L'interface de gestion des commandes est sensiblement le meme que celui des clients.
-                        La seule différence est qu'il ne permet pas de modifier une commande. Il y a par contre plusieurs
-                        option de suppression : la suppression simple qui va supprimer la commande de la base de données
-                        et l'annulation qui va supprimer la commande et rembourser le client ainsi que restocker les produits.
+                        L'interface de gestion des commandes est sensiblement le meme que celui des clients. <br>
+                        La seule différence est qu'il ne permet pas de modifier une commande.  <br>
+                        Il y a par contre plusieurs option de suppression :  <br>
+                        La suppression simple qui va supprimer la commande de la base de données et l'annulation qui va supprimer la commande et rembourser le client ainsi que restocker les produits.
                     </div>
                 </div>
             </div>
         {% endif %}
         {% if is_granted('ROLE_PRESIDENT') %}
-            <div>
-                <div>
+            <div class="block-parts">
+                <div class="block-title">
                     Président de l'association
                 </div>
-                <div>
-                    <div>
+                <div class="sub-parts">
+                    <div class="sub-part-title">
                         L'interface de Gestion
                     </div>
                     <div>
-                        L'interface de gestion va permettre de gérer la purge de différentes informations, par exemple les
-                        clients qui n'ont pas effectué de commande depuis plus de 2 ans, etc ... Il va également permettre de
-                        gérer les réinitialisations de mot de passe pour les utilisateurs en ayant fait la demande, en
-                        selectionnant le bon client ainsi que son code de confirmation.
+                        L'interface de gestion va permettre de gérer la purge de différentes informations, par exemple les clients qui n'ont pas effectué de commande depuis plus de 2 ans, etc ...  <br>
+                        Il va également permettre de gérer les réinitialisations de mot de passe pour les utilisateurs en ayant fait la demande, en selectionnant le bon client ainsi que son code de confirmation.
                     </div>
                 </div>
             </div>
