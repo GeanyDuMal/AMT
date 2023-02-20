@@ -1,0 +1,17 @@
+.block-parts {
+    margin: 10px 0;
+}
+
+.sub-parts {
+    margin-bottom: 10px;
+}
+
+.block-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.sub-part-title {
+    font-size: 1.3rem;
+    font-weight: bolder;
+}
