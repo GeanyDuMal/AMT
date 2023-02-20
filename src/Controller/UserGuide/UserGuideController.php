@@ -13,6 +13,6 @@ class UserGuideController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('userGuide/userGuide.html.twig');
+        return $this->render('userGuide/UserGuide.html.twig');
     }
 }
