@@ -18,6 +18,9 @@
                         réalisé par {{ ordered.client.name }} {{ ordered.client.firstName }}
                   {% endif %}
             </h3>
+            <h3>
+                  le {{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
+            </h3>
             <h4>
                   Commande de type {{ clientType }} reglé avec {{ ordered.paymentType }}
             </h4>
