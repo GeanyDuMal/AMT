@@ -50,8 +50,8 @@
                   </a>
                   <form method="post">
                         {% if is_granted("ROLE_TRESORIER") %}
-                              <button type="submit" class="btn btn-secondary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
-                              <button type="submit" class="btn btn-secondary" name="remove" value="remove" onclick="return confirmDelete()">Supprimer</button>
+                              <button type="submit" class="btn btn-primary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
+                              <button type="submit" class="btn btn-primary" name="remove" value="remove" onclick="return confirmDelete()">Supprimer</button>
                         {% endif %}
                   </form>
             </div>
