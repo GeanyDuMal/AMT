@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Affichage Client
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('script/client/showClient.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' href="{{ asset('style/client/client.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="flex-vertical flex-centered main-block">
+        <h2 class="title">
+            {{ client.name }} {{ client.firstName }}
+        </h2>
+        <div class="show-container flex-vertical flex-centered">
+            <div class="show-sub-block">
+                <div class="show-block">
+                    <label for="login" class="input-label">Login</label>
+                    <p>
+                        {{ client.login }}
+                    </p>
+                </div>
+                <div class="show-block">
+                    <p>
+                        Compte créé le {{ client.creationDate | date('d/m/Y') }}
+                    </p>
+                </div>
+            </div>
+            <div class="flex-horizontal block-form-group">
+                <div class="show-block">
+                    <label class="input-label">Type</label>
+                    <p>
+                        {{ client.clientType }}
+                    </p>
+                </div>
+                {% if member %}
+                    <div class="show-block" id="roles">
+                        <label class="input-label">Role</label>
+                            <p>
+                                {{ member.role }}
+                            </p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="show-sub-block flex-horizontal">
+                <div class="show-block">
+                    <label class="input-label">Solde (en €)</label>
+                    <p>
+                        {{ client.balance }}
+                    </p>
+                </div>
+                <div class="show-block">
+                    <label class="input-label">Point de Fidélité</label>
+                    <p>
+                        {{ client.fidelityPoint }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {# End Form #}
+        <div class="flex-horizontal flex-centered">
+            <a href="{{ path('editClient',{id: client.id}) }}">
+                <button class="btn btn-primary">
+                    Modifier
+                </button>
+            </a>
+            <a href="{{ path("menuClient") }}">
+                <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+            </a>
+            <a href="{{ path('deleteClient', {'id': client.id }) }}" onclick="return confirmDelete()">
+                <button class="btn btn-secondary">
+                    Supprimer
+                </button>
+            </a>
+        </div>
+    </div>
+{% endblock %}
