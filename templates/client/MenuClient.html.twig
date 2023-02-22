@@ -52,7 +52,7 @@
 				<th>Prénom</th>
 				<th class="hide-phone">Type du client</th>
 				<th>Modifier</th>
-				<th>Supprimer</th>
+				<th>Détails</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -70,9 +70,9 @@
 						</a>
 					</td>
 					<td>
-						<a id="to-delete" data-id={{client.id}}>
-							<button class="btn btn-secondary">
-								Supprimer
+						<a href="{{ path('showClient',{id: client.id}) }}">
+							<button class="btn btn-primary">
+								Voir plus
 							</button>
 						</a>
 					</td>

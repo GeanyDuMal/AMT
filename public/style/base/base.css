@@ -38,10 +38,6 @@ a:hover, a:active {
     display: flex;
 }
 
-.block-form-group > .form-group {
-
-}
-
 body {
     padding: 0;
     margin: 0;
@@ -320,6 +316,31 @@ h4 {
 
 .navbar * {
     margin: 0 2%;
+}
+
+.show-container {
+    border: var(--light-grey) solid 2px;
+    border-radius: 10px;
+    padding: 10px;
+    width: 60vw;
+}
+
+.show-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.show-block-title {
+    display: block;
+    font-size: 2rem;
+    font-family: "Bebas Neue", sans-serif;
+    margin-bottom: 0;
+}
+
+.show-sub-block {
+    width: 100%;
+    display: flex;
 }
 
 .sidebar {

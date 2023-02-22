@@ -14,22 +14,3 @@ $(document).ready( function () {
         }
     );
 } );
-
-/**
- * delete a client/member using jquery-ajax
- */
-$("#client-table").on("click", "#to-delete", function() {
-   var tr= $(this).closest("tr");
-    if (confirm('Voulez-vous supprimer l\'utilisateur ? ')) {
-        const id=$(this).data("id");
-        fetch('/admin/client/delete/'+id, {method: 'DELETE'})
-            .then(function (resp) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Nice',
-                    text: 'Suppression avec succèes',
-                })
-                tr.remove();
-            });
-    }
-});
