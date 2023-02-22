@@ -1,3 +1,9 @@
+@media screen and (max-width: 800px) {
+    .show-sub-block {
+        flex-wrap: wrap;
+    }
+}
+
 @media screen and (max-width: 450px) {
     .hide-phone {
         display: none;
