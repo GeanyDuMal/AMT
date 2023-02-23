@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ManagementController extends AbstractController
+class MenuManagementController extends AbstractController
 {
     /**
      * @Route("/management/", name="menuManagement")
@@ -145,6 +145,19 @@ class ManagementController extends AbstractController
                 $passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $passwordHasher);
 
                 $message = "Le nouveau mot de passe est \"".$passwordForgotRequest->getConfirmationCode().".\" Merci de le modifier à la prochaine connexion";
+            }
+        }
+
+        /**
+         * Suppression d'une demande de reinitialisation de mot de passe
+         */
+        if ($inputParameterBag->get("suppressPasswordRequest") != "") {
+            $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
+
+            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
+
+            if ($passwordForgotRequest) {
+                $passwordForgotRequestManager->remove($passwordForgotRequest);
             }
         }
 
