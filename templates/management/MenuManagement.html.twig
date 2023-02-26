@@ -80,12 +80,17 @@
                 <h2>
                     Reinitialisation de mot de passe
                 </h2>
-                <div class="flex-horizontal flex-centered flex-overflow block-control">
+                <div class="flex-horizontal flex-centered flex-overflow block-control block-password">
                     {% if requestList|length > 0 %}
-                        <button type="submit" name="resetPassword" value="true" class="btn btn-primary disableable">
-                            Reinitialiser
-                        </button>
-                        <div class="flex-horizontal flex-centered flex-overflow request-choice">
+                        <div class="flex-vertical sub-block">
+                            <button type="submit" name="suppressPasswordRequest" value="true" class="btn btn-secondary disableable">
+                                Supprimer la demande
+                            </button>
+                            <button type="submit" name="resetPassword" value="true" class="btn btn-primary disableable">
+                                Reinitialiser
+                            </button>
+                        </div>
+                        <div class="flex-horizontal flex-overflow sub-block">
                             <select name="passwordRequest" id="" class="form-input form-select">
                                 {% for request in requestList %}
                                     <option value="{{ request.client.id }}">{{ request.client.name }} {{ request.client.firstName }}</option>

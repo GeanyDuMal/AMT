@@ -23,17 +23,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ManagementController extends AbstractController
+class MenuManagementController extends AbstractController
 {
     /**
      * @Route("/management/", name="menuManagement")
      */
-    public function index(EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $passwordHasher,
-        ClientRepository $clientRepository, AssociationRepository $associationRepository, PostRepository $postRepository,
-        OrderedRepository $orderedRepository, ProductRepository $productRepository,
-        PasswordForgotRequestRepository $passwordForgotRequestRepository): Response
+    public function index(EntityManagerInterface          $manager, Request $request, UserPasswordHasherInterface $passwordHasher,
+                          ClientRepository                $clientRepository, AssociationRepository $associationRepository, PostRepository $postRepository,
+                          OrderedRepository               $orderedRepository, ProductRepository $productRepository,
+                          PasswordForgotRequestRepository $passwordForgotRequestRepository): Response
     {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)){
+        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute('home');
         }
 
@@ -43,11 +43,11 @@ class ManagementController extends AbstractController
         /**
          * Purge des cotisants
          */
-        if ($inputParameterBag->get("clearCotisant") != ""){
+        if ($inputParameterBag->get("clearCotisant") != "") {
             $clientManager = new ClientManager($manager);
             $listCotisant = $clientRepository->findBy(["clientType" => ClientType::COTISANT]);
 
-            foreach ($listCotisant as $cotisant){
+            foreach ($listCotisant as $cotisant) {
                 $cotisant->setClientType(ClientType::ETUDIANT);
                 $clientManager->persist($cotisant);
             }
@@ -58,14 +58,14 @@ class ManagementController extends AbstractController
         /**
          * Purge de l'association
          */
-        if ($inputParameterBag->get("clearAssociation") != ""){
+        if ($inputParameterBag->get("clearAssociation") != "") {
             $clientManager = new ClientManager($manager);
             $listTypeAssociation = $clientRepository->findBy(["clientType" => ClientType::ASSOCIATION]);
 
             $president = $associationRepository->findOneBy(["role" => AssociationRole::PRESIDENT])->getMember();
 
-            foreach ($listTypeAssociation as $client){
-                if ($client !== $president){
+            foreach ($listTypeAssociation as $client) {
+                if ($client !== $president) {
                     $client->setClientType(ClientType::ETUDIANT);
 
                     $clientManager->persist($client);
@@ -78,11 +78,11 @@ class ManagementController extends AbstractController
         /**
          * Purge des anciens clients
          */
-        if ($inputParameterBag->get("clearOldClient") != ""){
+        if ($inputParameterBag->get("clearOldClient") != "") {
             $listClient = $clientRepository->findClientWithoutOrderedTwoYears();
             $clientManager = new ClientManager($manager);
 
-            foreach ($listClient as $client){
+            foreach ($listClient as $client) {
                 $clientManager->remove($client);
             }
 
@@ -93,11 +93,11 @@ class ManagementController extends AbstractController
         /**
          * Purge des anciens produits
          */
-        if ($inputParameterBag->get("clearProduct") != ""){
+        if ($inputParameterBag->get("clearProduct") != "") {
             $listProduct = $productRepository->findProductEmptyWithoutCommandOneYear();
             $productManager = new ProductManager($manager);
 
-            foreach ($listProduct as $product){
+            foreach ($listProduct as $product) {
                 $productManager->remove($product);
             }
 
@@ -107,11 +107,11 @@ class ManagementController extends AbstractController
         /**
          * Purge des anciennes commandes sans client
          */
-        if ($inputParameterBag->get("clearOrder") != ""){
+        if ($inputParameterBag->get("clearOrder") != "") {
             $listOrdered = $orderedRepository->findOrderWithoutClientTwoYearsOld();
             $orderedManager = new OrderedManager($manager);
 
-            foreach ($listOrdered as $ordered){
+            foreach ($listOrdered as $ordered) {
                 $orderedManager->remove($ordered);
             }
 
@@ -121,11 +121,11 @@ class ManagementController extends AbstractController
         /**
          * Purge des 3 posts les plus anciens
          */
-        if ($inputParameterBag->get("clearPost") != ""){
+        if ($inputParameterBag->get("clearPost") != "") {
             $listPost = $postRepository->findBy([], ["id" => "ASC"], 3);
             $postManager = new PostManager($manager);
 
-            foreach ($listPost as $post){
+            foreach ($listPost as $post) {
                 $postManager->remove($post);
             }
 
@@ -141,10 +141,24 @@ class ManagementController extends AbstractController
             $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
 
 
-            if ($passwordForgotRequest && $passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)){
+            if ($passwordForgotRequest && $passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)) {
                 $passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $passwordHasher);
 
-                $message = "Le nouveau mot de passe est \"".$passwordForgotRequest->getConfirmationCode().".\" Merci de le modifier à la prochaine connexion";
+                $message = "Le nouveau mot de passe est \"" . $passwordForgotRequest->getConfirmationCode() . ".\" Merci de le modifier à la prochaine connexion";
+            }
+        }
+
+        /**
+         * Suppression d'une demande de reinitialisation de mot de passe
+         */
+        if ($inputParameterBag->get("suppressPasswordRequest") != "") {
+            $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
+
+            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
+
+            if ($passwordForgotRequest) {
+                $passwordForgotRequestManager->remove($passwordForgotRequest);
+                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()->getName() . " " . $passwordForgotRequest->getClient()->getFirstName() . " a été supprimé";
             }
         }
 
