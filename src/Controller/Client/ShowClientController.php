@@ -14,7 +14,7 @@ class ShowClientController extends AbstractController
     /**
      * @Route("/admin/client/show/{!id}", name="showClient")
      */
-    public function showBlog($id, ClientRepository $clientRepository, AssociationRepository $associationRepository): Response
+    public function index($id, ClientRepository $clientRepository, AssociationRepository $associationRepository): Response
     {
         $client = $clientRepository->find($id);
 
