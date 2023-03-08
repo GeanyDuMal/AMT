@@ -12,18 +12,17 @@
 {% endblock %}
 
 {% block body %}
-    {% if message %}
-        <div class="alert alert-dismissible alert-success">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            <strong>{{ message }}</strong>
-        </div>
-    {% endif %}
-
     <div class="flex-vertical flex-centered main-block">
+        {% if message != "" %}
+            <div class="flex-horizontal flex-centered">
+                <div class="message message-information">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
         <h1 class="title-block">
             Interface de Gestion
         </h1>
-
         <form action="" class="flex-vertical flex-centered" method="post" id="form_management" onsubmit="disableButton()">
             <div class="flex-vertical flex-centered">
                 <h2>
