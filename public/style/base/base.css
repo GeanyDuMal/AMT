@@ -410,9 +410,18 @@ h4 {
     text-align: left;
 }
 
-@media screen and (max-width: 450px) {
-    .sidebar a, .navbar a {
-        font-size: 18px;
+@media screen and (max-width: 800px) {
+    .card {
+        width: 70vw;
+        margin: 10px;
+    }
+
+    .block-form-group {
+        flex-wrap: wrap;
+    }
+
+    .show-sub-block {
+        flex-direction: column;
     }
 }
 
@@ -423,14 +432,8 @@ h4 {
     }
 }
 
-@media screen and (max-width: 800px) {
-    .card {
-        width: 70vw;
-        margin: 10px;
-    }
-
-    .block-form-group {
-        flex-wrap: wrap;
+@media screen and (max-width: 450px) {
+    .sidebar a, .navbar a {
+        font-size: 18px;
     }
 }
-
