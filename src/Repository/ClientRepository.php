@@ -38,8 +38,8 @@ class ClientRepository extends ServiceEntityRepository
                 FROM App\Entity\Ordered Ordered, App\Entity\Client ClientInOrdered
                 WHERE Ordered.client = ClientInOrdered
                 AND Ordered.orderedAt >= :date
-                AND client.creationDate >= :date
-                )
+            )
+            AND Client.creationDate <= :date
             ")
             ->setParameter("date", $date);
 

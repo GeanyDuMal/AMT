@@ -82,12 +82,15 @@ class MenuManagementController extends AbstractController
             $listClient = $clientRepository->findClientWithoutOrderedTwoYears();
             $clientManager = new ClientManager($manager);
 
+            $actualUsername = $this->getUser()->getUsername();
+
             foreach ($listClient as $client) {
-                $clientManager->remove($client);
+                if ($client->getLogin() != $actualUsername){
+                    $clientManager->remove($client);
+                }
             }
 
-            $message = "Les clients sans commandes de moins de 2 ans ont été supprimés 
-                et qui ont créé leur compte il y a 2 ans";
+            $message = "Les clients sans commandes de moins de 2 ans et qui ont créé leur compte il y a 2 ans ont été supprimés";
         }
 
         /**
