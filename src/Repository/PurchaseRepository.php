@@ -40,14 +40,17 @@ class PurchaseRepository extends ServiceEntityRepository
     public function salesRevenueThisMonth(): int
     {
         $thisMonth = date('m');
+        $thisYear = date('Y');
+
         $purchase = $this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revenue
             FROM App\Entity\Price Price, App\Entity\Purchase Purchase, App\Entity\Ordered Ordered, App\Entity\ClientType ClientType
             WHERE Purchase.ordered = Ordered.id
             AND Purchase.product = Price.product
             AND Price.clientType = 'Association'
-            AND MONTH(Ordered.orderedAt)=$thisMonth
-        ");
+            WHERE MONTH(Ordered.orderedAt) = $thisMonth
+            AND YEAR(Ordered.orderedAt) = $thisYear
+    ");
         return $purchase->getResult()[0];
     }
 

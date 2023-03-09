@@ -49,6 +49,7 @@ class OrderedRepository extends ServiceEntityRepository
     public function quantityThisWeeksCommands(): array
     {
         $thisWeek = date('W');
+
         return $this->createQueryBuilder('a')
             ->select("count(a) as number")
             ->where("WEEK(a.orderedAt)=:thisWeek")
@@ -63,10 +64,15 @@ class OrderedRepository extends ServiceEntityRepository
     public function thisWeekOrdered(): array
     {
         $thisWeek = date('W');
+        $thisMonth = date('m');
+        $thisYear = date('Y');
+
         $purchase = $this->getEntityManager()->createQuery("
             SELECT Ordered
             FROM App\Entity\Ordered Ordered
             WHERE WEEK(Ordered.orderedAt) = $thisWeek
+            AND MONTH(Ordered.orderedAt) = $thisMonth
+            AND YEAR(Ordered.orderedAt) = $thisYear
             ");
         return $purchase->getResult();
     }
@@ -77,10 +83,13 @@ class OrderedRepository extends ServiceEntityRepository
     public function thisMonthOrdered(): array
     {
         $thisMonth = date('m');
+        $thisYear = date('Y');
+
         $purchase = $this->getEntityManager()->createQuery("
             SELECT Ordered
             FROM App\Entity\Ordered Ordered
             WHERE MONTH(Ordered.orderedAt) = $thisMonth
+            AND YEAR(Ordered.orderedAt) = $thisYear
             ");
         return $purchase->getResult();
     }

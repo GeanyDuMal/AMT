@@ -19,7 +19,7 @@ class ProductFixture extends Fixture
         $product = new Product();
         $product->setName("Snickers")
             ->setProductType($productTypeSnack)
-            ->setQuantityStock(10)
+            ->setQuantityStock(4)
             ->setImageLink("https://www.mashed.com/img/gallery/the-untold-truth-of-snickers/intro-1587489779.jpg");
         $manager->persist($product);
 
@@ -33,14 +33,14 @@ class ProductFixture extends Fixture
         $product = new Product();
         $product->setName("Chips")
             ->setProductType($productTypeSnack)
-            ->setQuantityStock(10)
+            ->setQuantityStock(6)
             ->setImageLink("https://www.adjovan.com/wp-content/uploads/2020/02/1-2020-02-17T142640.275.jpg");
         $manager->persist($product);
 
         $product = new Product();
         $product->setName("Oreo")
             ->setProductType($productTypeSnack)
-            ->setQuantityStock(10)
+            ->setQuantityStock(5)
             ->setImageLink("https://i.gifer.com/7H8I.gif");
         $manager->persist($product);
 

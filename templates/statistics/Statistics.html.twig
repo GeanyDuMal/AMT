@@ -15,7 +15,7 @@
             </h1>
         </div>
         <div class="list-card flex-horizontal flex-centered flex-overflow">
-            <div class="card flex-vertical flex-centered card-1">
+            <div class="card flex-vertical flex-centered card-color-1">
                 <div class="card-title">
                     Chiffre d'affaire (Semaine)
                 </div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <div class="card flex-vertical flex-centered card-4">
+            <div class="card flex-vertical flex-centered card-color-1">
                 <div class="card-title">
                     Dépense moyenne par Client (Semaine)
                 </div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="card flex-vertical flex-centered card-2">
+            <div class="card flex-vertical flex-centered card-color-1">
                 <div class="card-title">
                     Chiffre d'affaire (Mois)
                 </div>
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="card flex-vertical flex-centered card-3">
+            <div class="card flex-vertical flex-centered card-color-2">
                 <div class="card-title">
                     Nombre de Post
                 </div>
@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-            <div class="card flex-vertical flex-centered card-4">
+            <div class="card flex-vertical flex-centered card-color-2">
                 <div class="card-title">
                     Nombre de Client
                 </div>
@@ -71,13 +71,60 @@
                     {{ countClients }}
                 </div>
             </div>
-        </div>
-        <div class="chart-area">
-            <canvas id="everydayPurchase"></canvas>
+
+            <div class="card flex-vertical flex-centered card-color-2">
+                <div class="card-title">
+                    Nombre de Cotisant
+                </div>
+                <div class="card-text">
+                    {{ countCotisant }}
+                </div>
+            </div>
+
+            {% if productsWarningStock %}
+                <div class="card flex-vertical flex-centered card-color-3">
+                    <div class="card-title">
+                        Produit en seuil d'alerte
+                    </div>
+                    <div class="card-text flex-vertical flex-align-left">
+                        {% for product in productsWarningStock %}
+                            <div>
+                                {{ product.name }}, {{ product.quantityStock }} restant(s)
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if productsEmptyStock %}
+                <div class="card flex-vertical flex-centered card-color-3">
+                    <div class="card-title">
+                        Produit en rupture de stock
+                    </div>
+                    <div class="card-text flex-vertical flex-align-left">
+                        {% for product in productsEmptyStock %}
+                            <div>
+                                {{ product.name }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="card flex-vertical flex-centered card-color-3">
+                <div class="card-title">
+                    Top ventes du mois
+                </div>
+                <div class="card-text flex-vertical flex-align-left">
+                    {% for productAndQuantity in topSoldProduct %}
+                        <div>
+                            {{ productAndQuantity.product.name }}, {{ productAndQuantity.quantitySold }} vendu(s)
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
-
-
 
 {% endblock %}
 {% block javascripts %}

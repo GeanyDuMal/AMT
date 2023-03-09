@@ -12,24 +12,20 @@
     text-align: center;
 }
 
-.card-1 {
+.card-color-1 {
     border-left: #0ede65 solid 3px;
 }
 
-.card-2 {
+.card-color-2 {
     border-left: #0eadde solid 3px;
 }
 
-.card-3 {
+.card-color-3 {
     border-left: #5a0ede solid 3px;
 }
 
-.card-4 {
+.card-color-4 {
     border-left: #de0e5e solid 3px;
-}
-
-.chart-area {
-    width: 70%;
 }
 
 .main-block {
@@ -38,4 +34,10 @@
 
 .mid-block > .card {
     width: fit-content;
+}
+
+@media screen and (max-width: 800px) {
+    .card {
+        margin: 10px;
+    }
 }

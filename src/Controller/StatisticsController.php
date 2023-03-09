@@ -8,6 +8,7 @@ use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
+use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,7 +73,17 @@ class StatisticsController extends AbstractController
             }
         }
 
+        $productsWarningStock = $productRepository->findAllWarningStock();
+        $topSoldProduct = $productRepository->findTopSoldProductThisMonth();
+        $productsEmptyStock = $productRepository->findAllEmptyStock();
+        $countCotisant = count($clientRepository->findBy(['clientType' => ClientType::COTISANT]));
+
         return $this->render("statistics/Statistics.html.twig",[
+            "productsWarningStock" => $productsWarningStock,
+            "topSoldProduct" => $topSoldProduct,
+            "productsEmptyStock" => $productsEmptyStock,
+            "countCotisant" => $countCotisant,
+
             "productSum" => json_encode($productSum),
             "productName" => json_encode($productName),
             "orderCount" => json_encode($orderCount),
