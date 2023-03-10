@@ -37,12 +37,27 @@ class ProductRepository extends ServiceEntityRepository
 
     /**
      * @return Product[] Returns an array of Product objects
-     * Return all the product with a positive stock
+     * Return all the product with an empty stock
      */
     public function findAllEmptyStock(): array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.quantityStock = 0')
+            ->orderBy('p.productType, p.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * Return all the product with a stock between empty and the value of warning
+     * @return Product[] an array of Product objects which are in critic stock
+     */
+    public function findAllWarningStock(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.quantityStock <= 5')
+            ->andWhere('p.quantityStock > 0')
             ->orderBy('p.productType, p.name', 'ASC')
             ->getQuery()
             ->getResult()
@@ -71,6 +86,32 @@ class ProductRepository extends ServiceEntityRepository
             AND Product_0.quantityStock = 0
             ")
             ->setParameter("date", $date);
+
+        return $productQuery->getResult();
+    }
+
+    /**
+     * Return the 5 product which are the most ordered this month
+     * @return Product[]
+     */
+    public function findTopSoldProductThisMonth(): array
+    {
+        $thisMonth = date('m');
+        $thisYear = date('Y');
+
+        //Recupere tout les produits qui n'ont pas une commande de moins de 1 an et un stock vide
+        $productQuery = $this->getEntityManager()->createQuery("
+            SELECT Product as product, SUM(Purchase.quantity) as quantitySold
+            FROM App\Entity\Product Product, App\Entity\Ordered Ordered, App\Entity\Purchase Purchase
+            WHERE MONTH(Ordered.orderedAt) = ".$thisMonth."
+            AND YEAR(Ordered.orderedAt) = ".$thisYear."
+            AND Purchase.ordered = Ordered
+            AND Product = Purchase.product
+            GROUP BY Product
+            ORDER BY SUM(Purchase.quantity) DESC
+            ")
+        ;
+        $productQuery->setMaxResults(5);
 
         return $productQuery->getResult();
     }

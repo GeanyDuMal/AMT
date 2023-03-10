@@ -11,6 +11,7 @@ doctrine:
         auto_mapping: true
         dql:
             string_functions:
+                YEAR: DoctrineExtensions\Query\Mysql\Year
                 MONTH: DoctrineExtensions\Query\Mysql\Month
                 WEEK: DoctrineExtensions\Query\Mysql\Week
         mappings:
