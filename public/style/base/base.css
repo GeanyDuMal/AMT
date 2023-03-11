@@ -433,7 +433,7 @@ h4 {
 }
 
 @media screen and (max-width: 450px) {
-    .sidebar a, .navbar a {
+    .navbar a {
         font-size: 18px;
     }
 }
