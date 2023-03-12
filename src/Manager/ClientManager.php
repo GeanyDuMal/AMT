@@ -72,6 +72,8 @@ class ClientManager
             if ($associationMember) {
                 $associationManager = new AssociationManager($this->manager);
 
+                $associationMember->getMember()->setClientType($client->getClientType());
+
                 $associationManager->remove($associationMember);
             }
         }

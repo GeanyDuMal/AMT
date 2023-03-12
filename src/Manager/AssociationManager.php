@@ -5,12 +5,10 @@ namespace App\Manager;
 use App\Entity\Association;
 use App\Entity\Client;
 use App\Repository\AssociationRepository;
-use App\Repository\ClientRepository;
 use App\Utils\Enum\AssociationRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 
 class AssociationManager
 {
@@ -25,34 +23,14 @@ class AssociationManager
 
     public function persist(Association $association): void
     {
-        $this->changeClientType($association, ClientType::ASSOCIATION);
-
         $this->manager->persist($association);
         $this->manager->flush();
     }
 
     public function remove(Association $association): void
     {
-        $this->changeClientType($association, ClientType::ETUDIANT);
-
         $this->manager->remove($association);
         $this->manager->flush();
-    }
-
-    /**
-     * Modify the client type of Association->member
-     * @param Association $association
-     * @param string $clientTypeToSet
-     */
-    public function changeClientType(Association $association, string $clientTypeToSet): void
-    {
-        $client = $association->getMember();
-        if ($client->getClientType() != $clientTypeToSet){
-            $client->setClientType($clientTypeToSet);
-
-            $clientManager = new ClientManager($this->manager);
-            $clientManager->persist($client);
-        }
     }
 
     /**
@@ -91,6 +69,7 @@ class AssociationManager
     {
         $newMember = new Association();
 
+        $client->setClientType(ClientType::ASSOCIATION);
         $newMember->setMember($client);
         $newMember->setRole($role);
 
@@ -104,10 +83,10 @@ class AssociationManager
         $associationRoles = AssociationRole::getAll();
 
         // We use this way to filter because AssociationRole are ordered
-        if ($client->getRoles()[0] != "ROLE_ADMIN"){
-            foreach ($associationRoles as $role){
+        if ($client->getRoles()[0] != "ROLE_ADMIN") {
+            foreach ($associationRoles as $role) {
                 $roles[] = $role;
-                if ($role == $association->getRole()){
+                if ($role == $association->getRole()) {
                     break;
                 }
             }
