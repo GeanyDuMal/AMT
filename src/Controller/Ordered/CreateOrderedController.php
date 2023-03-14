@@ -41,7 +41,7 @@ class CreateOrderedController extends AbstractController
 
                 // Vérifie si l'on a commandé le produit $product
                 if (is_numeric($quantity) && $quantity > 0 && $quantity <= $product->getQuantityStock()) {
-                    $productOrdered = $productOrdered + [$product->getId() => $quantity];
+                    $productOrdered[] = ["idProduct" => $product->getId(), "quantity" => $quantity];
                 } else if ($quantity != 0) {
                     $message = "Merci de vérifier la saisie des quantités";
                 }
@@ -50,10 +50,12 @@ class CreateOrderedController extends AbstractController
             if (!$message) {
                 // Si l'on a commandé au moins 1 produit
                 if ($productOrdered) {
-                    return $this->redirectToRoute("orderedPayment", [
-                        "productOrderedSerialized" => serialize($productOrdered),
-                        "idClient" => $inputParameterBag->get("orderedClient")
-                    ]);
+                    $idClient = $inputParameterBag->get("orderedClient");
+
+                    $productOrderedAndClient = ["idClient" => $idClient, "productOrdered" => $productOrdered];
+                    $request->getSession()->set("productOrderedAndClient", $productOrderedAndClient);
+
+                    return $this->redirectToRoute("orderedPayment", [], 308);
                 } else {
                     $message = 'Merci de saisir au moins 1 produit';
                 }

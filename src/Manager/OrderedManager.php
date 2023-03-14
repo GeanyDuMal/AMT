@@ -166,7 +166,7 @@ class OrderedManager
     }
 
     /**
-     * @param array $purchaseList [productId => quantity]
+     * @param array $purchaseList ["product" => product, "quantity" => quantity]
      * @param Client|null $client Client
      * @return array An array of payment type that are allowed fot this Ordered
      */
@@ -181,12 +181,11 @@ class OrderedManager
         }
 
         $montant = 0;
-        $productRepository = $this->manager->getRepository(Product::class);
         $priceRepository = $this->manager->getRepository(Price::class);
 
-        foreach ($purchaseList as $productId => $quantity) {
-            $product = $productRepository->find($productId);
-            $montant = $montant + $priceRepository->findOneBy(["product" => $product, "clientType" => $clientType])->getPrice() * $quantity;
+        foreach ($purchaseList as $purchase) {
+            $product = $purchase["product"];
+            $montant = $montant + $priceRepository->findOneBy(["product" => $product, "clientType" => $clientType])->getPrice() * $purchase["quantity"];
         }
 
         $paymentTypeList = PaymentType::getAll();
