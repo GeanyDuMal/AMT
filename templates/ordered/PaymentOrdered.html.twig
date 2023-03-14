@@ -28,15 +28,15 @@
             {% endif %}
             
             <div class="list-card flex-horizontal flex-overflow flex-centered">
-            {% for product in listProduct %}
+            {% for purchase in productOrdered %}
                   <div class="card">
                       <div class="card-text">
                           <p class="card-title">
-                              {{ product.name }}
+                              {{ purchase.product.name }}
                           </p>
                           <div>
-                              Quantité : {{ productQuantity[product.id] }} |
-                              Prix Unitaire : {{ montantProduct[product.id]/productQuantity[product.id] }}€
+                              Quantité : {{ purchase.quantity }} |
+                              Prix Unitaire : {{ montantProduct[purchase.product.id]/purchase.quantity }}€
                           </div>
                       </div>
                   </div>
