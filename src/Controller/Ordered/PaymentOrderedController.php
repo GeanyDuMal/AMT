@@ -33,22 +33,21 @@ class PaymentOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient");
-        $idClient = $productOrderedAndClient["idClient"];
-        $clientOrder = null;
-        $productOrderedToTransform = $productOrderedAndClient["productOrdered"];
-        $productOrdered = $this->transformIdProductOrderedTab($productOrderedToTransform, $productRepository);
-
         $purchaseManager = new PurchaseManager($manager);
         $orderManager = new OrderedManager($manager);
         $priceManager = new PriceManager($manager);
+
+        $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient");
+        $idClient = $productOrderedAndClient["idClient"];
+        $clientOrder = null;
+        $productOrdered = $this->transformIdProductOrderedTab($productOrderedAndClient["productOrdered"], $productRepository);
 
         $clientType = ClientType::ETUDIANT;
         $inputParameterBag = $request->request;
         $listProduct = [];
 
         //Si l'on a select un client, alors on conserve celui ci + son type
-        if ($idClient != "null") {
+        if ($idClient != null) {
             $clientOrder = $clientRepository->find($idClient);
 
             if ($clientOrder){
@@ -64,7 +63,6 @@ class PaymentOrderedController extends AbstractController
         $montantTotal = 0;
         foreach ($productOrdered as $productOrderedAndQuantity) {
             $product = $productOrderedAndQuantity["product"];
-            $listProduct[] = $product;
 
             $montantProduct = $montantProduct + [$product->getId() => $priceRepository->findOneBy(['product' => $product,
                         'clientType' => $clientType])->getPrice() * $productOrderedAndQuantity["quantity"]];
@@ -118,7 +116,6 @@ class PaymentOrderedController extends AbstractController
         }
 
         return $this->render('ordered/PaymentOrdered.html.twig', [
-            'listProduct' => $listProduct,
             'productOrdered' => $productOrdered,
             'montantProduct' => $montantProduct,
             'montantTotal' => $montantTotal,
