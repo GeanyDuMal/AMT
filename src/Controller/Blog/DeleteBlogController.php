@@ -28,7 +28,7 @@ class DeleteBlogController extends AbstractController
 
         if ($post){
             $postManager->remove($post);
-            return new JsonResponse(true);
+            return $this->redirectToRoute("menuBlog");
         } else {
             return $this->redirectToRoute("home");
         }
