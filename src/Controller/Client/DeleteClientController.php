@@ -28,9 +28,9 @@ class DeleteClientController extends AbstractController
 
         if ($client){
             $clientManager->remove($client);
-            return new JsonResponse(true);
+            return $this->redirectToRoute("menuClient");
         } else {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute("home");
         }
     }
 }

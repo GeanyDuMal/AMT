@@ -27,7 +27,7 @@ class DeleteProductController extends AbstractController
 
         if ($product){
             $productManager->remove($product);
-            return new JsonResponse(true);
+            return $this->redirectToRoute("menuProduct");
         } else {
             return $this->redirectToRoute("home");
         }
