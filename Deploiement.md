@@ -6,6 +6,7 @@ Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracter
   ```YAML
     charset: UTF8
   ```
+- Il faudra supprimer le fichier config/packages/doctrine_migration.yaml 
 - Il faudra créer une base de données (ou utiliser celle proposé par l'hebergeur) et importer le script db_empty.sql
 - Il faudra, dans le fichier .env, modifier 2 choses : (vous pourrez également créer un .env.local)
   - Le APP_ENV qu'il faudra passer à prod (enleve le mode debug)
