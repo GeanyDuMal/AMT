@@ -52,7 +52,7 @@ class StatisticsController extends AbstractController
         if($countThisWeeksCommands == 0){
             $averagePerStudent = 0;
         }else {
-            $averagePerStudent = number_format($salesRevenueThisWeek / $countThisWeeksCommands, 2);
+            $averagePerStudent = $salesRevenueThisWeek / $countThisWeeksCommands;
         }
 
         return $this->render("statistics/Statistics.html.twig",[
