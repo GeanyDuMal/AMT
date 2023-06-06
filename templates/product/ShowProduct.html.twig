@@ -43,7 +43,7 @@
                     <div class="show-block">
                         <label class="input-label">Prix {{ price.clientType }}</label>
                         <p>
-                            {{ price.price }}
+                            {{ (price.price)|number_format(2,'.') }}€
                         </p>
                     </div>
                 {% endfor %}
