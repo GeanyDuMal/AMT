@@ -35,10 +35,10 @@
                                           Quantité : {{ purchase.quantity }}
                                     </div>
                                     <div>
-                                          Prix unitaire : {{ priceList[purchase.product.id].price }}€
+                                          Prix unitaire : {{ (priceList[purchase.product.id].price)|number_format(2,'.') }}€
                                     </div>
                                     <div>
-                                          Prix total : {{ priceList[purchase.product.id].price * purchase.quantity }}€
+                                          Prix total : {{ (priceList[purchase.product.id].price * purchase.quantity)|number_format(2,'.') }}€
                                     </div>
                               </div>
                         </div>
