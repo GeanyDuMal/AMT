@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-text">
                     {% if salesRevenueThisWeek is not null  %}
-                        {{ salesRevenueThisWeek }}
+                        {{ salesRevenueThisWeek|number_format(2,'.') }}
                     {% else %}
                         0
                     {% endif %} €
@@ -36,7 +36,7 @@
                     {% if averagePerStudent is null %}
                         0
                     {% else %}
-                        {{ averagePerStudent }}
+                        {{ averagePerStudent|number_format(2,'.') }}
                     {% endif %} €
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="card-text">
                     {% if salesRevenueThisMonth is not null  %}
-                        {{ salesRevenueThisMonth }}
+                        {{ salesRevenueThisMonth|number_format(2,'.') }}
                     {% else %}
                         0
                     {% endif %} €
