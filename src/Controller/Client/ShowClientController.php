@@ -2,7 +2,7 @@
 
 namespace App\Controller\Client;
 
-use App\Repository\AssociationRepository;
+use App\Repository\MemberRepository;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\ClientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,7 @@ class ShowClientController extends AbstractController
     /**
      * @Route("/admin/client/show/{!id}", name="showClient")
      */
-    public function index($id, ClientRepository $clientRepository, AssociationRepository $associationRepository): Response
+    public function index($id, ClientRepository $clientRepository, MemberRepository $associationRepository): Response
     {
         $client = $clientRepository->find($id);
 

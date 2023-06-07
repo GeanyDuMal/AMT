@@ -2,11 +2,11 @@
 
 namespace App\Manager;
 
-use App\Entity\Association;
+use App\Entity\Member;
 use App\Entity\Client;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
@@ -67,12 +67,12 @@ class ClientManager
     public function removeFromAssociationIfNecessary(Client $client): void
     {
         if ($client->getClientType() != ClientType::ASSOCIATION) {
-            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
+            $associationMember = $this->manager->getRepository(Member::class)->findOneBy(["member" => $client]);
             // If client is present in table Association, it's not normal, so we remove it
             if ($associationMember) {
                 $associationManager = new AssociationManager($this->manager);
 
-                $associationMember->getMember()->setClientType($client->getClientType());
+                $associationMember->getClient()->setClientType($client->getClientType());
 
                 $associationManager->remove($associationMember);
             }
@@ -204,13 +204,13 @@ class ClientManager
             case ClientType::ASSOCIATION:
             {
                 switch ($roleAssociation) {
-                    case AssociationRole::PRESIDENT:
+                    case MemberRole::PRESIDENT:
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
-                    case (AssociationRole::TRESORIER || AssociationRole::VICE_PRESIDENT):
+                    case (MemberRole::TRESORIER || MemberRole::VICE_PRESIDENT):
                         $client->setRoles([SymfonyRole::TRESORIER]);
                         break;
-                    case AssociationRole::SECRETAIRE:
+                    case MemberRole::SECRETAIRE:
                         $client->setRoles([SymfonyRole::SECRETAIRE]);
                         break;
                     default:
@@ -281,9 +281,9 @@ class ClientManager
                 ->setClientType(ClientType::ASSOCIATION);
 
             //Set the president of the association
-            $association = new Association();
-            $association->setMember($client)
-                ->setRole(AssociationRole::PRESIDENT);
+            $association = new Member();
+            $association->setClient($client)
+                ->setRole(MemberRole::PRESIDENT);
 
             $this->manager->persist($association);
             $this->manager->flush();

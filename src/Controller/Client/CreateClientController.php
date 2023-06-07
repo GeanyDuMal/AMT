@@ -6,7 +6,7 @@ use App\Entity\Client;
 use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +59,7 @@ class CreateClientController extends AbstractController
 
                         $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
 
-                        if($newMember->getRole() == AssociationRole::PRESIDENT){
+                        if($newMember->getRole() == MemberRole::PRESIDENT){
                             $associationManager->removeOtherPresidents($newMember);
                         }
                         $manager->persist($newMember);

@@ -5,9 +5,9 @@ namespace App\Controller\Client;
 use App\Entity\Client;
 use App\Manager\AssociationManager;
 use App\Manager\ClientManager;
-use App\Repository\AssociationRepository;
+use App\Repository\MemberRepository;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +25,7 @@ class EditClientController extends AbstractController
      * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
-                          AssociationRepository $associationRepository, ClientRepository $clientRepository): Response
+                          MemberRepository $associationRepository, ClientRepository $clientRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
@@ -65,7 +65,7 @@ class EditClientController extends AbstractController
                 $clientManager->persist($client);
                 if ($client->getClientType() == ClientType::ASSOCIATION) {
                     $member = $associationRepository->findOneBy(["member" => $client]);
-                    if ($member->getRole() == AssociationRole::PRESIDENT) {
+                    if ($member->getRole() == MemberRole::PRESIDENT) {
                         $associationManager->removeOtherPresidents($member);
                     }
                 }
@@ -92,12 +92,12 @@ class EditClientController extends AbstractController
 
     /**
      * @param AssociationManager $associationManager
-     * @param AssociationRepository $associationRepository
+     * @param MemberRepository $associationRepository
      * @param Client $client
      * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(AssociationManager $associationManager, AssociationRepository $associationRepository, Client $client, string $roleAssociation): void
+    private function manageMember(AssociationManager $associationManager, MemberRepository $associationRepository, Client $client, string $roleAssociation): void
     {
         $clientMember = $associationRepository->findOneBy(['member' => $client]);
 
