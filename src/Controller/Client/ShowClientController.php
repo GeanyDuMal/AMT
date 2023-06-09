@@ -14,12 +14,12 @@ class ShowClientController extends AbstractController
     /**
      * @Route("/admin/client/show/{!id}", name="showClient")
      */
-    public function index($id, ClientRepository $clientRepository, MemberRepository $associationRepository): Response
+    public function index($id, ClientRepository $clientRepository, MemberRepository $memberRepository): Response
     {
         $client = $clientRepository->find($id);
 
         if ($client) {
-            $member = $associationRepository->findOneBy(["member" => $client]);
+            $member = $memberRepository->findOneBy(["client" => $client]);
 
             return $this->render('client/ShowClient.html.twig', [
                 'client' => $client,

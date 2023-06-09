@@ -10,26 +10,26 @@ use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AssociationManager
+class MemberManager
 {
     public EntityManagerInterface $manager;
-    public MemberRepository $associationRepository;
+    public MemberRepository $memberRepository;
 
     public function __construct(EntityManagerInterface $managerController)
     {
         $this->manager = $managerController;
-        $this->associationRepository = $this->manager->getRepository(Member::class);
+        $this->memberRepository = $this->manager->getRepository(Member::class);
     }
 
-    public function persist(Member $association): void
+    public function persist(Member $member): void
     {
-        $this->manager->persist($association);
+        $this->manager->persist($member);
         $this->manager->flush();
     }
 
-    public function remove(Member $association): void
+    public function remove(Member $member): void
     {
-        $this->manager->remove($association);
+        $this->manager->remove($member);
         $this->manager->flush();
     }
 
@@ -78,7 +78,7 @@ class AssociationManager
 
     public function getLowerOrEqualAssociationRole(Client $client): array
     {
-        $association = $this->associationRepository->findOneBy(["member" => $client]);
+        $association = $this->associationRepository->findOneBy(["client" => $client]);
         $roles = [];
         $associationRoles = MemberRole::getAll();
 

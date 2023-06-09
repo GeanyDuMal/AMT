@@ -3,7 +3,7 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client;
-use App\Manager\AssociationManager;
+use App\Manager\MemberManager;
 use App\Manager\ClientManager;
 use App\Repository\MemberRepository;
 use App\Repository\ClientRepository;
@@ -25,7 +25,7 @@ class EditClientController extends AbstractController
      * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
-                          MemberRepository $associationRepository, ClientRepository $clientRepository): Response
+                          MemberRepository $memberRepository, ClientRepository $clientRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
@@ -34,9 +34,9 @@ class EditClientController extends AbstractController
         $data = $request->request;
         $client = $clientRepository->find($id);
         $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
-        $member = $associationRepository->findOneBy(["member" => $client]);
-        $associationManager = new AssociationManager($manager);
-        $assosRoles = $associationManager->getLowerOrEqualAssociationRole($user);
+        $member = $memberRepository->findOneBy(["client" => $client]);
+        $memberManager = new MemberManager($manager);
+        $assosRoles = $memberManager->getLowerOrEqualAssociationRole($user);
         $message = "";
         $allowEdit = $this->isGranted($client->getRoles()[0]);
 
@@ -59,14 +59,14 @@ class EditClientController extends AbstractController
                      *  if admin changed the role of a member to another role
                      *  we have to change it too in association table
                      */
-                    $this->manageMember($associationManager, $associationRepository, $client, $request->get('assosRoles'));
+                    $this->manageMember($memberManager, $memberRepository, $client, $request->get('assosRoles'));
                 }
 
                 $clientManager->persist($client);
                 if ($client->getClientType() == ClientType::ASSOCIATION) {
-                    $member = $associationRepository->findOneBy(["member" => $client]);
+                    $member = $memberRepository->findOneBy(["client" => $client]);
                     if ($member->getRole() == MemberRole::PRESIDENT) {
-                        $associationManager->removeOtherPresidents($member);
+                        $memberManager->removeOtherPresidents($member);
                     }
                 }
 
@@ -91,21 +91,21 @@ class EditClientController extends AbstractController
     }
 
     /**
-     * @param AssociationManager $associationManager
-     * @param MemberRepository $associationRepository
+     * @param MemberManager $memberManager
+     * @param MemberRepository $memberRepository
      * @param Client $client
      * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(AssociationManager $associationManager, MemberRepository $associationRepository, Client $client, string $roleAssociation): void
+    private function manageMember(MemberManager $memberManager, MemberRepository $memberRepository, Client $client, string $roleAssociation): void
     {
-        $clientMember = $associationRepository->findOneBy(['member' => $client]);
+        $member = $memberRepository->findOneBy(["client" => $client]);
 
-        if ($clientMember) {
-            $clientMember->setRole($roleAssociation);
+        if ($member) {
+            $member->setRole($roleAssociation);
         } else {
-            $clientMember = $associationManager->makeMember($client, $roleAssociation);
+            $member = $memberManager->makeMember($client, $roleAssociation);
         }
-        $associationManager->persist($clientMember);
+        $memberManager->persist($member);
     }
 }
