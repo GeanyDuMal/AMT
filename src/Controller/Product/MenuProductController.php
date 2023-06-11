@@ -30,13 +30,11 @@ class MenuProductController extends AbstractController
         $productsAvailable = $productRepository->findAllPositiveStock();
         $productsUnavailable = $productRepository->findAllEmptyStock();
 
-
-
-        return $this->render('product/MenuProduct.html.twig', [
-            'productsAvailable' => $productsAvailable,
-            'productsUnavailable' => $productsUnavailable,
-            'message' => $message,
-            'clientTypeActual' => $clientTypeActual
+        return $this->render("product/MenuProduct.html.twig", [
+            "productsAvailable" => $productsAvailable,
+            "productsUnavailable" => $productsUnavailable,
+            "message" => $message,
+            "clientTypeActual" => $clientTypeActual
         ]);
     }
 }

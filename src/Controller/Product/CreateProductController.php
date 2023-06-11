@@ -7,7 +7,6 @@ use App\Entity\Product;
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\PaymentType;
 use App\Utils\Enum\ProductType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,15 +14,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateProductController extends AbstractController
 {
     /**
      * @Route("/product/create", name="createProduct")
      */
-    public function index(ProductRepository      $productRepository, ValidatorInterface $validator, Request $request,
-                          EntityManagerInterface $manager): Response
+    public function index(ProductRepository $productRepository, Request $request, EntityManagerInterface $manager): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
@@ -43,7 +40,7 @@ class CreateProductController extends AbstractController
             $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $link);
 
             if ($productManager->verifyProduct($product)) {
-                if ($productRepository->findBy(['name' => $product->getName()])) {
+                if ($productRepository->findBy(["name" => $product->getName()])) {
                     $message = "Le produit existe déjà";
                 } else {
                     $memberPrice = new Price();
@@ -57,7 +54,7 @@ class CreateProductController extends AbstractController
                         $priceManager->persist($memberPrice);
                         $priceManager->persist($studentPrice);
 
-                        return $this->redirectToRoute('menuProduct', [
+                        return $this->redirectToRoute("menuProduct", [
                             "message" => "Ajout avec succès"
                         ]);
                     } else {
@@ -69,10 +66,10 @@ class CreateProductController extends AbstractController
             }
         }
 
-        return $this->render('product/CreateProduct.html.twig', [
-            'productTypes' => $productTypes,
-            'message' => $message,
-            'produit' => $product
+        return $this->render("product/CreateProduct.html.twig", [
+            "productTypes" => $productTypes,
+            "message" => $message,
+            "produit" => $product
         ]);
     }
 }

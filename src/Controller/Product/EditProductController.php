@@ -21,7 +21,7 @@ class EditProductController extends AbstractController
     /**
      * @Route("/product/edit/{!id}", name="editProduct")
      */
-    public function index($id, ProductRepository $productRepository, ValidatorInterface $validator, Request $request,
+    public function index($id, ProductRepository $productRepository, Request $request,
                           EntityManagerInterface $manager, PriceRepository $priceRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
@@ -42,8 +42,8 @@ class EditProductController extends AbstractController
 
             if ($productManager->verifyProduct($product) && !$productManager->verifyEditedProductAlreadyExist($product)) {
 
-                if ($data->get('imageLinkState') === "edit"){
-                    $productManager->switchPicture($product, $data->get('imageLink'));
+                if ($data->get("imageLinkState") === "edit"){
+                    $productManager->switchPicture($product, $data->get("imageLink"));
                 }
 
                 $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
@@ -54,7 +54,7 @@ class EditProductController extends AbstractController
 
                     $productManager->persistCascade($product);
 
-                    return $this->redirectToRoute('menuProduct', [
+                    return $this->redirectToRoute("menuProduct", [
                         "message" => "Modification effectué avec succès"
                     ]);
                 } else {
@@ -64,7 +64,7 @@ class EditProductController extends AbstractController
                 $message = "Merci de verifier votre saisie";
             }
         }
-        return $this->render('product/EditProduct.html.twig', [
+        return $this->render("product/EditProduct.html.twig", [
             'productTypes' => ProductType::getAll(),
             'message' => $message,
             'product' => $product,
