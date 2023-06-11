@@ -7,14 +7,14 @@ use App\Manager\OrderedManager;
 use App\Manager\PasswordForgotRequestManager;
 use App\Manager\PostManager;
 use App\Manager\ProductManager;
-use App\Repository\MemberRepository;
 use App\Repository\ClientRepository;
+use App\Repository\MemberRepository;
 use App\Repository\OrderedRepository;
 use App\Repository\PasswordForgotRequestRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,12 +29,12 @@ class MenuManagementController extends AbstractController
      * @Route("/management/", name="menuManagement")
      */
     public function index(EntityManagerInterface          $manager, Request $request, UserPasswordHasherInterface $passwordHasher,
-                          ClientRepository                $clientRepository, MemberRepository $associationRepository, PostRepository $postRepository,
+                          ClientRepository                $clientRepository, MemberRepository $memberRepository, PostRepository $postRepository,
                           OrderedRepository               $orderedRepository, ProductRepository $productRepository,
                           PasswordForgotRequestRepository $passwordForgotRequestRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute("home");
         }
 
         $inputParameterBag = $request->request;
@@ -58,11 +58,11 @@ class MenuManagementController extends AbstractController
         /**
          * Purge de l'association
          */
-        if ($inputParameterBag->get("clearAssociation") != "") {
+        if ($inputParameterBag->get("clearMembers") != "") {
             $clientManager = new ClientManager($manager);
             $listTypeAssociation = $clientRepository->findBy(["clientType" => ClientType::ASSOCIATION]);
 
-            $president = $associationRepository->findOneBy(["role" => MemberRole::PRESIDENT])->getClient();
+            $president = $memberRepository->findOneBy(["role" => MemberRole::PRESIDENT])->getClient();
 
             foreach ($listTypeAssociation as $client) {
                 if ($client !== $president) {
@@ -85,7 +85,7 @@ class MenuManagementController extends AbstractController
             $actualUsername = $this->getUser()->getUsername();
 
             foreach ($listClient as $client) {
-                if ($client->getLogin() != $actualUsername){
+                if ($client->getLogin() != $actualUsername) {
                     $clientManager->remove($client);
                 }
             }
@@ -147,7 +147,7 @@ class MenuManagementController extends AbstractController
             if ($passwordForgotRequest && $passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)) {
                 $passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $passwordHasher);
 
-                $message = "Le nouveau mot de passe est \"" . $passwordForgotRequest->getConfirmationCode() . ".\" Merci de le modifier à la prochaine connexion";
+                $message = "Le nouveau mot de passe est \"" . $passwordForgotRequest->getConfirmationCode() . "\" Merci de le modifier à la prochaine connexion";
             }
         }
 
@@ -167,7 +167,7 @@ class MenuManagementController extends AbstractController
 
         $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
 
-        return $this->render('management/MenuManagement.html.twig', [
+        return $this->render("management/MenuManagement.html.twig", [
             "message" => $message,
             "requestList" => $requestList
         ]);
