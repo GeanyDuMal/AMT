@@ -27,7 +27,7 @@ class ClientFixture extends Fixture
             ->setFidelityPoint(26)
             ->setClientType($clientTypeAssociation)
             ->setRoles([SymfonyRole::PRESIDENT])
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
         $client = new Client();
@@ -39,7 +39,7 @@ class ClientFixture extends Fixture
             ->setFidelityPoint(12)
             ->setClientType($clientTypeAssociation)
             ->setRoles([SymfonyRole::ASSOC])
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
         $client = new Client();
@@ -51,7 +51,7 @@ class ClientFixture extends Fixture
             ->setFidelityPoint(60)
             ->setClientType($clientTypeAssociation)
             ->setRoles([SymfonyRole::TRESORIER])
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
         $client = new Client();
@@ -63,7 +63,7 @@ class ClientFixture extends Fixture
             ->setFidelityPoint(0)
             ->setClientType($clientTypeAssociation)
             ->setRoles([SymfonyRole::ASSOC])
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
         $client = new Client();
@@ -75,7 +75,7 @@ class ClientFixture extends Fixture
             ->setFidelityPoint(0)
             ->setClientType($clientTypeEtudiant)
             ->setRoles([SymfonyRole::USER])
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
         $manager->flush();
