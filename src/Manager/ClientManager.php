@@ -23,9 +23,9 @@ class ClientManager
     const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
 
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->clientRepository = $this->manager->getRepository(Client::class);
     }
 
@@ -67,14 +67,14 @@ class ClientManager
     public function removeFromAssociationIfNecessary(Client $client): void
     {
         if ($client->getClientType() != ClientType::ASSOCIATION) {
-            $associationMember = $this->manager->getRepository(Member::class)->findOneBy(["client" => $client]);
+            $member = $this->manager->getRepository(Member::class)->findOneBy(["client" => $client]);
             // If client is present in table Association, it's not normal, so we remove it
-            if ($associationMember) {
-                $associationManager = new MemberManager($this->manager);
+            if ($member) {
+                $memberManager = new MemberManager($this->manager);
 
-                $associationMember->getClient()->setClientType($client->getClientType());
+                $member->getClient()->setClientType($client->getClientType());
 
-                $associationManager->remove($associationMember);
+                $memberManager->remove($member);
             }
         }
     }
@@ -281,11 +281,11 @@ class ClientManager
                 ->setClientType(ClientType::ASSOCIATION);
 
             //Set the president of the association
-            $association = new Member();
-            $association->setClient($client)
+            $member = new Member();
+            $member->setClient($client)
                 ->setRole(MemberRole::PRESIDENT);
 
-            $this->manager->persist($association);
+            $this->manager->persist($member);
             $this->manager->flush();
         }
     }
@@ -314,7 +314,7 @@ class ClientManager
     private function defineCreationDateIfNecessary(Client $client): void
     {
         if (!$this->clientExists($client)){
-            $client->setCreationDate(new DateTime('now'));
+            $client->setCreationDate(new DateTime("now"));
         }
     }
 }

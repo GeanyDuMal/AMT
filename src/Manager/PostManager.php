@@ -14,9 +14,9 @@ class PostManager
     public EntityManagerInterface $manager;
     public ObjectRepository $postRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->postRepository = $this->manager->getRepository(Post::class);
     }
 

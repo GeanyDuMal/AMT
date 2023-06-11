@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Client;
 use App\Entity\Price;
 use App\Entity\Product;
+use App\Repository\PriceRepository;
 use App\Utils\Enum\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -14,11 +15,11 @@ use function PHPUnit\Framework\assertContains;
 class PriceManager
 {
     public EntityManagerInterface $manager;
-    public ObjectRepository $priceRepository;
+    public PriceRepository $priceRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->priceRepository = $this->manager->getRepository(Price::class);
     }
 

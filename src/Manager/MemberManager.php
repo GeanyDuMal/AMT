@@ -15,9 +15,9 @@ class MemberManager
     public EntityManagerInterface $manager;
     public MemberRepository $memberRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->memberRepository = $this->manager->getRepository(Member::class);
     }
 

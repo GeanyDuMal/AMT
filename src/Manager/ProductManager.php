@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Product;
 use App\Entity\Purchase;
+use App\Repository\ProductRepository;
 use App\Utils\PictureUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -11,11 +12,11 @@ use Doctrine\Persistence\ObjectRepository;
 class ProductManager
 {
     public EntityManagerInterface $manager;
-    public ObjectRepository $productRepository;
+    public ProductRepository $productRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->productRepository = $this->manager->getRepository(Product::class);
     }
 
@@ -106,7 +107,7 @@ class ProductManager
         $idProduct = $product->getId();
         $nameProduct = $product->getName();
 
-        $productSameName = $this->productRepository->findOneBy(['name' => $nameProduct]);
+        $productSameName = $this->productRepository->findOneBy(["name" => $nameProduct]);
 
         return ($productSameName && !($idProduct == $productSameName->getId()) && ($productSameName->getName() == $nameProduct));
     }
@@ -136,14 +137,14 @@ class ProductManager
          */
         $newId = 1;
 
-        if (trim($link) == '') {
-            $link = '/';
+        if (trim($link) == "") {
+            $link = "/";
         }
 
         if ($productActual){
             $lastProduct = $this->productRepository->findOneBy([
-                'name' => $productActual->getName(),
-                'productType' => $productActual->getProductType()]);
+                "name" => $productActual->getName(),
+                "productType" => $productActual->getProductType()]);
         } else {
             $lastProduct = $this->productRepository->findOneBy([], ["id" => "DESC"]);
         }
@@ -173,7 +174,7 @@ class ProductManager
          * TODO: sera a supprimer une fois que toutes les images auront été migrées
          * Permet de gerer les cas des anciennes images
          */
-        if (str_starts_with($actualLink, "http") || str_contains($actualLink, 'placeholder')) {
+        if (str_starts_with($actualLink, "http") || str_contains($actualLink, "placeholder")) {
             $actualLink = "/img/entity/product/img_".$product->getId().".png";
         }
 
