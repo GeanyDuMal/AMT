@@ -59,24 +59,24 @@ class ShowOrderedController extends AbstractController
                     } else if($toRemove){
                         $orderedManager->remove($order);
                     }
-                    return $this->redirectToRoute('menuOrdered', [
+                    return $this->redirectToRoute("menuOrdered", [
                         "message" => "La commande a été supprimé avec succès"
                     ]);
                 }
 
             } else {
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute("home");
             }
         } else {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute("home");
         }
 
         return $this->render('ordered/ShowOrdered.html.twig', [
-            'ordered' => $order,
-            'clientType' => $clientType,
-            'purchaseList' => $purchaseList,
-            'priceList' => $priceList,
-            'montantTotal' => $orderedManager->montantTotal($order)
+            "ordered" => $order,
+            "clientType" => $clientType,
+            "purchaseList" => $purchaseList,
+            "priceList" => $priceList,
+            "montantTotal" => $orderedManager->montantTotal($order)
         ]);
     }
 }

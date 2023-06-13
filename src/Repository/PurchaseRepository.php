@@ -26,10 +26,10 @@ class PurchaseRepository extends ServiceEntityRepository
      */
     public function getQuantityByProduct(Product $product): array
     {
-        return $this->createQueryBuilder('a')
+        return $this->createQueryBuilder("a")
             ->select("SUM( a.quantity ) as somme")
             ->andWhere("a.product=:id")
-            ->setParameter('id', $product->getId())
+            ->setParameter("id", $product->getId())
             ->getQuery()
             ->getResult();
     }
@@ -39,8 +39,8 @@ class PurchaseRepository extends ServiceEntityRepository
      */
     public function salesRevenueThisMonth(): int
     {
-        $thisMonth = date('m');
-        $thisYear = date('Y');
+        $thisMonth = date("m");
+        $thisYear = date("Y");
 
         $purchase = $this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revenue
@@ -60,10 +60,10 @@ class PurchaseRepository extends ServiceEntityRepository
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
+        return $this->createQueryBuilder("p"")
+            ->andWhere("p.exampleField = :val")
+            ->setParameter("val", $value)
+            ->orderBy("p.id", "ASC")
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -74,9 +74,9 @@ class PurchaseRepository extends ServiceEntityRepository
     /*
     public function findOneBySomeField($value): ?Purchase
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder("p")
+            ->andWhere("p.exampleField = :val")
+            ->setParameter("val", $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;

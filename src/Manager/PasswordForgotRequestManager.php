@@ -15,9 +15,9 @@ class PasswordForgotRequestManager
     public EntityManagerInterface $manager;
     public PasswordForgotRequestRepository $passwordForgotRequestRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->passwordForgotRequestRepository = $this->manager->getRepository(PasswordForgotRequest::class);
     }
 

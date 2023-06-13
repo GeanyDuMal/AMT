@@ -16,8 +16,8 @@ class PictureUtils
      */
     public function downloadPicture(string $link, string $location): string
     {
-        if (trim($link) == '') {
-            $link = '/';
+        if (trim($link) == "") {
+            $link = "/";
         }
 
         $locationUsed = $this->adaptLocation($location);
@@ -40,7 +40,7 @@ class PictureUtils
         $locationUsed = $this->adaptLocation($location);
 
         try {
-            if (fopen($locationUsed, 'rw') && !str_ends_with($locationUsed, 'placeholder.png')){
+            if (fopen($locationUsed, "rw") && !str_ends_with($locationUsed, "placeholder.png")){
                 unlink($locationUsed);
             }
         } catch (Exception $e){

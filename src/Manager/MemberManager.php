@@ -2,34 +2,34 @@
 
 namespace App\Manager;
 
-use App\Entity\Association;
+use App\Entity\Member;
 use App\Entity\Client;
-use App\Repository\AssociationRepository;
-use App\Utils\Enum\AssociationRole;
+use App\Repository\MemberRepository;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AssociationManager
+class MemberManager
 {
     public EntityManagerInterface $manager;
-    public AssociationRepository $associationRepository;
+    public MemberRepository $memberRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
-        $this->associationRepository = $this->manager->getRepository(Association::class);
+        $this->manager = $entityManager;
+        $this->memberRepository = $this->manager->getRepository(Member::class);
     }
 
-    public function persist(Association $association): void
+    public function persist(Member $member): void
     {
-        $this->manager->persist($association);
+        $this->manager->persist($member);
         $this->manager->flush();
     }
 
-    public function remove(Association $association): void
+    public function remove(Member $member): void
     {
-        $this->manager->remove($association);
+        $this->manager->remove($member);
         $this->manager->flush();
     }
 
@@ -37,18 +37,18 @@ class AssociationManager
      * Verify in the table Association if there is already a president
      * If there is one or more (which isn't possible, but it prevents bug)
      * It removes every President
-     * @param Association $associationMember
+     * @param Member $associationMember
      * @return void
      */
-    public function removeOtherPresidents(Association $associationMember): void
+    public function removeOtherPresidents(Member $associationMember): void
     {
-        $members = $this->associationRepository->findBy(["role" => AssociationRole::PRESIDENT]);
+        $members = $this->memberRepository->findBy(["role" => MemberRole::PRESIDENT]);
 
         foreach ($members as $otherMember) {
-            if ($associationMember->getMember() !== $otherMember->getMember()) {
+            if ($associationMember->getClient() !== $otherMember->getClient()) {
                 //Here $otherMember is the President in Function
                 $clientManager = new ClientManager($this->manager);
-                $client = $otherMember->getMember();
+                $client = $otherMember->getClient();
 
                 $client->setClientType(ClientType::ETUDIANT);
                 $client->setRoles([SymfonyRole::USER]);
@@ -63,14 +63,14 @@ class AssociationManager
      * Return a Member made from the Client in parameter and a Role
      * @param Client $client
      * @param string $role
-     * @return Association
+     * @return Member
      */
-    public function makeMember(Client $client, string $role): Association
+    public function makeMember(Client $client, string $role): Member
     {
-        $newMember = new Association();
+        $newMember = new Member();
 
         $client->setClientType(ClientType::ASSOCIATION);
-        $newMember->setMember($client);
+        $newMember->setClient($client);
         $newMember->setRole($role);
 
         return $newMember;
@@ -78,9 +78,9 @@ class AssociationManager
 
     public function getLowerOrEqualAssociationRole(Client $client): array
     {
-        $association = $this->associationRepository->findOneBy(["member" => $client]);
+        $association = $this->memberRepository->findOneBy(["client" => $client]);
         $roles = [];
-        $associationRoles = AssociationRole::getAll();
+        $associationRoles = MemberRole::getAll();
 
         // We use this way to filter because AssociationRole are ordered
         if ($client->getRoles()[0] != "ROLE_ADMIN") {

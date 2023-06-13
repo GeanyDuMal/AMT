@@ -2,7 +2,7 @@
 
 namespace App\Utils\Enum;
 
-final class AssociationRole extends AbstractEnumClass
+final class MemberRole extends AbstractEnumClass
 {
     public const MEMBRE = "Membre";
     public const SECRETAIRE = "Secretaire";

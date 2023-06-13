@@ -18,11 +18,11 @@ class ShowProductController extends AbstractController
 
         if ($product) {
 
-            return $this->render('product/ShowProduct.html.twig', [
-                'product' => $product,
+            return $this->render("product/ShowProduct.html.twig", [
+                "product" => $product,
             ]);
         } else {
-            return $this->redirectToRoute('menuProduct');
+            return $this->redirectToRoute("menuProduct");
         }
     }
 }

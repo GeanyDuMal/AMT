@@ -12,9 +12,9 @@ class PurchaseManager
 {
     public EntityManagerInterface $manager;
 
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
     }
 
     public function persist(Purchase $purchase): void

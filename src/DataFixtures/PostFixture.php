@@ -23,7 +23,7 @@ class PostFixture extends Fixture
             ->setDescription("Le tournoi de Smash aura lieu le 19 Janvier 2022 en salle F06, merci de passer 
                             au bureau afin de vous inscrire pour pouvoir participer")
             ->setImageLink("https://images.smash.gg/images/tournament/297869/image-458b78f5c942da129c7a2f38beb19299.jpg")
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($post);
 
         $post = new Post();
@@ -32,7 +32,7 @@ class PostFixture extends Fixture
             ->setDescription("Les Sweats et les Tshirts sont enfin arrivé au bureau, pensez a venir les recuperer
                                         afin que vous puissiez les revetir ;-)")
             ->setImageLink("https://media.dior.com/couture/ecommerce/media/catalog/product/i/H/1604511903_113J698A0531_C989_E01_GHC.jpg?imwidth=800")
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($post);
 
         $post = new Post();
@@ -40,7 +40,7 @@ class PostFixture extends Fixture
             ->setPostType($postTypeAutre)
             ->setDescription("Une veste a été oublié au bureau, merci de venir la recupérer")
             ->setImageLink("https://assets.laboutiqueofficielle.com/w_450,q_auto,f_auto/media/products/2021/03/02/mtx_255225_TEDDY-497_BLACK-WHITE_20210309T164443_01.jpg")
-            ->setCreationDate(new DateTime('now'));
+            ->setCreationDate(new DateTime("now"));
         $manager->persist($post);
 
         $manager->flush();

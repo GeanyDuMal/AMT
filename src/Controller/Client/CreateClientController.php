@@ -3,10 +3,10 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client;
-use App\Manager\AssociationManager;
+use App\Manager\MemberManager;
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,8 +31,8 @@ class CreateClientController extends AbstractController
 
         $data = $request->request;
         $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
-        $associationManager = new AssociationManager($manager);
-        $assosRoles = $associationManager->getLowerOrEqualAssociationRole($user);
+        $memberManager = new MemberManager($manager);
+        $assosRoles = $memberManager->getLowerOrEqualAssociationRole($user);
         $message = "";
 
         if ($data->count() > 0) {
@@ -57,10 +57,10 @@ class CreateClientController extends AbstractController
                      * */
                     if ($client->getClientType() == ClientType::ASSOCIATION) {
 
-                        $newMember = $associationManager->makeMember($client, $request->get('assosRoles'));
+                        $newMember = $memberManager->makeMember($client, $request->get('assosRoles'));
 
-                        if($newMember->getRole() == AssociationRole::PRESIDENT){
-                            $associationManager->removeOtherPresidents($newMember);
+                        if($newMember->getRole() == MemberRole::PRESIDENT){
+                            $memberManager->removeOtherPresidents($newMember);
                         }
                         $manager->persist($newMember);
                         $manager->flush();
