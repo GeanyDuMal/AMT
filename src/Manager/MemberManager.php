@@ -42,7 +42,7 @@ class MemberManager
      */
     public function removeOtherPresidents(Member $associationMember): void
     {
-        $members = $this->associationRepository->findBy(["role" => MemberRole::PRESIDENT]);
+        $members = $this->memberRepository->findBy(["role" => MemberRole::PRESIDENT]);
 
         foreach ($members as $otherMember) {
             if ($associationMember->getClient() !== $otherMember->getClient()) {
@@ -78,7 +78,7 @@ class MemberManager
 
     public function getLowerOrEqualAssociationRole(Client $client): array
     {
-        $association = $this->associationRepository->findOneBy(["client" => $client]);
+        $association = $this->memberRepository->findOneBy(["client" => $client]);
         $roles = [];
         $associationRoles = MemberRole::getAll();
 
