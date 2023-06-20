@@ -31,7 +31,6 @@ const absolutePathProjectRoot = "XXX\\";
 $ftp_conn = ftp_connect($ftp_server) or die("unable to connect to $ftp_server server");
 ftp_login($ftp_conn, $ftp_username, $ftp_password);
 ftp_pasv($ftp_conn, true); // Define the passive mode
-//ftp_set_option($ftp_conn, FTP_TIMEOUT_SEC, 1000000);
 
 // Copy all the remotes files for a backup if necessary
 copyRemoteFile(".", ".", $ftp_conn);
