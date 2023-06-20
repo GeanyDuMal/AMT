@@ -41,7 +41,7 @@ Ce site permet de :
 * Créer des posts avec un systeme de blog
 
 ### <ins>Deploiement<ins>
-Pour découvrir comment nous avons déployé le site, veuillez vous référer au [document suivant](./Deploiement.md)
+Pour découvrir comment nous avons déployé le site, veuillez vous référer au [document suivant](Deploiement.md)
 
 
 ### <ins>Support<ins>
