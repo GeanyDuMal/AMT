@@ -35,12 +35,12 @@ class EditBlogController extends AbstractController
 
         if ($data->count() > 0 && $post) {
 
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getImageLink(), $post->getCreationDate());
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getCreationDate(), $post->getImageLink());
 
             if ($postmanager->verifyPost($post)) {
 
                 if ($data->get('imageLinkState') === "edit"){
-                    $postmanager->switchPicture($post, $data->get('imageLink'));
+                    $postmanager->downloadPicture($data->get('imageLink'), $post);
                 }
 
                 $postmanager->persist($post);

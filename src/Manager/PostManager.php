@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Post;
 use App\Utils\Enum\PostType;
 use App\Utils\PictureUtils;
+use App\Utils\RandomUtils;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -14,18 +15,16 @@ class PostManager
     public EntityManagerInterface $manager;
     public ObjectRepository $postRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
         $this->postRepository = $this->manager->getRepository(Post::class);
     }
 
-    public function persist(Post $post): void
-    {
+    public function persist(Post $post): void {
         if ($this->verifyPost($post)) {
             $this->replaceImageIfEmpty($post);
 
-            if (!$post->getCreationDate()){
+            if (!$post->getCreationDate()) {
                 $post->setCreationDate(new DateTime('now'));
             }
 
@@ -34,8 +33,7 @@ class PostManager
         }
     }
 
-    public function remove(Post $post): void
-    {
+    public function remove(Post $post): void {
         $pictureUtils = new PictureUtils();
         $pictureUtils->deletePicture($post->getImageLink());
 
@@ -60,84 +58,58 @@ class PostManager
      * @param string $postType
      * @param String $postTitle
      * @param String $postDescription
+     * @param DateTime $creationDate
      * @param string $imageLink
      * @return void
      */
-    public function setData(Post   $post, string $postType, string $postTitle,
-                            string $postDescription, string $imageLink, DateTime $creationDate): void
-    {
+    public function setData(Post $post, string $postType, string $postTitle, string $postDescription,
+                            DateTime $creationDate, string $imageLink = ""): void {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
-        $post->setImageLink($imageLink);
         $post->setPostType($postType);
         $post->setCreationDate($creationDate);
+        $post->setImageLink($imageLink);
     }
 
     /**
      * @param Post $post
      * @return void
      */
-    public function replaceImageIfEmpty(Post $post): void
-    {
+    public function replaceImageIfEmpty(Post $post): void {
         if ($post->getImageLink() == "") {
             $post->setImageLink('/img/entity/placeholder.png');
         }
     }
 
     /**
-     * @param string $link
-     * @param Post|null $postActual (default = null)
-     * @return string The link where the picture is stored
-     */
-    public function downloadPicture(string $link, ?Post $postActual = null): string
-    {
-        /**
-         * @newId corresponds a l'ID de $postActual s'il est enregistré sinon le dernier ID enregistré+1
-         */
-        $newId = 1;
-
-        if (trim($link) == ('' || null)) {
-            $link = '/';
-        }
-
-        if ($postActual){
-            $storedPost = $this->postRepository->findOneBy([
-                'title' => $postActual->getTitle(),
-                'description' => $postActual->getDescription()]);
-        } else {
-            $storedPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
-        }
-
-        if ($storedPost){
-            $newId = $storedPost->getId()+1;
-        }
-
-        $location = "/img/entity/post/img_".$newId.".png";
-
-        $pictureUtils = new PictureUtils();
-
-        return $pictureUtils->downloadPicture($link, $location);
-    }
-
-    /**
+     * @param string $pictureLink
      * @param Post $post
-     * @param string $newPictureLink
-     * @return void
      */
-    public function switchPicture(Post $post, string $newPictureLink)
-    {
-        $actualLink = $post->getImageLink();
+    public function downloadPicture(string $pictureLink, Post $post): void {
         $pictureUtils = new PictureUtils();
+        $randomUtils = new RandomUtils();
+        $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $postExist = (bool)$this->postRepository->findOneBy(["title" => $post->getTitle(),
+                                                             "postType" => $post->getPostType()]);
+        $idUsed = 1;
 
-        /**
-         * TODO: "str_starts_with($actualLink, "http")" sera a supprimer une fois que toutes les images auront été migrées
-         * Permet de gerer les cas des anciennes images
-         */
-        if (str_starts_with($actualLink, "http") || str_contains($actualLink, 'placeholder')) {
-            $actualLink = "/img/entity/post/img_".$post->getId().".png";
+
+        if (!$postExist) {
+            $lastPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);
+
+            if ($lastPost) {
+                $idUsed = $lastPost->getId() + 1;
+            }
+        } else {
+            $idUsed = $post->getId();
         }
 
-        $pictureUtils->deletePicture($actualLink);
-        $post->setImageLink($pictureUtils->downloadPicture($newPictureLink, $actualLink));
+        if (($post->getImageLink() != (null || "")) && !str_contains($post->getImageLink(), "placeholder")) {
+            $pictureUtils->deletePicture($post->getImageLink());
+        }
+
+        $newLocation = "/img/entity/post/img_" . $idUsed . "_" . $randomUtils->randomString(4, $characters) . ".png";
+
+        $post->setImageLink($pictureUtils->downloadPicture($pictureLink, $newLocation));
     }
 }

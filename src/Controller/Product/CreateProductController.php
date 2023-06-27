@@ -35,9 +35,8 @@ class CreateProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $link = $productManager->downloadPicture($data->get("imageLink"));
-
-            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $link);
+            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"));
+            $productManager->downloadPicture($data->get("imageLink"), $product);
 
             if ($productManager->verifyProduct($product)) {
                 if ($productRepository->findBy(["name" => $product->getName()])) {
