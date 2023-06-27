@@ -33,9 +33,9 @@ class CreateBlogController extends AbstractController
         $message = "";
 
         if($data->count() > 0){
-            $emplacementImage = $postmanager->downloadPicture($data->get('imageLink'));
 
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), $data->get('postDescription'), $emplacementImage, new DateTime("now"));
+            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), new DateTime("now"));
+            $postmanager->downloadPicture($data->get('imageLink'), $post);
 
             if($postmanager->verifyPost($post)){
                 if($postRepository->findBy(['title' => $post->getTitle()])){
