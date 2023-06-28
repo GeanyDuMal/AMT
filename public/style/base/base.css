@@ -128,11 +128,12 @@ body {
 .card-buttons {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .card-buttons > a > .btn, .card-buttons > .btn {
     width: fit-content;
-    margin: 0 5px;
+    margin: 5px;
 }
 
 .card img {
