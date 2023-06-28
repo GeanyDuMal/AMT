@@ -66,19 +66,17 @@
                             <a href="{{ path("createOrdered") }}">Commander</a>
                             <a href="{{ path("statistics") }}">Statistiques</a>
                         </div>
-                        {% if is_granted('ROLE_SECRETAIRE') %}
+                        <div class="block-sidebar">
+                            <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
+                        </div>
+                        {% if is_granted('ROLE_TRESORIER') %}
                             <div class="block-sidebar">
-                                <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
+                                <a href="{{ path("menuOrdered") }}">Gestion&nbspCommande</a>
                             </div>
-                            {% if is_granted('ROLE_TRESORIER') %}
+                            {% if is_granted('ROLE_PRESIDENT') %}
                                 <div class="block-sidebar">
-                                    <a href="{{ path("menuOrdered") }}">Gestion&nbspCommande</a>
+                                    <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
                                 </div>
-                                {% if is_granted('ROLE_PRESIDENT') %}
-                                    <div class="block-sidebar">
-                                        <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
-                                    </div>
-                                {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endif %}

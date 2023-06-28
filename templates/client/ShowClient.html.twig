@@ -63,19 +63,21 @@
             </div>
         </div>
         <div class="flex-horizontal flex-centered">
-            <a href="{{ path('editClient',{id: client.id}) }}">
-                <button class="btn btn-primary">
-                    Modifier
-                </button>
-            </a>
             <a href="{{ path("menuClient") }}">
                 <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
             </a>
-            <a href="{{ path('deleteClient', {'id': client.id }) }}" onclick="return confirmDelete()">
-                <button class="btn btn-secondary">
-                    Supprimer
-                </button>
-            </a>
+            {% if is_granted('ROLE_SECRETAIRE') %}
+                <a href="{{ path('editClient',{id: client.id}) }}">
+                    <button class="btn btn-primary">
+                        Modifier
+                    </button>
+                </a>
+                <a href="{{ path('deleteClient', {'id': client.id }) }}" onclick="return confirmDelete()">
+                    <button class="btn btn-secondary">
+                        Supprimer
+                    </button>
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
