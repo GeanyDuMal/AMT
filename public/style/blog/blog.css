@@ -18,6 +18,7 @@
   max-width: 60vw;
   padding: 0 10px;
   align-self: flex-start;
+  white-space: pre-line;
 }
 
 @media screen and (max-width: 600px) {
