@@ -51,7 +51,9 @@
 				<th>Nom</th>
 				<th>Prénom</th>
 				<th class="hide-phone">Type du client</th>
-				<th>Modifier</th>
+				{% if is_granted('ROLE_SECRETAIRE') %}
+					<th>Modifier</th>
+				{% endif %}
 				<th>Détails</th>
 			</tr>
 			</thead>
@@ -62,13 +64,15 @@
 					<td>{{ client.name }}</td>
 					<td>{{ client.firstname }}</td>
 					<td class="hide-phone">{{ client.clientType }}</td>
-					<td>
-						<a href="{{ path('editClient',{id: client.id}) }}">
-							<button class="btn btn-secondary">
-								Modifier
-							</button>
-						</a>
-					</td>
+					{% if is_granted('ROLE_SECRETAIRE') %}
+						<td>
+							<a href="{{ path('editClient',{id: client.id}) }}">
+								<button class="btn btn-secondary">
+									Modifier
+								</button>
+							</a>
+						</td>
+					{% endif %}
 					<td>
 						<a href="{{ path('showClient',{id: client.id}) }}">
 							<button class="btn btn-primary">

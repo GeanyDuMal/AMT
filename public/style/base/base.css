@@ -58,6 +58,7 @@ body {
     cursor: pointer;
     border-radius: 10px;
     transition: box-shadow 0.2s;
+    margin: 5px;
 }
 
 .btn:focus-visible {
