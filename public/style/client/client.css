@@ -1,5 +1,5 @@
 @media screen and (max-width: 800px) {
-    .show-sub-block {
+    .show-block {
         flex-wrap: wrap;
     }
 }

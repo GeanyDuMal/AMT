@@ -21,14 +21,14 @@
             <div class="show-block">
                 <img class="show-image" src="{{ product.imageLink }}">
             </div>
-            <div class="show-sub-block flex-horizontal">
-                <div class="show-block">
+            <div class="show-block flex-horizontal">
+                <div class="show-sub-block">
                     <label class="input-label">Quantité en stock</label>
                     <p>
                         {{ product.quantityStock }}
                     </p>
                 </div>
-                <div class="show-block">
+                <div class="show-sub-block">
                     <label class="input-label">Type de produit</label>
                     <p>
                         {{ product.productType }}
@@ -38,9 +38,9 @@
             <p class="show-block-title flex-align-self-left">
                 Tarification
             </p>
-            <div class="show-sub-block flex-horizontal">
+            <div class="show-block flex-horizontal">
                 {% for price in product.prices %}
-                    <div class="show-block">
+                    <div class="show-sub-block">
                         <label class="input-label">Prix {{ price.clientType }}</label>
                         <p>
                             {{ (price.price)|number_format(2,'.') }}€
