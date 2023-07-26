@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('script/management/management.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -23,7 +24,7 @@
         <h1 class="title-block">
             Interface de Gestion
         </h1>
-        <form action="" class="flex-vertical flex-centered" method="post" id="form-management" onsubmit="disableButton()">
+        <form action="" class="flex-vertical flex-centered" method="post" id="form-management">
             <div class="flex-vertical flex-centered">
                 <h2>
                     Purge
