@@ -28,11 +28,11 @@ class MenuManagementController extends AbstractController
     /**
      * @Route("/management/", name="menuManagement")
      */
-    public function index(EntityManagerInterface          $manager, Request $request, UserPasswordHasherInterface $passwordHasher,
-                          ClientRepository                $clientRepository, MemberRepository $memberRepository, PostRepository $postRepository,
-                          OrderedRepository               $orderedRepository, ProductRepository $productRepository,
-                          PasswordForgotRequestRepository $passwordForgotRequestRepository): Response
-    {
+    public function index(EntityManagerInterface $manager, Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        ClientRepository $clientRepository, MemberRepository $memberRepository, PostRepository $postRepository,
+        OrderedRepository $orderedRepository, ProductRepository $productRepository,
+        PasswordForgotRequestRepository $passwordForgotRequestRepository): Response {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute("home");
         }
@@ -161,7 +161,9 @@ class MenuManagementController extends AbstractController
 
             if ($passwordForgotRequest) {
                 $passwordForgotRequestManager->remove($passwordForgotRequest);
-                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()->getName() . " " . $passwordForgotRequest->getClient()->getFirstName() . " a été supprimé";
+                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()
+                                                                                        ->getName() . " " . $passwordForgotRequest->getClient()
+                                                                                                                                  ->getFirstName() . " a été supprimé";
             }
         }
 

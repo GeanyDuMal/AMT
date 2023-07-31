@@ -1,4 +1,4 @@
-var form=document.querySelector("#form-blog")
+var form=document.querySelector("#form-post")
 
 function verifyPost(){
     let message = "";

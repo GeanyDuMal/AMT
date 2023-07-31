@@ -15,7 +15,7 @@ final class Version250 extends AbstractMigration
     public function getDescription(): string
     {
         return 'Migration concernant le version 2.5.0 : 
-                - Renommage de la table Association en Member et mdofication du nom de l\'attribut id';
+                - Renommage de la table Association en Member et modification du nom de l\'attribut id';
     }
 
     public function up(Schema $schema): void

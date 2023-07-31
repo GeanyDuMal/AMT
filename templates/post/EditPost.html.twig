@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Création d'un Post
+    Modification de Post
 {% endblock %}
 
 {%  block javascripts %}
-    <script type="text/javascript" src="{{ asset('script/blog/addEditVerificationsBlog.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/post/addEditVerificationsPost.js') }}"></script>
     <script type="text/javascript" src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel='stylesheet' href="{{ asset('style/blog/blog.css') }}">
+    <link rel='stylesheet' href="{{ asset('style/post/post.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="flex-vertical flex-centered main-block">
         <h2 class="title">
-            Création d'un Post
+            Modification d'un Post
         </h2>
         <div>
             {% if message != "" %}
@@ -28,16 +28,27 @@
             {% endif %}
         </div>
         {# Form Start #}
-        <form action="" method="post" class="flex-vertical flex-centered" id="form-blog" onsubmit="disableButton()">
+        <form action="" method="post" class="flex-vertical flex-centered" id="form-post" onsubmit="disableButton()">
             <div class="form-group">
                 <label class="input-label">Titre du Post</label>
-                <input type="text" name="postTitle" class="form-input" value="">
+                <input type="text" name="postTitle" class="form-input" value="{{ post.title }}">
             </div>
             <div class="form-group">
                 <label class="input-label">Description</label>
-                <textarea rows="5" class="form-input" name="postDescription" id="floatingTextarea2"></textarea>
+                <textarea rows="5" class="form-input" name="postDescription" id="floatingTextarea2">{{ post.description|trim }}</textarea>
             </div>
             <div class="form-group">
+                <label class="input-label">Modification de l'image</label>
+                <select name="imageLinkState" class="form-input">
+                    <option value="keep" selected>
+                        Conserver l'image actuelle
+                    </option>
+                    <option value="edit">
+                        Modifier l'image
+                    </option>
+                </select>
+            </div>
+            <div class="form-group" id="imageLinkArea" style="visibility: hidden;">
                 <label class="input-label">Lien de l'image</label>
                 <input type="text" name="imageLink" class="form-input" value="">
             </div>
@@ -45,16 +56,18 @@
                 <label class="input-label">Type de Post</label>
                 <select name="postType"  class="form-input">
                     {% for postType in postTypes %}
-                        <option> {{ postType }} </option>
+                        <option {% if postType is same as(post.postType) %} selected {% endif %}>
+                            {{ postType }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
             <button type="submit" class="btn btn-primary disableable" onclick="return verifyPost()">
-                Créer
+                Modifier
             </button>
         </form>
         {# End Form #}
-        <a href="{{ path("menuBlog") }}">
+        <a href="{{ path("menuPost") }}">
             <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
         </a>
     </div>

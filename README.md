@@ -38,7 +38,7 @@ Ce site permet de :
 * Créer des produits avec un stock 
 * Créer des commandes
 * Gérer les clients avec des rôles
-* Créer des posts avec un systeme de blog
+* Créer des posts avec un systeme de post
 
 ### <ins>Deploiement<ins>
 Pour découvrir comment nous avons déployé le site, veuillez vous référer au [document suivant](Deploiement.md)

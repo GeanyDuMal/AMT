@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controller\Blog;
+namespace App\Controller\Post;
 
 
-use App\Manager\PictureUtils;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
@@ -13,16 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EditBlogController extends AbstractController
+class EditPostController extends AbstractController
 {
     /**
-     * @Route("/blog/edit/{!id}", name="editBlog",methods={"GET", "POST"})
+     * @Route("/post/edit/{!id}", name="editPost",methods={"GET", "POST"})
      */
     public function index($id, PostRepository $postRepository, Request $request,
-                          EntityManagerInterface $manager): Response
-    {
+        EntityManagerInterface $manager): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
@@ -34,18 +31,16 @@ class EditBlogController extends AbstractController
         $message = "";
 
         if ($data->count() > 0 && $post) {
-
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getCreationDate(), $post->getImageLink());
 
             if ($postmanager->verifyPost($post)) {
-
-                if ($data->get('imageLinkState') === "edit"){
+                if ($data->get('imageLinkState') === "edit") {
                     $postmanager->downloadPicture($data->get('imageLink'), $post);
                 }
 
                 $postmanager->persist($post);
 
-                return $this->redirectToRoute('menuBlog', [
+                return $this->redirectToRoute("menuPost", [
                     "message" => "Modification effectué avec succès"
                 ]);
             } else {
@@ -54,7 +49,7 @@ class EditBlogController extends AbstractController
         }
 
 
-        return $this->render('blog/EditBlog.html.twig', [
+        return $this->render('post/EditPost.html.twig', [
             'postTypes' => $postTypes,
             'message' => $message,
             'post' => $post

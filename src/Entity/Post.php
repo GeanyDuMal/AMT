@@ -29,7 +29,7 @@ class Post
     private string $description;
 
     /**
-     * @ORM\Column(type="string", length=255, options={"default":"https://a2mo-197c6.kxcdn.com/wp-content/uploads/2021/10/placeholder1.png"})
+     * @ORM\Column(type="string", length=255)
      */
     private string $imageLink;
 
@@ -43,79 +43,67 @@ class Post
      */
     private DateTime $creationDate;
 
-    public function getId(): int
-    {
+    public function getId(): int {
         return $this->id;
     }
 
-    public function getTitle(): string
-    {
+    public function getTitle(): string {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
-    {
+    public function setTitle(string $title): self {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getDescription(): string
-    {
+    public function getDescription(): string {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
-    {
+    public function setDescription(string $description): self {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getImageLink(): string
-    {
+    public function getImageLink(): string {
         return $this->imageLink;
     }
 
-    public function setImageLink(string $imageLink): self
-    {
+    public function setImageLink(string $imageLink): self {
         $this->imageLink = $imageLink;
 
         return $this;
     }
 
-    public function getPostType(): string
-    {
+    public function getPostType(): string {
         return $this->postType;
     }
 
-    public function setPostType(string $postType): self
-    {
+    public function setPostType(string $postType): self {
         $this->postType = $postType;
 
         return $this;
     }
 
-    public function getCreationDate(): DateTime
-    {
+    public function getCreationDate(): DateTime {
         return $this->creationDate;
     }
 
-    public function setCreationDate(DateTime $creationDate): self
-    {
+    public function setCreationDate(DateTime $creationDate): self {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function equals(Post $post): bool
-    {
-        return(
-          $this->getTitle() === $post->getTitle() &&
-          $this->getDescription() === $post->getDescription() &&
-          $this->getImageLink() === $post->getImageLink() &&
-          $this->getPostType() === $post->getPostType() &&
-          $this->getCreationDate() === $post->getCreationDate()
+    public function equals(Post $post): bool {
+        return (
+            $this->getTitle() === $post->getTitle() &&
+            $this->getDescription() === $post->getDescription() &&
+            $this->getImageLink() === $post->getImageLink() &&
+            $this->getPostType() === $post->getPostType() &&
+            $this->getCreationDate() === $post->getCreationDate()
         );
     }
 }

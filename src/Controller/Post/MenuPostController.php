@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Blog;
+namespace App\Controller\Post;
 
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,17 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MenuBlogController extends AbstractController
+class MenuPostController extends AbstractController
 {
     /**
-     * @Route("/blog/{message?}", name="menuBlog")
+     * @Route("/post/{message?}", name="menuPost")
      */
     public function index(PostRepository $postRepository, string $message = null): Response
     {
-        $blogs = $postRepository->findBy([], ["creationDate" => "DESC"]);
+        $posts = $postRepository->findBy([], ["creationDate" => "DESC"]);
 
-        return $this->render('blog/MenuBlog.html.twig',[
-          'blogs' => $blogs,
+        return $this->render('post/MenuPost.html.twig',[
+          "posts" => $posts,
           "message" => $message
         ]);
     }

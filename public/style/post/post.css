@@ -2,7 +2,7 @@
   overflow: clip;
 }
 
-.show-blog-main {
+.show-post-main {
   margin-top: 10px;
   border: var(--light-grey) solid 2px;
   border-radius: 10px;
@@ -14,7 +14,7 @@
   height: auto;
 }
 
-.show-blog-text {
+.show-post-text {
   max-width: 60vw;
   padding: 0 10px;
   align-self: flex-start;
@@ -27,7 +27,7 @@
     flex-direction: column;
   }
 
-  .show-blog-text {
+  .show-post-text {
     max-width: 80vw;
     font-size: 1.25rem;
   }
