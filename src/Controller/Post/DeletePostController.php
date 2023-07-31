@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Blog;
+namespace App\Controller\Post;
 
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class DeleteBlogController extends AbstractController
+class DeletePostController extends AbstractController
 {
     /**
-     * @Route("/blog/delete/{!id}", name="deleteBlog", methods={"GET", "DELETE"})
+     * @Route("/post/delete/{!id}", name="deletePost", methods={"GET", "DELETE"})
      */
     public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): RedirectResponse|JsonResponse
     {
@@ -28,7 +28,7 @@ class DeleteBlogController extends AbstractController
 
         if ($post){
             $postManager->remove($post);
-            return $this->redirectToRoute("menuBlog");
+            return $this->redirectToRoute("menuPost");
         } else {
             return $this->redirectToRoute("home");
         }

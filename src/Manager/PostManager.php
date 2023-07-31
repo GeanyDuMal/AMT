@@ -3,17 +3,17 @@
 namespace App\Manager;
 
 use App\Entity\Post;
+use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 
 class PostManager
 {
     public EntityManagerInterface $manager;
-    public ObjectRepository $postRepository;
+    public PostRepository $postRepository;
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
@@ -63,7 +63,7 @@ class PostManager
      * @return void
      */
     public function setData(Post $post, string $postType, string $postTitle, string $postDescription,
-                            DateTime $creationDate, string $imageLink = ""): void {
+        DateTime $creationDate, string $imageLink = ""): void {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);
         $post->setPostType($postType);

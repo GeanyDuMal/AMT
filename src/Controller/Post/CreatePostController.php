@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Blog;
+namespace App\Controller\Post;
 
 use App\Entity\Post;
 use App\Manager\PostManager;
@@ -12,16 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CreateBlogController extends AbstractController
+class CreatePostController extends AbstractController
 {
     /**
-     * @Route("/blog/create", name="createBlog")
+     * @Route("/post/create", name="createPost")
      */
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response
-    {
-        if (!$this->isGranted('ROLE_ASSOC')){
+    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response {
+        if (!$this->isGranted('ROLE_ASSOC')) {
             return $this->redirectToRoute('home');
         }
 
@@ -32,18 +30,18 @@ class CreateBlogController extends AbstractController
         $postmanager = new PostManager($manager);
         $message = "";
 
-        if($data->count() > 0){
+        if ($data->count() > 0) {
 
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), new DateTime("now"));
             $postmanager->downloadPicture($data->get('imageLink'), $post);
 
-            if($postmanager->verifyPost($post)){
-                if($postRepository->findBy(['title' => $post->getTitle()])){
+            if ($postmanager->verifyPost($post)) {
+                if ($postRepository->findBy(['title' => $post->getTitle()])) {
                     $postExistsError = "Le post existe déjà.";
-                }else{
+                } else {
                     $postmanager->persist($post);
 
-                    return $this->redirectToRoute('menuBlog',[
+                    return $this->redirectToRoute("menuPost", [
                         "message" => "Ajout avec succès"
                     ]);
                 }
@@ -52,7 +50,7 @@ class CreateBlogController extends AbstractController
             }
         }
 
-        return $this->render('blog/CreateBlog.html.twig', [
+        return $this->render('post/CreatePost.html.twig', [
             'postTypes' => $postTypes,
             'message' => $message,
             'postExistsError' => $postExistsError,
