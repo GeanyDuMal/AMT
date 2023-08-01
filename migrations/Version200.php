@@ -20,7 +20,6 @@ final class Version200 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE association (member_id INT NOT NULL, role VARCHAR(255) NOT NULL, PRIMARY KEY(member_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE client (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, login VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, balance NUMERIC(5, 2) DEFAULT \'0.00\' NOT NULL, fidelity_point INT DEFAULT 0 NOT NULL, client_type VARCHAR(255) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', UNIQUE INDEX UNIQ_C7440455AA08CB10 (login), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ordered (id INT AUTO_INCREMENT NOT NULL, client_id INT DEFAULT NULL, ordered_at DATETIME NOT NULL, payment_type VARCHAR(255) NOT NULL, INDEX IDX_C3121F9919EB6921 (client_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -37,7 +36,6 @@ final class Version200 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE association DROP FOREIGN KEY FK_FD8521CC7597D3FE');
         $this->addSql('ALTER TABLE ordered DROP FOREIGN KEY FK_C3121F9919EB6921');
         $this->addSql('ALTER TABLE purchase DROP FOREIGN KEY FK_6117D13BAA60395A');
