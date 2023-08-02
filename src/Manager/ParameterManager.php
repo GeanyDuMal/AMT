@@ -4,7 +4,10 @@ namespace App\Manager;
 
 use App\Entity\Parameter;
 use App\Repository\ParameterRepository;
+use App\Utils\PictureUtils;
+use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ParameterManager
 {
@@ -26,11 +29,45 @@ class ParameterManager
         $this->manager->flush();
     }
 
-    public function setData(Parameter $parameter, string $linkLogo, int $amountFidelityPointToExchange,
-        int $amountBalanceToAddAfterExchange, bool $cotisantAllowed): void {
-        $parameter->setLinkLogo($linkLogo)
-                  ->setAmountFidelityPointToExchange($amountFidelityPointToExchange)
-                  ->setAmountBalanceToAddAfterExchange($amountBalanceToAddAfterExchange)
-                  ->setCotisantAllowed($cotisantAllowed);
+    public function setData(Parameter $parameter, ?string $linkLogo, ?int $amountFidelityPointToExchange,
+        ?string $amountBalanceToAddAfterExchange, ?bool $cotisantActivated, ?bool $postActivated): void {
+
+        if ($linkLogo){
+            $parameter->setLinkLogo($linkLogo);
+        }
+
+        if (is_float($amountFidelityPointToExchange && $amountFidelityPointToExchange != "")){
+            $parameter->setAmountFidelityPointToExchange($amountFidelityPointToExchange);
+        }
+
+        if (is_float($amountBalanceToAddAfterExchange && $amountBalanceToAddAfterExchange != "")){
+            $parameter->setAmountBalanceToAddAfterExchange($amountBalanceToAddAfterExchange);
+        }
+
+        $parameter->setCotisantActivated($cotisantActivated)
+                  ->setPostActivated($postActivated);
+    }
+
+    public function getParameter(): Parameter {
+        return $this->parameterRepository->findOneBy([]);
+    }
+
+    public function downloadPicture(Parameter $parameter, ?UploadedFile $file): string {
+        if ($file != null) {
+            $pictureUtils = new PictureUtils();
+            $randomUtils = new RandomUtils();
+            $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            if (($parameter->getLinkLogo() != (null || "")) && !str_contains($parameter->getLinkLogo(), "placeholder")) {
+                $pictureUtils->deletePicture($parameter->getLinkLogo());
+            }
+
+            $newLocation = "/img/entity/parameter/img_" . $randomUtils->randomString(4, $characters) . ".png";
+            $parameter->setLinkLogo($pictureUtils->downloadPictureFromFile($file, $newLocation));
+        } else {
+            $parameter->setLinkLogo("/img/entity/placeholder.png");
+        }
+
+        return $parameter->getLinkLogo();
     }
 }

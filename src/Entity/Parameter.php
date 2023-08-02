@@ -28,14 +28,19 @@ class Parameter
     private ?int $amountFidelityPointToExchange = null;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private ?int $amountBalanceToAddAfterExchange = null;
+    private ?string $amountBalanceToAddAfterExchange = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private ?bool $cotisantAllowed = null;
+    private ?bool $cotisantActivated = null;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private ?bool $postActivated = null;
 
     public function getId(): ?int {
         return $this->id;
@@ -45,7 +50,7 @@ class Parameter
         return $this->linkLogo;
     }
 
-    public function setLinkLogo(string $linkLogo): self {
+    public function setLinkLogo(?string $linkLogo): self {
         $this->linkLogo = $linkLogo;
 
         return $this;
@@ -61,22 +66,32 @@ class Parameter
         return $this;
     }
 
-    public function getAmountBalanceToAddAfterExchange(): ?int {
+    public function getAmountBalanceToAddAfterExchange(): ?string {
         return $this->amountBalanceToAddAfterExchange;
     }
 
-    public function setAmountBalanceToAddAfterExchange(int $amountBalanceToAddAfterExchange): self {
+    public function setAmountBalanceToAddAfterExchange(string $amountBalanceToAddAfterExchange): self {
         $this->amountBalanceToAddAfterExchange = $amountBalanceToAddAfterExchange;
 
         return $this;
     }
 
-    public function isCotisantAllowed(): ?bool {
-        return $this->cotisantAllowed;
+    public function isCotisantActivated(): ?bool {
+        return $this->cotisantActivated;
     }
 
-    public function setCotisantAllowed(bool $cotisantAllowed): self {
-        $this->cotisantAllowed = $cotisantAllowed;
+    public function setCotisantActivated(bool $cotisantActivated): self {
+        $this->cotisantActivated = $cotisantActivated;
+
+        return $this;
+    }
+
+    public function isPostActivated(): ?bool {
+        return $this->postActivated;
+    }
+
+    public function setPostActivated(bool $postActivated): self {
+        $this->postActivated = $postActivated;
 
         return $this;
     }

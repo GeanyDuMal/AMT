@@ -405,6 +405,9 @@ h4 {
     text-align: center;
 }
 
+.width-fit-content {
+    width: fit-content;
+}
 
 /* Correction de Sweet Alert */
 .swal2-html-container ul {

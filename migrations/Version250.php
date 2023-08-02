@@ -31,7 +31,7 @@ final class Version250 extends AbstractMigration
 
         $this->addSql('ALTER TABLE post CHANGE image_link image_link VARCHAR(255) NOT NULL');
 
-        $this->addSql('CREATE TABLE parameter (id INT AUTO_INCREMENT NOT NULL, link_logo VARCHAR(255) NOT NULL, amount_fidelity_point_to_exchange INT NOT NULL, amount_balance_to_add_after_exchange INT NOT NULL, cotisant_allowed TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE parameter (id INT AUTO_INCREMENT NOT NULL, link_logo VARCHAR(255) NOT NULL, amount_fidelity_point_to_exchange INT NOT NULL, amount_balance_to_add_after_exchange NUMERIC(5, 2) NOT NULL, cotisant_activated TINYINT(1) NOT NULL, post_activated TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
