@@ -2,6 +2,7 @@
 
 namespace App\Controller\Product;
 
+use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\PriceRepository;
@@ -25,9 +26,11 @@ class EditProductController extends AbstractController
                           EntityManagerInterface $manager, PriceRepository $priceRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute("home");
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $product = $productRepository->find($id);
         $memberPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ASSOCIATION]);
@@ -65,11 +68,12 @@ class EditProductController extends AbstractController
             }
         }
         return $this->render("product/EditProduct.html.twig", [
-            'productTypes' => ProductType::getAll(),
-            'message' => $message,
-            'product' => $product,
-            'studentPrice' => $studentPrice->getPrice(),
-            'memberPrice' => $memberPrice->getPrice()
+            "parameter" => $parameter,
+            "productTypes" => ProductType::getAll(),
+            "message" => $message,
+            "product" => $product,
+            "studentPrice" => $studentPrice->getPrice(),
+            "memberPrice" => $memberPrice->getPrice()
         ]);
     }
 }
