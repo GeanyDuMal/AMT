@@ -27,7 +27,6 @@ class EditParameterController extends AbstractController
         $message = null;
 
         if ($data->count() > 0) {
-
             $parameterManager->setData(
                 $parameter,
                 $parameterManager->downloadPicture($parameter, $request->files->get("associationLogo")),

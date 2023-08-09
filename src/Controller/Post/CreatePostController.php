@@ -3,6 +3,7 @@
 namespace App\Controller\Post;
 
 use App\Entity\Post;
+use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
@@ -23,6 +24,8 @@ class CreatePostController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $postTypes = PostType::getAll();
         $postExistsError = "";
@@ -31,7 +34,6 @@ class CreatePostController extends AbstractController
         $message = "";
 
         if ($data->count() > 0) {
-
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), new DateTime("now"));
             $postmanager->downloadPicture($data->get('imageLink'), $post);
 
@@ -51,10 +53,11 @@ class CreatePostController extends AbstractController
         }
 
         return $this->render('post/CreatePost.html.twig', [
-            'postTypes' => $postTypes,
-            'message' => $message,
-            'postExistsError' => $postExistsError,
-            'post' => $post
+            "parameter" => $parameter,
+            "postTypes" => $postTypes,
+            "message" => $message,
+            "postExistsError" => $postExistsError,
+            "post" => $post
         ]);
     }
 }

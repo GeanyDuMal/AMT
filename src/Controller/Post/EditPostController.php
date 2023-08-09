@@ -3,6 +3,7 @@
 namespace App\Controller\Post;
 
 
+use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
@@ -24,6 +25,8 @@ class EditPostController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $post = $postRepository->find($id);
         $postTypes = PostType::getAll();
@@ -48,11 +51,11 @@ class EditPostController extends AbstractController
             }
         }
 
-
-        return $this->render('post/EditPost.html.twig', [
-            'postTypes' => $postTypes,
-            'message' => $message,
-            'post' => $post
+        return $this->render("post/EditPost.html.twig", [
+            "parameter" => $parameter,
+            "postTypes" => $postTypes,
+            "message" => $message,
+            "post" => $post
         ]);
     }
 }
