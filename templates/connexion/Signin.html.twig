@@ -14,10 +14,12 @@
     <script src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
+{% block navbar %}
+{% endblock %}
+
 {% block body %}
     <div class="flex-vertical flex-centered">
         {# Top bar #}
-        {% block navbar %}{% endblock %}
         <div class="navbar navbar-replace top">
             <a href="{{ path("home") }}">
                 <img class="back-arrow-sidebar" src="{{ asset('img/icons/back_w.png') }}" alt="back arrow">
