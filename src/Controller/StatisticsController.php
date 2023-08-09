@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
@@ -26,6 +27,8 @@ class StatisticsController extends AbstractController
             return $this->redirectToRoute("home");
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $orderedManager = new OrderedManager($manager);
         $countThisWeeksCommands = $orderedRepository->quantityThisWeeksCommands()["number"];
         $salesRevenueThisMonth = 0;
@@ -55,6 +58,7 @@ class StatisticsController extends AbstractController
         }
 
         return $this->render("statistics/Statistics.html.twig", [
+            "parametere" => $parameter,
             "productsWarningStock" => $productsWarningStock,
             "topSoldProduct" => $topSoldProduct,
             "productsEmptyStock" => $productsEmptyStock,

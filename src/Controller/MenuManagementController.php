@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Manager\ClientManager;
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Manager\PasswordForgotRequestManager;
 use App\Manager\PostManager;
 use App\Manager\ProductManager;
@@ -37,6 +38,8 @@ class MenuManagementController extends AbstractController
             return $this->redirectToRoute("home");
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $inputParameterBag = $request->request;
         $message = null;
 
@@ -161,15 +164,15 @@ class MenuManagementController extends AbstractController
 
             if ($passwordForgotRequest) {
                 $passwordForgotRequestManager->remove($passwordForgotRequest);
-                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()
-                                                                                        ->getName() . " " . $passwordForgotRequest->getClient()
-                                                                                                                                  ->getFirstName() . " a été supprimé";
+                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()->getName() . " " . $passwordForgotRequest->getClient()
+                                                                                                                                               ->getFirstName() . " a été supprimé";
             }
         }
 
         $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
 
         return $this->render("management/MenuManagement.html.twig", [
+            "parameter" => $parameter,
             "message" => $message,
             "requestList" => $requestList
         ]);
