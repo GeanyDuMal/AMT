@@ -21,10 +21,10 @@ class EditParameterController extends AbstractController
             return $this->redirectToRoute("home");
         }
 
-        $message = null;
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
         $data = $request->request;
+        $message = null;
 
         if ($data->count() > 0) {
 
@@ -41,8 +41,8 @@ class EditParameterController extends AbstractController
         }
 
         return $this->render("parameter/EditParameter.html.twig", [
+            "parameter" => $parameter,
             "message" => $message,
-            "parameter" => $parameter
         ]);
     }
 }
