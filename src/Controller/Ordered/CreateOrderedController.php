@@ -3,6 +3,7 @@
 namespace App\Controller\Ordered;
 
 
+use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\SymfonyRole;
@@ -18,12 +19,13 @@ class CreateOrderedController extends AbstractController
      * @Route("/ordered/create/{message?}", name="createOrdered")
      */
     public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository,
-                          ClientRepository $clientRepository, string $message = null): Response
-    {
+        ClientRepository $clientRepository, string $message = null): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $inputParameterBag = $request->request;
         $productOrdered = [];
 
@@ -57,12 +59,13 @@ class CreateOrderedController extends AbstractController
 
                     return $this->redirectToRoute("orderedPayment", [], 308);
                 } else {
-                    $message = 'Merci de saisir au moins 1 produit';
+                    $message = "Merci de saisir au moins 1 produit";
                 }
             }
         }
 
-        return $this->render('ordered/CreateOrdered.html.twig', [
+        return $this->render("ordered/CreateOrdered.html.twig", [
+            "parameter" => $parameter,
             "productList" => $allProductPositiveStock,
             "clientList" => $allClient,
             "message" => $message

@@ -3,6 +3,7 @@
 namespace App\Controller\Ordered;
 
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Repository\OrderedRepository;
 use App\Repository\PriceRepository;
@@ -27,11 +28,15 @@ class ShowOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $orderedManager = new OrderedManager($manager);
         $priceManager = new PriceManager($manager);
         $priceList = [];
         $clientType = ClientType::ETUDIANT;
         $inputParameterBag = $request->request;
+        $toCancel = $inputParameterBag->get("cancel");
+        $toRemove = $inputParameterBag->get("remove");
 
         if (is_numeric($idOrder)) {
             $order = $orderedRepository->find($idOrder);
@@ -48,9 +53,6 @@ class ShowOrderedController extends AbstractController
                 }
 
                 // Suppression ou annulation
-                $toCancel = $inputParameterBag->get("cancel");
-                $toRemove = $inputParameterBag->get("remove");
-
                 if ($toCancel || $toRemove){
                     $manager->initializeObject($order->getPurchases());
                     if($toCancel){
@@ -71,7 +73,8 @@ class ShowOrderedController extends AbstractController
             return $this->redirectToRoute("home");
         }
 
-        return $this->render('ordered/ShowOrdered.html.twig', [
+        return $this->render("ordered/ShowOrdered.html.twig", [
+            "parameter" => $parameter,
             "ordered" => $order,
             "clientType" => $clientType,
             "purchaseList" => $purchaseList,
