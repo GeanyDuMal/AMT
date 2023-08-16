@@ -4,6 +4,7 @@ namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
+use App\Manager\ParameterManager;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,6 +26,8 @@ class SignInController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $inputParameterBag = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client;
@@ -63,6 +66,7 @@ class SignInController extends AbstractController
         }
 
         return $this->render('connexion/Signin.html.twig', [
+            "parameter" => $parameter,
             "message" => $message
         ]);
     }

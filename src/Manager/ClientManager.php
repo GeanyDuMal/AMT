@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Member;
 use App\Entity\Client;
+use App\Entity\Parameter;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\MemberRole;
@@ -12,14 +13,13 @@ use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 
 class ClientManager
 {
     public EntityManagerInterface $manager;
     public ClientRepository $clientRepository;
-    const AMOUNT_FIDELITY_SWITCH = 150;
-    const AMOUNT_BALANCE_SWITCH = 0.80;
     const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
 
 
@@ -107,11 +107,16 @@ class ClientManager
         $this->setRoleForClient($client, $roleAssociationName);
 
         // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
-        $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
+        $parameterManager = new ParameterManager(($this->manager));
+        $parameter = $parameterManager->getParameter();
+
+        $limitFidelityPoint = $parameter->getAmountFidelityPointToExchange();
+        $amountTransferToBalance = floatval($parameter->getAmountBalanceToAddAfterExchange());
+        $nbReduction = intdiv($fidelityPoint, $limitFidelityPoint);
 
         if ($nbReduction != 0){
-            $fidelityPoint = $fidelityPoint - $nbReduction*self::AMOUNT_FIDELITY_SWITCH;
-            $client->setBalance(floatval($balance) + $nbReduction*(self::AMOUNT_BALANCE_SWITCH));
+            $fidelityPoint = $fidelityPoint - $nbReduction*$limitFidelityPoint;
+            $client->setBalance(floatval($balance) + $nbReduction*$amountTransferToBalance);
         }
         $client->setFidelityPoint($fidelityPoint);
 
@@ -163,7 +168,6 @@ class ClientManager
      */
     public function verifyClient(Client $client): bool
     {
-
         $containsSpecialName = strpbrk($client->getName(), self::REGEX_SPECIAL);
         $containsSpecialFirstName = strpbrk($client->getFirstName(), self::REGEX_SPECIAL);
 
@@ -181,7 +185,7 @@ class ClientManager
 
     /**
      * Verify if the password contains regex and have the good size
-     * @param String password
+     * @param String $password password not hashed
      * @return boolean
      */
     public function verifyPassword(string $password): bool
@@ -260,8 +264,11 @@ class ClientManager
      */
     public function fidelityPointLimitCheck(Client $client): void
     {
-        $limitFidelityPoint = 150;
-        $amountTransferToBalance = 0.8; // 1 = 1€
+        $parameterManager = new ParameterManager(($this->manager));
+        $parameter = $parameterManager->getParameter();
+
+        $limitFidelityPoint = $parameter->getAmountFidelityPointToExchange();
+        $amountTransferToBalance = floatval($parameter->getAmountBalanceToAddAfterExchange());
 
         if ($client->getFidelityPoint() >= $limitFidelityPoint) {
             $client->setFidelityPoint($client->getFidelityPoint() - $limitFidelityPoint);

@@ -33,8 +33,10 @@
                 </button>
                 <a href="{{ path("home") }}" class="flex-centered">
                     <img src="{{ asset('img/logo_texte_white.png') }}" width="auto" height="50" alt="logo-menu" border="0">
-                    <p>x</p>
-                    <img src="{{ asset(parameter.linkLogo) }}" width="auto" height="50" alt="logo-menu" border="0">
+                    {% if parameter.linkLogo %}
+                        <p>x</p>
+                        <img src="{{ asset(parameter.linkLogo) }}" width="auto" height="50" alt="logo-menu" border="0">
+                    {% endif %}
                 </a>
 
 
