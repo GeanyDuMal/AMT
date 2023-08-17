@@ -26,20 +26,18 @@ class CreateOrderedController extends AbstractController
 
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
-        $inputParameterBag = $request->request;
+        $data = $request->request;
         $productOrdered = [];
 
-        // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProductPositiveStock = $productRepository->findAllPositiveStock();
-        // Recupere tout les clients par ordre alphabetique
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
-        if ($request->request->count() > 0) {
+        if ($data->count() > 0) {
             $message = '';
 
             // Recupere toutes les quantités de produit selectionné
             foreach ($allProductPositiveStock as $product) {
-                $quantity = $inputParameterBag->get("quantityOrdered_" . $product->getId());
+                $quantity = $data->get("quantityOrdered_" . $product->getId());
 
                 // Vérifie si l'on a commandé le produit $product
                 if (is_numeric($quantity) && $quantity > 0 && $quantity <= $product->getQuantityStock()) {
