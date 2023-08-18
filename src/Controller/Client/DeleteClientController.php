@@ -27,6 +27,7 @@ class DeleteClientController extends AbstractController
 
         if ($client) {
             $clientManager->remove($client);
+            return $this->redirectToRoute("menuClient");
         } else {
             return $this->redirectToRoute("home");
         }

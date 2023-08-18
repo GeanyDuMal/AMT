@@ -31,16 +31,20 @@ class EditParameterController extends AbstractController
             $cotisantActivated = (bool)$data->get("cotisantActivated");
             $postActivated = (bool)$data->get("postActivated");
 
-            $parameterManager->setData(
-                $parameter,
-                $parameterManager->downloadPicture($parameter, $request->files->get("associationLogo")),
-                $data->get("amountFidelityPointToExchange"),
-                $data->get("amountBalanceToAddAfterExchange"),
-                $cotisantActivated,
-                $postActivated
-            );
+            if ($parameterManager->isDataCorrect($data->get("amountFidelityPointToExchange"), $data->get("amountBalanceToAddAfterExchange"))) {
+                $parameterManager->setData(
+                    $parameter,
+                    $parameterManager->downloadPicture($parameter, $request->files->get("associationLogo")),
+                    $data->get("amountFidelityPointToExchange"),
+                    $data->get("amountBalanceToAddAfterExchange"),
+                    $cotisantActivated,
+                    $postActivated
+                );
 
-            $parameterManager->persist($parameter);
+                $parameterManager->persist($parameter);
+            } else {
+                $message = "Paramêtres érronés";
+            }
         }
 
         return $this->render("parameter/EditParameter.html.twig", [

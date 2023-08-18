@@ -12,7 +12,7 @@
  *
  * This script doesn't erase old data
  *
- * This script, once completed, will dowwload all the remote file excepted var and vendor folder
+ * This script, once completed, will download all the remote file excepted var and vendor folder
  *
  * After that, it will send you local file that fit with the patterns added in the list
  *

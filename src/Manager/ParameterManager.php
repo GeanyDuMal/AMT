@@ -69,10 +69,15 @@ class ParameterManager
 
             $newLocation = "/img/entity/parameter/img_" . $randomUtils->randomString(4, $characters) . ".png";
             $parameter->setLinkLogo($pictureUtils->downloadPictureFromFile($file, $newLocation));
-        } else {
-            //$parameter->setLinkLogo("/img/entity/placeholder.png");
         }
 
         return $parameter->getLinkLogo();
+    }
+
+    public function isDataCorrect(string $amountFidelityPointToExchange, string $amountBalanceToAddAfterExchange): bool {
+        return (
+            is_numeric($amountFidelityPointToExchange) && intval($amountFidelityPointToExchange) != 0 &&
+            is_numeric($amountBalanceToAddAfterExchange) && floatval($amountBalanceToAddAfterExchange) != 0
+        );
     }
 }
