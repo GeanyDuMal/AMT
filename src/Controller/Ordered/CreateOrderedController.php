@@ -50,7 +50,7 @@ class CreateOrderedController extends AbstractController
             if (!$message) {
                 // Si l'on a commandé au moins 1 produit
                 if ($productOrdered) {
-                    $idClient = $inputParameterBag->get("orderedClient");
+                    $idClient = $data->get("orderedClient");
 
                     $productOrderedAndClient = ["idClient" => $idClient, "productOrdered" => $productOrdered];
                     $request->getSession()->set("productOrderedAndClient", $productOrderedAndClient);

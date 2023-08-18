@@ -7,6 +7,7 @@ use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
+use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,12 +21,13 @@ class CreatePostController extends AbstractController
      * @Route("/post/create", name="createPost")
      */
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response {
-        if (!$this->isGranted('ROLE_ASSOC')) {
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $postTypes = PostType::getAll();
         $postExistsError = "";

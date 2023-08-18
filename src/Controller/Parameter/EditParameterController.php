@@ -16,7 +16,8 @@ class EditParameterController extends AbstractController
     /**
      * @Route("/parameter", name="editParameter")
      */
-    public function index(Request $request, EntityManagerInterface $manager): Response {
+    public function index(Request $request, EntityManagerInterface $manager): Response
+    {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute("home");
         }
@@ -27,13 +28,16 @@ class EditParameterController extends AbstractController
         $message = null;
 
         if ($data->count() > 0) {
+            $cotisantActivated = (bool)$data->get("cotisantActivated");
+            $postActivated = (bool)$data->get("postActivated");
+
             $parameterManager->setData(
                 $parameter,
                 $parameterManager->downloadPicture($parameter, $request->files->get("associationLogo")),
                 $data->get("amountFidelityPointToExchange"),
                 $data->get("amountBalanceToAddAfterExchange"),
-                $data->get("cotisantActivated"),
-                $data->get("postActivated")
+                $cotisantActivated,
+                $postActivated
             );
 
             $parameterManager->persist($parameter);

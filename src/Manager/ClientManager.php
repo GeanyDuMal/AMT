@@ -22,7 +22,6 @@ class ClientManager
     public ClientRepository $clientRepository;
     const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
 
-
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->manager = $entityManager;
@@ -48,7 +47,7 @@ class ClientManager
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
-        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())){
+        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())) {
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
@@ -93,32 +92,20 @@ class ClientManager
      * @param int|null $fidelityPoint
      * @return void
      */
-    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, ?string $password, string $balance, string $clientType, ?string $roleAssociationName,
-                            ?int $fidelityPoint = 0): void
+    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name,
+        string $firstName, string $login, ?string $password, string $balance, string $clientType,
+        ?string $roleAssociationName, ?int $fidelityPoint = 0): void
     {
         $client->setName(strtoupper($name))
             ->setFirstName($firstName)
             ->setLogin($login)
             ->setBalance($balance)
+            ->setFidelityPoint($fidelityPoint)
             ->setClientType($clientType)
             ->setRoles([SymfonyRole::USER]);
 
         $this->setRoleForClient($client, $roleAssociationName);
-
-        // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
-        $parameterManager = new ParameterManager(($this->manager));
-        $parameter = $parameterManager->getParameter();
-
-        $limitFidelityPoint = $parameter->getAmountFidelityPointToExchange();
-        $amountTransferToBalance = floatval($parameter->getAmountBalanceToAddAfterExchange());
-        $nbReduction = intdiv($fidelityPoint, $limitFidelityPoint);
-
-        if ($nbReduction != 0){
-            $fidelityPoint = $fidelityPoint - $nbReduction*$limitFidelityPoint;
-            $client->setBalance(floatval($balance) + $nbReduction*$amountTransferToBalance);
-        }
-        $client->setFidelityPoint($fidelityPoint);
+        $this->fidelityPointLimitCheck($client);
 
         /*
             if password input exists, so it's the add page,
@@ -269,10 +256,11 @@ class ClientManager
 
         $limitFidelityPoint = $parameter->getAmountFidelityPointToExchange();
         $amountTransferToBalance = floatval($parameter->getAmountBalanceToAddAfterExchange());
+        $nbReduction = intdiv($client->getFidelityPoint(), $limitFidelityPoint);
 
-        if ($client->getFidelityPoint() >= $limitFidelityPoint) {
-            $client->setFidelityPoint($client->getFidelityPoint() - $limitFidelityPoint);
-            $client->setBalance(floatval($client->getBalance()) + $amountTransferToBalance);
+        if ($nbReduction != 0) {
+            $client->setFidelityPoint($client->getFidelityPoint() - $nbReduction * $limitFidelityPoint);
+            $client->setBalance(floatval($client->getBalance()) + $nbReduction * $amountTransferToBalance);
         }
     }
 
@@ -308,7 +296,7 @@ class ClientManager
 
         $passwordForgotRequest = $this->manager->getRepository(PasswordForgotRequest::class)->findOneBy(["client" => $client]);
 
-        if ($passwordForgotRequest){
+        if ($passwordForgotRequest) {
             $passwordForgotRequestManager->remove($passwordForgotRequest);
         }
     }
@@ -320,7 +308,7 @@ class ClientManager
      */
     private function defineCreationDateIfNecessary(Client $client): void
     {
-        if (!$this->clientExists($client)){
+        if (!$this->clientExists($client)) {
             $client->setCreationDate(new DateTime("now"));
         }
     }

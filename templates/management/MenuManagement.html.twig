@@ -69,14 +69,16 @@
                         Supprimer les commandes datant d'au moins 1 an sans client.
                     </div>
                 </div>
-                <div class="flex-horizontal flex-centered block-control">
-                    <button type="submit" name="clearPost" value="true" class="btn btn-primary disableable">
-                        Purger les posts
-                    </button>
-                    <div>
-                        Supprimer les 3 posts les plus anciens.
+                {% if parameter.postActivated %}
+                    <div class="flex-horizontal flex-centered block-control">
+                        <button type="submit" name="clearPost" value="true" class="btn btn-primary disableable">
+                            Purger les posts
+                        </button>
+                        <div>
+                            Supprimer les 3 posts les plus anciens.
+                        </div>
                     </div>
-                </div>
+                {% endif %}
                 <h2>
                     Reinitialisation de mot de passe
                 </h2>

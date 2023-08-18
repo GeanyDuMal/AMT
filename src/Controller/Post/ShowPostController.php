@@ -17,6 +17,11 @@ class ShowPostController extends AbstractController
     public function index(EntityManagerInterface $manager, int $id, PostRepository $postRepository): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted('ROLE_ASSOC') || !$parameter->isPostActivated()) {
+            return $this->redirectToRoute('home');
+        }
+
         $post = $postRepository->find($id);
 
         if ($post) {

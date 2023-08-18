@@ -21,12 +21,13 @@ class EditPostController extends AbstractController
      */
     public function index($id, PostRepository $postRepository, Request $request,
         EntityManagerInterface $manager): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $post = $postRepository->find($id);
         $postTypes = PostType::getAll();

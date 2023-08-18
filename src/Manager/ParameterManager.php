@@ -36,12 +36,17 @@ class ParameterManager
             $parameter->setLinkLogo($linkLogo);
         }
 
-        if (is_float($amountFidelityPointToExchange && $amountFidelityPointToExchange != "")){
-            $parameter->setAmountFidelityPointToExchange($amountFidelityPointToExchange);
+        if ($amountFidelityPointToExchange != "" && intval($amountFidelityPointToExchange) > 0){
+            $parameter->setAmountFidelityPointToExchange(intval($amountFidelityPointToExchange));
+        } else {
+            $parameter->setAmountFidelityPointToExchange(150);
         }
 
-        if (is_float($amountBalanceToAddAfterExchange && $amountBalanceToAddAfterExchange != "")){
-            $parameter->setAmountBalanceToAddAfterExchange($amountBalanceToAddAfterExchange);
+        if ($amountBalanceToAddAfterExchange != "" && floatval($amountBalanceToAddAfterExchange)){
+            $parameter->setAmountBalanceToAddAfterExchange(floatval($amountBalanceToAddAfterExchange));
+        } else {
+            $parameter->setAmountBalanceToAddAfterExchange(0.8);
+
         }
 
         $parameter->setCotisantActivated($cotisantActivated)
@@ -52,7 +57,7 @@ class ParameterManager
         return $this->parameterRepository->findOneBy([]);
     }
 
-    public function downloadPicture(Parameter $parameter, ?UploadedFile $file): string {
+    public function downloadPicture(Parameter $parameter, ?UploadedFile $file): ?string {
         if ($file != null) {
             $pictureUtils = new PictureUtils();
             $randomUtils = new RandomUtils();
@@ -65,7 +70,7 @@ class ParameterManager
             $newLocation = "/img/entity/parameter/img_" . $randomUtils->randomString(4, $characters) . ".png";
             $parameter->setLinkLogo($pictureUtils->downloadPictureFromFile($file, $newLocation));
         } else {
-            $parameter->setLinkLogo("/img/entity/placeholder.png");
+            //$parameter->setLinkLogo("/img/entity/placeholder.png");
         }
 
         return $parameter->getLinkLogo();

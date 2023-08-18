@@ -62,7 +62,9 @@
                 <div class="block-sidebar">
                     <a href="{{ path("home") }}">Accueil</a>
                     <a href="{{ path("menuProduct") }}">Nos&nbspProduits</a>
-                    <a href="{{ path("menuPost") }}">Posts&nbsp&&nbspEvents</a>
+                    {% if parameter.postActivated %}
+                        <a href="{{ path("menuPost") }}">Posts&nbsp&&nbspEvents</a>
+                    {% endif %}
                     <a href="{{ path("userGuide") }}">Guide&nbspd'utilisation</a>
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
