@@ -5,6 +5,7 @@ namespace App\Controller\Ordered;
 use App\Entity\Ordered;
 use App\Entity\Purchase;
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
 use App\Repository\ClientRepository;
@@ -33,6 +34,8 @@ class PaymentOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $purchaseManager = new PurchaseManager($manager);
         $orderManager = new OrderedManager($manager);
         $priceManager = new PriceManager($manager);
@@ -115,6 +118,7 @@ class PaymentOrderedController extends AbstractController
         }
 
         return $this->render('ordered/PaymentOrdered.html.twig', [
+            "parameter" => $parameter,
             "productOrdered" => $productOrdered,
             "montantProduct" => $montantProduct,
             "montantTotal" => $montantTotal,

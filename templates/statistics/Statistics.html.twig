@@ -72,14 +72,16 @@
                 </div>
             </div>
 
-            <div class="card flex-vertical flex-centered card-color-2">
-                <div class="card-title">
-                    Nombre de Cotisant
+            {% if parameter.cotisantActivated %}
+                <div class="card flex-vertical flex-centered card-color-2">
+                    <div class="card-title">
+                        Nombre de Cotisant
+                    </div>
+                    <div class="card-text">
+                        {{ countCotisant }}
+                    </div>
                 </div>
-                <div class="card-text">
-                    {{ countCotisant }}
-                </div>
-            </div>
+            {% endif %}
 
             {% if productsWarningStock %}
                 <div class="card flex-vertical flex-centered card-color-3">

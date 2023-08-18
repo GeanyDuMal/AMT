@@ -3,21 +3,20 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client;
-use App\Manager\MemberManager;
 use App\Manager\ClientManager;
-use App\Repository\MemberRepository;
+use App\Manager\MemberManager;
+use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\MemberRole;
+use App\Repository\MemberRepository;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditClientController extends AbstractController
 {
@@ -25,27 +24,27 @@ class EditClientController extends AbstractController
      * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
      */
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
-                          MemberRepository $memberRepository, ClientRepository $clientRepository): Response
-    {
+        MemberRepository $memberRepository, ClientRepository $clientRepository): Response {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $client = $clientRepository->find($id);
         $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
         $member = $memberRepository->findOneBy(["client" => $client]);
         $memberManager = new MemberManager($manager);
+        $clientManager = new ClientManager($manager);
         $assosRoles = $memberManager->getLowerOrEqualAssociationRole($user);
         $message = "";
         $allowEdit = $this->isGranted($client->getRoles()[0]);
 
         if ($allowEdit && $data->count() > 0) {
-            $clientManager = new ClientManager($manager);
-
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
-                $data->get("firstName"), $client->getLogin(), $data->get("password"),
-                $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
+                                    $data->get("firstName"), $client->getLogin(), $data->get("password"),
+                                    $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
 
 
             // Verify the confirmity of a client and verify that the login correspond to the stored one
@@ -59,7 +58,7 @@ class EditClientController extends AbstractController
                      *  if admin changed the role of a member to another role
                      *  we have to change it too in association table
                      */
-                    $this->manageMember($memberManager, $memberRepository, $client, $request->get('assosRoles'));
+                    $this->manageMember($memberManager, $memberRepository, $client, $request->get("assosRoles"));
                 }
 
                 $clientManager->persist($client);
@@ -74,19 +73,20 @@ class EditClientController extends AbstractController
                     "message" => "Modification effectué avec succès"
                 ]);
             }
-        } else if (!$allowEdit){
-            return $this->redirectToRoute('menuClient',[
-                'message' => 'Vous n\'avez pas l\'autorisation de modifier ce client',
+        } else if (!$allowEdit) {
+            return $this->redirectToRoute('menuClient', [
+                "message" => "Vous n'avez pas l'autorisation de modifier ce client",
             ]);
         }
 
         return $this->render('client/EditClient.html.twig', [
-            'assosRoles' => $assosRoles,
-            'message' => $message,
-            'client' => $client,
-            'member' => $member,
-            'allowEdit' => $allowEdit,
-            'clientTypes' => ClientType::getAll()
+            "parameter" => $parameter,
+            "assosRoles" => $assosRoles,
+            "message" => $message,
+            "client" => $client,
+            "member" => $member,
+            "allowEdit" => $allowEdit,
+            "clientTypes" => $clientManager->getClientTypes()
         ]);
     }
 
@@ -97,8 +97,7 @@ class EditClientController extends AbstractController
      * @param string $roleAssociation
      * @return void
      */
-    private function manageMember(MemberManager $memberManager, MemberRepository $memberRepository, Client $client, string $roleAssociation): void
-    {
+    private function manageMember(MemberManager $memberManager, MemberRepository $memberRepository, Client $client, string $roleAssociation): void {
         $member = $memberRepository->findOneBy(["client" => $client]);
 
         if ($member) {

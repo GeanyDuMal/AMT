@@ -4,6 +4,7 @@ namespace App\Controller\Product;
 
 use App\Entity\Price;
 use App\Entity\Product;
+use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\ProductRepository;
@@ -26,6 +27,8 @@ class CreateProductController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $product = new Product();
         $productTypes = ProductType::getAll();
@@ -66,6 +69,7 @@ class CreateProductController extends AbstractController
         }
 
         return $this->render("product/CreateProduct.html.twig", [
+            "parameter" => $parameter,
             "productTypes" => $productTypes,
             "message" => $message,
             "produit" => $product

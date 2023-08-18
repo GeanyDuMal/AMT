@@ -3,11 +3,12 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client;
-use App\Manager\MemberManager;
 use App\Manager\ClientManager;
+use App\Manager\MemberManager;
+use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateClientController extends AbstractController
 {
@@ -23,9 +23,8 @@ class CreateClientController extends AbstractController
      * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
      */
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher,
-                          Request $request, EntityManagerInterface $manager): Response
-    {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)){
+        Request $request, EntityManagerInterface $manager): Response {
+        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
 
@@ -33,17 +32,19 @@ class CreateClientController extends AbstractController
         $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
         $memberManager = new MemberManager($manager);
         $assosRoles = $memberManager->getLowerOrEqualAssociationRole($user);
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+        $clientManager = new ClientManager($manager);
         $message = "";
 
-        if ($data->count() > 0) {
-            $clientManager = new ClientManager($manager);
-            $client = new Client();
 
+        if ($data->count() > 0) {
+            $client = new Client();
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
-                $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
-                
-            if($clientManager->verifyClient($client) && $clientManager->verifyPassword($data->get("password"))) {
+                                    $data->get("firstName"), $data->get("login"), $data->get("password"),
+                                    $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
+
+            if ($clientManager->verifyClient($client) && $clientManager->verifyPassword($data->get("password"))) {
                 if ($clientManager->clientExists($client)) {
                     $message = "Ce client existe déjà";
                 } else {
@@ -57,9 +58,9 @@ class CreateClientController extends AbstractController
                      * */
                     if ($client->getClientType() == ClientType::ASSOCIATION) {
 
-                        $newMember = $memberManager->makeMember($client, $request->get('assosRoles'));
+                        $newMember = $memberManager->makeMember($client, $request->get("assosRoles"));
 
-                        if($newMember->getRole() == MemberRole::PRESIDENT){
+                        if ($newMember->getRole() == MemberRole::PRESIDENT) {
                             $memberManager->removeOtherPresidents($newMember);
                         }
                         $manager->persist($newMember);
@@ -75,9 +76,10 @@ class CreateClientController extends AbstractController
         }
 
         return $this->render('client/CreateClient.html.twig', [
-            'assosRoles' => $assosRoles,
-            'message' => $message,
-            'clientTypes' => ClientType::getAll()
+            "parameter" => $parameter,
+            "assosRoles" => $assosRoles,
+            "message" => $message,
+            "clientTypes" => $clientManager->getClientTypes()
         ]);
     }
 }

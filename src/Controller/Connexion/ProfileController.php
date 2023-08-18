@@ -3,6 +3,7 @@
 namespace App\Controller\Connexion;
 
 use App\Manager\ClientManager;
+use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,6 +22,8 @@ class ProfileController extends AbstractController
                           ClientRepository $clientRepository, EntityManagerInterface $manager): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $parameterManager = new ParameterManager($manager);
+            $parameter = $parameterManager->getParameter();
             $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
             $clientManager = new ClientManager($manager);
             $edit = false;
@@ -49,6 +52,7 @@ class ProfileController extends AbstractController
             }
 
             return $this->render('connexion/Profile.html.twig', [
+                "parameter" => $parameter,
                 "user" => $client,
                 "edit" => $edit,
                 "fail" => $fail

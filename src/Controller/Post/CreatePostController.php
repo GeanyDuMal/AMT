@@ -3,9 +3,11 @@
 namespace App\Controller\Post;
 
 use App\Entity\Post;
+use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
+use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +21,10 @@ class CreatePostController extends AbstractController
      * @Route("/post/create", name="createPost")
      */
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response {
-        if (!$this->isGranted('ROLE_ASSOC')) {
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
@@ -31,7 +36,6 @@ class CreatePostController extends AbstractController
         $message = "";
 
         if ($data->count() > 0) {
-
             $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), new DateTime("now"));
             $postmanager->downloadPicture($data->get('imageLink'), $post);
 
@@ -51,10 +55,11 @@ class CreatePostController extends AbstractController
         }
 
         return $this->render('post/CreatePost.html.twig', [
-            'postTypes' => $postTypes,
-            'message' => $message,
-            'postExistsError' => $postExistsError,
-            'post' => $post
+            "parameter" => $parameter,
+            "postTypes" => $postTypes,
+            "message" => $message,
+            "postExistsError" => $postExistsError,
+            "post" => $post
         ]);
     }
 }

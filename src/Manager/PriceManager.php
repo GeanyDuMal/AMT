@@ -10,29 +10,26 @@ use App\Utils\Enum\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use JetBrains\PhpStorm\Pure;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Compiler\CleanRememberMeVerifierPass;
 use function PHPUnit\Framework\assertContains;
 
-class PriceManager
-{
+class PriceManager {
     public EntityManagerInterface $manager;
     public PriceRepository $priceRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
         $this->priceRepository = $this->manager->getRepository(Price::class);
     }
 
-    public function persist(Price $price): void
-    {
+    public function persist(Price $price): void {
         if ($this->verifyPrice($price)) {
             $this->manager->persist($price);
             $this->manager->flush();
         }
     }
 
-    public function remove(Price $price): void
-    {
+    public function remove(Price $price): void {
         $this->manager->remove($price);
         $this->manager->flush();
     }
@@ -46,9 +43,7 @@ class PriceManager
      * @param String $studentPriceAmount
      * @return void
      */
-    public function setData(Price  $memberPrice, Price $studentPrice, Product $product, string $memberPriceAmount,
-                            string $studentPriceAmount) : void
-    {
+    public function setData(Price $memberPrice, Price $studentPrice, Product $product, string $memberPriceAmount, string $studentPriceAmount): void {
         $memberType = ClientType::ASSOCIATION;
         $studentType = ClientType::ETUDIANT;
 
@@ -65,8 +60,7 @@ class PriceManager
      * @param Price $price
      * @return bool
      */
-    public function verifyPrice(Price $price): bool
-    {
+    public function verifyPrice(Price $price): bool {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
     }
 
@@ -75,19 +69,35 @@ class PriceManager
      * @param string $clientType
      * @return string
      */
-    public function getClientTypeUseForPrice(string $clientType): string
-    {
-        $clientTypeReturn = ClientType::ETUDIANT;
-
-        if (in_array($clientType, ClientType::getAll(), true)){
-            switch ($clientType){
+    public function getClientTypeUseForPrice(string $clientType): string {
+        if (in_array($clientType, ClientType::getAll(), true)) {
+            switch ($clientType) {
                 case ClientType::ETUDIANT :
                     $clientTypeReturn = ClientType::ETUDIANT;
                     break;
-                case ClientType::ASSOCIATION || ClientType::COTISANT :
+
+                case ClientType::ASSOCIATION :
                     $clientTypeReturn = ClientType::ASSOCIATION;
                     break;
+
+                case ClientType::COTISANT :
+                    $parameterManager = new ParameterManager(($this->manager));
+                    $parameter = $parameterManager->getParameter();
+
+                    if ($parameter->isCotisantActivated()) {
+                        $clientTypeReturn = ClientType::ASSOCIATION;
+                    } else {
+                        $clientTypeReturn = ClientType::ETUDIANT;
+                    }
+                    break;
+
+                default :
+                    // Ne doit pas etre atteint, TODO : gestion d'erreur
+                    $clientTypeReturn = ClientType::ETUDIANT;
             }
+        } else {
+            // Ne doit pas etre atteint, TODO : gestion d'erreur
+            $clientTypeReturn = ClientType::ETUDIANT;
         }
 
         return $clientTypeReturn;

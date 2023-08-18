@@ -17,8 +17,7 @@ class DeleteClientController extends AbstractController
     /**
      * @Route("/admin/client/delete/{!id}", name="deleteClient", methods={"GET", "DELETE"})
      */
-    public function index($id, EntityManagerInterface $manager, ClientRepository $clientRepository): RedirectResponse|JsonResponse
-    {
+    public function index($id, EntityManagerInterface $manager, ClientRepository $clientRepository): RedirectResponse|JsonResponse {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');
         }
@@ -26,9 +25,8 @@ class DeleteClientController extends AbstractController
         $clientManager = new ClientManager($manager);
         $client = $clientRepository->find($id);
 
-        if ($client){
+        if ($client) {
             $clientManager->remove($client);
-            return $this->redirectToRoute("menuClient");
         } else {
             return $this->redirectToRoute("home");
         }

@@ -3,6 +3,7 @@
 namespace App\Controller\Ordered;
 
 
+use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\SymfonyRole;
@@ -18,26 +19,25 @@ class CreateOrderedController extends AbstractController
      * @Route("/ordered/create/{message?}", name="createOrdered")
      */
     public function index(Request $request, EntityManagerInterface $manager, ProductRepository $productRepository,
-                          ClientRepository $clientRepository, string $message = null): Response
-    {
+        ClientRepository $clientRepository, string $message = null): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
-        $inputParameterBag = $request->request;
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+        $data = $request->request;
         $productOrdered = [];
 
-        // Recupere tout les produits avec un stock positif afin d'afficher uniquement ceux disponibles
         $allProductPositiveStock = $productRepository->findAllPositiveStock();
-        // Recupere tout les clients par ordre alphabetique
         $allClient = $clientRepository->findBy([], ["name" => "ASC"]);
 
-        if ($request->request->count() > 0) {
+        if ($data->count() > 0) {
             $message = '';
 
             // Recupere toutes les quantités de produit selectionné
             foreach ($allProductPositiveStock as $product) {
-                $quantity = $inputParameterBag->get("quantityOrdered_" . $product->getId());
+                $quantity = $data->get("quantityOrdered_" . $product->getId());
 
                 // Vérifie si l'on a commandé le produit $product
                 if (is_numeric($quantity) && $quantity > 0 && $quantity <= $product->getQuantityStock()) {
@@ -50,19 +50,20 @@ class CreateOrderedController extends AbstractController
             if (!$message) {
                 // Si l'on a commandé au moins 1 produit
                 if ($productOrdered) {
-                    $idClient = $inputParameterBag->get("orderedClient");
+                    $idClient = $data->get("orderedClient");
 
                     $productOrderedAndClient = ["idClient" => $idClient, "productOrdered" => $productOrdered];
                     $request->getSession()->set("productOrderedAndClient", $productOrderedAndClient);
 
                     return $this->redirectToRoute("orderedPayment", [], 308);
                 } else {
-                    $message = 'Merci de saisir au moins 1 produit';
+                    $message = "Merci de saisir au moins 1 produit";
                 }
             }
         }
 
-        return $this->render('ordered/CreateOrdered.html.twig', [
+        return $this->render("ordered/CreateOrdered.html.twig", [
+            "parameter" => $parameter,
             "productList" => $allProductPositiveStock,
             "clientList" => $allClient,
             "message" => $message

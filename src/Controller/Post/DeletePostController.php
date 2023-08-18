@@ -2,6 +2,7 @@
 
 namespace App\Controller\Post;
 
+use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\SymfonyRole;
@@ -19,8 +20,11 @@ class DeletePostController extends AbstractController
      */
     public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): RedirectResponse|JsonResponse
     {
-        if(!$this->isGranted(SymfonyRole::ASSOC)){
-            return $this->redirectToRoute("home");
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
+            return $this->redirectToRoute('home');
         }
 
         $postManager = new PostManager($manager);

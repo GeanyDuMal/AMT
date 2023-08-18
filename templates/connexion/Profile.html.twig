@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block navbar %}
-    {% endblock %}
+{% endblock %}
     
 {% block body %}
     <div class="flex-vertical flex-centered">
@@ -70,7 +70,7 @@
                     </h4>
                     <div class="flex-vertical flex-centered">
                         <p class="text-small">
-                            <em> 150 point de fidelité = 0.8€ </em>
+                            <em> {{ parameter.amountFidelityPointToExchange }} point de fidelité = {{ parameter.amountBalanceToAddAfterExchange }}€ </em>
                         </p>
                         <p class="text-small">
                             Vos informations tels que votre login ou votre mot de passe sont privées.<br>

@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PictureUtils
 {
@@ -24,6 +25,18 @@ class PictureUtils
 
         try {
             file_put_contents($locationUsed, file_get_contents($link));
+        } catch (Exception $e) {
+            $location = "/img/entity/placeholder.png";
+        }
+
+        return $location;
+    }
+
+    public function downloadPictureFromFile(UploadedFile $file, string $location): string {
+        $locationUsed = $this->adaptLocation($location);
+
+        try {
+            file_put_contents($locationUsed, $file->getContent());
         } catch (Exception $e) {
             $location = "/img/entity/placeholder.png";
         }

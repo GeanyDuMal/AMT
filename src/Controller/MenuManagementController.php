@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Manager\ClientManager;
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Manager\PasswordForgotRequestManager;
 use App\Manager\PostManager;
 use App\Manager\ProductManager;
@@ -37,13 +38,15 @@ class MenuManagementController extends AbstractController
             return $this->redirectToRoute("home");
         }
 
-        $inputParameterBag = $request->request;
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+        $data = $request->request;
         $message = null;
 
         /**
          * Purge des cotisants
          */
-        if ($inputParameterBag->get("clearCotisant") != "") {
+        if ($data->get("clearCotisant") != "" && $parameter->isCotisantActivated()) {
             $clientManager = new ClientManager($manager);
             $listCotisant = $clientRepository->findBy(["clientType" => ClientType::COTISANT]);
 
@@ -58,7 +61,7 @@ class MenuManagementController extends AbstractController
         /**
          * Purge de l'association
          */
-        if ($inputParameterBag->get("clearMembers") != "") {
+        if ($data->get("clearMembers") != "") {
             $clientManager = new ClientManager($manager);
             $listTypeAssociation = $clientRepository->findBy(["clientType" => ClientType::ASSOCIATION]);
 
@@ -78,7 +81,7 @@ class MenuManagementController extends AbstractController
         /**
          * Purge des anciens clients
          */
-        if ($inputParameterBag->get("clearOldClient") != "") {
+        if ($data->get("clearOldClient") != "") {
             $listClient = $clientRepository->findClientWithoutOrderedTwoYears();
             $clientManager = new ClientManager($manager);
 
@@ -96,7 +99,7 @@ class MenuManagementController extends AbstractController
         /**
          * Purge des anciens produits
          */
-        if ($inputParameterBag->get("clearProduct") != "") {
+        if ($data->get("clearProduct") != "") {
             $listProduct = $productRepository->findProductEmptyWithoutCommandOneYear();
             $productManager = new ProductManager($manager);
 
@@ -110,7 +113,7 @@ class MenuManagementController extends AbstractController
         /**
          * Purge des anciennes commandes sans client
          */
-        if ($inputParameterBag->get("clearOrder") != "") {
+        if ($data->get("clearOrder") != "") {
             $listOrdered = $orderedRepository->findOrderWithoutClientTwoYearsOld();
             $orderedManager = new OrderedManager($manager);
 
@@ -124,7 +127,7 @@ class MenuManagementController extends AbstractController
         /**
          * Purge des 3 posts les plus anciens
          */
-        if ($inputParameterBag->get("clearPost") != "") {
+        if ($data->get("clearPost") != "" && $parameter->isPostActivated()) {
             $listPost = $postRepository->findBy([], ["id" => "ASC"], 3);
             $postManager = new PostManager($manager);
 
@@ -138,10 +141,10 @@ class MenuManagementController extends AbstractController
         /**
          * Reinitialisation du mot de passe d'un client
          */
-        if ($inputParameterBag->get("resetPassword") != "") {
+        if ($data->get("resetPassword") != "") {
             $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
-            $confirmationCode = $inputParameterBag->get("confirmationCode");
-            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
+            $confirmationCode = $data->get("confirmationCode");
+            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $data->get("passwordRequest")]);
 
 
             if ($passwordForgotRequest && $passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)) {
@@ -154,22 +157,22 @@ class MenuManagementController extends AbstractController
         /**
          * Suppression d'une demande de reinitialisation de mot de passe
          */
-        if ($inputParameterBag->get("suppressPasswordRequest") != "") {
+        if ($data->get("suppressPasswordRequest") != "") {
             $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
 
-            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $inputParameterBag->get("passwordRequest")]);
+            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $data->get("passwordRequest")]);
 
             if ($passwordForgotRequest) {
                 $passwordForgotRequestManager->remove($passwordForgotRequest);
-                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()
-                                                                                        ->getName() . " " . $passwordForgotRequest->getClient()
-                                                                                                                                  ->getFirstName() . " a été supprimé";
+                $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()->getName() . " " . $passwordForgotRequest->getClient()
+                                                                                                                                               ->getFirstName() . " a été supprimé";
             }
         }
 
         $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
 
         return $this->render("management/MenuManagement.html.twig", [
+            "parameter" => $parameter,
             "message" => $message,
             "requestList" => $requestList
         ]);

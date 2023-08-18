@@ -3,6 +3,7 @@
 namespace App\Controller\Post;
 
 
+use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostType;
@@ -20,7 +21,10 @@ class EditPostController extends AbstractController
      */
     public function index($id, PostRepository $postRepository, Request $request,
         EntityManagerInterface $manager): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
@@ -48,11 +52,11 @@ class EditPostController extends AbstractController
             }
         }
 
-
-        return $this->render('post/EditPost.html.twig', [
-            'postTypes' => $postTypes,
-            'message' => $message,
-            'post' => $post
+        return $this->render("post/EditPost.html.twig", [
+            "parameter" => $parameter,
+            "postTypes" => $postTypes,
+            "message" => $message,
+            "post" => $post
         ]);
     }
 }
