@@ -312,4 +312,24 @@ class ClientManager
             $client->setCreationDate(new DateTime("now"));
         }
     }
+
+    /**
+     * @return array ClientTypes activated in parameter
+     */
+    public function getClientTypes(): array {
+        $parameterManager = new ParameterManager(($this->manager));
+        $parameter = $parameterManager->getParameter();
+
+        $clientTypes = ClientType::getAll();
+
+        if (!$parameter->isCotisantActivated()) {
+            foreach ($clientTypes as $clientType) {
+                if ($clientType == ClientType::COTISANT) {
+                    unset($clientTypes[array_search($clientType, $clientTypes, true)]);
+                }
+            }
+        }
+
+        return $clientTypes;
+    }
 }

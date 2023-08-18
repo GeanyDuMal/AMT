@@ -28,7 +28,6 @@ class ShowClientController extends AbstractController
             return $this->render('client/ShowClient.html.twig', [
                 "parameter" => $parameter,
                 "client" => $client,
-                "clientTypes" => ClientType::getAll(),
                 "member" => $member,
             ]);
         } else {

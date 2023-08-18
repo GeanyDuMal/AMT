@@ -46,7 +46,7 @@ class MenuManagementController extends AbstractController
         /**
          * Purge des cotisants
          */
-        if ($data->get("clearCotisant") != "") {
+        if ($data->get("clearCotisant") != "" && $parameter->isCotisantActivated()) {
             $clientManager = new ClientManager($manager);
             $listCotisant = $clientRepository->findBy(["clientType" => ClientType::COTISANT]);
 

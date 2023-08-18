@@ -58,7 +58,7 @@ class StatisticsController extends AbstractController
         }
 
         return $this->render("statistics/Statistics.html.twig", [
-            "parametere" => $parameter,
+            "parameter" => $parameter,
             "productsWarningStock" => $productsWarningStock,
             "topSoldProduct" => $topSoldProduct,
             "productsEmptyStock" => $productsEmptyStock,

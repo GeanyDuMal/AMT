@@ -34,12 +34,12 @@ class CreateClientController extends AbstractController
         $assosRoles = $memberManager->getLowerOrEqualAssociationRole($user);
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
+        $clientManager = new ClientManager($manager);
         $message = "";
 
-        if ($data->count() > 0) {
-            $clientManager = new ClientManager($manager);
-            $client = new Client();
 
+        if ($data->count() > 0) {
+            $client = new Client();
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
                                     $data->get("firstName"), $data->get("login"), $data->get("password"),
                                     $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
@@ -79,7 +79,7 @@ class CreateClientController extends AbstractController
             "parameter" => $parameter,
             "assosRoles" => $assosRoles,
             "message" => $message,
-            "clientTypes" => ClientType::getAll()
+            "clientTypes" => $clientManager->getClientTypes()
         ]);
     }
 }

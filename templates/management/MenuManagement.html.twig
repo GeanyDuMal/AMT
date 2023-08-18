@@ -29,14 +29,16 @@
                 <h2>
                     Purge
                 </h2>
-                <div class="flex-horizontal flex-centered block-control">
-                    <button type="submit" name="clearCotisant" value="true" class="btn btn-primary disableable">
-                        Purger les cotisants
-                    </button>
-                    <div>
-                        Définir tout les cotisants comme étudiant.
+                {% if parameter.postActivated %}
+                    <div class="flex-horizontal flex-centered block-control">
+                        <button type="submit" name="clearCotisant" value="true" class="btn btn-primary disableable">
+                            Purger les cotisants
+                        </button>
+                        <div>
+                            Définir tout les cotisants comme étudiant.
+                        </div>
                     </div>
-                </div>
+                {% endif %}
                 <div class="flex-horizontal flex-centered block-control">
                     <button type="submit" name="clearMembers" value="true" class="btn btn-primary disableable">
                         Purger l'association
