@@ -9,10 +9,9 @@ use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ProductManager
-{
-    public EntityManagerInterface $manager;
-    public ProductRepository $productRepository;
+class ProductManager {
+    private EntityManagerInterface $manager;
+    private ProductRepository $productRepository;
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
@@ -32,7 +31,7 @@ class ProductManager
      * @param Product $product
      * @return void
      */
-    public function persistCascade(Product $product) {
+    public function persistCascade(Product $product): void {
         $this->persist($product);
         $priceManager = new PriceManager($this->manager);
 
@@ -89,7 +88,7 @@ class ProductManager
      */
     public function verifyProduct(Product $product): bool {
         return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != ""
-                && $product->getImageLink() != null);
+            && $product->getImageLink() != null);
     }
 
     /**
@@ -121,8 +120,7 @@ class ProductManager
         $pictureUtils = new PictureUtils();
         $randomUtils = new RandomUtils();
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $postExist = (bool)$this->productRepository->findOneBy(["name" => $product->getName(),
-                                                             "productType" => $product->getProductType()]);
+        $postExist = (bool)$this->productRepository->findOneBy(["name" => $product->getName(), "productType" => $product->getProductType()]);
         $idUsed = 1;
 
 

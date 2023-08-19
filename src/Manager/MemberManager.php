@@ -2,33 +2,29 @@
 
 namespace App\Manager;
 
-use App\Entity\Member;
 use App\Entity\Client;
+use App\Entity\Member;
 use App\Repository\MemberRepository;
-use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 
-class MemberManager
-{
-    public EntityManagerInterface $manager;
-    public MemberRepository $memberRepository;
+class MemberManager {
+    private EntityManagerInterface $manager;
+    private MemberRepository $memberRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
         $this->memberRepository = $this->manager->getRepository(Member::class);
     }
 
-    public function persist(Member $member): void
-    {
+    public function persist(Member $member): void {
         $this->manager->persist($member);
         $this->manager->flush();
     }
 
-    public function remove(Member $member): void
-    {
+    public function remove(Member $member): void {
         $this->manager->remove($member);
         $this->manager->flush();
     }
@@ -40,8 +36,7 @@ class MemberManager
      * @param Member $associationMember
      * @return void
      */
-    public function removeOtherPresidents(Member $associationMember): void
-    {
+    public function removeOtherPresidents(Member $associationMember): void {
         $members = $this->memberRepository->findBy(["role" => MemberRole::PRESIDENT]);
 
         foreach ($members as $otherMember) {
@@ -65,8 +60,7 @@ class MemberManager
      * @param string $role
      * @return Member
      */
-    public function makeMember(Client $client, string $role): Member
-    {
+    public function makeMember(Client $client, string $role): Member {
         $newMember = new Member();
 
         $client->setClientType(ClientType::ASSOCIATION);
@@ -76,8 +70,7 @@ class MemberManager
         return $newMember;
     }
 
-    public function getLowerOrEqualAssociationRole(Client $client): array
-    {
+    public function getLowerOrEqualAssociationRole(Client $client): array {
         $association = $this->memberRepository->findOneBy(["client" => $client]);
         $roles = [];
         $associationRoles = MemberRole::getAll();

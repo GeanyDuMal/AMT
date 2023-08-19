@@ -10,10 +10,9 @@ use App\Utils\RandomUtils;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-class PostManager
-{
-    public EntityManagerInterface $manager;
-    public PostRepository $postRepository;
+class PostManager {
+    private EntityManagerInterface $manager;
+    private PostRepository $postRepository;
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
@@ -89,10 +88,8 @@ class PostManager
         $pictureUtils = new PictureUtils();
         $randomUtils = new RandomUtils();
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $postExist = (bool)$this->postRepository->findOneBy(["title" => $post->getTitle(),
-                                                             "postType" => $post->getPostType()]);
+        $postExist = (bool)$this->postRepository->findOneBy(["title" => $post->getTitle(), "postType" => $post->getPostType()]);
         $idUsed = 1;
-
 
         if (!$postExist) {
             $lastPost = $this->postRepository->findOneBy([], ["id" => "DESC"]);

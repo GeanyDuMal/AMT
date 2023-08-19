@@ -9,9 +9,8 @@ use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ParameterManager
-{
-    public EntityManagerInterface $manager;
+class ParameterManager {
+    private EntityManagerInterface $manager;
     private ParameterRepository $parameterRepository;
 
     public function __construct(EntityManagerInterface $entityManager) {
@@ -32,17 +31,17 @@ class ParameterManager
     public function setData(Parameter $parameter, ?string $linkLogo, ?int $amountFidelityPointToExchange,
         ?string $amountBalanceToAddAfterExchange, ?bool $cotisantActivated, ?bool $postActivated): void {
 
-        if ($linkLogo){
+        if ($linkLogo) {
             $parameter->setLinkLogo($linkLogo);
         }
 
-        if ($amountFidelityPointToExchange != "" && intval($amountFidelityPointToExchange) > 0){
+        if ($amountFidelityPointToExchange != "" && intval($amountFidelityPointToExchange) > 0) {
             $parameter->setAmountFidelityPointToExchange(intval($amountFidelityPointToExchange));
         } else {
             $parameter->setAmountFidelityPointToExchange(150);
         }
 
-        if ($amountBalanceToAddAfterExchange != "" && floatval($amountBalanceToAddAfterExchange)){
+        if ($amountBalanceToAddAfterExchange != "" && floatval($amountBalanceToAddAfterExchange)) {
             $parameter->setAmountBalanceToAddAfterExchange(floatval($amountBalanceToAddAfterExchange));
         } else {
             $parameter->setAmountBalanceToAddAfterExchange(0.8);
@@ -50,7 +49,7 @@ class ParameterManager
         }
 
         $parameter->setCotisantActivated($cotisantActivated)
-                  ->setPostActivated($postActivated);
+            ->setPostActivated($postActivated);
     }
 
     public function getParameter(): Parameter {

@@ -2,20 +2,15 @@
 
 namespace App\Manager;
 
-use App\Entity\Client;
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Repository\PriceRepository;
 use App\Utils\Enum\ClientType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
-use JetBrains\PhpStorm\Pure;
-use Symfony\Bundle\SecurityBundle\DependencyInjection\Compiler\CleanRememberMeVerifierPass;
-use function PHPUnit\Framework\assertContains;
 
 class PriceManager {
-    public EntityManagerInterface $manager;
-    public PriceRepository $priceRepository;
+    private EntityManagerInterface $manager;
+    private PriceRepository $priceRepository;
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
