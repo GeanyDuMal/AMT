@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Modification du parametrage
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('script/parameter/parameter.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' href="{{ asset('style/parameter/parameter.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="flex-vertical flex-centered main-block">
+        <h2 class="title">
+            Modification du Parametrage
+        </h2>
+        <div>
+            {% if message != "" %}
+                <div class="form-group flex-horizontal flex-centered">
+                    <div class="message message-incorrect">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <form method="post" class="flex-vertical flex-centered" id="form-product" onsubmit="disableButton()" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="input-label">Logo de l'association</label>
+                <div class="width-fit-content">
+                    <input type="file" name="associationLogo" id="associationLogo" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
+                </div>
+            </div>
+            <div class="flex-horizontal block-form-group">
+                <div class="form-group">
+                    <label class="input-label">Post activé</label>
+                    <input type="checkbox" name="postActivated" {% if parameter.postActivated %} checked {% endif %} class="flex-align-self-left">
+                </div>
+                <div class="form-group">
+                    <label class="input-label">Cotisant activé</label>
+                    <input type="checkbox" name="cotisantActivated" {% if parameter.cotisantActivated %} checked {% endif %} class="flex-align-self-left">
+                </div>
+            </div>
+            <div class="flex-horizontal block-form-group">
+                <div class="form-group">
+                    <label class="input-label">Montant point fidélité pour ajout sur solde</label>
+                    <input type="text" name="amountFidelityPointToExchange" value="{{ parameter.amountFidelityPointToExchange }}" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="input-label">Montant ajouté sur solde</label>
+                    <input type="text" name="amountBalanceToAddAfterExchange" value="{{ parameter.amountBalanceToAddAfterExchange }}" class="form-input">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary disableable" onclick="return verifyProduct()">
+                Modifier
+            </button>
+        </form>
+    </div>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller\Ordered;
 use App\Entity\Ordered;
 use App\Entity\Purchase;
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
 use App\Repository\ClientRepository;
@@ -33,6 +34,8 @@ class PaymentOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $purchaseManager = new PurchaseManager($manager);
         $orderManager = new OrderedManager($manager);
         $priceManager = new PriceManager($manager);
@@ -44,7 +47,6 @@ class PaymentOrderedController extends AbstractController
 
         $clientType = ClientType::ETUDIANT;
         $inputParameterBag = $request->request;
-        $listProduct = [];
 
         //Si l'on a select un client, alors on conserve celui ci + son type
         if ($idClient != null) {
@@ -64,8 +66,8 @@ class PaymentOrderedController extends AbstractController
         foreach ($productOrdered as $productOrderedAndQuantity) {
             $product = $productOrderedAndQuantity["product"];
 
-            $montantProduct = $montantProduct + [$product->getId() => $priceRepository->findOneBy(['product' => $product,
-                        'clientType' => $clientType])->getPrice() * $productOrderedAndQuantity["quantity"]];
+            $montantProduct = $montantProduct + [$product->getId() => $priceRepository->findOneBy(["product" => $product,
+                        "clientType" => $clientType])->getPrice() * $productOrderedAndQuantity["quantity"]];
 
             $montantTotal = $montantTotal + $montantProduct[$product->getId()];
         }
@@ -74,8 +76,8 @@ class PaymentOrderedController extends AbstractController
         $paymentTypeList = $orderManager->getAllowedPaymentType($productOrdered, $clientOrder);
 
         //Si l'on a cliqué sur un bouton sur la page Payment
-        if ($inputParameterBag->get('payement_type')) {
-            $paymentTypeChose = $inputParameterBag->get('payement_type');
+        if ($inputParameterBag->get("payement_type")) {
+            $paymentTypeChose = $inputParameterBag->get("payement_type");
 
             /*
              * Permet de verifier si le produit commandé est en stock
@@ -116,10 +118,11 @@ class PaymentOrderedController extends AbstractController
         }
 
         return $this->render('ordered/PaymentOrdered.html.twig', [
-            'productOrdered' => $productOrdered,
-            'montantProduct' => $montantProduct,
-            'montantTotal' => $montantTotal,
-            'client' => $clientOrder,
+            "parameter" => $parameter,
+            "productOrdered" => $productOrdered,
+            "montantProduct" => $montantProduct,
+            "montantTotal" => $montantTotal,
+            "client" => $clientOrder,
             "paymentTypeList" => $paymentTypeList
         ]);
     }

@@ -21,7 +21,6 @@ final class Version210 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE post ADD creation_date DATE NOT NULL');
         $this->addSql('UPDATE post SET creation_date = "2022-02-01"'); // Defini pour les posts déja existant la date de création du site, a modifier ensuite
 
@@ -34,7 +33,6 @@ final class Version210 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE IF EXISTS password_forgot_request');
 
         $this->addSql('ALTER TABLE post DROP creation_date');

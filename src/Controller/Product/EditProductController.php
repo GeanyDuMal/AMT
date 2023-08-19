@@ -2,6 +2,7 @@
 
 namespace App\Controller\Product;
 
+use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\PriceRepository;
@@ -21,13 +22,15 @@ class EditProductController extends AbstractController
     /**
      * @Route("/product/edit/{!id}", name="editProduct")
      */
-    public function index($id, ProductRepository $productRepository, ValidatorInterface $validator, Request $request,
+    public function index($id, ProductRepository $productRepository, Request $request,
                           EntityManagerInterface $manager, PriceRepository $priceRepository): Response
     {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute("home");
         }
 
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
         $data = $request->request;
         $product = $productRepository->find($id);
         $memberPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ASSOCIATION]);
@@ -42,8 +45,8 @@ class EditProductController extends AbstractController
 
             if ($productManager->verifyProduct($product) && !$productManager->verifyEditedProductAlreadyExist($product)) {
 
-                if ($data->get('imageLinkState') === "edit"){
-                    $productManager->switchPicture($product, $data->get('imageLink'));
+                if ($data->get("imageLinkState") === "edit"){
+                    $productManager->downloadPicture($data->get("imageLink"), $product);
                 }
 
                 $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
@@ -54,7 +57,7 @@ class EditProductController extends AbstractController
 
                     $productManager->persistCascade($product);
 
-                    return $this->redirectToRoute('menuProduct', [
+                    return $this->redirectToRoute("menuProduct", [
                         "message" => "Modification effectué avec succès"
                     ]);
                 } else {
@@ -64,12 +67,13 @@ class EditProductController extends AbstractController
                 $message = "Merci de verifier votre saisie";
             }
         }
-        return $this->render('product/EditProduct.html.twig', [
-            'productTypes' => ProductType::getAll(),
-            'message' => $message,
-            'product' => $product,
-            'studentPrice' => $studentPrice->getPrice(),
-            'memberPrice' => $memberPrice->getPrice()
+        return $this->render("product/EditProduct.html.twig", [
+            "parameter" => $parameter,
+            "productTypes" => ProductType::getAll(),
+            "message" => $message,
+            "product" => $product,
+            "studentPrice" => $studentPrice->getPrice(),
+            "memberPrice" => $memberPrice->getPrice()
         ]);
     }
 }

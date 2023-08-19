@@ -2,30 +2,29 @@
 
 namespace App\Manager;
 
-use App\Entity\Association;
+use App\Entity\Member;
 use App\Entity\Client;
+use App\Entity\Parameter;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\AssociationRole;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 
 class ClientManager
 {
     public EntityManagerInterface $manager;
     public ClientRepository $clientRepository;
-    const AMOUNT_FIDELITY_SWITCH = 150;
-    const AMOUNT_BALANCE_SWITCH = 0.80;
     const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
 
-
-    public function __construct(EntityManagerInterface $managerController)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->manager = $managerController;
+        $this->manager = $entityManager;
         $this->clientRepository = $this->manager->getRepository(Client::class);
     }
 
@@ -48,7 +47,7 @@ class ClientManager
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
-        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())){
+        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())) {
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
@@ -67,14 +66,14 @@ class ClientManager
     public function removeFromAssociationIfNecessary(Client $client): void
     {
         if ($client->getClientType() != ClientType::ASSOCIATION) {
-            $associationMember = $this->manager->getRepository(Association::class)->findOneBy(["member" => $client]);
+            $member = $this->manager->getRepository(Member::class)->findOneBy(["client" => $client]);
             // If client is present in table Association, it's not normal, so we remove it
-            if ($associationMember) {
-                $associationManager = new AssociationManager($this->manager);
+            if ($member) {
+                $memberManager = new MemberManager($this->manager);
 
-                $associationMember->getMember()->setClientType($client->getClientType());
+                $member->getClient()->setClientType($client->getClientType());
 
-                $associationManager->remove($associationMember);
+                $memberManager->remove($member);
             }
         }
     }
@@ -93,27 +92,20 @@ class ClientManager
      * @param int|null $fidelityPoint
      * @return void
      */
-    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name, string $firstName,
-                            string $login, ?string $password, string $balance, string $clientType, ?string $roleAssociationName,
-                            ?int $fidelityPoint = 0): void
+    public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name,
+        string $firstName, string $login, ?string $password, string $balance, string $clientType,
+        ?string $roleAssociationName, ?int $fidelityPoint = 0): void
     {
         $client->setName(strtoupper($name))
             ->setFirstName($firstName)
             ->setLogin($login)
             ->setBalance($balance)
+            ->setFidelityPoint($fidelityPoint)
             ->setClientType($clientType)
             ->setRoles([SymfonyRole::USER]);
 
         $this->setRoleForClient($client, $roleAssociationName);
-
-        // Verification si le nombre de point de fidelité ne depasse pas le seuil de transfert
-        $nbReduction = intdiv($fidelityPoint, self::AMOUNT_FIDELITY_SWITCH);
-
-        if ($nbReduction != 0){
-            $fidelityPoint = $fidelityPoint - $nbReduction*self::AMOUNT_FIDELITY_SWITCH;
-            $client->setBalance(floatval($balance) + $nbReduction*(self::AMOUNT_BALANCE_SWITCH));
-        }
-        $client->setFidelityPoint($fidelityPoint);
+        $this->fidelityPointLimitCheck($client);
 
         /*
             if password input exists, so it's the add page,
@@ -163,7 +155,6 @@ class ClientManager
      */
     public function verifyClient(Client $client): bool
     {
-
         $containsSpecialName = strpbrk($client->getName(), self::REGEX_SPECIAL);
         $containsSpecialFirstName = strpbrk($client->getFirstName(), self::REGEX_SPECIAL);
 
@@ -181,7 +172,7 @@ class ClientManager
 
     /**
      * Verify if the password contains regex and have the good size
-     * @param String password
+     * @param String $password password not hashed
      * @return boolean
      */
     public function verifyPassword(string $password): bool
@@ -204,13 +195,13 @@ class ClientManager
             case ClientType::ASSOCIATION:
             {
                 switch ($roleAssociation) {
-                    case AssociationRole::PRESIDENT:
+                    case MemberRole::PRESIDENT:
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
-                    case (AssociationRole::TRESORIER || AssociationRole::VICE_PRESIDENT):
+                    case (MemberRole::TRESORIER || MemberRole::VICE_PRESIDENT):
                         $client->setRoles([SymfonyRole::TRESORIER]);
                         break;
-                    case AssociationRole::SECRETAIRE:
+                    case MemberRole::SECRETAIRE:
                         $client->setRoles([SymfonyRole::SECRETAIRE]);
                         break;
                     default:
@@ -260,12 +251,16 @@ class ClientManager
      */
     public function fidelityPointLimitCheck(Client $client): void
     {
-        $limitFidelityPoint = 150;
-        $amountTransferToBalance = 0.8; // 1 = 1€
+        $parameterManager = new ParameterManager(($this->manager));
+        $parameter = $parameterManager->getParameter();
 
-        if ($client->getFidelityPoint() >= $limitFidelityPoint) {
-            $client->setFidelityPoint($client->getFidelityPoint() - $limitFidelityPoint);
-            $client->setBalance(floatval($client->getBalance()) + $amountTransferToBalance);
+        $limitFidelityPoint = $parameter->getAmountFidelityPointToExchange();
+        $amountTransferToBalance = floatval($parameter->getAmountBalanceToAddAfterExchange());
+        $nbReduction = intdiv($client->getFidelityPoint(), $limitFidelityPoint);
+
+        if ($nbReduction != 0) {
+            $client->setFidelityPoint($client->getFidelityPoint() - $nbReduction * $limitFidelityPoint);
+            $client->setBalance(floatval($client->getBalance()) + $nbReduction * $amountTransferToBalance);
         }
     }
 
@@ -281,11 +276,11 @@ class ClientManager
                 ->setClientType(ClientType::ASSOCIATION);
 
             //Set the president of the association
-            $association = new Association();
-            $association->setMember($client)
-                ->setRole(AssociationRole::PRESIDENT);
+            $member = new Member();
+            $member->setClient($client)
+                ->setRole(MemberRole::PRESIDENT);
 
-            $this->manager->persist($association);
+            $this->manager->persist($member);
             $this->manager->flush();
         }
     }
@@ -301,7 +296,7 @@ class ClientManager
 
         $passwordForgotRequest = $this->manager->getRepository(PasswordForgotRequest::class)->findOneBy(["client" => $client]);
 
-        if ($passwordForgotRequest){
+        if ($passwordForgotRequest) {
             $passwordForgotRequestManager->remove($passwordForgotRequest);
         }
     }
@@ -313,8 +308,28 @@ class ClientManager
      */
     private function defineCreationDateIfNecessary(Client $client): void
     {
-        if (!$this->clientExists($client)){
-            $client->setCreationDate(new DateTime('now'));
+        if (!$this->clientExists($client)) {
+            $client->setCreationDate(new DateTime("now"));
         }
+    }
+
+    /**
+     * @return array ClientTypes activated in parameter
+     */
+    public function getClientTypes(): array {
+        $parameterManager = new ParameterManager(($this->manager));
+        $parameter = $parameterManager->getParameter();
+
+        $clientTypes = ClientType::getAll();
+
+        if (!$parameter->isCotisantActivated()) {
+            foreach ($clientTypes as $clientType) {
+                if ($clientType == ClientType::COTISANT) {
+                    unset($clientTypes[array_search($clientType, $clientTypes, true)]);
+                }
+            }
+        }
+
+        return $clientTypes;
     }
 }

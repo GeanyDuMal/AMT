@@ -27,9 +27,9 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllPositiveStock(): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.quantityStock > 0')
-            ->orderBy('p.productType, p.name', 'ASC')
+        return $this->createQueryBuilder("p")
+            ->andWhere("p.quantityStock > 0")
+            ->orderBy("p.productType, p.name", "ASC")
             ->getQuery()
             ->getResult()
             ;
@@ -41,9 +41,9 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllEmptyStock(): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.quantityStock = 0')
-            ->orderBy('p.productType, p.name', 'ASC')
+        return $this->createQueryBuilder("p")
+            ->andWhere("p.quantityStock = 0")
+            ->orderBy("p.productType, p.name", "ASC")
             ->getQuery()
             ->getResult()
             ;
@@ -55,10 +55,10 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllWarningStock(): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.quantityStock <= 5')
-            ->andWhere('p.quantityStock > 0')
-            ->orderBy('p.productType, p.name', 'ASC')
+        return $this->createQueryBuilder("p")
+            ->andWhere("p.quantityStock <= 5")
+            ->andWhere("p.quantityStock > 0")
+            ->orderBy("p.productType, p.name", "ASC")
             ->getQuery()
             ->getResult()
             ;
@@ -72,7 +72,7 @@ class ProductRepository extends ServiceEntityRepository
         $date = new DateTime();
         $date = $date->sub(DateInterval::createFromDateString("1 Year"));
 
-        //Recupere tout les produits qui n'ont pas une commande de moins de 1 an et un stock vide
+        //Recupere tout les produits qui n"ont pas une commande de moins de 1 an et un stock vide
         $productQuery = $this->getEntityManager()->createQuery("
             SELECT Product_0
             FROM App\Entity\Product Product_0
@@ -96,10 +96,10 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findTopSoldProductThisMonth(): array
     {
-        $thisMonth = date('m');
-        $thisYear = date('Y');
+        $thisMonth = date("m");
+        $thisYear = date("Y");
 
-        //Recupere tout les produits qui n'ont pas une commande de moins de 1 an et un stock vide
+        //Recupere tout les produits qui n"ont pas une commande de moins de 1 an et un stock vide
         $productQuery = $this->getEntityManager()->createQuery("
             SELECT Product as product, SUM(Purchase.quantity) as quantitySold
             FROM App\Entity\Product Product, App\Entity\Ordered Ordered, App\Entity\Purchase Purchase
@@ -122,10 +122,10 @@ class ProductRepository extends ServiceEntityRepository
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
+        return $this->createQueryBuilder("p")
+            ->andWhere("p.exampleField = :val")
+            ->setParameter("val", $value)
+            ->orderBy("p.id", "ASC")
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -136,9 +136,9 @@ class ProductRepository extends ServiceEntityRepository
     /*
     public function findOneBySomeField($value): ?Product
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder("p")
+            ->andWhere("p.exampleField = :val")
+            ->setParameter("val", $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;

@@ -24,9 +24,9 @@ class OrderedRepository extends ServiceEntityRepository
 
     public function countByDate()
     {
-        return $this->createQueryBuilder('a')
+        return $this->createQueryBuilder("a")
             ->select("SUBSTRING(a.orderedAt,1,10) as orderDate,count(a) as count")
-            ->groupBy('orderDate')
+            ->groupBy("orderDate")
             ->getQuery()
             ->getResult();
     }
@@ -36,9 +36,9 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function findAllOrderAndClientAndClientType(): array
     {
-        return $this->createQueryBuilder('o')
-            ->leftJoin('o.client', 'c')
-            ->addSelect('c')
+        return $this->createQueryBuilder("o")
+            ->leftJoin("o.client", "c")
+            ->addSelect("c")
             ->getQuery()
             ->getResult();
     }
@@ -48,9 +48,9 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function quantityThisWeeksCommands(): array
     {
-        $thisWeek = date('W');
+        $thisWeek = date("W");
 
-        return $this->createQueryBuilder('a')
+        return $this->createQueryBuilder("a")
             ->select("count(a) as number")
             ->where("WEEK(a.orderedAt)=:thisWeek")
             ->setParameter("thisWeek", $thisWeek)
@@ -63,9 +63,9 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function thisWeekOrdered(): array
     {
-        $thisWeek = date('W');
-        $thisMonth = date('m');
-        $thisYear = date('Y');
+        $thisWeek = date("W");
+        $thisMonth = date("m");
+        $thisYear = date("Y");
 
         $purchase = $this->getEntityManager()->createQuery("
             SELECT Ordered
@@ -82,8 +82,8 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function thisMonthOrdered(): array
     {
-        $thisMonth = date('m');
-        $thisYear = date('Y');
+        $thisMonth = date("m");
+        $thisYear = date("Y");
 
         $purchase = $this->getEntityManager()->createQuery("
             SELECT Ordered
@@ -102,9 +102,9 @@ class OrderedRepository extends ServiceEntityRepository
         $date = new DateTime();
         $date = $date->sub(DateInterval::createFromDateString("2 Year"));
 
-        return $this->createQueryBuilder('o')
-            ->where('o.client IS NULL')
-            ->andWhere('o.orderedAt < :date')
+        return $this->createQueryBuilder("o")
+            ->where("o.client IS NULL")
+            ->andWhere("o.orderedAt < :date")
             ->setParameter("date", $date)
             ->getQuery()
             ->getResult();

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller\Blog;
+namespace App\Controller\Post;
 
+use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\SymfonyRole;
@@ -12,15 +13,18 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class DeleteBlogController extends AbstractController
+class DeletePostController extends AbstractController
 {
     /**
-     * @Route("/blog/delete/{!id}", name="deleteBlog", methods={"GET", "DELETE"})
+     * @Route("/post/delete/{!id}", name="deletePost", methods={"GET", "DELETE"})
      */
     public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): RedirectResponse|JsonResponse
     {
-        if(!$this->isGranted(SymfonyRole::ASSOC)){
-            return $this->redirectToRoute("home");
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
+        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
+            return $this->redirectToRoute('home');
         }
 
         $postManager = new PostManager($manager);
@@ -28,7 +32,7 @@ class DeleteBlogController extends AbstractController
 
         if ($post){
             $postManager->remove($post);
-            return new JsonResponse(true);
+            return $this->redirectToRoute("menuPost");
         } else {
             return $this->redirectToRoute("home");
         }

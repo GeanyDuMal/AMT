@@ -18,28 +18,28 @@
             {{ client.name }} {{ client.firstName }}
         </h2>
         <div class="show-container flex-vertical flex-centered">
-            <div class="show-sub-block">
-                <div class="show-block">
+            <div class="show-block">
+                <div class="show-sub-block">
                     <label for="login" class="input-label">Login</label>
                     <p>
                         {{ client.login }}
                     </p>
                 </div>
-                <div class="show-block">
+                <div class="show-sub-block">
                     <p>
                         Compte créé le {{ client.creationDate | date('d/m/Y') }}
                     </p>
                 </div>
             </div>
-            <div class="flex-horizontal show-sub-block">
-                <div class="show-block">
+            <div class="flex-horizontal show-block">
+                <div class="show-sub-block">
                     <label class="input-label">Type</label>
                     <p>
                         {{ client.clientType }}
                     </p>
                 </div>
                 {% if member %}
-                    <div class="show-block" id="roles">
+                    <div class="show-sub-block" id="roles">
                         <label class="input-label">Role</label>
                             <p>
                                 {{ member.role }}
@@ -47,14 +47,14 @@
                     </div>
                 {% endif %}
             </div>
-            <div class="show-sub-block flex-horizontal">
-                <div class="show-block">
+            <div class="show-block flex-horizontal">
+                <div class="show-sub-block">
                     <label class="input-label">Solde (en €)</label>
                     <p>
                         {{ client.balance }}
                     </p>
                 </div>
-                <div class="show-block">
+                <div class="show-sub-block">
                     <label class="input-label">Point de Fidélité</label>
                     <p>
                         {{ client.fidelityPoint }}
@@ -63,19 +63,21 @@
             </div>
         </div>
         <div class="flex-horizontal flex-centered">
-            <a href="{{ path('editClient',{id: client.id}) }}">
-                <button class="btn btn-primary">
-                    Modifier
-                </button>
-            </a>
             <a href="{{ path("menuClient") }}">
                 <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
             </a>
-            <a href="{{ path('deleteClient', {'id': client.id }) }}" onclick="return confirmDelete()">
-                <button class="btn btn-secondary">
-                    Supprimer
-                </button>
-            </a>
+            {% if is_granted('ROLE_SECRETAIRE') %}
+                <a href="{{ path('editClient',{id: client.id}) }}">
+                    <button class="btn btn-primary">
+                        Modifier
+                    </button>
+                </a>
+                <a href="{{ path('deleteClient', {'id': client.id }) }}" onclick="return confirmDelete()">
+                    <button class="btn btn-secondary">
+                        Supprimer
+                    </button>
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

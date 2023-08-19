@@ -1,20 +1,20 @@
 /**
- * Delete a Blog with AJAX
+ * Delete a Post with AJAX
  */
 $(".card").on("click", "#toDelete", function(){
-    var nodeBlog = this.closest(".card");
+    var nodePost = this.closest(".card");
 
-    if (confirm("Voulez vous vraiment supprimer ce blog ?")){
-        const id = nodeBlog.querySelector("#idBlog").value;
+    if (confirm("Voulez vous vraiment supprimer ce post ?")){
+        const id = nodePost.querySelector("#idPost").value;
 
-        fetch("/blog/delete/" + id, {method: 'DELETE'})
+        fetch("/post/delete/" + id, {method: 'DELETE'})
             .then(function (resp) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Suppresion',
                     text: 'Suppression du Post effectuée avec succès',
                 })
-                nodeBlog.remove();
+                nodePost.remove();
             });
     }
 });

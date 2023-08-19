@@ -3,6 +3,7 @@
 namespace App\Controller\Ordered;
 
 use App\Manager\OrderedManager;
+use App\Manager\ParameterManager;
 use App\Repository\OrderedRepository;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,8 +27,11 @@ class MenuOrderedController extends AbstractController
          * Tout faire en une seule requetes, plus opti
          */
         $allOrder = $orderedRepository->findAllOrderAndClientAndClientType();
-        
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+
         return $this->render('ordered/MenuOrdered.html.twig', [
+            "parameter" => $parameter,
             "user" => $this->getUser(),
             "message" => $message,
             "orderedList" => $allOrder,

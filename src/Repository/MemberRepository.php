@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Association;
+use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Association|null find($id, $lockMode = null, $lockVersion = null)
- * @method Association|null findOneBy(array $criteria, array $orderBy = null)
- * @method Association[]    findAll()
- * @method Association[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Member|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Member|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Member[]    findAll()
+ * @method Member[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AssociationRepository extends ServiceEntityRepository
+class MemberRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Association::class);
+        parent::__construct($registry, Member::class);
     }
 
     // /**
-    //  * @return Association[] Returns an array of Association objects
+    //  * @return Member[] Returns an array of Member objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class AssociationRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Association
+    public function findOneBySomeField($value): ?Member
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.exampleField = :val')

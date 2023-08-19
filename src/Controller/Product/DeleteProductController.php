@@ -8,6 +8,7 @@ use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteProductController extends AbstractController
@@ -16,7 +17,7 @@ class DeleteProductController extends AbstractController
     /**
      * @Route("/product/delete/{!id}", name="deleteProduct", methods={"GET", "DELETE"})
      */
-    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): \Symfony\Component\HttpFoundation\RedirectResponse|JsonResponse
+    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): RedirectResponse|JsonResponse
     {
         if (!$this->isGranted(SymfonyRole::TRESORIER)) {
             return $this->redirectToRoute("home");
@@ -25,12 +26,11 @@ class DeleteProductController extends AbstractController
         $productManager = new ProductManager($manager);
         $product = $productRepository->find($id);
 
-        if ($product){
+        if ($product) {
             $productManager->remove($product);
-            return new JsonResponse(true);
+            return $this->redirectToRoute("menuProduct");
         } else {
             return $this->redirectToRoute("home");
         }
-
     }
 }

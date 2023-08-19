@@ -4,6 +4,7 @@ namespace App\Controller\Connexion;
 
 use App\Entity\Client;
 use App\Manager\ClientManager;
+use App\Manager\ParameterManager;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,20 +26,22 @@ class SignInController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        $inputParameterBag = $request->request;
+        $parameterManager = new ParameterManager($manager);
+        $parameter = $parameterManager->getParameter();
+        $data = $request->request;
         $clientManager = new ClientManager($manager);
         $client = new Client;
         $message = "";
 
         //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
-        if (!is_null($inputParameterBag->get("name"))) {
+        if ($data->count() > 0) {
 
-            $clientManager->setData($client, $passwordHasher, strtoupper(trim($inputParameterBag->get("name"))),
-                trim($inputParameterBag->get("firstName")), trim($inputParameterBag->get("login")),
-                trim($inputParameterBag->get("password")), 0, ClientType::ETUDIANT, null,
+            $clientManager->setData($client, $passwordHasher, strtoupper(trim($data->get("name"))),
+                trim($data->get("firstName")), trim($data->get("login")),
+                trim($data->get("password")), 0, ClientType::ETUDIANT, null,
                 0);
 
-            $confirmPassword = trim($inputParameterBag->get("confirmPassword"));
+            $confirmPassword = trim($data->get("confirmPassword"));
 
             /*
              * Si le form n'est pas vide,
@@ -48,14 +51,14 @@ class SignInController extends AbstractController
              * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
              */
             if ($clientManager->verifyClient($client) && !$clientManager->clientExists($client)
-                && (trim($inputParameterBag->get("password")) == $confirmPassword)
-                && $clientManager->verifyPassword($inputParameterBag->get("password"))) {
+                && (trim($data->get("password")) == $confirmPassword)
+                && $clientManager->verifyPassword($data->get("password"))) {
 
                 $clientManager->persist($client);
                 return $this->redirectToRoute('login');
             } else if ($clientManager->clientExists($client)) {
                 $message = "Ce client existe déjà";
-            } else if (!$clientManager->verifyPassword($inputParameterBag->get("password"))) {
+            } else if (!$clientManager->verifyPassword($data->get("password"))) {
                 $message = "Votre mot de passe ne respecte pas les règles imposés";
             } else {
                 $message = "Merci de vérifier votre saisie";
@@ -63,6 +66,7 @@ class SignInController extends AbstractController
         }
 
         return $this->render('connexion/Signin.html.twig', [
+            "parameter" => $parameter,
             "message" => $message
         ]);
     }

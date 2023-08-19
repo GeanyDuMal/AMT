@@ -31,9 +31,14 @@
                     <span></span>
                     <span></span>
                 </button>
-                <a href="{{ path("home") }}">
+                <a href="{{ path("home") }}" class="flex-centered">
                     <img src="{{ asset('img/logo_texte_white.png') }}" width="auto" height="50" alt="logo-menu" border="0">
+                    {% if parameter.linkLogo %}
+                        <p>x</p>
+                        <img src="{{ asset(parameter.linkLogo) }}" width="auto" height="50" alt="logo-menu" border="0">
+                    {% endif %}
                 </a>
+
 
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a href="{{ path("profile") }}">
@@ -57,7 +62,9 @@
                 <div class="block-sidebar">
                     <a href="{{ path("home") }}">Accueil</a>
                     <a href="{{ path("menuProduct") }}">Nos&nbspProduits</a>
-                    <a href="{{ path("menuBlog") }}">Posts&nbsp&&nbspEvents</a>
+                    {% if parameter.postActivated %}
+                        <a href="{{ path("menuPost") }}">Posts&nbsp&&nbspEvents</a>
+                    {% endif %}
                     <a href="{{ path("userGuide") }}">Guide&nbspd'utilisation</a>
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -66,19 +73,18 @@
                             <a href="{{ path("createOrdered") }}">Commander</a>
                             <a href="{{ path("statistics") }}">Statistiques</a>
                         </div>
-                        {% if is_granted('ROLE_SECRETAIRE') %}
+                        <div class="block-sidebar">
+                            <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
+                        </div>
+                        {% if is_granted('ROLE_TRESORIER') %}
                             <div class="block-sidebar">
-                                <a href="{{ path("menuClient") }}">Gestion&nbspClients</a>
+                                <a href="{{ path("menuOrdered") }}">Gestion&nbspCommandes</a>
                             </div>
-                            {% if is_granted('ROLE_TRESORIER') %}
+                            {% if is_granted('ROLE_PRESIDENT') %}
                                 <div class="block-sidebar">
-                                    <a href="{{ path("menuOrdered") }}">Gestion&nbspCommande</a>
+                                    <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
+                                    <a href="{{ path("editParameter") }}">Parametrage</a>
                                 </div>
-                                {% if is_granted('ROLE_PRESIDENT') %}
-                                    <div class="block-sidebar">
-                                        <a href="{{ path("menuManagement") }}">Interface&nbspde&nbspGestion</a>
-                                    </div>
-                                {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endif %}

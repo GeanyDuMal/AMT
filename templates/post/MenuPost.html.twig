@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="{{ asset('style/blog/blog.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('style/post/post.css') }}" rel="stylesheet"/>
 
     {# Google Fonts #}
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -11,10 +11,10 @@
     {# JS Import #}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
-    <script src="{{ asset('script/blog/ajaxMenuBlog.js') }}"></script>
+    <script src="{{ asset('script/post/ajaxMenuPost.js') }}"></script>
 {% endblock %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}Post{% endblock %}
 
 {% block body %}
     {% if message %}
@@ -32,7 +32,7 @@
         </div>
         {% if is_granted("ROLE_ASSOC") %}
         <div class="">
-            <a href="{{ path('createBlog') }}">
+            <a href="{{ path('createPost') }}">
                 <button class="btn btn-primary">
                     Ajouter
                 </button>
@@ -42,31 +42,31 @@
         {% endif %}
 
         <div class="list-card flex-horizontal flex-centered flex-overflow">
-        {% for blog in blogs  %}
+        {% for post in posts  %}
                 <div class="card">
                     <div class="flex-vertical flex-centered">
-                        <img src={{ blog.imageLink }}>
+                        <img src={{ post.imageLink }}>
                     </div>
                     <div class="card-text">
-                        <input type="hidden" id="idBlog" value="{{ blog.id }}">
+                        <input type="hidden" id="idPost" value="{{ post.id }}">
                         <div class="card-title">
                             <p>
-                                {{ blog.title }}
+                                {{ post.title }}
                             </p>
                         </div>
                         <div>
                             <p class="card-text-description">
-                                {{ blog.description|slice(0, 40) }}...
+                                {{ post.description|slice(0, 40) }}...
                             </p>
                         </div>
                         <div class="flex-horizontal flex-centered card-buttons">
-                            <a href="{{ url('showBlog',{id:blog.id}) }}" >
+                            <a href="{{ url('showPost',{id:post.id}) }}" >
                                 <button class="btn btn-primary">
                                     Lire plus
                                 </button>
                             </a>
                             {% if is_granted("ROLE_ASSOC") %}
-                                <a href="{{ path("editBlog", {"id": blog.id}) }}">
+                                <a href="{{ path("editPost", {"id": post.id}) }}">
                                     <button class="btn btn-secondary">
                                         Modifier
                                     </button>

@@ -5,8 +5,7 @@ namespace App\Manager;
 use App\Entity\Client;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\PasswordForgotRequestRepository;
-use App\Utils\Enum\ClientType;
-use DateTime;
+use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -15,22 +14,19 @@ class PasswordForgotRequestManager
     public EntityManagerInterface $manager;
     public PasswordForgotRequestRepository $passwordForgotRequestRepository;
 
-    public function __construct(EntityManagerInterface $managerController)
-    {
-        $this->manager = $managerController;
+    public function __construct(EntityManagerInterface $entityManager) {
+        $this->manager = $entityManager;
         $this->passwordForgotRequestRepository = $this->manager->getRepository(PasswordForgotRequest::class);
     }
 
-    public function persist(PasswordForgotRequest $passwordForgotRequest): void
-    {
+    public function persist(PasswordForgotRequest $passwordForgotRequest): void {
         $this->manager->persist($passwordForgotRequest);
         $this->manager->persist($passwordForgotRequest->getClient());
 
         $this->manager->flush();
     }
 
-    public function remove(PasswordForgotRequest $passwordForgotRequest): void
-    {
+    public function remove(PasswordForgotRequest $passwordForgotRequest): void {
         $this->manager->remove($passwordForgotRequest);
         $this->manager->flush();
     }
@@ -40,14 +36,11 @@ class PasswordForgotRequestManager
      * @param PasswordForgotRequest $passwordForgotRequest
      * @return void
      */
-    public function generateCode(PasswordForgotRequest $passwordForgotRequest): void
-    {
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $code = "";
+    public function generateCode(PasswordForgotRequest $passwordForgotRequest): void {
+        $randomUtils = new RandomUtils();
+        $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        for ($i = 0; $i < 8; $i++) {
-            $code = $code . $characters[rand(0, strlen($characters)-1)];
-        }
+        $code = $randomUtils->randomString(8, $characters) . ".";
 
         $passwordForgotRequest->setConfirmationCode($code);
     }
@@ -57,8 +50,8 @@ class PasswordForgotRequestManager
      * @param string $confirmationCode
      * @return bool
      */
-    public function verifyConfirmationCode(PasswordForgotRequest $passwordForgotRequest, string $confirmationCode): bool
-    {
+    public function verifyConfirmationCode(PasswordForgotRequest $passwordForgotRequest,
+        string $confirmationCode): bool {
         return ($passwordForgotRequest->getConfirmationCode() === trim($confirmationCode));
     }
 
@@ -67,8 +60,7 @@ class PasswordForgotRequestManager
      * @param Client $client
      * @return bool
      */
-    public function verifyExist(Client $client): bool
-    {
+    public function verifyExist(Client $client): bool {
         return ($this->passwordForgotRequestRepository->findOneBy(["client" => $client]) != null);
     }
 
@@ -77,9 +69,8 @@ class PasswordForgotRequestManager
      * @param Client $client
      * @return void
      */
-    public function removeOldIfExist(Client $client)
-    {
-        if ($this->verifyExist($client)){
+    public function removeOldIfExist(Client $client): void {
+        if ($this->verifyExist($client)) {
             $passwordForgotRequest = $this->passwordForgotRequestRepository->findOneBy(["client" => $client]);
 
             $this->remove($passwordForgotRequest);
@@ -91,15 +82,15 @@ class PasswordForgotRequestManager
      * @param UserPasswordHasherInterface $passwordHasher
      * @return void
      */
-    public function generateNewPassword(PasswordForgotRequest $passwordForgotRequest, UserPasswordHasherInterface $passwordHasher): void
-    {
+    public function generateNewPassword(PasswordForgotRequest $passwordForgotRequest,
+        UserPasswordHasherInterface $passwordHasher): void {
         $client = $passwordForgotRequest->getClient();
         $clientManager = new ClientManager($this->manager);
 
         // Generate a new code
         $this->generateCode($passwordForgotRequest);
 
-        $client->setPassword($passwordHasher->hashPassword($client, trim($passwordForgotRequest->getConfirmationCode()).'.'));
+        $client->setPassword($passwordHasher->hashPassword($client, trim($passwordForgotRequest->getConfirmationCode()) . '.'));
 
         $clientManager->persist($client);
         $clientManager->deletePasswordForgotRequest($client);
