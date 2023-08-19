@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CreateClientController extends AbstractController
-{
+class CreateClientController extends AbstractController {
+
     /**
      * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
      */
@@ -37,12 +37,11 @@ class CreateClientController extends AbstractController
         $clientManager = new ClientManager($manager);
         $message = "";
 
-
         if ($data->count() > 0) {
             $client = new Client();
             $clientManager->setData($client, $passwordHasher, $data->get("name"),
-                                    $data->get("firstName"), $data->get("login"), $data->get("password"),
-                                    $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
+                $data->get("firstName"), $data->get("login"), $data->get("password"),
+                $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
 
             if ($clientManager->verifyClient($client) && $clientManager->verifyPassword($data->get("password"))) {
                 if ($clientManager->clientExists($client)) {
