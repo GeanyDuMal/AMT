@@ -2,34 +2,29 @@
 
 namespace App\Manager;
 
-use App\Entity\Member;
 use App\Entity\Client;
-use App\Entity\Parameter;
+use App\Entity\Member;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 
-class ClientManager
-{
-    public EntityManagerInterface $manager;
-    public ClientRepository $clientRepository;
+class ClientManager {
+    private EntityManagerInterface $manager;
+    private ClientRepository $clientRepository;
     const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
         $this->clientRepository = $this->manager->getRepository(Client::class);
     }
 
-    public function persist(Client $client): void
-    {
+    public function persist(Client $client): void {
         $this->defineCreationDateIfNecessary($client);
 
         $this->setPresidentIfNecessary($client);
@@ -42,8 +37,7 @@ class ClientManager
         $this->manager->flush();
     }
 
-    public function remove(Client $client): void
-    {
+    public function remove(Client $client): void {
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
@@ -63,8 +57,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function removeFromAssociationIfNecessary(Client $client): void
-    {
+    public function removeFromAssociationIfNecessary(Client $client): void {
         if ($client->getClientType() != ClientType::ASSOCIATION) {
             $member = $this->manager->getRepository(Member::class)->findOneBy(["client" => $client]);
             // If client is present in table Association, it's not normal, so we remove it
@@ -94,8 +87,8 @@ class ClientManager
      */
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name,
         string $firstName, string $login, ?string $password, string $balance, string $clientType,
-        ?string $roleAssociationName, ?int $fidelityPoint = 0): void
-    {
+        ?string $roleAssociationName, ?int $fidelityPoint = 0): void {
+
         $client->setName(strtoupper($name))
             ->setFirstName($firstName)
             ->setLogin($login)
@@ -123,8 +116,7 @@ class ClientManager
      * @param Client $client
      * @return bool
      */
-    public function isNotFull(Client $client): bool
-    {
+    public function isNotFull(Client $client): bool {
         return ($client->getName() == "" || $client->getFirstname() == "" || $client->getLogin() == "" ||
             $client->getPassword() == "" || $client->getBalance() == "" || $client->getClientType() == "" ||
             $client->getFidelityPoint() == "");
@@ -135,8 +127,7 @@ class ClientManager
      * @param Client $client
      * @return bool
      */
-    public function clientExists(Client $client): bool
-    {
+    public function clientExists(Client $client): bool {
         $duplicataLogin = $this->clientRepository->findOneBy(["login" => $client->getLogin()]);
         $duplicataNameFirstName = $this->clientRepository->findOneBy([
             "name" => $client->getName(),
@@ -153,8 +144,7 @@ class ClientManager
      * @param Client $client
      * @return bool
      */
-    public function verifyClient(Client $client): bool
-    {
+    public function verifyClient(Client $client): bool {
         $containsSpecialName = strpbrk($client->getName(), self::REGEX_SPECIAL);
         $containsSpecialFirstName = strpbrk($client->getFirstName(), self::REGEX_SPECIAL);
 
@@ -175,8 +165,7 @@ class ClientManager
      * @param String $password password not hashed
      * @return boolean
      */
-    public function verifyPassword(string $password): bool
-    {
+    public function verifyPassword(string $password): bool {
         return (strpbrk(trim($password), self::REGEX_SPECIAL) && strlen(trim($password)) >= 5);
     }
 
@@ -186,8 +175,7 @@ class ClientManager
      * @param string|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
      * @return void
      */
-    public function setRoleForClient(Client $client, ?string $roleAssociation): void
-    {
+    public function setRoleForClient(Client $client, ?string $roleAssociation): void {
         /*
          * If the clientType is Association, $roleAssociation is not null
          */
@@ -222,8 +210,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function addFidelityPoint(float $amountOrder, Client $client): void
-    {
+    public function addFidelityPoint(float $amountOrder, Client $client): void {
         $client->setFidelityPoint($client->getFidelityPoint() + ($amountOrder * 10));
         $this->persist($client);
     }
@@ -233,8 +220,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function correctBalanceAndFidelity(Client $client): void
-    {
+    public function correctBalanceAndFidelity(Client $client): void {
         if ($client->getBalance() == null || floatval($client->getBalance()) < 0) {
             $client->setBalance(0);
         }
@@ -249,8 +235,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function fidelityPointLimitCheck(Client $client): void
-    {
+    public function fidelityPointLimitCheck(Client $client): void {
         $parameterManager = new ParameterManager(($this->manager));
         $parameter = $parameterManager->getParameter();
 
@@ -269,8 +254,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    private function setPresidentIfNecessary(Client $client): void
-    {
+    private function setPresidentIfNecessary(Client $client): void {
         if (!(sizeof($this->clientRepository->findAll()) > 0)) {
             $client->setRoles([SymfonyRole::PRESIDENT])
                 ->setClientType(ClientType::ASSOCIATION);
@@ -290,8 +274,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    public function deletePasswordForgotRequest(Client $client): void
-    {
+    public function deletePasswordForgotRequest(Client $client): void {
         $passwordForgotRequestManager = new PasswordForgotRequestManager($this->manager);
 
         $passwordForgotRequest = $this->manager->getRepository(PasswordForgotRequest::class)->findOneBy(["client" => $client]);
@@ -306,8 +289,7 @@ class ClientManager
      * @param Client $client
      * @return void
      */
-    private function defineCreationDateIfNecessary(Client $client): void
-    {
+    private function defineCreationDateIfNecessary(Client $client): void {
         if (!$this->clientExists($client)) {
             $client->setCreationDate(new DateTime("now"));
         }

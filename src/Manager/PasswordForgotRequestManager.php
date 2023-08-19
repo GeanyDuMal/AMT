@@ -9,10 +9,9 @@ use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class PasswordForgotRequestManager
-{
-    public EntityManagerInterface $manager;
-    public PasswordForgotRequestRepository $passwordForgotRequestRepository;
+class PasswordForgotRequestManager {
+    private EntityManagerInterface $manager;
+    private PasswordForgotRequestRepository $passwordForgotRequestRepository;
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;

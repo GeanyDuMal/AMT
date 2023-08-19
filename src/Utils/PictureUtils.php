@@ -2,12 +2,10 @@
 
 namespace App\Utils;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class PictureUtils
-{
+class PictureUtils {
 
     /**
      * @param string $link The link of the picture
