@@ -4,32 +4,30 @@ namespace App\Controller\Ordered;
 
 use App\Entity\Ordered;
 use App\Entity\Purchase;
+use App\Manager\ClientManager;
 use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
-use App\Repository\ClientRepository;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PaymentOrderedController extends AbstractController
-{
+class PaymentOrderedController extends AbstractController {
+
+    private ClientManager $clientManager;
+
     /**
      * @Route("/ordered/payment/", name="orderedPayment", methods={"POST"})
      */
-    public function index(EntityManagerInterface $manager, Request $request,
-        ClientRepository $clientRepository, PriceRepository $priceRepository, ProductRepository $productRepository): Response
-    {
+    public function index(EntityManagerInterface $manager, Request $request, ProductRepository $productRepository): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
@@ -37,81 +35,50 @@ class PaymentOrderedController extends AbstractController
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
         $purchaseManager = new PurchaseManager($manager);
-        $orderManager = new OrderedManager($manager);
+        $this->clientManager = new ClientManager($manager);
         $priceManager = new PriceManager($manager);
-
-        $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient");
-        $idClient = $productOrderedAndClient["idClient"];
-        $clientOrder = null;
-        $productOrdered = $this->transformIdProductOrderedTab($productOrderedAndClient["productOrdered"], $productRepository);
-
-        $clientType = ClientType::ETUDIANT;
+        $orderManager = new OrderedManager($manager);
+        $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient"); // Retourne Ordered non persisté
+        $ordered = $this->mapTabToOrderedAndPurchase($productOrderedAndClient, $productRepository);
+        $clientTypeUsed = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
         $inputParameterBag = $request->request;
-
-        //Si l'on a select un client, alors on conserve celui ci + son type
-        if ($idClient != null) {
-            $clientOrder = $clientRepository->find($idClient);
-
-            if ($clientOrder){
-                $clientType = $priceManager->getClientTypeUseForPrice($clientOrder->getClientType());
-            }
-        }
 
         /*
          * Definir le montant pour chaque produit + montant total
          * tout ca dans un tableau
          */
         $montantProduct = [];
-        $montantTotal = 0;
-        foreach ($productOrdered as $productOrderedAndQuantity) {
-            $product = $productOrderedAndQuantity["product"];
+        foreach ($ordered->getPurchases() as $purchase) {
+            $product = $purchase->getProduct();
 
-            $montantProduct = $montantProduct + [$product->getId() => $priceRepository->findOneBy(["product" => $product,
-                        "clientType" => $clientType])->getPrice() * $productOrderedAndQuantity["quantity"]];
-
-            $montantTotal = $montantTotal + $montantProduct[$product->getId()];
+            $montantProduct = $montantProduct + [$product->getId() => $priceManager->getPriceByProductAndClientType($product,
+                        $clientTypeUsed) * $purchase->getQuantity()];
         }
 
-        //Recuperer les moyens de paiement possible
-        $paymentTypeList = $orderManager->getAllowedPaymentType($productOrdered, $clientOrder);
+        $montantTotal = $orderManager->montantTotal($ordered);
+        $paymentTypes = $orderManager->getAllowedPaymentType($montantTotal, $ordered->getClient());
 
         //Si l'on a cliqué sur un bouton sur la page Payment
         if ($inputParameterBag->get("payement_type")) {
             $paymentTypeChose = $inputParameterBag->get("payement_type");
 
-            /*
-             * Permet de verifier si le produit commandé est en stock
-             * Prevent si l'utilisateur clique plusieurs fois sur le bouton valider
-             */
-            foreach ($productOrdered as $purchase) {
-                $product = $purchase["product"];
-                if ($product->getQuantityStock() == 0) {
-                    return $this->redirectToRoute("menuOrdered", [
-                        "message" => "Le produit commandé n'est plus disponible !"
-                    ]);
-                }
+            if (!$purchaseManager->verifyDisponibilityProducts($ordered->getPurchases()->getValues())) {
+                return $this->redirectToRoute("menuOrdered", [
+                    "message" => "Le produit commandé n'est plus disponible !"
+                ]);
             }
 
-            //Creer la commande
-            $order = new Ordered();
-            $orderManager->setData($order, $clientOrder, $paymentTypeChose, new DateTime("now"));
-            $orderManager->persist($order);
+            $orderManager->setData($ordered, $ordered->getClient(), $paymentTypeChose, new DateTime("now"));
+            $orderManager->persist($ordered);
 
-            //Creer tout les achats
-            foreach ($productOrdered as $purchase) {
-                $product = $purchase["product"];
-                $quantity = $purchase["quantity"];
-
-                $purchase = new Purchase();
-                $purchaseManager->setData($purchase, $product, $quantity, $order);
-
+            foreach ($ordered->getPurchases() as $purchase) {
+                $purchaseManager->setData($purchase, $purchase->getProduct(), $purchase->getQuantity(), $ordered);
                 $purchaseManager->persist($purchase);
             }
 
-            $orderManager->reduceBalanceIfNecessary($order);
-            $orderManager->addFidelityToClient($order);
+            $orderManager->reduceBalanceIfNecessary($ordered);
+            $orderManager->addFidelityToClient($ordered);
 
-            //rediriger vers l'interface de creation de commande
             return $this->redirectToRoute("createOrdered", [
                 "message" => "Commande réussie !"
             ]);
@@ -119,28 +86,37 @@ class PaymentOrderedController extends AbstractController
 
         return $this->render('ordered/PaymentOrdered.html.twig', [
             "parameter" => $parameter,
-            "productOrdered" => $productOrdered,
+            "purchases" => $ordered->getPurchases(),
             "montantProduct" => $montantProduct,
             "montantTotal" => $montantTotal,
-            "client" => $clientOrder,
-            "paymentTypeList" => $paymentTypeList
+            "client" => $ordered->getClient(),
+            "paymentTypes" => $paymentTypes
         ]);
     }
 
     /**
-     * @param array $idProductOrderedTab
+     * @param array $productOrderedAndClient
      * @param ProductRepository $productRepository
-     * @return array ["product" => Product, "quantity" => quantity]
+     * @return Ordered ["product" => Product, "quantity" => quantity]
      */
-    public function transformIdProductOrderedTab(array $idProductOrderedTab, ProductRepository $productRepository): array
-    {
-        $productOrdered = [];
+    public function mapTabToOrderedAndPurchase(array $productOrderedAndClient, ProductRepository $productRepository): Ordered {
+        $ordered = new Ordered();
 
-        foreach ($idProductOrderedTab as $idProductOrdered){
+        foreach ($productOrderedAndClient["productOrdered"] as $idProductOrdered) {
             $product = $productRepository->find($idProductOrdered["idProduct"]);
-            $productOrdered[] = ["product" => $product, "quantity" => $idProductOrdered["quantity"]];
+
+            $purchase = new Purchase();
+            $purchase->setProduct($product)
+                     ->setQuantity(intval($idProductOrdered["quantity"]));
+
+            $ordered->addPurchase($purchase);
         }
 
-        return $productOrdered;
+        if ($productOrderedAndClient["idClient"] != null) {
+            $clientOrder = $this->clientManager->getClientById($productOrderedAndClient["idClient"]);
+            $ordered->setClient($clientOrder);
+        }
+
+        return $ordered;
     }
 }

@@ -19,29 +19,13 @@ class OrderedManager {
     }
 
     public function persist(Ordered $ordered): void {
-        $purchases = null;
         if ($this->verifyOrder($ordered)) {
-            $purchases = $ordered->getPurchases();
-            $this->clearPurchases($ordered);
-
             $this->manager->persist($ordered);
             $this->manager->flush();
-        }
-
-        $purchaseManager = new PurchaseManager($this->manager);
-
-        foreach ($purchases as $purchase) {
-            $purchaseManager->persist($purchase);
         }
     }
 
     public function remove(Ordered $ordered): void {
-        $purchaseManager = new PurchaseManager($this->manager);
-
-        foreach ($ordered->getPurchases() as $purchase) {
-            $purchaseManager->remove($purchase);
-        }
-
         $this->manager->remove($ordered);
         $this->manager->flush();
     }
@@ -96,8 +80,8 @@ class OrderedManager {
         }
 
         $ordered->setClient($client)
-            ->setPaymentType($paymentType)
-            ->setOrderedAt($date);
+                ->setPaymentType($paymentType)
+                ->setOrderedAt($date);
     }
 
     /**
@@ -121,21 +105,20 @@ class OrderedManager {
      * @return float The total amount of an ordered
      */
     public function montantTotal(Ordered $ordered): float {
-        $purchaseRepository = $this->manager->getRepository(Purchase::class);
-        $priceRepository = $this->manager->getRepository(Price::class);
+        //$purchaseRepository = $this->manager->getRepository(Purchase::class);
         $priceManager = new PriceManager($this->manager);
         $montantTotal = 0;
-        $allOrderPurchase = $purchaseRepository->findBy(["ordered" => $ordered]);
+        //$allOrderPurchase = $purchaseRepository->findBy(["ordered" => $ordered]);
+        $allOrderPurchase = $ordered->getPurchases();
 
         foreach ($allOrderPurchase as $purchase) {
             $clientType = ClientType::ETUDIANT;
 
             if ($ordered->getClient() != null) {
-                $clientType = $priceManager->getClientTypeUseForPrice($ordered->getClient()->getClientType());
+                $clientType = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
             }
 
-            $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
-                    "clientType" => $clientType])->getPrice() * $purchase->getQuantity();
+            $montantTotal = $montantTotal + $priceManager->getPriceByProductAndClientType($purchase->getProduct(), $clientType) * $purchase->getQuantity();
         }
         return $montantTotal;
     }
@@ -155,41 +138,25 @@ class OrderedManager {
     }
 
     /**
-     * @param array $purchaseList ["product" => product, "quantity" => quantity]
+     * @param int $amountOrdered
      * @param Client|null $client Client
      * @return array An array of payment type that are allowed fot this Ordered
      */
-    public function getAllowedPaymentType(array $purchaseList, Client $client = null): array {
-        $priceManager = new PriceManager($this->manager);
-
-        if ($client != null) {
-            $clientType = $priceManager->getClientTypeUseForPrice($client->getClientType());
-        } else {
-            $clientType = ClientType::ETUDIANT;
-        }
-
-        $montant = 0;
-        $priceRepository = $this->manager->getRepository(Price::class);
-
-        foreach ($purchaseList as $purchase) {
-            $product = $purchase["product"];
-            $montant = $montant + $priceRepository->findOneBy(["product" => $product, "clientType" => $clientType])->getPrice() * $purchase["quantity"];
-        }
-
+    public function getAllowedPaymentType(float $amountOrdered, Client $client = null): array {
         $paymentTypeList = PaymentType::getAll();
 
         foreach ($paymentTypeList as $paymentType) {
             switch ($paymentType) {
                 case "Solde" :
                 {
-                    if ($client == null || $client->getBalance() < $montant) {
+                    if ($client == null || $client->getBalance() < $amountOrdered) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
                 }
                 case "Carte Bancaire" :
                 {
-                    if ($montant < 1) {
+                    if ($amountOrdered < 1) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;

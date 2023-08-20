@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Entity\Client;
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Repository\PriceRepository;
@@ -61,12 +62,12 @@ class PriceManager {
 
     /**
      * Retourne le type de prix concerné par le type de client passé en paramètre
-     * @param string $clientType
+     * @param Client|null $client
      * @return string
      */
-    public function getClientTypeUseForPrice(string $clientType): string {
-        if (in_array($clientType, ClientType::getAll(), true)) {
-            switch ($clientType) {
+    public function getClientTypeUsedForPrice(?Client $client): string {
+        if ($client) {
+            switch ($client->getClientType()) {
                 case ClientType::ETUDIANT :
                     $clientTypeReturn = ClientType::ETUDIANT;
                     break;
@@ -86,15 +87,17 @@ class PriceManager {
                     }
                     break;
 
-                default :
-                    // Ne doit pas etre atteint, TODO : gestion d'erreur
+                default:
                     $clientTypeReturn = ClientType::ETUDIANT;
             }
         } else {
-            // Ne doit pas etre atteint, TODO : gestion d'erreur
             $clientTypeReturn = ClientType::ETUDIANT;
         }
 
         return $clientTypeReturn;
+    }
+
+    public function getPriceByProductAndClientType(Product $product, string $clientType): float {
+        return $this->priceRepository->findOneBy(["product" => $product, "clientType" => $clientType])->getPrice();
     }
 }

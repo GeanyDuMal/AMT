@@ -70,6 +70,17 @@ class PurchaseManager {
         return ($product->getQuantityStock() > 0 && $product->getQuantityStock() >= $purchase->getQuantity());
     }
 
+    public function verifyDisponibilityProducts(array $purchases): bool {
+        foreach ($purchases as $purchase) {
+            if (!$this->verifyDisponibilityProduct($purchase)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     /**
      * Remove the quantity of the product ordered
      * @param Purchase $purchase

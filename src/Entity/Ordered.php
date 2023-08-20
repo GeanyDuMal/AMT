@@ -37,7 +37,7 @@ class Ordered
     private string $paymentType;
 
     /**
-     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private Collection $purchases ;
 
