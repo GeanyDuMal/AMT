@@ -57,12 +57,19 @@
             </p>
             <div class="flex-horizontal block-form-group">
                 <div class="form-group">
-                    <label class="input-label">Montant point fidélité pour ajout sur solde</label>
+                    <label class="input-label">Nombre point fidélité pour ajout sur le solde</label>
                     <input type="text" name="amountFidelityPointToExchange" value="{{ parameter.amountFidelityPointToExchange }}" class="form-input">
+                    <p class="form-input-hint">
+                        Defaut : 150 <br>
+                        1€ dépensé = 10 points
+                    </p>
                 </div>
                 <div class="form-group">
-                    <label class="input-label">Montant ajouté sur solde</label>
+                    <label class="input-label">Montant ajouté sur le solde</label>
                     <input type="text" name="amountBalanceToAddAfterExchange" value="{{ parameter.amountBalanceToAddAfterExchange }}" class="form-input">
+                    <p class="form-input-hint">
+                        Defaut : 0.80€
+                    </p>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary disableable" onclick="return verifyProduct()">
