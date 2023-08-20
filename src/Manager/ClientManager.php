@@ -314,4 +314,8 @@ class ClientManager {
 
         return $clientTypes;
     }
+
+    public function getClientById(string $id): ?Client {
+        return $this->clientRepository->find($id);
+    }
 }

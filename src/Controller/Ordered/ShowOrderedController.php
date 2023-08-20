@@ -42,7 +42,7 @@ class ShowOrderedController extends AbstractController
             $order = $orderedRepository->find($idOrder);
             if ($order != null) {
                 if ($order->getClient()) {
-                    $clientType = $priceManager->getClientTypeUseForPrice($order->getClient()->getClientType());
+                    $clientType = $priceManager->getClientTypeUsedForPrice($order->getClient());
                 }
 
                 $purchaseList = $purchaseRepository->findBy(["ordered" => $order]);
