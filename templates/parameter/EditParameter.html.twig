@@ -28,12 +28,19 @@
             {% endif %}
         </div>
         <form method="post" class="flex-vertical flex-centered" id="form-product" onsubmit="disableButton()" enctype="multipart/form-data">
+            <p class="form-group-title flex-align-self-left">
+                General
+            </p>
             <div class="form-group">
                 <label class="input-label">Logo de l'association</label>
                 <div class="width-fit-content">
                     <input type="file" name="associationLogo" id="associationLogo" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
                 </div>
             </div>
+
+            <p class="form-group-title flex-align-self-left">
+                Fonctionnalités
+            </p>
             <div class="flex-horizontal block-form-group">
                 <div class="form-group">
                     <label class="input-label">Post activé</label>
@@ -44,6 +51,10 @@
                     <input type="checkbox" name="cotisantActivated" {% if parameter.cotisantActivated %} checked {% endif %} class="flex-align-self-left">
                 </div>
             </div>
+
+            <p class="form-group-title flex-align-self-left">
+                Fidelité
+            </p>
             <div class="flex-horizontal block-form-group">
                 <div class="form-group">
                     <label class="input-label">Montant point fidélité pour ajout sur solde</label>

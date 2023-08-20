@@ -415,6 +415,12 @@ h4 {
     text-align: left;
 }
 
+@media screen and (max-width: 1200px) {
+    form {
+        width: 80vw;
+    }
+}
+
 @media screen and (max-width: 800px) {
     .card {
         width: 70vw;
