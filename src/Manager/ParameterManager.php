@@ -49,7 +49,7 @@ class ParameterManager {
         }
 
         $parameter->setCotisantActivated($cotisantActivated)
-            ->setPostActivated($postActivated);
+                  ->setPostActivated($postActivated);
     }
 
     public function getParameter(): Parameter {
