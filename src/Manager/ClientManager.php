@@ -27,8 +27,6 @@ class ClientManager {
     public function persist(Client $client): void {
         $this->defineCreationDateIfNecessary($client);
 
-        $this->setPresidentIfNecessary($client);
-
         $this->removeFromAssociationIfNecessary($client);
         $this->correctBalanceAndFidelity($client);
         $this->fidelityPointLimitCheck($client);
@@ -41,7 +39,7 @@ class ClientManager {
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
-        if (!in_array([SymfonyRole::PRESIDENT, "ROLE_ADMIN"], $client->getRoles())) {
+        if (!in_array([SymfonyRole::PRESIDENT, SymfonyRole::ADMIN], $client->getRoles())) {
             $client->setClientType(ClientType::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
@@ -90,12 +88,12 @@ class ClientManager {
         ?string $roleAssociationName, ?int $fidelityPoint = 0): void {
 
         $client->setName(strtoupper($name))
-            ->setFirstName($firstName)
-            ->setLogin($login)
-            ->setBalance($balance)
-            ->setFidelityPoint($fidelityPoint)
-            ->setClientType($clientType)
-            ->setRoles([SymfonyRole::USER]);
+               ->setFirstName($firstName)
+               ->setLogin($login)
+               ->setBalance($balance)
+               ->setFidelityPoint($fidelityPoint)
+               ->setClientType($clientType)
+               ->setRoles([SymfonyRole::USER]);
 
         $this->setRoleForClient($client, $roleAssociationName);
         $this->fidelityPointLimitCheck($client);
@@ -198,9 +196,16 @@ class ClientManager {
                 }
                 break;
             }
+            case ClientType::ADMIN:
+            {
+                $client->setRoles([SymfonyRole::ADMIN]);
+                break;
+            }
             default:
+            {
                 $client->setRoles([SymfonyRole::USER]);
                 break;
+            }
         }
     }
 
@@ -257,12 +262,12 @@ class ClientManager {
     private function setPresidentIfNecessary(Client $client): void {
         if (!(sizeof($this->clientRepository->findAll()) > 0)) {
             $client->setRoles([SymfonyRole::PRESIDENT])
-                ->setClientType(ClientType::ASSOCIATION);
+                   ->setClientType(ClientType::ASSOCIATION);
 
             //Set the president of the association
             $member = new Member();
             $member->setClient($client)
-                ->setRole(MemberRole::PRESIDENT);
+                   ->setRole(MemberRole::PRESIDENT);
 
             $this->manager->persist($member);
             $this->manager->flush();
@@ -295,8 +300,9 @@ class ClientManager {
         }
     }
 
+
     /**
-     * @return array ClientTypes activated in parameter
+     * @return array
      */
     public function getClientTypes(): array {
         $parameterManager = new ParameterManager(($this->manager));
@@ -305,14 +311,34 @@ class ClientManager {
         $clientTypes = ClientType::getAll();
 
         if (!$parameter->isCotisantActivated()) {
-            foreach ($clientTypes as $clientType) {
-                if ($clientType == ClientType::COTISANT) {
-                    unset($clientTypes[array_search($clientType, $clientTypes, true)]);
-                }
-            }
+            unset($clientTypes[array_search(ClientType::COTISANT, $clientTypes, true)]);
         }
 
         return $clientTypes;
+    }
+
+    /**
+     * @param Client $client
+     * @return array
+     */
+    public function getLowerOrEqualClientTypes(Client $client): array {
+        $parameterManager = new ParameterManager(($this->manager));
+        $parameter = $parameterManager->getParameter();
+        $clientTypesReturned = [];
+        $clientTypes = ClientType::getAll();
+
+        if (!$parameter->isCotisantActivated()) {
+            unset($clientTypes[array_search(ClientType::COTISANT, $clientTypes, true)]);
+        }
+
+        foreach ($clientTypes as $type) {
+            $clientTypesReturned[] = $type;
+            if ($type == $client->getClientType()) {
+                break;
+            }
+        }
+
+        return $clientTypesReturned;
     }
 
     public function getClientById(string $id): ?Client {

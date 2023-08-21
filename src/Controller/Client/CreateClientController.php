@@ -78,7 +78,7 @@ class CreateClientController extends AbstractController {
             "parameter" => $parameter,
             "assosRoles" => $assosRoles,
             "message" => $message,
-            "clientTypes" => $clientManager->getClientTypes()
+            "clientTypes" => $clientManager->getLowerOrEqualClientTypes($user)
         ]);
     }
 }

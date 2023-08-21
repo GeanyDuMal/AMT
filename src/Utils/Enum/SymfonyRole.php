@@ -13,4 +13,5 @@ final class SymfonyRole extends AbstractEnumClass
     public const SECRETAIRE = "ROLE_SECRETAIRE";
     public const TRESORIER = "ROLE_TRESORIER";
     public const PRESIDENT = "ROLE_PRESIDENT";
+    public const ADMIN = "ROLE_ADMIN";
 }

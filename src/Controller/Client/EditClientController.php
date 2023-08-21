@@ -86,7 +86,7 @@ class EditClientController extends AbstractController
             "client" => $client,
             "member" => $member,
             "allowEdit" => $allowEdit,
-            "clientTypes" => $clientManager->getClientTypes()
+            "clientTypes" => $clientManager->getLowerOrEqualClientTypes($user)
         ]);
     }
 
