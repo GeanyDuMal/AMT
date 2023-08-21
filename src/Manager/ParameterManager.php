@@ -4,14 +4,18 @@ namespace App\Manager;
 
 use App\Entity\Parameter;
 use App\Repository\ParameterRepository;
+use App\Utils\CacheUtils;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Exception;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ParameterManager {
     private EntityManagerInterface $manager;
     private ParameterRepository $parameterRepository;
+    const CACHE_KEY_PARAMETER = "parameter";
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
@@ -52,8 +56,21 @@ class ParameterManager {
                   ->setPostActivated($postActivated);
     }
 
-    public function getParameter(): Parameter {
-        return $this->parameterRepository->findOneBy([]);
+    public function getParameter(bool $force = false): Parameter {
+        $cacheUtils = new CacheUtils();
+
+        try {
+            $parameter = $cacheUtils->getFromCache(self::CACHE_KEY_PARAMETER);
+
+            if ($force || is_null($parameter)) {
+                $parameter = $this->parameterRepository->findOneBy([]);
+                $cacheUtils->saveInCache($parameter, self::CACHE_KEY_PARAMETER);
+            }
+        } catch (InvalidArgumentException $e) {
+            // TODO gestion d'erreur
+        }
+
+        return $parameter;
     }
 
     public function downloadPicture(Parameter $parameter, ?UploadedFile $file): ?string {

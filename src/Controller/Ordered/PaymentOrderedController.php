@@ -33,20 +33,16 @@ class PaymentOrderedController extends AbstractController {
         }
 
         $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $parameterManager->getParameter(true);
         $purchaseManager = new PurchaseManager($manager);
         $this->clientManager = new ClientManager($manager);
         $priceManager = new PriceManager($manager);
         $orderManager = new OrderedManager($manager);
-        $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient"); // Retourne Ordered non persisté
+        $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient");
         $ordered = $this->mapTabToOrderedAndPurchase($productOrderedAndClient, $productRepository);
         $clientTypeUsed = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
         $inputParameterBag = $request->request;
-
-        /*
-         * Definir le montant pour chaque produit + montant total
-         * tout ca dans un tableau
-         */
+        
         $montantProduct = [];
         foreach ($ordered->getPurchases() as $purchase) {
             $product = $purchase->getProduct();
