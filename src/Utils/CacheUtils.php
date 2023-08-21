@@ -21,6 +21,8 @@ class CacheUtils {
      */
     public function saveInCache(object $object, string $key): void {
         $itemToSave = $this->cache->getItem($key);
+
+        $itemToSave->expiresAfter(1800);
         $itemToSave->set($object);
 
         $this->cache->save($itemToSave);

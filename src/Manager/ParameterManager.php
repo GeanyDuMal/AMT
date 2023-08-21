@@ -9,6 +9,7 @@ use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Exception;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ParameterManager {
@@ -65,7 +66,7 @@ class ParameterManager {
                 $parameter = $this->parameterRepository->findOneBy([]);
                 $cacheUtils->saveInCache($parameter, self::CACHE_KEY_PARAMETER);
             }
-        } catch (Exception $e) {
+        } catch (InvalidArgumentException $e) {
             // TODO gestion d'erreur
         }
 
