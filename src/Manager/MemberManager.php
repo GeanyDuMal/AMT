@@ -71,22 +71,21 @@ class MemberManager {
     }
 
     public function getLowerOrEqualAssociationRole(Client $client): array {
-        $association = $this->memberRepository->findOneBy(["client" => $client]);
-        $roles = [];
-        $associationRoles = MemberRole::getAll();
+        $member = $this->memberRepository->findOneBy(["client" => $client]);
+        $rolesReturned = [];
+        $memberRoles = MemberRole::getAll();
 
-        // We use this way to filter because AssociationRole are ordered
-        if ($client->getRoles()[0] != "ROLE_ADMIN") {
-            foreach ($associationRoles as $role) {
-                $roles[] = $role;
-                if ($role == $association->getRole()) {
+        if ($member) {
+            foreach ($memberRoles as $role) {
+                $rolesReturned[] = $role;
+                if ($role == $member->getRole()) {
                     break;
                 }
             }
-        } else {
-            $roles = $associationRoles;
+        } else if ($client->getRoles()[0] == SymfonyRole::ADMIN) {
+            $rolesReturned = $memberRoles;
         }
 
-        return $roles;
+        return $rolesReturned;
     }
 }
