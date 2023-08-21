@@ -30,7 +30,7 @@ class EditClientController extends AbstractController
         }
 
         $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $parameterManager->getParameter(true);
         $data = $request->request;
         $client = $clientRepository->find($id);
         $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
