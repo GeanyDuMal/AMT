@@ -23,7 +23,7 @@ class EditParameterController extends AbstractController
         }
 
         $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $parameterManager->getParameter(true);
         $data = $request->request;
         $message = null;
 

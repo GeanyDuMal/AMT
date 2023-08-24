@@ -23,7 +23,7 @@ class MenuProductController extends AbstractController
         $priceManager = new PriceManager($manager);
 
         if ($this->getUser()) {
-            $clientTypeActual = $priceManager->getClientTypeUseForPrice($this->getUser()->getClientType());
+            $clientTypeActual = $priceManager->getClientTypeUsedForPrice($this->getUser());
         }
 
         // On recupere tout les produits

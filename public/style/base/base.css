@@ -240,6 +240,10 @@ form > * {
     outline: none;
 }
 
+.form-input-hint {
+    margin: 5px 0;
+}
+
 h4 {
     font-size: 1.5rem;
     margin-top: 0;
@@ -413,6 +417,12 @@ h4 {
 .swal2-html-container ul {
     width: fit-content;
     text-align: left;
+}
+
+@media screen and (max-width: 1200px) {
+    form {
+        width: 80vw;
+    }
 }
 
 @media screen and (max-width: 800px) {

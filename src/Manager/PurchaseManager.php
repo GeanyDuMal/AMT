@@ -6,19 +6,15 @@ use App\Entity\Ordered;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use Doctrine\ORM\EntityManagerInterface;
-use JetBrains\PhpStorm\Pure;
 
-class PurchaseManager
-{
-    public EntityManagerInterface $manager;
+class PurchaseManager {
+    private EntityManagerInterface $manager;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
     }
 
-    public function persist(Purchase $purchase): void
-    {
+    public function persist(Purchase $purchase): void {
         if ($this->verifyDisponibilityProduct($purchase)) {
             $this->removeProductQuantity($purchase);
 
@@ -27,8 +23,7 @@ class PurchaseManager
         }
     }
 
-    public function remove(Purchase $purchase): void
-    {
+    public function remove(Purchase $purchase): void {
         $this->manager->remove($purchase);
 
         $this->manager->flush();
@@ -39,8 +34,7 @@ class PurchaseManager
      * @param Purchase $purchase
      * @return void
      */
-    public function removeWithRestore(Purchase $purchase): void
-    {
+    public function removeWithRestore(Purchase $purchase): void {
         $product = $purchase->getProduct();
         $productManager = new ProductManager($this->manager);
 
@@ -58,12 +52,11 @@ class PurchaseManager
      * @param Ordered $ordered
      * @return void
      */
-    public function setData(Purchase $purchase, Product $product, int $quantity, Ordered $ordered): void
-    {
-        if ($product->getQuantityStock() >= $quantity){
+    public function setData(Purchase $purchase, Product $product, int $quantity, Ordered $ordered): void {
+        if ($product->getQuantityStock() >= $quantity) {
             $purchase->setQuantity($quantity)
-                ->setProduct($product)
-                ->setOrdered($ordered);
+                     ->setProduct($product)
+                     ->setOrdered($ordered);
         }
     }
 
@@ -71,20 +64,29 @@ class PurchaseManager
      * @param Purchase $purchase
      * @return bool
      */
-    public function verifyDisponibilityProduct(Purchase $purchase): bool
-    {
+    public function verifyDisponibilityProduct(Purchase $purchase): bool {
         $product = $purchase->getProduct();
 
         return ($product->getQuantityStock() > 0 && $product->getQuantityStock() >= $purchase->getQuantity());
     }
+
+    public function verifyDisponibilityProducts(array $purchases): bool {
+        foreach ($purchases as $purchase) {
+            if (!$this->verifyDisponibilityProduct($purchase)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     /**
      * Remove the quantity of the product ordered
      * @param Purchase $purchase
      * @return void
      */
-    public function removeProductQuantity(Purchase $purchase): void
-    {
+    public function removeProductQuantity(Purchase $purchase): void {
         $product = $purchase->getProduct();
         $product->setQuantityStock($product->getQuantityStock() - $purchase->getQuantity());
     }

@@ -5,49 +5,27 @@ namespace App\Manager;
 use App\Entity\Client;
 use App\Entity\Ordered;
 use App\Entity\Price;
-use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\PaymentType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use JetBrains\PhpStorm\Pure;
 
-class OrderedManager
-{
-    public EntityManagerInterface $manager;
+class OrderedManager {
+    private EntityManagerInterface $manager;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager) {
         $this->manager = $entityManager;
     }
 
-    public function persist(Ordered $ordered): void
-    {
-        $purchases = null;
+    public function persist(Ordered $ordered): void {
         if ($this->verifyOrder($ordered)) {
-            $purchases = $ordered->getPurchases();
-            $this->clearPurchases($ordered);
-
             $this->manager->persist($ordered);
             $this->manager->flush();
         }
-
-        $purchaseManager = new PurchaseManager($this->manager);
-
-        foreach ($purchases as $purchase){
-            $purchaseManager->persist($purchase);
-        }
     }
 
-    public function remove(Ordered $ordered): void
-    {
-        $purchaseManager = new PurchaseManager($this->manager);
-
-        foreach ($ordered->getPurchases() as $purchase){
-            $purchaseManager->remove($purchase);
-        }
-
+    public function remove(Ordered $ordered): void {
         $this->manager->remove($ordered);
         $this->manager->flush();
     }
@@ -57,8 +35,7 @@ class OrderedManager
      * @param Ordered $order
      * @return void
      */
-    public function removeWithRestore(Ordered $order): void
-    {
+    public function removeWithRestore(Ordered $order): void {
         $purchaseManager = new PurchaseManager($this->manager);
         $clientManager = new ClientManager($this->manager);
         $purchaseRepository = $this->manager->getRepository(Purchase::class);
@@ -75,7 +52,7 @@ class OrderedManager
             $order->getPaymentType() == PaymentType::SOLDE) {
             $client = $order->getClient();
 
-            $client->setBalance($client->getBalance() + $montant);
+            $client->setBalance(floatval($client->getBalance()) + $montant);
             if ($montant > 1) {
                 $client->setFidelityPoint($client->getFidelityPoint() - $montant * 10);
             }
@@ -97,15 +74,14 @@ class OrderedManager
      * @param DateTime|null $date
      * @return void
      */
-    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date): void
-    {
-        if (!$date){
+    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date): void {
+        if (!$date) {
             $date = new DateTime("now");
         }
 
         $ordered->setClient($client)
-            ->setPaymentType($paymentType)
-            ->setOrderedAt($date);
+                ->setPaymentType($paymentType)
+                ->setOrderedAt($date);
     }
 
     /**
@@ -113,8 +89,7 @@ class OrderedManager
      * @param Ordered $order
      * @return void
      */
-    public function reduceBalanceIfNecessary(Ordered $order): void
-    {
+    public function reduceBalanceIfNecessary(Ordered $order): void {
         $clientManager = new ClientManager($this->manager);
 
         if ($order->getPaymentType() == PaymentType::SOLDE && $order->getClient() != null) {
@@ -129,23 +104,21 @@ class OrderedManager
      * @param Ordered $ordered
      * @return float The total amount of an ordered
      */
-    public function montantTotal(Ordered $ordered): float
-    {
-        $purchaseRepository = $this->manager->getRepository(Purchase::class);
-        $priceRepository = $this->manager->getRepository(Price::class);
+    public function montantTotal(Ordered $ordered): float {
+        //$purchaseRepository = $this->manager->getRepository(Purchase::class);
         $priceManager = new PriceManager($this->manager);
         $montantTotal = 0;
-        $allOrderPurchase = $purchaseRepository->findBy(["ordered" => $ordered]);
+        //$allOrderPurchase = $purchaseRepository->findBy(["ordered" => $ordered]);
+        $allOrderPurchase = $ordered->getPurchases();
 
         foreach ($allOrderPurchase as $purchase) {
             $clientType = ClientType::ETUDIANT;
 
             if ($ordered->getClient() != null) {
-                $clientType = $priceManager->getClientTypeUseForPrice($ordered->getClient()->getClientType());
+                $clientType = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
             }
 
-            $montantTotal = $montantTotal + $priceRepository->findOneBy(["product" => $purchase->getProduct(),
-                    "clientType" => $clientType])->getPrice() * $purchase->getQuantity();
+            $montantTotal = $montantTotal + $priceManager->getPriceByProductAndClientType($purchase->getProduct(), $clientType) * $purchase->getQuantity();
         }
         return $montantTotal;
     }
@@ -155,8 +128,7 @@ class OrderedManager
      * @param Ordered $ordered
      * @return void
      */
-    public function addFidelityToClient(Ordered $ordered): void
-    {
+    public function addFidelityToClient(Ordered $ordered): void {
         if ($ordered->getClient() != null) {
             $montant = $this->montantTotal($ordered);
             $clientManager = new ClientManager($this->manager);
@@ -166,42 +138,25 @@ class OrderedManager
     }
 
     /**
-     * @param array $purchaseList ["product" => product, "quantity" => quantity]
+     * @param int $amountOrdered
      * @param Client|null $client Client
      * @return array An array of payment type that are allowed fot this Ordered
      */
-    public function getAllowedPaymentType(array $purchaseList, Client $client = null): array
-    {
-        $priceManager = new PriceManager($this->manager);
-
-        if ($client != null) {
-            $clientType = $priceManager->getClientTypeUseForPrice($client->getClientType());
-        } else {
-            $clientType = ClientType::ETUDIANT;
-        }
-
-        $montant = 0;
-        $priceRepository = $this->manager->getRepository(Price::class);
-
-        foreach ($purchaseList as $purchase) {
-            $product = $purchase["product"];
-            $montant = $montant + $priceRepository->findOneBy(["product" => $product, "clientType" => $clientType])->getPrice() * $purchase["quantity"];
-        }
-
+    public function getAllowedPaymentType(float $amountOrdered, Client $client = null): array {
         $paymentTypeList = PaymentType::getAll();
 
         foreach ($paymentTypeList as $paymentType) {
             switch ($paymentType) {
                 case "Solde" :
                 {
-                    if ($client == null || $client->getBalance() < $montant) {
+                    if ($client == null || $client->getBalance() < $amountOrdered) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
                 }
                 case "Carte Bancaire" :
                 {
-                    if ($montant < 1) {
+                    if ($amountOrdered < 1) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
@@ -216,8 +171,7 @@ class OrderedManager
      * @param Ordered $ordered
      * @return bool
      */
-    public function verifyOrder(Ordered $ordered): bool
-    {
+    public function verifyOrder(Ordered $ordered): bool {
         return ($ordered->getOrderedAt() != null && $ordered->getPaymentType() != null);
     }
 
@@ -227,9 +181,8 @@ class OrderedManager
      * @param Ordered $ordered
      * @return void
      */
-    public function clearPurchases(Ordered $ordered): void
-    {
-        foreach ($ordered->getPurchases() as $purchase){
+    public function clearPurchases(Ordered $ordered): void {
+        foreach ($ordered->getPurchases() as $purchase) {
             $ordered->removePurchase($purchase);
         }
     }

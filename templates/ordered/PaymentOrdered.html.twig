@@ -28,7 +28,7 @@
             {% endif %}
             
             <div class="list-card flex-horizontal flex-overflow flex-centered">
-            {% for purchase in productOrdered %}
+            {% for purchase in purchases %}
                   <div class="card">
                       <div class="card-text">
                           <p class="card-title">
@@ -46,7 +46,7 @@
                   Montant total : {{ montantTotal }}€
             </h2>
             <form method="post" class="flex-horizontal flex-centered tab-button-payment" onsubmit="disableButton()">
-                  {% for paymentType in paymentTypeList %}
+                  {% for paymentType in paymentTypes %}
                         <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary" onclick="return preventPayment()">
                             {{ paymentType }}
                             {% if paymentType == "Carte Bancaire" %}
