@@ -59,6 +59,7 @@ $patterns[] = "src/Entity/*.php";
 $patterns[] = "src/Manager/*.php";
 $patterns[] = "src/Repository/*.php";
 $patterns[] = "src/Utils/*.php";
+$patterns[] = "src/Utils/Enum/*.php";
 $patterns[] = "templates/*/*.twig";
 $patterns[] = "templates/*.twig";
 
