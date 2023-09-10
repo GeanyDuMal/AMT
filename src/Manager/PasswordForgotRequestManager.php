@@ -39,7 +39,7 @@ class PasswordForgotRequestManager {
         $randomUtils = new RandomUtils();
         $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        $code = $randomUtils->randomString(8, $characters) . ".";
+        $code = $randomUtils->randomString(8, $characters) . "#";
 
         $passwordForgotRequest->setConfirmationCode($code);
     }
@@ -89,7 +89,7 @@ class PasswordForgotRequestManager {
         // Generate a new code
         $this->generateCode($passwordForgotRequest);
 
-        $client->setPassword($passwordHasher->hashPassword($client, trim($passwordForgotRequest->getConfirmationCode()) . '.'));
+        $client->setPassword($passwordHasher->hashPassword($client, trim($passwordForgotRequest->getConfirmationCode()) . '#'));
 
         $clientManager->persist($client);
         $clientManager->deletePasswordForgotRequest($client);
