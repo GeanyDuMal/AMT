@@ -18,7 +18,7 @@ class ShowPostController extends AbstractController
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
 
-        if (!$this->isGranted('ROLE_ASSOC') || !$parameter->isPostActivated()) {
+        if (!$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
