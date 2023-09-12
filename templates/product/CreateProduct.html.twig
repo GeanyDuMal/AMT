@@ -36,7 +36,7 @@
             {% endif %}
         </div>
         {# Form Start #}
-        <form method="post" class="flex-vertical flex-centered" id="form-product" onsubmit="disableButton()">
+        <form method="post" class="flex-vertical flex-centered" id="form-product" onsubmit="disableButton()" enctype="multipart/form-data">
             <div class="form-group">
                 <label class="input-label">Nom du produit</label>
                 <input type="text" name="productName" class="form-input" value="">
@@ -47,8 +47,10 @@
                     <input type="text" name="productStock" class="form-input" value="">
                 </div>
                 <div class="form-group">
-                    <label class="input-label">Lien de l'image</label>
-                    <input type="text" name="imageLink" class="form-input" value="">
+                    <label class="input-label">Image</label>
+                    <div class="width-fit-content">
+                        <input type="file" name="productPicture" id="productPicture" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
+                    </div>
                 </div>
             </div>
             <p class="form-group-title flex-align-self-left">

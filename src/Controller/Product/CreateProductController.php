@@ -21,8 +21,7 @@ class CreateProductController extends AbstractController
     /**
      * @Route("/product/create", name="createProduct")
      */
-    public function index(ProductRepository $productRepository, Request $request, EntityManagerInterface $manager): Response
-    {
+    public function index(ProductRepository $productRepository, Request $request, EntityManagerInterface $manager): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
@@ -38,8 +37,12 @@ class CreateProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"));
-            $productManager->downloadPicture($data->get("imageLink"), $product);
+            $productManager->setData($product,
+                                     $data->get("productType"),
+                                     $data->get("productName"),
+                                     $data->get("productStock"));
+
+            $productManager->downloadPicture($product, $request->files->get("productPicture"));
 
             if ($productManager->verifyProduct($product)) {
                 if ($productRepository->findBy(["name" => $product->getName()])) {

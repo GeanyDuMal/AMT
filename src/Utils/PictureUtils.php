@@ -5,7 +5,8 @@ namespace App\Utils;
 use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class PictureUtils {
+class PictureUtils
+{
 
     /**
      * @param string $link The link of the picture
@@ -30,11 +31,15 @@ class PictureUtils {
         return $location;
     }
 
-    public function downloadPictureFromFile(UploadedFile $file, string $location): string {
+    public function downloadPictureFromFile(?UploadedFile $file, string $location): string {
         $locationUsed = $this->adaptLocation($location);
 
         try {
-            file_put_contents($locationUsed, $file->getContent());
+            if ($file) {
+                file_put_contents($locationUsed, $file->getContent());
+            } else {
+                throw new Exception("Le fichier est null");
+            }
         } catch (Exception $e) {
             $location = "/img/entity/placeholder.png";
         }

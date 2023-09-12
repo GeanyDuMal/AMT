@@ -41,12 +41,16 @@ class EditProductController extends AbstractController
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
 
-            $productManager->setData($product, $data->get("productType"), $data->get("productName"), $data->get("productStock"), $product->getImageLink());
+            $productManager->setData($product,
+                                     $data->get("productType"),
+                                     $data->get("productName"),
+                                     $data->get("productStock"),
+                                     $product->getImageLink());
 
             if ($productManager->verifyProduct($product) && !$productManager->verifyEditedProductAlreadyExist($product)) {
 
                 if ($data->get("imageLinkState") === "edit"){
-                    $productManager->downloadPicture($data->get("imageLink"), $product);
+                    $productManager->downloadPicture($product, $request->files->get("productPicture"));
                 }
 
                 $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));

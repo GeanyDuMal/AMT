@@ -67,5 +67,5 @@ function verifyProduct(){
  */
 form.imageLinkState.onchange = function (){
     var selectedOption = this[this.selectedIndex];
-    form.querySelector("#imageLinkArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
+    form.querySelector("#imageArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
 }

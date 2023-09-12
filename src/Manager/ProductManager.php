@@ -8,6 +8,7 @@ use App\Repository\ProductRepository;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductManager {
     private EntityManagerInterface $manager;
@@ -116,15 +117,16 @@ class ProductManager {
         }
     }
 
-    public function downloadPicture(string $pictureLink, Product $product): void {
+    public function downloadPicture(Product $product, ?UploadedFile $file): string {
         $pictureUtils = new PictureUtils();
         $randomUtils = new RandomUtils();
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $postExist = (bool)$this->productRepository->findOneBy(["name" => $product->getName(), "productType" => $product->getProductType()]);
+
+        $productExist = (bool)$this->productRepository->findOneBy(["name" => $product->getName(), "productType" => $product->getProductType()]);
         $idUsed = 1;
 
 
-        if (!$postExist) {
+        if (!$productExist) {
             $lastProduct = $this->productRepository->findOneBy([], ["id" => "DESC"]);
 
             if ($lastProduct) {
@@ -139,7 +141,8 @@ class ProductManager {
         }
 
         $newLocation = "/img/entity/product/img_" . $idUsed . "_" . $randomUtils->randomString(4, $characters) . ".png";
+        $product->setImageLink($pictureUtils->downloadPictureFromFile($file, $newLocation));
 
-        $product->setImageLink($pictureUtils->downloadPicture($pictureLink, $newLocation));
+        return $product->getImageLink();
     }
 }

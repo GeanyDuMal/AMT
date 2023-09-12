@@ -65,7 +65,7 @@
                             <p>
                                 Prix :
                                 {% for price in product.prices %}
-                                    {% if price.clientType == clientTypeActual%}
+                                    {% if price.clientType == clientTypeActual %}
                                         {{ price.price }}€
                                     {% endif %}
                                 {% endfor %}
@@ -107,7 +107,7 @@
                             <p>
                                 Prix :
                                 {% for price in product.prices %}
-                                    {% if price.clientType == clientTypeActual%}
+                                    {% if price.clientType == clientTypeActual %}
                                         {{ (price.price)|number_format(2,'.') }}€
                                     {% endif %}
                                 {% endfor %}
@@ -120,9 +120,9 @@
                                         Modifier
                                     </button>
                                 </a>
-                                <a id="toDelete">
-                                    <button class="btn btn-secondary">
-                                        Supprimer
+                                <a href="{{ path('showProduct', {id: product.id}) }}">
+                                    <button class="btn btn-primary">
+                                        Voir plus
                                     </button>
                                 </a>
                             {% endif %}
