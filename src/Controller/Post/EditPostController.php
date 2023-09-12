@@ -35,11 +35,16 @@ class EditPostController extends AbstractController
         $message = "";
 
         if ($data->count() > 0 && $post) {
-            $postmanager->setData($post, $data->get('postType'), $data->get("postTitle"), trim($data->get('postDescription')), $post->getCreationDate(), $post->getImageLink());
+            $postmanager->setData($post,
+                                  $data->get('postType'),
+                                  $data->get("postTitle"),
+                                  trim($data->get('postDescription')),
+                                  $post->getCreationDate(),
+                                  $post->getImageLink());
 
             if ($postmanager->verifyPost($post)) {
-                if ($data->get('imageLinkState') === "edit") {
-                    $postmanager->downloadPicture($data->get('imageLink'), $post);
+                if ($data->get("pictureState") === "edit"){
+                    $postmanager->downloadPicture($post, $request->files->get("postPicture"));
                 }
 
                 $postmanager->persist($post);

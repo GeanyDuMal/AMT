@@ -7,12 +7,7 @@ function verifyProduct(){
     const memberPrice = form.memberPrice.value;
     const studentPrice = form.studentPrice.value;
     const imageLinkValue = form.imageLink.value;
-    let imageLinkStateValue = ""
-    let imageLinkStateSet = form.imageLinkState
-
-    if (imageLinkStateSet) {
-        imageLinkStateValue = form.imageLinkState.value;
-    }
+    let pictureStateValue = form.pictureState.value;
 
 
     if (!nameValue.trim()) {
@@ -41,7 +36,7 @@ function verifyProduct(){
     else if(isNaN(studentPriceValue)){
         message += "Le prix des étudiants doit être un nombre. ";    }
 
-    if (imageLinkStateSet && imageLinkStateValue === "edit"){
+    if (pictureStateValue && pictureStateValue === "edit"){
         if (!imageLinkValue.trim()){
             message += "Lien non renseigné\n ";
         } else if (!imageLinkValue.startsWith('http')){
@@ -65,7 +60,7 @@ function verifyProduct(){
 /**
  * Change the visibility of the area to set the imageLink
  */
-form.imageLinkState.onchange = function (){
+form.pictureState.onchange = function (){
     var selectedOption = this[this.selectedIndex];
     form.querySelector("#imageArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
 }

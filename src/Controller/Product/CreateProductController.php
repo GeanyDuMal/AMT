@@ -41,7 +41,6 @@ class CreateProductController extends AbstractController
                                      $data->get("productType"),
                                      $data->get("productName"),
                                      $data->get("productStock"));
-
             $productManager->downloadPicture($product, $request->files->get("productPicture"));
 
             if ($productManager->verifyProduct($product)) {

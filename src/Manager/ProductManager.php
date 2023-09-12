@@ -121,10 +121,8 @@ class ProductManager {
         $pictureUtils = new PictureUtils();
         $randomUtils = new RandomUtils();
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
         $productExist = (bool)$this->productRepository->findOneBy(["name" => $product->getName(), "productType" => $product->getProductType()]);
         $idUsed = 1;
-
 
         if (!$productExist) {
             $lastProduct = $this->productRepository->findOneBy([], ["id" => "DESC"]);

@@ -48,8 +48,7 @@ class EditProductController extends AbstractController
                                      $product->getImageLink());
 
             if ($productManager->verifyProduct($product) && !$productManager->verifyEditedProductAlreadyExist($product)) {
-
-                if ($data->get("imageLinkState") === "edit"){
+                if ($data->get("pictureState") === "edit"){
                     $productManager->downloadPicture($product, $request->files->get("productPicture"));
                 }
 

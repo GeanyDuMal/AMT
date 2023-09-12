@@ -9,6 +9,7 @@ use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PostManager {
     private EntityManagerInterface $manager;
@@ -84,7 +85,7 @@ class PostManager {
      * @param string $pictureLink
      * @param Post $post
      */
-    public function downloadPicture(string $pictureLink, Post $post): void {
+    public function downloadPicture(Post $post, ?UploadedFile $file): string {
         $pictureUtils = new PictureUtils();
         $randomUtils = new RandomUtils();
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -106,7 +107,8 @@ class PostManager {
         }
 
         $newLocation = "/img/entity/post/img_" . $idUsed . "_" . $randomUtils->randomString(4, $characters) . ".png";
+        $post->setImageLink($pictureUtils->downloadPictureFromFile($file, $newLocation));
 
-        $post->setImageLink($pictureUtils->downloadPicture($pictureLink, $newLocation));
+        return $post->getImageLink();
     }
 }

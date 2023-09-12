@@ -28,7 +28,7 @@
             {% endif %}
         </div>
         {# Form Start #}
-        <form action="" method="post" class="flex-vertical flex-centered" id="form-post" onsubmit="disableButton()">
+        <form action="" method="post" class="flex-vertical flex-centered" id="form-post" onsubmit="disableButton()" enctype="multipart/form-data">
             <div class="form-group">
                 <label class="input-label">Titre du Post</label>
                 <input type="text" name="postTitle" class="form-input" value="">
@@ -38,8 +38,10 @@
                 <textarea rows="5" class="form-input" name="postDescription" id="floatingTextarea2"></textarea>
             </div>
             <div class="form-group">
-                <label class="input-label">Lien de l'image</label>
-                <input type="text" name="imageLink" class="form-input" value="">
+                <label class="input-label">Image du post</label>
+                <div class="width-fit-content">
+                    <input type="file" name="postPicture" id="postPicture" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
+                </div>
             </div>
             <div class="form-group">
                 <label class="input-label">Type de Post</label>

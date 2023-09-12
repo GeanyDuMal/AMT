@@ -4,10 +4,9 @@ function verifyPost(){
     let message = "";
     const titleValue = form.postTitle.value;
     const descriptionValue = form.postDescription.value;
-    const imageLinkValue = form.imageLink.value;
-    let imageLinkStateValue = ""
-    if (form.imageLinkState) {
-        imageLinkStateValue = form.imageLinkState.value;
+    let pictureStateValue = ""
+    if (form.pictureState) {
+        pictureStateValue = form.pictureState.value;
     }
 
     if (!titleValue.trim()) {
@@ -18,14 +17,6 @@ function verifyPost(){
         message += "Description du post non renseignée\n ";
     }
 
-
-    if (form.imageLinkState && imageLinkStateValue === "edit"){
-        if (!imageLinkValue.trim()){
-            message += "Lien non renseigné\n ";
-        } else if (!imageLinkValue.startsWith('http')){
-            message += "Lien ne correspondant pas à un lien classique \n(http / https)\n ";
-        }
-    }
 
     if (message !== "") {
         Swal.fire({
@@ -43,7 +34,7 @@ function verifyPost(){
 /**
  * Change the visibility of the area to set the imageLink
  */
-form.imageLinkState.onchange = function (){
+form.pictureState.onchange = function (){
     var selectedOption = this[this.selectedIndex];
     form.querySelector("#imageArea").style.visibility = (selectedOption.value === "edit" ? "visible" : "hidden");
 }
