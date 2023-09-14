@@ -33,7 +33,6 @@ class ShowOrderedController extends AbstractController
         $orderedManager = new OrderedManager($manager);
         $priceManager = new PriceManager($manager);
         $priceList = [];
-        $clientType = ClientType::ETUDIANT;
         $inputParameterBag = $request->request;
         $toCancel = $inputParameterBag->get("cancel");
         $toRemove = $inputParameterBag->get("remove");
