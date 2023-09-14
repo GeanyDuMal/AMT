@@ -50,7 +50,6 @@ class ParameterManager
             $parameter->setAmountBalanceToAddAfterExchange(floatval($amountBalanceToAddAfterExchange));
         } else {
             $parameter->setAmountBalanceToAddAfterExchange(0.8);
-
         }
 
         $parameter->setCotisantActivated($cotisantActivated)

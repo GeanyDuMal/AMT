@@ -112,11 +112,7 @@ class OrderedManager {
         $allOrderPurchase = $ordered->getPurchases();
 
         foreach ($allOrderPurchase as $purchase) {
-            $clientType = ClientType::ETUDIANT;
-
-            if ($ordered->getClient() != null) {
-                $clientType = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
-            }
+            $clientType = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
 
             $montantTotal = $montantTotal + $priceManager->getPriceByProductAndClientType($purchase->getProduct(), $clientType) * $purchase->getQuantity();
         }

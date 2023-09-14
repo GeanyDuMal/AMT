@@ -68,10 +68,6 @@ class PriceManager {
     public function getClientTypeUsedForPrice(?Client $client): string {
         if ($client) {
             switch ($client->getClientType()) {
-                case ClientType::ETUDIANT :
-                    $clientTypeReturn = ClientType::ETUDIANT;
-                    break;
-
                 case ClientType::ASSOCIATION :
                     $clientTypeReturn = ClientType::ASSOCIATION;
                     break;

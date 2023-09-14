@@ -41,9 +41,7 @@ class ShowOrderedController extends AbstractController
         if (is_numeric($idOrder)) {
             $order = $orderedRepository->find($idOrder);
             if ($order != null) {
-                if ($order->getClient()) {
-                    $clientType = $priceManager->getClientTypeUsedForPrice($order->getClient());
-                }
+                $clientType = $priceManager->getClientTypeUsedForPrice($order->getClient());
 
                 $purchaseList = $purchaseRepository->findBy(["ordered" => $order]);
                 //Permet de creer un tableau avec en clé les id des produits choisis et en valeur le prix
@@ -65,7 +63,6 @@ class ShowOrderedController extends AbstractController
                         "message" => "La commande a été supprimé avec succès"
                     ]);
                 }
-
             } else {
                 return $this->redirectToRoute("home");
             }

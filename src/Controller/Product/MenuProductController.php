@@ -19,12 +19,8 @@ class MenuProductController extends AbstractController
     public function show(EntityManagerInterface $manager, ProductRepository $productRepository, ?string $message = null): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
-        $clientTypeActual = ClientType::ETUDIANT;
         $priceManager = new PriceManager($manager);
-
-        if ($this->getUser()) {
-            $clientTypeActual = $priceManager->getClientTypeUsedForPrice($this->getUser());
-        }
+        $clientTypeActual = $priceManager->getClientTypeUsedForPrice($this->getUser());
 
         // On recupere tout les produits
         $productsAvailable = $productRepository->findAllPositiveStock();
