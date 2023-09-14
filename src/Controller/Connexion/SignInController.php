@@ -7,6 +7,7 @@ use App\Manager\ClientManager;
 use App\Manager\ParameterManager;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\SymfonyRole;
+use App\Utils\Exception\ApplicationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,25 +44,15 @@ class SignInController extends AbstractController
 
             $confirmPassword = trim($data->get("confirmPassword"));
 
-            /*
-             * Si le form n'est pas vide,
-             * que le client n'existe pas
-             * et que les infos sont correctes
-             * alors on l'insere dans la base de données
-             * La confirmation du mdp ne peux pas etre verif avec $client car son password est hashé
-             */
-            if ($clientManager->verifyClient($client) && !$clientManager->clientExists($client)
-                && (trim($data->get("password")) == $confirmPassword)
-                && $clientManager->verifyPassword($data->get("password"))) {
-
-                $clientManager->persist($client);
-                return $this->redirectToRoute('login');
-            } else if ($clientManager->clientExists($client)) {
-                $message = "Ce client existe déjà";
-            } else if (!$clientManager->verifyPassword($data->get("password"))) {
-                $message = "Votre mot de passe ne respecte pas les règles imposés";
+            if (trim($data->get("password")) == trim($data->get("confirmPassword")) && $clientManager->verifyPassword(trim($data->get("password")))) {
+                try {
+                    $clientManager->persistClientIfNotExists($client);
+                    return $this->redirectToRoute('login');
+                } catch (ApplicationException $e) {
+                    $message = $e->getCustomMessage();
+                }
             } else {
-                $message = "Merci de vérifier votre saisie";
+                $message = "Merci de verifier les mots de passes";
             }
         }
 

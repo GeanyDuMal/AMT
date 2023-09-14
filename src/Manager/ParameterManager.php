@@ -5,14 +5,15 @@ namespace App\Manager;
 use App\Entity\Parameter;
 use App\Repository\ParameterRepository;
 use App\Utils\CacheUtils;
+use App\Utils\Exception\ApplicationException;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ParameterManager {
+class ParameterManager
+{
     private EntityManagerInterface $manager;
     private ParameterRepository $parameterRepository;
     const CACHE_KEY_PARAMETER = "parameter";
@@ -49,13 +50,16 @@ class ParameterManager {
             $parameter->setAmountBalanceToAddAfterExchange(floatval($amountBalanceToAddAfterExchange));
         } else {
             $parameter->setAmountBalanceToAddAfterExchange(0.8);
-
         }
 
         $parameter->setCotisantActivated($cotisantActivated)
                   ->setPostActivated($postActivated);
     }
 
+    /**
+     * @param bool $force
+     * @return Parameter
+     */
     public function getParameter(bool $force = false): Parameter {
         $cacheUtils = new CacheUtils();
 
@@ -67,7 +71,7 @@ class ParameterManager {
                 $cacheUtils->saveInCache($parameter, self::CACHE_KEY_PARAMETER);
             }
         } catch (InvalidArgumentException $e) {
-            // TODO gestion d'erreur
+            $parameter = $this->getDefaultParameter();
         }
 
         return $parameter;
@@ -95,5 +99,18 @@ class ParameterManager {
             is_numeric($amountFidelityPointToExchange) && intval($amountFidelityPointToExchange) != 0 &&
             is_numeric($amountBalanceToAddAfterExchange) && floatval($amountBalanceToAddAfterExchange) != 0
         );
+    }
+
+    /**
+     * @return Parameter
+     */
+    private function getDefaultParameter(): Parameter {
+        $parameter = new Parameter();
+        $parameter->setAmountFidelityPointToExchange(150)
+                  ->setAmountBalanceToAddAfterExchange(0.80)
+                  ->setPostActivated(true)
+                  ->setPostActivated(true);
+
+        return $parameter;
     }
 }
