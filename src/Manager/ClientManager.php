@@ -9,9 +9,11 @@ use App\Repository\ClientRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\SymfonyRole;
+use App\Utils\Exception\ApplicationException;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function PHPUnit\Framework\throwException;
 
 
 class ClientManager {
@@ -251,6 +253,19 @@ class ClientManager {
         if ($nbReduction != 0) {
             $client->setFidelityPoint($client->getFidelityPoint() - $nbReduction * $limitFidelityPoint);
             $client->setBalance(floatval($client->getBalance()) + $nbReduction * $amountTransferToBalance);
+        }
+    }
+
+    /**
+     * @throws ApplicationException
+     */
+    public function persistClientIfNotExists(Client $client): void {
+        if ($this->verifyClient($client) && !$this->clientExists($client)) {
+            $this->persist($client);
+        } else if ($this->clientExists($client)) {
+            throw new ApplicationException("Ce client existe déjà");
+        } else {
+            throw new ApplicationException("Saisie incorrecte");
         }
     }
 
