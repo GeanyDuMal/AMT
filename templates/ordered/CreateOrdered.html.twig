@@ -34,6 +34,7 @@
             <div class="flex-horizontal flex-overflow flex-centered list-card">
             {% for product in productList %}
                 <div class="card">
+                    <img src={{ product.imageLink }}>
                     <div class="card-text">
                         <p class="card-title">
                             {{ product.name }}
