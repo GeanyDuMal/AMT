@@ -6,6 +6,32 @@
     flex-wrap: nowrap;
 }
 
+.card img {
+    width: fit-content;
+    align-self: center;
+}
+
 .main-block {
     max-width: 100vw; /* Surcharge */
+}
+
+@media screen and (max-width: 800px) {
+    .card {
+        width: 40vw;
+    }
+
+    .card img {
+        display: none;
+    }
+
+    .list-card {
+        align-items: normal;
+        flex-direction: row;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .card img {
+        max-height: 20vh;
+    }
 }

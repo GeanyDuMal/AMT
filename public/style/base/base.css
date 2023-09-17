@@ -112,6 +112,7 @@ body {
     flex-direction: column;
     height: fit-content;
     width: 30%;
+    min-width: 15vw;
     margin: 20px;
     overflow: hidden;
 }
