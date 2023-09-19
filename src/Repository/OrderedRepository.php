@@ -49,11 +49,14 @@ class OrderedRepository extends ServiceEntityRepository
     public function quantityThisWeeksCommands(): array
     {
         $thisWeek = date("W");
+        $thisYear = date("Y");
 
         return $this->createQueryBuilder("a")
             ->select("count(a) as number")
-            ->where("WEEK(a.orderedAt)=:thisWeek")
+            ->where("WEEK(a.orderedAt) = :thisWeek")
+            ->andWhere("YEAR(a.orderedAt) = :thisYear")
             ->setParameter("thisWeek", $thisWeek)
+            ->setParameter("thisYear", $thisYear)
             ->getQuery()
             ->getResult()[0];
     }
