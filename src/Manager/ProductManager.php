@@ -143,4 +143,8 @@ class ProductManager {
 
         return $product->getImageLink();
     }
+
+    public function getAllProductAvailable(): array {
+        return $this->productRepository->findAllPositiveStock();
+    }
 }

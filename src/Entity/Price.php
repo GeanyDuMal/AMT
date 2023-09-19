@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PriceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Price
 {
     /**
+     * @Groups("price_product")
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="prices")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
@@ -20,6 +22,7 @@ class Price
     private Product $product;
 
     /**
+     * @Groups("price")
      * @ORM\Id
      * @ORM\Column(type="string")
      * @Assert\NotNull(message="Le type client dans prix ne doit pas etre null")
@@ -27,6 +30,7 @@ class Price
     private string $clientType;
 
     /**
+     * @Groups("price")
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Assert\Positive(message="Le prix doit etre positif")
      */
