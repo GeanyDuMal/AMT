@@ -269,6 +269,10 @@ class ClientManager {
         }
     }
 
+    public function getClientByLogin(string $login): Client|null {
+        return $this->clientRepository->findOneBy(["login" => $login]);
+    }
+
     /**
      * If there is no President in the database, it will assign the current Client as a President
      * @param Client $client

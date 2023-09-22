@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Product
 {
     /**
+     * @Groups("product")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,28 +23,33 @@ class Product
     private int $id;
 
     /**
+     * @Groups("product")
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le produit doit avoir un nom")
      */
     private string $name;
 
     /**
+     * @Groups("product")
      * @ORM\Column(type="string", length=255)
      */
     private string $productType;
 
     /**
+     * @Groups("product")
      * @ORM\Column(type="integer")
      * @Assert\PositiveOrZero(message="La quantité doit etre positif ou null")
      */
     private int $quantityStock;
 
     /**
+     * @Groups("product")
      * @ORM\Column(type="string", length=255)
      */
     private ?string $imageLink;
 
     /**
+     * @Groups("product")
      * @ORM\OneToMany(targetEntity=Price::class, mappedBy="product", orphanRemoval=true, fetch="EAGER")
      */
     private Collection $prices;
