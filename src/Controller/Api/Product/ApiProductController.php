@@ -18,14 +18,9 @@ class ApiProductController extends AbstractController
     /**
      * @Route("/api/product/getAll", name="apiProductGetAll")
      */
-    public function index(EntityManagerInterface $manager, Request $request): JsonResponse {
+    public function index(EntityManagerInterface $manager): JsonResponse {
         $this->clientManager = new ClientManager($manager);
         $productManager = new ProductManager($manager);
-        $headers = $request->headers;
-
-        if (!$this->checkAuthenticate($headers->get("login"), $headers->get("password"))){
-            return $this->json([], Response::HTTP_FORBIDDEN);
-        }
 
         return $this->json($productManager->getAllProductAvailable(), Response::HTTP_OK, [], ["groups" => ["product", "price"]]);
     }
