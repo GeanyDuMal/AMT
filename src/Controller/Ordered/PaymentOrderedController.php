@@ -75,6 +75,8 @@ class PaymentOrderedController extends AbstractController {
             $orderManager->reduceBalanceIfNecessary($ordered);
             $orderManager->addFidelityToClient($ordered);
 
+            $request->getSession()->clear();
+
             return $this->redirectToRoute("createOrdered", [
                 "message" => "Commande réussie !"
             ]);

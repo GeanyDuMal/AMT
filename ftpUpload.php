@@ -4,9 +4,9 @@
  *
  * - Run a Xampp server.
  *
- * - Put the file in xampp/htdocs
+ * - Put the file in xampp/htdocs/ftpUpload/
  *
- * - Then go on your browser and go to http://localhost/ftpUpload.php
+ * - Then go on your browser and go to http://localhost/ftpUpload/ftpUpload.php
  *
  * If no error appears, everything appened right
  *
