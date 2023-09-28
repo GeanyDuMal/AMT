@@ -41,8 +41,8 @@ class PaymentOrderedController extends AbstractController {
         $productOrderedAndClient = $request->getSession()->get("productOrderedAndClient");
         $ordered = $this->mapTabToOrderedAndPurchase($productOrderedAndClient, $productRepository);
         $clientTypeUsed = $priceManager->getClientTypeUsedForPrice($ordered->getClient());
-        $inputParameterBag = $request->request;
-        
+        $data = $request->request;
+
         $montantProduct = [];
         foreach ($ordered->getPurchases() as $purchase) {
             $product = $purchase->getProduct();
@@ -55,8 +55,8 @@ class PaymentOrderedController extends AbstractController {
         $paymentTypes = $orderManager->getAllowedPaymentType($montantTotal, $ordered->getClient());
 
         //Si l'on a cliqué sur un bouton sur la page Payment
-        if ($inputParameterBag->get("payement_type")) {
-            $paymentTypeChose = $inputParameterBag->get("payement_type");
+        if ($data->get("payement_type")) {
+            $paymentTypeChose = $data->get("payement_type");
 
             if (!$purchaseManager->verifyDisponibilityProducts($ordered->getPurchases()->getValues())) {
                 return $this->redirectToRoute("menuOrdered", [
@@ -74,8 +74,6 @@ class PaymentOrderedController extends AbstractController {
 
             $orderManager->reduceBalanceIfNecessary($ordered);
             $orderManager->addFidelityToClient($ordered);
-
-            $request->getSession()->clear();
 
             return $this->redirectToRoute("createOrdered", [
                 "message" => "Commande réussie !"

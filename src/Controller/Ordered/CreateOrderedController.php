@@ -24,6 +24,7 @@ class CreateOrderedController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        $request->getSession()->clear();
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();
         $data = $request->request;
