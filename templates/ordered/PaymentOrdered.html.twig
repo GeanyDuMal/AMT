@@ -7,56 +7,63 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{  asset('script/ordered/paymentOrdered.js') }}"></script>
-    <script src="{{  asset('script/generic/formGenericFunction.js') }}"></script>
+    <script src="{{ asset('script/ordered/paymentOrdered.js') }}"></script>
+    <script src="{{ asset('script/generic/formGenericFunction.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-      <div class="flex-vertical flex-centered">
-            {% if client %}
-                  <div class="block_client">
-                        <h2>
-                              {{ client.name }} {{ client.firstName }}
-                        </h2>
-                        <div>
-                              Point de Fidelité : {{ client.fidelityPoint }}
-                        </div>
-                        <div>
-                            Solde : {{ client.balance }}
-                        </div>
-                  </div>
-            {% endif %}
-            
-            <div class="list-card flex-horizontal flex-overflow flex-centered">
-            {% for purchase in purchases %}
-                  <div class="card">
-                      <div class="card-text">
-                          <p class="card-title">
-                              {{ purchase.product.name }}
-                          </p>
-                          <div>
-                              Quantité : {{ purchase.quantity }} |
-                              Prix Unitaire : {{ montantProduct[purchase.product.id]/purchase.quantity }}€
-                          </div>
-                      </div>
-                  </div>
-            {% endfor %}
+    <div class="flex-vertical flex-centered">
+        {% if client %}
+            <div class="block_client">
+                <h2>
+                    {{ client.name }} {{ client.firstName }}
+                </h2>
+                <div>
+                    Point de Fidelité : {{ client.fidelityPoint }}
+                </div>
+                <div>
+                    Solde : {{ client.balance }}
+                </div>
             </div>
-            <h2>
-                  Montant total : {{ montantTotal }}€
-            </h2>
-            <form method="post" class="flex-horizontal flex-centered tab-button-payment" onsubmit="disableButton()">
-                  {% for paymentType in paymentTypes %}
-                        <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary" onclick="return preventPayment()">
-                            {{ paymentType }}
-                            {% if paymentType == "Carte Bancaire" %}
-                                <br> + {{ ((montantTotal//2)+1) * 5 }}cts
-                            {% endif %}
-                        </button>
-                  {% endfor %}
-            </form>
-          <a href="{{ path("createOrdered") }}">
-              <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
-          </a>
-      </div>
+        {% endif %}
+
+        <div class="list-card flex-horizontal flex-overflow flex-centered">
+            {% for purchase in purchases %}
+                <div class="card">
+                    <div class="card-text">
+                        <p class="card-title">
+                            {{ purchase.product.name }}
+                        </p>
+                        <div>
+                            Quantité : {{ purchase.quantity }} |
+                            Prix Unitaire : {{ montantProduct[purchase.product.id]/purchase.quantity }}€
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <h2>
+            Montant total : {{ montantTotal }}€
+        </h2>
+        <form method="post" class="flex-horizontal flex-centered tab-button-payment" id="paymentForm"
+              onsubmit="disableButtonPaymentOrdered()">
+            {% for paymentType in paymentTypes %}
+                <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary"
+                        onclick="return preventPayment()">
+                    {{ paymentType }}
+                    {% if paymentType == "Carte Bancaire" %}
+                        <br> + {{ ((montantTotal//2)+1) * 5 }}cts
+                    {% endif %}
+                </button>
+                <div class="btn btn-secondary" style="display: none" id="pendingOrdered">
+                    <p>
+                        Envoi en cours
+                    </p>
+                </div>
+            {% endfor %}
+        </form>
+        <a href="{{ path("createOrdered") }}">
+            <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
+        </a>
+    </div>
 {% endblock %}
