@@ -14,9 +14,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 class ShowClientController extends AbstractController
 {
-    /**
-     * @Route("/admin/client/show/{!id}", name="showClient")
-     */
+    
+    #[Route("/admin/client/show/{!id}", name: "showClient", methods: ["GET"])]
     public function index($id, ClientRepository $clientRepository, MemberRepository $memberRepository, EntityManagerInterface $manager): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();

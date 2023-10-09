@@ -14,6 +14,7 @@ class MenuPostController extends AbstractController {
     /**
      * @Route("/post/{message?}", name="menuPost")
      */
+    #[Route("/post/{message?}", name: "menuPost", methods: ["GET"])]
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, string $message = null): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();

@@ -13,9 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuProductController extends AbstractController
 {
-    /**
-     * @Route("/product/{message?}", name="menuProduct", methods={"GET", "POST"} )
-     */
+
+    #[Route("/product/{message?}", name: "menuProduct", methods: ["GET"])]
     public function show(EntityManagerInterface $manager, ProductRepository $productRepository, ?string $message = null): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();

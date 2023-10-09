@@ -22,6 +22,7 @@ class PasswordForgotController extends AbstractController
     /**
      * @Route("/profile/passwordForgot", name="passwordForgot")
      */
+    #[Route("/profile/passwordForgot", name: "passwordForgot", methods: ["GET", "POST"])]
     public function index(EntityManagerInterface $manager, ClientRepository $clientRepository, Request $request): Response
     {
         $message = null;

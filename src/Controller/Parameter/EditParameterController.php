@@ -12,9 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditParameterController extends AbstractController
 {
-    /**
-     * @Route("/parameter", name="editParameter")
-     */
+
+    #[Route("/parameter", name: "editParameter", methods: ["GET", "POST"])]
     public function index(Request $request, EntityManagerInterface $manager): Response {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute("home");

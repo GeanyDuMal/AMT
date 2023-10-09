@@ -26,9 +26,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuManagementController extends AbstractController
 {
-    /**
-     * @Route("/management/", name="menuManagement")
-     */
+
+    #[Route("/management", name: "menuManagement", methods: ["GET", "POST"])]
     public function index(EntityManagerInterface $manager, Request $request,
         UserPasswordHasherInterface $passwordHasher,
         ClientRepository $clientRepository, MemberRepository $memberRepository, PostRepository $postRepository,

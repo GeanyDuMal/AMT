@@ -9,9 +9,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    /**
-     * @Route("/login", name="login")
-     */
+
+    #[Route("/login", name: "login", methods: ["GET", "POST"])]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
         // Redirige vers le profil si deja connecté

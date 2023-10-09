@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiProductController extends AbstractController
 {
-    /**
-     * @Route("/api/product/getAll", name="apiProductGetAll")
-     */
+    #[Route("/api/product/getAll", name: "apiProductGetAll", methods: ["GET"])]
     public function index(EntityManagerInterface $manager): JsonResponse {
         $productManager = new ProductManager($manager);
 

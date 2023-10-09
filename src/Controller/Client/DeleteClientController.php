@@ -14,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteClientController extends AbstractController
 {
 
-    /**
-     * @Route("/admin/client/delete/{!id}", name="deleteClient", methods={"GET", "DELETE"})
-     */
+    #[Route("/admin/client/delete/{!id}", name: "deleteClient", methods: ["GET", "DELETE"])]
     public function index($id, EntityManagerInterface $manager, ClientRepository $clientRepository): RedirectResponse|JsonResponse {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
             return $this->redirectToRoute('home');

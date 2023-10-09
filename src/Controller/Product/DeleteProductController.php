@@ -14,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeleteProductController extends AbstractController
 {
 
-    /**
-     * @Route("/product/delete/{!id}", name="deleteProduct", methods={"GET", "DELETE"})
-     */
+    #[Route("/product/delete/{!id}", name: "deleteProduct", methods: ["GET", "DELETE"])]
     public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): RedirectResponse|JsonResponse
     {
         if (!$this->isGranted(SymfonyRole::TRESORIER)) {

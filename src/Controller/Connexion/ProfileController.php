@@ -18,6 +18,7 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
+    #[Route("/profile", name: "profile", methods: ["GET", "POST"])]
     public function index(Request          $request, UserPasswordHasherInterface $passwordHasher,
                           ClientRepository $clientRepository, EntityManagerInterface $manager): Response
     {

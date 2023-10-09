@@ -24,9 +24,7 @@ class PaymentOrderedController extends AbstractController {
 
     private ClientManager $clientManager;
 
-    /**
-     * @Route("/ordered/payment/", name="orderedPayment", methods={"POST"})
-     */
+    #[Route("/ordered/payment", name: "orderedPayment", methods: ["POST"])]
     public function index(EntityManagerInterface $manager, Request $request, ProductRepository $productRepository): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
