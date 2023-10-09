@@ -17,9 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreatePostController extends AbstractController
 {
-    /**
-     * @Route("/post/create", name="createPost")
-     */
+
+    #[Route("/post/create", name: "createPost", methods: ["GET", "POST"])]
     public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();

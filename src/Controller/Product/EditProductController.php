@@ -19,9 +19,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditProductController extends AbstractController
 {
-    /**
-     * @Route("/product/edit/{!id}", name="editProduct")
-     */
+
+    #[Route("/product/edit/{!id}", name: "editProduct", methods: ["GET", "POST"])]
     public function index($id, ProductRepository $productRepository, Request $request,
                           EntityManagerInterface $manager, PriceRepository $priceRepository): Response
     {

@@ -20,9 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditClientController extends AbstractController
 {
-    /**
-     * @Route("/admin/client/edit/{!id}", name="editClient", methods={"GET", "POST"} )
-     */
+
+    #[Route("/admin/client/edit/{!id}", name: "editClient", methods: ["GET", "POST"])]
     public function index($id, UserPasswordHasherInterface $passwordHasher, Request $request, EntityManagerInterface $manager,
         MemberRepository $memberRepository, ClientRepository $clientRepository): Response {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {

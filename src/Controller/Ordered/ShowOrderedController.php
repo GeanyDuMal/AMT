@@ -18,9 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShowOrderedController extends AbstractController
 {
-    /**
-     * @Route("/ordered/show&id={!idOrder}", name="showOrdered")
-     */
+
+    #[Route("/ordered/show&id={!idOrder}", name: "showOrdered", methods: ["GET", "POST"])]
     public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
         PurchaseRepository $purchaseRepository, PriceRepository $priceRepository, Request $request): Response
     {

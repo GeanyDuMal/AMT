@@ -16,9 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditPostController extends AbstractController
 {
-    /**
-     * @Route("/post/edit/{!id}", name="editPost",methods={"GET", "POST"})
-     */
+
+    #[Route("/post/edit/{!id}", name: "editPost", methods: ["GET", "POST"])]
     public function index($id, PostRepository $postRepository, Request $request,
         EntityManagerInterface $manager): Response {
         $parameterManager = new ParameterManager($manager);

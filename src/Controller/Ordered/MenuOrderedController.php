@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuOrderedController extends AbstractController
 {
-    /**
-     * @Route("/ordered/menu/{message?}", name="menuOrdered")
-     */
+    #[Route("/ordered/menu/{message?}", name: "menuOrdered", methods: ["GET", "POST"])]
     public function menu(EntityManagerInterface $manager, OrderedRepository $orderedRepository, string $message = null): Response
     {
         if (!$this->isGranted(SymfonyRole::TRESORIER)) {

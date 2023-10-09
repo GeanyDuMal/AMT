@@ -19,9 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreateClientController extends AbstractController {
 
-    /**
-     * @Route("/admin/client/create", name="createClient", methods={"GET", "POST"} )
-     */
+    #[Route("/admin/client/create", name: "createClient", methods: ["GET", "POST"])]
     public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher,
         Request $request, EntityManagerInterface $manager): Response {
         if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {

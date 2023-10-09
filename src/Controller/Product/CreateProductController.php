@@ -18,9 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreateProductController extends AbstractController
 {
-    /**
-     * @Route("/product/create", name="createProduct")
-     */
+
+    #[Route("/product/create", name: "createProduct", methods: ["GET", "POST"])]
     public function index(ProductRepository $productRepository, Request $request, EntityManagerInterface $manager): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');

@@ -11,9 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShowPostController extends AbstractController
 {
-    /**
-     * @Route("/post/show/{!id}", name="showPost")
-     */
+
+    #[Route("/post/show/{!id}", name: "showPost", methods: ["GET"])]
     public function index(EntityManagerInterface $manager, int $id, PostRepository $postRepository): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();

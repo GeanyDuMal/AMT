@@ -15,9 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeletePostController extends AbstractController
 {
-    /**
-     * @Route("/post/delete/{!id}", name="deletePost", methods={"GET", "DELETE"})
-     */
+
+    #[Route("/post/delete/{!id}", name: "deletePost", methods: ["GET", "DELETE"])]
     public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): RedirectResponse|JsonResponse
     {
         $parameterManager = new ParameterManager($manager);

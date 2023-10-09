@@ -13,6 +13,7 @@ class UserGuideController extends AbstractController
     /**
      * @Route("/userGuide", name="userGuide")
      */
+    #[Route("/userGuide", name: "userGuide", methods: ["GET"])]
     public function index(EntityManagerInterface $manager): Response {
         $parameterManager = new ParameterManager($manager);
         $parameter = $parameterManager->getParameter();

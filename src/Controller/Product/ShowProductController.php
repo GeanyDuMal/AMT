@@ -12,9 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShowProductController extends AbstractController
 {
-    /**
-     * @Route("/product/show/{!id}", name="showProduct")
-     */
+
+    #[Route("/product/show/{!id}", name: "showProduct", methods: ["GET"])]
     public function index(EntityManagerInterface $manager, $id, ProductRepository $productRepository): Response
     {
         $parameterManager = new ParameterManager($manager);

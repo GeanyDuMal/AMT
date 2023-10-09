@@ -17,9 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SignInController extends AbstractController
 {
-    /**
-     * @Route("/signin", name="signin")
-     */
+
+    #[Route("/signin", name: "signin", methods: ["GET", "POST"])]
     public function index(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         // Redirige vers le profil si deja connecté

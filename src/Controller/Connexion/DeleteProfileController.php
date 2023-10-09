@@ -15,9 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class DeleteProfileController extends AbstractController
 {
 
-    /**
-     * @Route("/profile/delete", name="deleteProfile", methods={"GET", "DELETE"})
-     */
+    #[Route("/profile/delete", name: "deleteProfile", methods: ["GET", "DELETE"])]
     public function index(EntityManagerInterface $manager, ClientRepository $clientRepository, TokenStorageInterface $tokenStorage,
         Request $request): RedirectResponse
     {

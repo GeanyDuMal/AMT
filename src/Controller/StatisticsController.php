@@ -17,9 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StatisticsController extends AbstractController
 {
-    /**
-     * @Route("/statistics", name="statistics",methods={"GET", "POST"} )
-     */
+
+    #[Route("/statistics", name: "statistics", methods: ["GET"])]
     public function index(ProductRepository $productRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
                           ClientRepository $clientRepository, EntityManagerInterface $manager): Response
     {
