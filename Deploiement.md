@@ -32,6 +32,8 @@ Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracter
     RewriteRule ^(.*)$ public/$1 [QSA,L]
     ```
   - Le second qui permet de gerer les route avec Apache, est present dans public/.htaccess
+
+#### Anciennement, plus obligatoire aujourd'hui
 - Afin de faire fonctionner la partie connexion en HTTPS, il faudra rajouter ce code entre la ligne 7 et 8 dans le fichier public/index.php :
   ```PHP
   if ($context['APP_ENV'] === "prod") {
