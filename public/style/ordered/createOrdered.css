@@ -15,6 +15,28 @@
     max-width: 100vw; /* Surcharge */
 }
 
+.block-clients-suggestion {
+    max-height: 0vh;
+    z-index: 2;
+    /*position: relative;*/
+    /*float: left;*/
+}
+
+.clients-suggestion {
+    background-color: var(--ultra-light-grey);
+    border: solid black 1px;
+    border-radius: 5px;
+    list-style: none;
+    margin-top: 0;
+    padding: 10px;
+}
+
+.client-suggestion:hover {
+    background: var(--light-grey);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
 @media screen and (max-width: 800px) {
     .card {
         width: 40vw;
