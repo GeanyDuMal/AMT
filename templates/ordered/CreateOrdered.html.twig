@@ -25,19 +25,12 @@
             </div>
         {% endif %}
         <form method="post" class="flex-vertical flex-centered" id="form-ordered" onsubmit="disableButton()">
-            <input type="text" name="name" class="form-input select" value="" id="input-client-suggest">
+            <input type="text" name="orderedClient" id="input-client-id" value="null" hidden>
+            <input type="text" name="name" class="form-input select" value="" id="input-client-suggest" autocomplete="off">
             <div class="block-clients-suggestion">
-                <ul class="clients-suggestion" id="persons-corresponding-list">
+                <ul class="clients-suggestion" id="persons-corresponding-list" hidden>
                 </ul>
             </div>
-
-
-{#            <select name="orderedClient" class="form-input select">#}
-{#                <option value="null">Choisir un Client</option>#}
-{#                {% for client in clientList %}#}
-{#                    <option value="{{ client.id }}">{{ client.name }} {{ client.firstName }}</option>#}
-{#                {% endfor %}#}
-{#            </select>#}
             <div class="flex-horizontal flex-overflow flex-centered list-card">
             {% for product in productList %}
                 <div class="card">

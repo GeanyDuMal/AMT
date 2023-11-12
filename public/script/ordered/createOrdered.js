@@ -5,7 +5,8 @@
  *    prevent si un utilisateur modifie cette valeur manuellement
  */
 let blocksProduct = document.querySelectorAll(".card");
-let inputText = document.querySelector("#input-client-suggest")
+let inputClientSuggest = document.querySelector("#input-client-suggest")
+let listSuggest = document.querySelector("#persons-corresponding-list");
 
 blocksProduct.forEach(block => {
     var btnUp = block.querySelector(".btn-plus");
@@ -40,10 +41,11 @@ blocksProduct.forEach(block => {
     })
 });
 
-inputText.addEventListener("input", () => {
-    searchClient(inputText.value);
+inputClientSuggest.addEventListener("input", () => {
+    setIdClient("null")
+    searchClient(inputClientSuggest.value);
 })
-inputText.addEventListener("focusout", () => {
+inputClientSuggest.addEventListener("focusout", () => {
     //searchClient("");
 })
 
@@ -77,31 +79,50 @@ function checkQuantityInput() {
  */
 function searchClient(searchString) {
     let persons = [];
+    listSuggest.innerHTML = "";
 
-    let list = document.querySelector("#persons-corresponding-list");
-    list.innerHTML = "";
+    if(searchString.length >= 3) {
+        fetch('/client/ajax/searchClient?researchString=' + searchString, {method: 'GET'})
+            .then(response => {
+                response.json().then(values => {
+                    values.forEach(person => {
+                        if (persons.length < 5) {
+                            persons.push(person);
+                        }
+                    })
+                }).then(() => {
+                    listSuggest.innerHTML = "";
 
-    fetch('/client/ajax/searchClient?researchString=' + searchString, {method: 'GET'})
-        .then(response => {
-            response.json().then(values => {
-                values.forEach(value => {
-                    console.log(value)
-                    if (persons.length < 5) {
-                        persons.push(value);
-                    }
-                })
-            }).then(() => {
-                persons.forEach(person => {
-                    list.innerHTML += "<li class='client-suggestion' onclick='selectClient(this)' clientName=\"" + person.name + "\" clientId=\"" + person.id + "\">"+ person.name +"</li>";
+                    persons.forEach(person => {
+                        listSuggest.innerHTML += "<li class='client-suggestion' onclick='selectClient(this)' clientName=\"" + person.name + "\" clientId=\"" + person.id + "\">"+ person.name +"</li>";
+                    })
+                }).finally(() => {
+                    verifyDisplayList(listSuggest)
                 })
             })
-        })
+    } else {
+        verifyDisplayList(listSuggest)
+    }
+
 }
 
 function selectClient(source) {
     let sourceValues = source.attributes
-    console.log("personName = " + sourceValues.clientName.value + " , personId = " + sourceValues.clientId.value)
 
+    inputClientSuggest.value = sourceValues.clientName.value;
+    setIdClient(sourceValues.clientId.value)
+
+    searchClient("");
 }
 
+function setIdClient(id) {
+    let inputClientId = document.querySelector('#input-client-id');
+    inputClientId.value = id;
+}
 
+function verifyDisplayList(list) {
+    console.log(list.childElementCount)
+    list.hidden = list.childElementCount === 0;
+
+    console.log(list)
+}

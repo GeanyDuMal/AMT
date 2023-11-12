@@ -51,6 +51,7 @@ class ClientRepository extends ServiceEntityRepository
             SELECT Client
             FROM App\Entity\Client Client
             WHERE CONCAT(Client.name, CONCAT(' ', Client.firstName)) LIKE CONCAT('%', CONCAT(:name, '%'))
+            OR CONCAT(Client.firstName, CONCAT(' ', Client.name)) LIKE CONCAT('%', CONCAT(:name, '%'))
         ")
             ->setParameter("name", $name)
             ->getResult();
