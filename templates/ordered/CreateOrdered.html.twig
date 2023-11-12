@@ -14,7 +14,7 @@
 
 {% block body %}
     <div class="flex-vertical flex-centered main-block">
-        <h2 class="title">
+        <h2 class="title-1">
             Création d'une Commande
         </h2>
         {% if message != "" %}
@@ -25,7 +25,10 @@
             </div>
         {% endif %}
         <form method="post" class="flex-vertical flex-centered" id="form-ordered" onsubmit="disableButton()">
-            <div class="block-clients-search">
+            <div class="block-clients-search flex-vertical flex-centered">
+                <h3>
+                    Client
+                </h3>
                 <input type="text" name="orderedClient" id="input-client-id" value="null" hidden>
                 <input type="text" name="name" class="form-input select" value="" id="input-client-suggest" autocomplete="off">
                 <div class="block-clients-suggestion">
