@@ -1,3 +1,11 @@
+.block-clients-search {
+    z-index: 2;
+}
+
+.block-clients-suggestion {
+    max-height: 0;
+}
+
 .card-buttons > .btn {
     width: 100%; /* Surcharge */
 }
@@ -9,6 +17,21 @@
 .card img {
     width: fit-content;
     align-self: center;
+}
+
+.clients-suggestion {
+    background-color: var(--ultra-light-grey);
+    border: solid black 1px;
+    border-radius: 5px;
+    list-style: none;
+    margin-top: 0;
+    padding: 10px;
+}
+
+.client-suggestion:hover {
+    background: var(--light-grey);
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .main-block {

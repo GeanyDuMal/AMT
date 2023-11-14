@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Dto\Client\ClientOrderedResearch;
 use App\Entity\Client;
 use App\Entity\Member;
 use App\Entity\PasswordForgotRequest;
@@ -17,6 +18,7 @@ use function PHPUnit\Framework\throwException;
 
 
 class ClientManager {
+    private const MIN_LENGTH_SEARCH = 3;
     private EntityManagerInterface $manager;
     private ClientRepository $clientRepository;
     const REGEX_SPECIAL = "@#$%^&*()+=-[]';,./{}|:<>?~";
@@ -362,5 +364,20 @@ class ClientManager {
 
     public function getClientById(string $id): ?Client {
         return $this->clientRepository->find($id);
+    }
+
+    public function getClientByNameFirstName(?string $nameFirstName): array {
+        $clients = [];
+        $clientsDto = [];
+
+        if (strlen($nameFirstName) >= self::MIN_LENGTH_SEARCH) {
+            $clients = $this->clientRepository->findClientWithNameLike($nameFirstName);
+        }
+
+        foreach ($clients as $client) {
+            $clientsDto[] = ClientOrderedResearch::clientAsClientOrderedResearch($client);
+        }
+
+        return $clientsDto;
     }
 }

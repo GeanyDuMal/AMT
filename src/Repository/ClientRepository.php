@@ -16,21 +16,20 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ClientRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Client::class);
     }
 
     /**
      * @return Client[] Returns an array of Client that hasn't ordered anything for 2 years and have a 2 years old account
      */
-    public function findClientWithoutOrderedTwoYears(): array
-    {
+    public function findClientWithoutOrderedTwoYears(): array {
         $date = new DateTime();
         $date = $date->sub(DateInterval::createFromDateString("2 Year"));
 
         //Recupere tout les clients qui n'ont pas une commande de moins de 2 ans
-        $orderedQuery = $this->getEntityManager()->createQuery("
+        $orderedQuery = $this->getEntityManager()
+                             ->createQuery("
             SELECT Client
             FROM App\Entity\Client Client
             WHERE Client NOT IN (
@@ -41,9 +40,21 @@ class ClientRepository extends ServiceEntityRepository
             )
             AND Client.creationDate <= :date
             ")
-            ->setParameter("date", $date);
+                             ->setParameter("date", $date);
 
         return $orderedQuery->getResult();
+    }
+
+    public function findClientWithNameLike(string $name): array {
+        return $this->getEntityManager()
+             ->createQuery("
+            SELECT Client
+            FROM App\Entity\Client Client
+            WHERE CONCAT(Client.name, CONCAT(' ', Client.firstName)) LIKE CONCAT('%', CONCAT(:name, '%'))
+            OR CONCAT(Client.firstName, CONCAT(' ', Client.name)) LIKE CONCAT('%', CONCAT(:name, '%'))
+        ")
+            ->setParameter("name", $name)
+            ->getResult();
     }
 
     // /**

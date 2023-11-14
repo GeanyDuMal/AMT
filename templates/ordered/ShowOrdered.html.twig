@@ -21,9 +21,9 @@
             <h3>
                   le {{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
             </h3>
-            <h4>
+            <h3>
                   Commande de type {{ clientType }} reglé avec {{ ordered.paymentType }}
-            </h4>
+            </h3>
             <div class="list-card flex-horizontal flex-centered">
                   {% for purchase in purchaseList %}
                         <div class="card">
@@ -44,9 +44,9 @@
                         </div>
                   {% endfor %}
             </div>
-            <h4>
+            <h3>
                   Montant total : {{ montantTotal }}€
-            </h4>
+            </h3>
             <div class="flex-horizontal flex-centered">
                   <a href="{{ path("menuOrdered") }}">
                         <img src="{{ asset('img/icons/back.png') }}" class="back-arrow-pages">
