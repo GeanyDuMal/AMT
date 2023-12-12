@@ -108,7 +108,7 @@
                                 Prix :
                                 {% for price in product.prices %}
                                     {% if price.clientType == clientTypeActual %}
-                                        {{ (price.price)|number_format(2,'.') }}€
+                                        {{ (price.price) }}€
                                     {% endif %}
                                 {% endfor %}
                             </p>

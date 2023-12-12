@@ -36,14 +36,14 @@
                         </p>
                         <div>
                             Quantité : {{ purchase.quantity }} |
-                            Prix Unitaire : {{ montantProduct[purchase.product.id]/purchase.quantity }}€
+                            Prix Unitaire : {{ (montantProduct[purchase.product.id]/purchase.quantity)|number_format(2,'.')  }}€
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
         <h2>
-            Montant total : {{ montantTotal }}€
+            Montant total : {{ montantTotal|number_format(2,'.')  }}€
         </h2>
         <form method="post" class="flex-horizontal flex-centered tab-button-payment" id="paymentForm"
               onsubmit="disableButtonPaymentOrdered()">
