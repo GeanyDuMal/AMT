@@ -87,7 +87,7 @@ class ParameterManager
                 $pictureUtils->deletePicture($parameter->getLinkLogo());
             }
 
-            $newLocation = "/img/entity/parameter/img_" . $randomUtils->randomString(4, $characters) . ".png";
+            $newLocation = "/img/entity/parameter/img_logo_" . $randomUtils->randomString(4, $characters) . ".png";
             $parameter->setLinkLogo($pictureUtils->downloadPictureFromFile($file, $newLocation));
         }
 

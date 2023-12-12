@@ -42,7 +42,14 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Segoe UI", sans-serif;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
 
 .block-sidebar {
     border-bottom: #999999 1px solid;

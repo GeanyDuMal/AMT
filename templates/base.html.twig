@@ -31,14 +31,14 @@
                     <span></span>
                     <span></span>
                 </button>
+
                 <a href="{{ path("home") }}" class="flex-centered">
-                    <img src="{{ asset('img/logo_texte_white.png') }}" width="auto" height="50" alt="logo-menu" border="0">
+                    <img src="{{ asset('img/logo_app_white.png') }}" width="auto" height="50" alt="logo-menu">
                     {% if parameter.linkLogo %}
                         <p>x</p>
-                        <img src="{{ asset(parameter.linkLogo) }}" width="auto" height="50" alt="logo-menu" border="0">
+                        <img src="{{ asset(parameter.linkLogo) }}" width="auto" height="50" alt="logo-menu">
                     {% endif %}
                 </a>
-
 
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a href="{{ path("profile") }}">
