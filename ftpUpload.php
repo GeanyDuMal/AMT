@@ -36,7 +36,6 @@ ftp_pasv($ftp_conn, true); // Define the passive mode
 copyRemoteFile(".", ".", $ftp_conn);
 echo("Download proceed\n");
 
-
 $patterns = array("*.lock");
 $patterns[] = "*.json";
 $patterns[] = "config/*.php";
@@ -55,6 +54,7 @@ $patterns[] = "public/style/*/*.css";
 $patterns[] = "public/style/*.css";
 $patterns[] = "src/Controller/*.php";
 $patterns[] = "src/Controller/*/*.php";
+$patterns[] = "src/Dto/*/*.php";
 $patterns[] = "src/Entity/*.php";
 $patterns[] = "src/Manager/*.php";
 $patterns[] = "src/Repository/*.php";
@@ -66,8 +66,6 @@ $patterns[] = "templates/*.twig";
 foreach ($patterns as $pattern) {
     uploadFileToFtp($ftp_conn, $pattern);
 }
-
-
 
 echo("\nUpload proceed\n");
 
