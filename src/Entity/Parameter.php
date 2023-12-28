@@ -20,6 +20,11 @@ class Parameter
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private ?String $associationName = null;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private ?string $linkLogo = null;
 
     /**
@@ -52,6 +57,16 @@ class Parameter
 
     public function setLinkLogo(?string $linkLogo): self {
         $this->linkLogo = $linkLogo;
+
+        return $this;
+    }
+
+    public function getAssociationName(): ?string {
+        return $this->associationName;
+    }
+
+    public function setAssociationName(?string $assocationName): self {
+        $this->associationName = $assocationName;
 
         return $this;
     }
