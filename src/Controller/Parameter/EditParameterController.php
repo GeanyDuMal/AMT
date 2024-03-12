@@ -27,10 +27,14 @@ class EditParameterController extends AbstractController
         if ($data->count() > 0) {
             $cotisantActivated = (bool)$data->get("cotisantActivated");
             $postActivated = (bool)$data->get("postActivated");
+            $associationName = $data->get("associationName");
+            $associationDescription = $data->get("associationDescription");
 
             if ($parameterManager->isDataCorrect($data->get("amountFidelityPointToExchange"), $data->get("amountBalanceToAddAfterExchange"))) {
                 $parameterManager->setData(
                     $parameter,
+                    $associationName,
+                    $associationDescription,
                     $parameterManager->downloadPicture($parameter, $request->files->get("associationLogo")),
                     $data->get("amountFidelityPointToExchange"),
                     $data->get("amountBalanceToAddAfterExchange"),

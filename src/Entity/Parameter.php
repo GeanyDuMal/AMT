@@ -23,7 +23,12 @@ class Parameter
     private ?String $associationName = null;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=1023)
+     */
+    private ?String $associationDescription = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $linkLogo = null;
 
@@ -33,7 +38,7 @@ class Parameter
     private ?int $amountFidelityPointToExchange = null;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private ?string $amountBalanceToAddAfterExchange = null;
 
@@ -67,6 +72,16 @@ class Parameter
 
     public function setAssociationName(?string $assocationName): self {
         $this->associationName = $assocationName;
+
+        return $this;
+    }
+
+    public function getAssociationDescription(): ?string {
+        return $this->associationDescription;
+    }
+
+    public function setAssociationDescription(?string $assocationDescription): self {
+        $this->associationDescription = $assocationDescription;
 
         return $this;
     }

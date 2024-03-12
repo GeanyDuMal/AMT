@@ -12,8 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ParameterManager
-{
+class ParameterManager {
     private EntityManagerInterface $manager;
     private ParameterRepository $parameterRepository;
     const CACHE_KEY_PARAMETER = "parameter";
@@ -33,8 +32,20 @@ class ParameterManager
         $this->manager->flush();
     }
 
-    public function setData(Parameter $parameter, ?string $linkLogo, ?int $amountFidelityPointToExchange,
-        ?string $amountBalanceToAddAfterExchange, ?bool $cotisantActivated, ?bool $postActivated): void {
+    public function setData(Parameter $parameter, ?string $associationName, ?string $associationDescription, ?string $linkLogo,
+        ?int $amountFidelityPointToExchange, ?string $amountBalanceToAddAfterExchange, ?bool $cotisantActivated, ?bool $postActivated): void {
+
+        if ($associationName != "") {
+            $parameter->setAssociationName($associationName);
+        } else {
+            $parameter->setAssociationName(null);
+        }
+
+        if ($associationDescription != "") {
+            $parameter->setAssociationDescription($associationDescription);
+        } else {
+            $parameter->setAssociationDescription(null);
+        }
 
         if ($linkLogo) {
             $parameter->setLinkLogo($linkLogo);

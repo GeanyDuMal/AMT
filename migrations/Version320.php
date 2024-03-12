@@ -17,11 +17,13 @@ final class Version320 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE parameter ADD association_name VARCHAR(255) NOT NULL, CHANGE link_logo link_logo VARCHAR(255) NOT NULL, CHANGE amount_balance_to_add_after_exchange amount_balance_to_add_after_exchange NUMERIC(10, 2) NOT NULL');
+        $this->addSql('ALTER TABLE client CHANGE roles roles JSON NOT NULL COMMENT \'(DC2Type:json)\'');
+        $this->addSql('ALTER TABLE parameter ADD association_description VARCHAR(1023) NOT NULL, ADD association_name VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE parameter DROP association_name, CHANGE link_logo link_logo VARCHAR(255) DEFAULT NULL, CHANGE amount_balance_to_add_after_exchange amount_balance_to_add_after_exchange NUMERIC(5, 2) NOT NULL');
+        $this->addSql('ALTER TABLE parameter DROP association_name, DROP association_description');
+        $this->addSql('ALTER TABLE client CHANGE roles roles JSON NOT NULL COMMENT \'(DC2Type:json)\'');
     }
 }
