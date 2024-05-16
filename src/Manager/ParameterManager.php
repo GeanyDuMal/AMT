@@ -108,7 +108,7 @@ class ParameterManager {
         return $parameter->getLinkHomeImage();
     }
 
-    public function downloadPicture(?UploadedFile $file, String $imageLocalLink, String $pathFromFolder): ?string {
+    public function downloadPicture(?UploadedFile $file, ?String $imageLocalLink, String $pathFromFolder): ?string {
         if ($file != null) {
             $pictureUtils = new PictureUtils();
             $randomUtils = new RandomUtils();
@@ -118,7 +118,9 @@ class ParameterManager {
                 $pictureUtils->deletePicture($imageLocalLink);
             }
 
-            return "/img/entity/parameter/" . $pathFromFolder . $randomUtils->randomString(4, $characters) . ".png";
+            $newLocation = "/img/entity/parameter/" . $pathFromFolder . $randomUtils->randomString(4, $characters) . ".png";
+
+            return $pictureUtils->downloadPictureFromFile($file, $newLocation);
         }
 
         return $imageLocalLink;

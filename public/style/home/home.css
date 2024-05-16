@@ -57,11 +57,7 @@
     margin: 0 10px;
 }
 
-.image-home {
-    width: 70%;
-}
-
 .image-home img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 70vh;
 }
