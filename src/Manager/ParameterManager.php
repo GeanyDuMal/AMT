@@ -32,7 +32,7 @@ class ParameterManager {
         $this->manager->flush();
     }
 
-    public function setData(Parameter $parameter, ?string $associationName, ?string $associationDescription, ?string $linkLogo,
+    public function setData(Parameter $parameter, ?string $associationName, ?string $associationDescription, ?string $linkHomeImage, ?string $linkLogo,
         ?int $amountFidelityPointToExchange, ?string $amountBalanceToAddAfterExchange, ?bool $cotisantActivated, ?bool $postActivated): void {
 
         if ($associationName != "") {
@@ -42,9 +42,13 @@ class ParameterManager {
         }
 
         if ($associationDescription != "") {
-            $parameter->setAssociationDescription($associationDescription);
+            $parameter->setAssociationDescription(trim($associationDescription));
         } else {
             $parameter->setAssociationDescription(null);
+        }
+
+        if ($linkHomeImage) {
+            $parameter->setLinkHomeImage($linkHomeImage);
         }
 
         if ($linkLogo) {
@@ -88,21 +92,36 @@ class ParameterManager {
         return $parameter;
     }
 
-    public function downloadPicture(Parameter $parameter, ?UploadedFile $file): ?string {
+    public function downloadPictureLogo(Parameter $parameter, ?UploadedFile $file): ?string {
+        if ($file != null) {
+            $parameter->setLinkLogo($this->downloadPicture($file, $parameter->getLinkLogo(), "img_logo_"));
+        }
+
+        return $parameter->getLinkLogo();
+    }
+
+    public function downloadPictureHome(Parameter $parameter, ?UploadedFile $file): ?string {
+        if ($file != null) {
+            $parameter->setLinkHomeImage($this->downloadPicture($file, $parameter->getLinkHomeImage(), "img_home_"));
+        }
+
+        return $parameter->getLinkHomeImage();
+    }
+
+    public function downloadPicture(?UploadedFile $file, String $imageLocalLink, String $pathFromFolder): ?string {
         if ($file != null) {
             $pictureUtils = new PictureUtils();
             $randomUtils = new RandomUtils();
             $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-            if (($parameter->getLinkLogo() != (null || "")) && !str_contains($parameter->getLinkLogo(), "placeholder")) {
-                $pictureUtils->deletePicture($parameter->getLinkLogo());
+            if (($imageLocalLink != (null || "")) && !str_contains($imageLocalLink, "placeholder")) {
+                $pictureUtils->deletePicture($imageLocalLink);
             }
 
-            $newLocation = "/img/entity/parameter/img_logo_" . $randomUtils->randomString(4, $characters) . ".png";
-            $parameter->setLinkLogo($pictureUtils->downloadPictureFromFile($file, $newLocation));
+            return "/img/entity/parameter/" . $pathFromFolder . $randomUtils->randomString(4, $characters) . ".png";
         }
 
-        return $parameter->getLinkLogo();
+        return $imageLocalLink;
     }
 
     public function isDataCorrect(string $amountFidelityPointToExchange, string $amountBalanceToAddAfterExchange): bool {

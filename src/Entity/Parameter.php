@@ -52,6 +52,11 @@ class Parameter
      */
     private ?bool $postActivated = null;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $linkHomeImage = null;
+
     public function getId(): ?int {
         return $this->id;
     }
@@ -62,6 +67,16 @@ class Parameter
 
     public function setLinkLogo(?string $linkLogo): self {
         $this->linkLogo = $linkLogo;
+
+        return $this;
+    }
+
+    public function getLinkHomeImage(): ?string {
+        return $this->linkHomeImage;
+    }
+
+    public function setLinkHomeImage(?string $linkHomeImage): self {
+        $this->linkHomeImage = $linkHomeImage;
 
         return $this;
     }

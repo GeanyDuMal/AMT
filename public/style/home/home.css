@@ -53,6 +53,15 @@
     margin: 0 10px;
 }
 
-.bottom-text {
+.home-text {
     margin: 0 10px;
+}
+
+.image-home {
+    width: 70%;
+}
+
+.image-home img {
+    width: 100%;
+    height: auto;
 }

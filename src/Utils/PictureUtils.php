@@ -9,6 +9,8 @@ class PictureUtils
 {
 
     /**
+     * @deprecated use {@link downloadPictureFromFile} instead
+     *
      * @param string $link The link of the picture
      * @param string $location The location where the picture will be saved
      * @return string The location of the picture
@@ -68,7 +70,7 @@ class PictureUtils
      * @param string $location
      * @return string
      */
-    public function adaptLocation(string $location): string {
+    private function adaptLocation(string $location): string {
         if ($location[0] == "/") {
             $location = substr($location, 1);
         }
