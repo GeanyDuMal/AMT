@@ -29,6 +29,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder("p")
             ->andWhere("p.quantityStock > 0")
+            ->andWhere("p.active = true")
             ->orderBy("p.productType, p.name", "ASC")
             ->getQuery()
             ->getResult()
@@ -42,10 +43,25 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllEmptyStock(): array
     {
         return $this->createQueryBuilder("p")
-            ->andWhere("p.quantityStock = 0")
-            ->orderBy("p.productType, p.name", "ASC")
-            ->getQuery()
-            ->getResult()
+                    ->andWhere("p.quantityStock = 0")
+                    ->andWhere("p.active = true")
+                    ->orderBy("p.productType, p.name", "ASC")
+                    ->getQuery()
+                    ->getResult()
+            ;
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     * Return all the product with "active" attribute false
+     */
+    public function findAllNotActive(): array
+    {
+        return $this->createQueryBuilder("p")
+                    ->andWhere("p.active = false")
+                    ->orderBy("p.productType, p.name", "ASC")
+                    ->getQuery()
+                    ->getResult()
             ;
     }
 
