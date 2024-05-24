@@ -20,10 +20,12 @@ final class Version320 extends AbstractMigration
         $this->addSql('ALTER TABLE client CHANGE roles roles JSON NOT NULL COMMENT \'(DC2Type:json)\'');
         $this->addSql('ALTER TABLE parameter ADD association_description VARCHAR(1023) NOT NULL, ADD association_name VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE parameter ADD link_home_image VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE product ADD active TINYINT(1) DEFAULT 1 NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE product DROP active');
         $this->addSql('ALTER TABLE parameter DROP link_home_image');
         $this->addSql('ALTER TABLE parameter DROP association_name, DROP association_description');
         $this->addSql('ALTER TABLE client CHANGE roles roles JSON NOT NULL COMMENT \'(DC2Type:json)\'');
