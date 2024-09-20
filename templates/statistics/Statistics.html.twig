@@ -54,6 +54,19 @@
                 </div>
             </div>
 
+            <div class="card flex-vertical flex-centered card-color-1">
+                <div class="card-title">
+                    Chiffre d'affaire (Année)
+                </div>
+                <div class="card-text">
+                    {% if salesRevenueThisYear is not null  %}
+                        {{ salesRevenueThisYear|number_format(2,'.') }}
+                    {% else %}
+                        0
+                    {% endif %} €
+                </div>
+            </div>
+
             <div class="card flex-vertical flex-centered card-color-2">
                 <div class="card-title">
                     Nombre de Post
