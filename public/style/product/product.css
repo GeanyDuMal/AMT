@@ -5,3 +5,7 @@
     max-width: 100%;
 }
 
+#active-product-block {
+    align-self: flex-start;
+}
+
