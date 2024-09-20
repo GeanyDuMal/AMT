@@ -34,6 +34,16 @@
                         {{ product.productType }}
                     </p>
                 </div>
+                <div class="show-sub-block">
+                    <label class="input-label">Produit actif</label>
+                    <p>
+                        {% if product.active %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </p>
+                </div>
             </div>
             <p class="show-block-title flex-align-self-left">
                 Tarification

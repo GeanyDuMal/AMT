@@ -76,11 +76,16 @@ class ProductManager {
      * @param String $imageLink
      * @return void
      */
-    public function setData(Product $product, string $productType, string $productName, int $productStock, string $imageLink = ""): void {
+    public function setData(Product $product, string $productType, string $productName, int $productStock, ?bool $isActive, string $imageLink = ""): void {
+        if(!$isActive) {
+            $isActive = false;
+        }
+
         $product->setName($productName)
                 ->setImageLink($imageLink)
                 ->setQuantityStock($productStock)
-                ->setProductType($productType);
+                ->setProductType($productType)
+                ->setActive($isActive);
     }
 
     /**
@@ -88,8 +93,7 @@ class ProductManager {
      * @return bool
      */
     public function verifyProduct(Product $product): bool {
-        return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != ""
-            && $product->getImageLink() != null);
+        return ($product->getQuantityStock() >= 0 && $product->getProductType() != null && trim($product->getName()) != "" && $product->getImageLink() != null);
     }
 
     /**
@@ -117,7 +121,7 @@ class ProductManager {
         }
     }
 
-    public function downloadPicture(Product $product, ?UploadedFile $file): string {
+    public function downloadAndApplyPicture(Product $product, ?UploadedFile $file): string {
         $pictureUtils = new PictureUtils();
         $randomUtils = new RandomUtils();
         $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
