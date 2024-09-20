@@ -64,8 +64,7 @@ class OrderedRepository extends ServiceEntityRepository
     /**
      * @return Ordered[] done this week
      */
-    public function thisWeekOrdered(): array
-    {
+    public function thisWeekOrdered(): array {
         $thisWeek = date("W");
         $thisMonth = date("m");
         $thisYear = date("Y");
@@ -83,8 +82,7 @@ class OrderedRepository extends ServiceEntityRepository
     /**
      * @return Ordered[] done this month
      */
-    public function thisMonthOrdered(): array
-    {
+    public function thisMonthOrdered(): array {
         $thisMonth = date("m");
         $thisYear = date("Y");
 
@@ -93,6 +91,20 @@ class OrderedRepository extends ServiceEntityRepository
             FROM App\Entity\Ordered Ordered
             WHERE MONTH(Ordered.orderedAt) = $thisMonth
             AND YEAR(Ordered.orderedAt) = $thisYear
+            ");
+        return $purchase->getResult();
+    }
+
+    /**
+     * @return Ordered[] done this year
+     */
+    public function thisYearOrdered(): array {
+        $thisYear = date("Y");
+
+        $purchase = $this->getEntityManager()->createQuery("
+            SELECT Ordered
+            FROM App\Entity\Ordered Ordered
+            WHERE YEAR(Ordered.orderedAt) = $thisYear
             ");
         return $purchase->getResult();
     }
