@@ -31,10 +31,33 @@
             <p class="form-group-title flex-align-self-left">
                 General
             </p>
-            <div class="form-group">
-                <label class="input-label">Logo de l'association</label>
-                <div class="width-fit-content">
-                    <input type="file" name="associationLogo" id="associationLogo" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
+            <div class="block-form-group">
+                <div class="form-group">
+                    <label class="input-label">Nom de l'association</label>
+                    <input type="text" name="associationName" value="{{ parameter.associationName }}" class="form-input">
+
+                </div>
+                <div class="form-group">
+                    <label class="input-label">Logo de l'association</label>
+                    <div class="width-fit-content">
+                        <input type="file" name="associationLogo" id="associationLogo" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
+                    </div>
+                </div>
+            </div>
+
+            <p class="form-group-title flex-align-self-left">
+                Accueil
+            </p>
+            <div class="flex-horizontal block-form-group">
+                <div class="form-group">
+                    <label class="input-label">Description</label>
+                    <textarea rows="5" class="form-input" name="associationDescription">{{ parameter.associationDescription }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="input-label">Image page d'accueil</label>
+                    <div class="width-fit-content">
+                        <input type="file" name="homeImage" id="homeImage" class="form-input" accept=".png, .jpeg, .jpg, .gif"/>
+                    </div>
                 </div>
             </div>
 

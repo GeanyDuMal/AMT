@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Home;
 
 use App\Manager\ParameterManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     public function index(EntityManagerInterface $manager): Response
     {
         $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $parameterManager->getParameter(true);
 
         return $this->render("home/Home.html.twig", [
             "parameter" => $parameter

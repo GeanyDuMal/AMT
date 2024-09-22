@@ -30,8 +30,10 @@ class StatisticsController extends AbstractController
         $parameter = $parameterManager->getParameter();
         $orderedManager = new OrderedManager($manager);
         $countThisWeeksCommands = $orderedRepository->quantityThisWeeksCommands()["number"];
+        $salesRevenueThisYear = 0;
         $salesRevenueThisMonth = 0;
         $salesRevenueThisWeek = 0;
+        $yearOrderedList = $orderedRepository->thisYearOrdered();
         $monthOrderedList = $orderedRepository->thisMonthOrdered();
         $weekOrderedList = $orderedRepository->thisWeekOrdered();
         $topSoldProduct = $productRepository->findTopSoldProductThisMonth();
@@ -41,7 +43,11 @@ class StatisticsController extends AbstractController
         $countClients = count($clientRepository->findAll());
         $postsNumber = count($postRepository->findAll());
 
-        // Build the amount of purchase for the current month and the current week
+        // Build the amount of purchase
+        foreach ($yearOrderedList as $ordered) {
+            $salesRevenueThisYear += $orderedManager->montantTotal($ordered);
+        }
+
         foreach ($monthOrderedList as $ordered) {
             $salesRevenueThisMonth += $orderedManager->montantTotal($ordered);
         }
@@ -65,6 +71,7 @@ class StatisticsController extends AbstractController
             "countClients" => $countClients,
             "salesRevenueThisWeek" => $salesRevenueThisWeek,
             "salesRevenueThisMonth" => $salesRevenueThisMonth,
+            "salesRevenueThisYear" => $salesRevenueThisYear,
             "averagePerStudent" => $averagePerStudent,
             "postsNumber" => $postsNumber
         ]);

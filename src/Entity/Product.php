@@ -54,6 +54,11 @@ class Product
      */
     private Collection $prices;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private ?bool $active = null;
+
     public function __construct()
     {
         $this->prices = new ArrayCollection();
@@ -138,6 +143,18 @@ class Product
                 $price->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

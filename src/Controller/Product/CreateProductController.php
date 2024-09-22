@@ -31,7 +31,6 @@ class CreateProductController extends AbstractController
         $product = new Product();
         $productTypes = ProductType::getAll();
         $message = "";
-
         if ($data->count() > 0) {
             $productManager = new ProductManager($manager);
             $priceManager = new PriceManager($manager);
@@ -39,8 +38,10 @@ class CreateProductController extends AbstractController
             $productManager->setData($product,
                                      $data->get("productType"),
                                      $data->get("productName"),
-                                     $data->get("productStock"));
-            $productManager->downloadPicture($product, $request->files->get("productPicture"));
+                                     $data->get("productStock"),
+                                     $data->get("isActive")
+            );
+            $productManager->downloadAndApplyPicture($product, $request->files->get("productPicture"));
 
             if ($productManager->verifyProduct($product)) {
                 if ($productRepository->findBy(["name" => $product->getName()])) {
