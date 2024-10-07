@@ -12,15 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditParameterController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+
+    public function __construct(EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+    }
 
     #[Route("/parameter", name: "editParameter", methods: ["GET", "POST"])]
-    public function index(Request $request, EntityManagerInterface $manager): Response {
+    public function index(Request $request): Response {
         if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
             return $this->redirectToRoute("home");
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter(true);
+        $parameter = $this->parameterManager->getParameter(true);
         $data = $request->request;
         $message = null;
 
