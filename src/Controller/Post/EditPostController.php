@@ -16,37 +16,45 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditPostController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private PostManager $postManager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
+
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->postManager = new PostManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
 
     #[Route("/post/edit/{!id}", name: "editPost", methods: ["GET", "POST"])]
-    public function index($id, PostRepository $postRepository, Request $request,
-        EntityManagerInterface $manager): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+    public function index($id, Request $request): Response {
+        $parameter = $this->parameterManager->getParameter();
 
         if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
-        $post = $postRepository->find($id);
+        $post = $this->postRepository->find($id);
         $postTypes = PostType::getAll();
-        $postmanager = new PostManager($manager);
         $message = "";
 
         if ($data->count() > 0 && $post) {
-            $postmanager->setData($post,
+            $this->postManager->setData($post,
                                   $data->get('postType'),
                                   $data->get("postTitle"),
                                   trim($data->get('postDescription')),
                                   $post->getCreationDate(),
                                   $post->getImageLink());
 
-            if ($postmanager->verifyPost($post)) {
+            if ($this->postManager->verifyPost($post)) {
                 if ($data->get("pictureState") === "edit"){
-                    $postmanager->downloadPicture($post, $request->files->get("postPicture"));
+                    $this->postManager->downloadPicture($post, $request->files->get("postPicture"));
                 }
 
-                $postmanager->persist($post);
+                $this->postManager->persist($post);
 
                 return $this->redirectToRoute("menuPost", [
                     "message" => "Modification effectué avec succès"

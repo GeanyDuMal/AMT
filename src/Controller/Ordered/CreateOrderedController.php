@@ -30,11 +30,11 @@ class CreateOrderedController extends AbstractController {
 
     public function __construct(EntityManagerInterface $manager, ProductRepository $productRepository, ClientRepository $clientRepository) {
         $this->manager = $manager;
-        $this->clientManager = new ClientManager($manager);
-        $this->parameterManager = new ParameterManager($manager);
-        $this->purchaseManager = new PurchaseManager($manager);
-        $this->orderedManager = new OrderedManager($manager);
-        $this->priceManager = new PriceManager($manager);
+        $this->clientManager = new ClientManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->purchaseManager = new PurchaseManager($this->manager);
+        $this->orderedManager = new OrderedManager($this->manager);
+        $this->priceManager = new PriceManager($this->manager);
         $this->productRepository = $productRepository;
         $this->clientRepository = $clientRepository;
     }

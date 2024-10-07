@@ -24,10 +24,10 @@ class PaymentOrderedController extends AbstractController {
 
     public function __construct(EntityManagerInterface $manager) {
         $this->manager = $manager;
-        $this->priceManager = new PriceManager($manager);
-        $this->parameterManager = new ParameterManager($manager);
-        $this->purchaseManager = new PurchaseManager($manager);
-        $this->orderedManager = new OrderedManager($manager);
+        $this->priceManager = new PriceManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->purchaseManager = new PurchaseManager($this->manager);
+        $this->orderedManager = new OrderedManager($this->manager);
     }
 
     #[Route("/ordered/payment/{!id}", name: "orderedPayment", methods: ["POST"])]
