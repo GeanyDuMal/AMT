@@ -4,6 +4,7 @@ namespace App\Controller\Ordered;
 
 use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
+use App\Utils\Enum\OrderedStatus;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,7 +63,9 @@ class ShowOrderedController extends AbstractController {
             "parameter" => $parameter,
             "ordered" => $ordered,
             "priceList" => $priceList,
-            "montantTotal" => $this->orderedManager->getMontantTotal($ordered)
+            "montantTotal" => $this->orderedManager->getMontantTotal($ordered),
+            "statusPaid" => OrderedStatus::PAID,
+            "statusWaitingPayment" => OrderedStatus::WAITING_PAYMENT,
         ]);
     }
 }

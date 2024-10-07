@@ -4,12 +4,14 @@ namespace App\Manager;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
+use App\Entity\Price;
 use App\Entity\Purchase;
 use App\Repository\OrderedRepository;
 use App\Utils\Enum\ClientType;
 use App\Utils\Enum\OrderedStatus;
 use App\Utils\Enum\PaymentType;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -34,31 +36,6 @@ class OrderedManager {
     public function remove(Ordered $ordered): void {
         $this->manager->remove($ordered);
         $this->manager->flush();
-    }
-
-    /**
-     * Remove the ordered, refound the product and the Client in function of this payment
-     * @param Ordered $order
-     * @return void
-     */
-    public function removeWithRestore(Ordered $order): void {
-        $purchaseManager = new PurchaseManager($this->manager);
-        $clientManager = new ClientManager($this->manager);
-        $purchaseRepository = $this->manager->getRepository(Purchase::class);
-        $montant = $this->getMontantTotal($order);
-
-        $purchaseList = $purchaseRepository->findBy(["ordered" => $order]);
-
-        /*
-         * Permet de restore le client s'il est mentionné dans la commande
-         * Et qu'il a payé avec son solde
-         */
-
-
-        //Supprimer de la base de données
-        foreach ($purchaseList as $purchase) {
-            $purchaseManager->removeWithRestore($purchase);
-        }
     }
 
     /**
@@ -234,14 +211,14 @@ class OrderedManager {
                 $client->setFidelityPoint($client->getFidelityPoint() - $montantTotal * 10);
             }
 
-            foreach ($ordered->getPurchases() as $purchase) {
-                $this->purchaseManager->refund($purchase);
-            }
-
-            $ordered->setStatus(OrderedStatus::REFUNDED);
-
             $this->clientManager->persist($client);
-            $this->persist($ordered);
         }
+
+        foreach ($ordered->getPurchases() as $purchase) {
+            $this->purchaseManager->refund($purchase);
+        }
+
+        $ordered->setStatus(OrderedStatus::REFUNDED);
+        $this->persist($ordered);
     }
 }

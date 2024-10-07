@@ -56,8 +56,12 @@
                   </a>
                   <form method="post">
                         {% if is_granted("ROLE_TRESORIER") %}
-                              <button type="submit" class="btn btn-primary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
-                              <button type="submit" class="btn btn-primary" name="refund" value="refund" onclick="return confirmRefund()">Rembourser</button>
+                              {% if ordered.status == statusPaid or ordered.status == statusWaitingPayment %}
+                                    <button type="submit" class="btn btn-primary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
+                              {% endif %}
+                              {% if ordered.status == statusPaid %}
+                                    <button type="submit" class="btn btn-primary" name="refund" value="refund" onclick="return confirmRefund()">Rembourser</button>
+                              {% endif %}
                         {% endif %}
                   </form>
             </div>

@@ -112,15 +112,15 @@ class MenuManagementController extends AbstractController
         /**
          * Purge des anciennes commandes sans client
          */
-        if ($data->get("clearOrder") != "") {
-            $listOrdered = $orderedRepository->findOrderWithoutClientTwoYearsOld();
+        if ($data->get("clearOrderUnpaid") != "") {
+            $listOrdered = $orderedRepository->findOrderUnpaidLastMonth();
             $orderedManager = new OrderedManager($manager);
 
             foreach ($listOrdered as $ordered) {
                 $orderedManager->remove($ordered);
             }
 
-            $message = "Les commandes de plus de 2 ans sans client ont été supprimées.";
+            $message = "Les commandes de plus d'une semaine non payée ont été supprimées";
         }
 
         /**

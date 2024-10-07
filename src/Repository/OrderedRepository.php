@@ -118,15 +118,18 @@ class OrderedRepository extends ServiceEntityRepository
     /**
      * @return Ordered[] return an array of Ordered that are 2 years old and doesn't have client assigned
      */
-    public function findOrderWithoutClientTwoYearsOld(): array
+    public function findOrderUnpaidLastMonth(): array
     {
         $date = new DateTime();
-        $date = $date->sub(DateInterval::createFromDateString("2 Year"));
+        $date = $date->sub(DateInterval::createFromDateString("1 Month"));
+        $orderedStatusWaitingPayment = OrderedStatus::WAITING_PAYMENT;
 
         return $this->createQueryBuilder("o")
             ->where("o.client IS NULL")
+            ->andWhere("o.status = :orderedStatusWaitingPayment")
             ->andWhere("o.orderedAt < :date")
             ->setParameter("date", $date)
+            ->setParameter("orderedStatusWaitingPayment", $orderedStatusWaitingPayment)
             ->getQuery()
             ->getResult();
     }
