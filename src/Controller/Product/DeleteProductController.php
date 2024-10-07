@@ -2,6 +2,8 @@
 
 namespace App\Controller\Product;
 
+use App\Manager\ParameterManager;
+use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\SymfonyRole;
@@ -13,19 +15,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteProductController extends AbstractController
 {
-
+    private EntityManagerInterface $manager;
+    private ProductManager $productManager;
+    private ProductRepository $productRepository;
+    public function __construct(ProductRepository $productRepository, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->productManager = new ProductManager($this->manager);
+        $this->productRepository = $productRepository;
+    }
     #[Route("/product/delete/{!id}", name: "deleteProduct", methods: ["GET", "DELETE"])]
-    public function index($id, EntityManagerInterface $manager, ProductRepository $productRepository): RedirectResponse|JsonResponse
+    public function index($id): RedirectResponse|JsonResponse
     {
         if (!$this->isGranted(SymfonyRole::TRESORIER)) {
             return $this->redirectToRoute("home");
         }
 
-        $productManager = new ProductManager($manager);
-        $product = $productRepository->find($id);
+        $product = $this->productRepository->find($id);
 
         if ($product) {
-            $productManager->remove($product);
+            $this->productManager->remove($product);
             return $this->redirectToRoute("menuProduct");
         } else {
             return $this->redirectToRoute("home");

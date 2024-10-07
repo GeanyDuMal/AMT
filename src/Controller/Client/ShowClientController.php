@@ -14,15 +14,25 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 class ShowClientController extends AbstractController
 {
-    
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private ClientRepository $clientRepository;
+    private MemberRepository $memberRepository;
+
+    public function __construct(ClientRepository $clientRepository, MemberRepository $memberRepository, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientRepository = $clientRepository;
+        $this->memberRepository = $memberRepository;
+    }
+
     #[Route("/admin/client/show/{!id}", name: "showClient", methods: ["GET"])]
-    public function index($id, ClientRepository $clientRepository, MemberRepository $memberRepository, EntityManagerInterface $manager): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $client = $clientRepository->find($id);
+    public function index($id): Response {
+        $parameter = $this->parameterManager->getParameter();
+        $client = $this->clientRepository->find($id);
 
         if ($client) {
-            $member = $memberRepository->findOneBy(["client" => $client]);
+            $member = $this->memberRepository->findOneBy(["client" => $client]);
 
             return $this->render('client/ShowClient.html.twig', [
                 "parameter" => $parameter,

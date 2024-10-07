@@ -21,8 +21,8 @@ class MenuProductController extends AbstractController
 
     public function __construct(EntityManagerInterface $manager, ProductRepository $productRepository) {
         $this->manager = $manager;
-        $this->orderedManager = new OrderedManager($manager);
-        $this->parameterManager = new ParameterManager($manager);
+        $this->orderedManager = new OrderedManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
         $this->productRepository = $productRepository;
     }
 

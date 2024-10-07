@@ -14,14 +14,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SearchClientController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ClientManager $clientManager;
+
+    public function __construct(EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->clientManager = new ClientManager($this->manager);
+    }
+
     #[Route("/client/ajax/searchClient", name: "ajaxSearchClient", methods: ["GET"])]
-    public function show(EntityManagerInterface $manager, Request $request): Response {
+    public function show(Request $request): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->json([]);
         }
 
-        $clientManager = new ClientManager($manager);
-        $clientDto = $clientManager->getClientByNameFirstName($request->query->get("researchString"));
+        $clientDto = $this->clientManager->getClientByNameFirstName($request->query->get("researchString"));
 
         return $this->json($clientDto);
     }

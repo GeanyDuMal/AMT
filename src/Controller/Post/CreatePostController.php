@@ -17,11 +17,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreatePostController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private PostManager $postManager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
+
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->postManager = new PostManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
 
     #[Route("/post/create", name: "createPost", methods: ["GET", "POST"])]
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+    public function index(Request $request): Response {
+        $parameter = $this->parameterManager->getParameter();
 
         if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
@@ -31,22 +41,21 @@ class CreatePostController extends AbstractController
         $postTypes = PostType::getAll();
         $postExistsError = "";
         $post = new Post();
-        $postmanager = new PostManager($manager);
         $message = "";
 
         if ($data->count() > 0) {
-            $postmanager->setData($post,
+            $this->postManager->setData($post,
                                   $data->get('postType'),
                                   $data->get("postTitle"),
                                   trim($data->get('postDescription')),
                                   new DateTime("now"));
-            $postmanager->downloadPicture($post, $request->files->get("postPicture"));
+            $this->postManager->downloadPicture($post, $request->files->get("postPicture"));
 
-            if ($postmanager->verifyPost($post)) {
-                if ($postRepository->findBy(['title' => $post->getTitle()])) {
+            if ($this->postManager->verifyPost($post)) {
+                if ($this->postRepository->findBy(['title' => $post->getTitle()])) {
                     $postExistsError = "Le post existe déjà.";
                 } else {
-                    $postmanager->persist($post);
+                    $this->postManager->persist($post);
 
                     return $this->redirectToRoute("menuPost", [
                         "message" => "Ajout avec succès"

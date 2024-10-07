@@ -15,22 +15,31 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeletePostController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private PostManager $postManager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
+
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->postManager = new PostManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
 
     #[Route("/post/delete/{!id}", name: "deletePost", methods: ["GET", "DELETE"])]
-    public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): RedirectResponse|JsonResponse
+    public function index($id): RedirectResponse|JsonResponse
     {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $this->parameterManager->getParameter();
 
         if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
-        $postManager = new PostManager($manager);
-        $post = $postRepository->find($id);
+        $post = $this->postRepository->find($id);
 
         if ($post){
-            $postManager->remove($post);
+            $this->postManager->remove($post);
             return $this->redirectToRoute("menuPost");
         } else {
             return $this->redirectToRoute("home");
