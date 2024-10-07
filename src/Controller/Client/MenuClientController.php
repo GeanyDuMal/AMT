@@ -12,15 +12,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuClientController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private ClientRepository $clientRepository;
+
+    public function __construct(ClientRepository $clientRepository, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientRepository = $clientRepository;
+    }
+
     #[Route("/admin/client/{message?}", name: "menuClient", methods: ["GET"])]
-    public function show(ClientRepository $clientRepository, EntityManagerInterface $manager, ?string $message): Response {
+    public function show(?string $message): Response {
         if (!$this->isGranted(SymfonyRole::ASSOC)) {
             return $this->redirectToRoute('home');
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $clients = $clientRepository->findAll();
+        $parameter = $this->parameterManager->getParameter();
+        $clients = $this->clientRepository->findAll();
 
         return $this->render("client/MenuClient.html.twig", [
             "parameter" => $parameter,
