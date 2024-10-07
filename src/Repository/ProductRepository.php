@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Utils\Enum\OrderedStatus;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -115,6 +116,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $thisMonth = date("m");
         $thisYear = date("Y");
+        $orderedStatusPaid = OrderedStatus::PAID;
 
         //Recupere tout les produits qui n"ont pas une commande de moins de 1 an et un stock vide
         $productQuery = $this->getEntityManager()->createQuery("
@@ -122,13 +124,15 @@ class ProductRepository extends ServiceEntityRepository
             FROM App\Entity\Product Product, App\Entity\Ordered Ordered, App\Entity\Purchase Purchase
             WHERE MONTH(Ordered.orderedAt) = ".$thisMonth."
             AND YEAR(Ordered.orderedAt) = ".$thisYear."
+            AND Ordered.status = :orderedStatusPaid
             AND Purchase.ordered = Ordered
             AND Product = Purchase.product
             AND Product.active = true
             GROUP BY Product
             ORDER BY SUM(Purchase.quantity) DESC
-            ")
-        ;
+            ");
+
+        $productQuery->setParameter('orderedStatusPaid', $orderedStatusPaid);
         $productQuery->setMaxResults(5);
 
         return $productQuery->getResult();

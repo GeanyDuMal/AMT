@@ -35,8 +35,8 @@
     text-align: center;
 }
 
-#img-iut {
-    max-width: 80vw;
+.image-home img {
+    width: 60vw;
 }
 
 .top-text {
@@ -57,7 +57,8 @@
     margin: 0 10px;
 }
 
-.image-home img {
-    width: auto;
-    height: 70vh;
+@media screen and (max-width: 800px) {
+    .image-home img {
+        width: 70vw;
+    }
 }
