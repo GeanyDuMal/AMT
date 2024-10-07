@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ordered;
+use App\Utils\Enum\OrderedStatus;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -19,16 +20,6 @@ class OrderedRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ordered::class);
-    }
-
-
-    public function countByDate()
-    {
-        return $this->createQueryBuilder("a")
-            ->select("SUBSTRING(a.orderedAt,1,10) as orderDate,count(a) as count")
-            ->groupBy("orderDate")
-            ->getQuery()
-            ->getResult();
     }
 
     /**
@@ -48,7 +39,7 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function quantityThisWeeksCommands(): array
     {
-        $thisWeek = date("W");
+        $thisWeek = date("W")-1;
         $thisYear = date("Y");
 
         return $this->createQueryBuilder("a")
@@ -65,18 +56,23 @@ class OrderedRepository extends ServiceEntityRepository
      * @return Ordered[] done this week
      */
     public function thisWeekOrdered(): array {
-        $thisWeek = date("W");
+        $thisWeek = date("W")-1;
         $thisMonth = date("m");
         $thisYear = date("Y");
+        $orderedStatusPaid = OrderedStatus::PAID;
 
-        $purchase = $this->getEntityManager()->createQuery("
+        $query = $this->getEntityManager()->createQuery("
             SELECT Ordered
             FROM App\Entity\Ordered Ordered
             WHERE WEEK(Ordered.orderedAt) = $thisWeek
             AND MONTH(Ordered.orderedAt) = $thisMonth
             AND YEAR(Ordered.orderedAt) = $thisYear
+            AND Ordered.status = :orderedStatusPaid
             ");
-        return $purchase->getResult();
+
+        $query->setParameter("orderedStatusPaid", $orderedStatusPaid);
+
+        return $query->getResult();
     }
 
     /**
@@ -85,14 +81,19 @@ class OrderedRepository extends ServiceEntityRepository
     public function thisMonthOrdered(): array {
         $thisMonth = date("m");
         $thisYear = date("Y");
+        $orderedStatusPaid = OrderedStatus::PAID;
 
-        $purchase = $this->getEntityManager()->createQuery("
+        $query = $this->getEntityManager()->createQuery("
             SELECT Ordered
             FROM App\Entity\Ordered Ordered
             WHERE MONTH(Ordered.orderedAt) = $thisMonth
             AND YEAR(Ordered.orderedAt) = $thisYear
+            AND Ordered.status = :orderedStatusPaid
             ");
-        return $purchase->getResult();
+
+        $query->setParameter("orderedStatusPaid", $orderedStatusPaid);
+
+        return $query->getResult();
     }
 
     /**
@@ -100,13 +101,18 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function thisYearOrdered(): array {
         $thisYear = date("Y");
+        $orderedStatusPaid = OrderedStatus::PAID;
 
-        $purchase = $this->getEntityManager()->createQuery("
+        $query = $this->getEntityManager()->createQuery("
             SELECT Ordered
             FROM App\Entity\Ordered Ordered
-            WHERE YEAR(Ordered.orderedAt) = $thisYear
+            WHERE YEAR(Ordered.orderedAt) = $thisYear 
+            AND Ordered.status = :orderedStatusPaid
             ");
-        return $purchase->getResult();
+
+        $query->setParameter("orderedStatusPaid", $orderedStatusPaid);
+
+        return $query->getResult();
     }
 
     /**
