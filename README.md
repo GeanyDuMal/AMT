@@ -1,4 +1,5 @@
-# Site pour l'AEDI
+# AMT
+Association Management Tool
 
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
@@ -16,8 +17,8 @@
 
 ### <ins>Usage</ins>
 Ce site est developpé avec PHP et Symfony. Voici les versions actuelles : <br>
-PHP : 8.0.0 <br>
-Symfony : 5.4.10 
+PHP : 8.2.4 <br>
+Symfony : 6.3 
 
 ### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>
@@ -29,9 +30,6 @@ Méthode de versionning : X.Y.Z <br>
 - Y Correspond à un ajout de fonctionnalité (et correction de bug s'il y a)
 - Z Correspond à une correction de bug uniquement
 
-### <ins>Site<ins>
-Le site est disponible à cette adresse : 
-https://aedi.lescigales.org
 
 Ce site permet de : 
 * S'inscrire avec un login et un mot de passe
@@ -47,4 +45,4 @@ Pour découvrir comment nous avons déployé le site, veuillez vous référer au
 ### <ins>Support<ins>
 Le repository qui suit servira de support afin que les clients et utilisateurs puissent créer des tickets pour remonter des problemes ou demander des améliorations
 
-<a>https://github.com/GeanyDuMal/AEDI_Support</a>
+<a>https://github.com/GeanyDuMal/AMT_Support</a>
