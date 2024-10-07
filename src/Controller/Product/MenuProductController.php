@@ -2,6 +2,7 @@
 
 namespace App\Controller\Product;
 
+use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Repository\ProductRepository;
@@ -13,18 +14,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuProductController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private OrderedManager $orderedManager;
+    private ParameterManager $parameterManager;
+    private ProductRepository $productRepository;
+
+    public function __construct(EntityManagerInterface $manager, ProductRepository $productRepository) {
+        $this->manager = $manager;
+        $this->orderedManager = new OrderedManager($manager);
+        $this->parameterManager = new ParameterManager($manager);
+        $this->productRepository = $productRepository;
+    }
 
     #[Route("/product/{message?}", name: "menuProduct", methods: ["GET"])]
-    public function show(EntityManagerInterface $manager, ProductRepository $productRepository, ?string $message = null): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $priceManager = new PriceManager($manager);
-        $clientTypeActual = $priceManager->getClientTypeUsedForPrice($this->getUser());
+    public function show(string $message = null): Response {
+        $parameter = $this->parameterManager->getParameter();
+        $clientTypeActual = $this->orderedManager->getClientTypeUsedForOrdered($this->getUser());
 
         // On recupere tout les produits
-        $productsAvailable = $productRepository->findAllPositiveStock();
-        $productsEmptyStock = $productRepository->findAllEmptyStock();
-        $productsNotActive = $productRepository->findAllNotActive();
+        $productsAvailable = $this->productRepository->findAllPositiveStock();
+        $productsEmptyStock = $this->productRepository->findAllEmptyStock();
+        $productsNotActive = $this->productRepository->findAllNotActive();
 
         return $this->render("product/MenuProduct.html.twig", [
             "parameter" => $parameter,

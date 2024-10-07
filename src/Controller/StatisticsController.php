@@ -45,15 +45,15 @@ class StatisticsController extends AbstractController
 
         // Build the amount of purchase
         foreach ($yearOrderedList as $ordered) {
-            $salesRevenueThisYear += $orderedManager->montantTotal($ordered);
+            $salesRevenueThisYear += $orderedManager->getMontantTotal($ordered);
         }
 
         foreach ($monthOrderedList as $ordered) {
-            $salesRevenueThisMonth += $orderedManager->montantTotal($ordered);
+            $salesRevenueThisMonth += $orderedManager->getMontantTotal($ordered);
         }
 
         foreach ($weekOrderedList as $ordered) {
-            $salesRevenueThisWeek += $orderedManager->montantTotal($ordered);
+            $salesRevenueThisWeek += $orderedManager->getMontantTotal($ordered);
         }
 
         if ($countThisWeeksCommands == 0) {
