@@ -13,8 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  */
-class Client implements UserInterface, PasswordAuthenticatedUserInterface
-{
+class Client implements UserInterface, PasswordAuthenticatedUserInterface {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -89,112 +88,95 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private DateTimeInterface $creationDate;
 
-    public function getId(): int
-    {
+    public function getId(): int {
         return $this->id;
     }
-    public function setID(int $id): self
-    {
+
+    public function setId(int $id): self {
         $this->id = $id;
         return $this;
     }
-    public function getName(): string
-    {
+
+    public function getName(): string {
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
+    public function setName(string $name): self {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getFirstName(): string
-    {
+    public function getFirstName(): string {
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): self
-    {
+    public function setFirstName(string $firstName): self {
         $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getLogin(): string
-    {
+    public function getLogin(): string {
         return $this->login;
     }
 
-    public function setLogin(string $login): self
-    {
+    public function setLogin(string $login): self {
         $this->login = $login;
         return $this;
     }
 
-    public function getPassword(): string
-    {
+    public function getPassword(): string {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
-    {
+    public function setPassword(string $password): self {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getBalance(): string
-    {
+    public function getBalance(): string {
         return $this->balance;
     }
 
-    public function setBalance(string $balance): self
-    {
+    public function setBalance(string $balance): self {
         $this->balance = $balance;
 
         return $this;
     }
 
-    public function getFidelityPoint(): int
-    {
+    public function getFidelityPoint(): int {
         return $this->fidelityPoint;
     }
 
-    public function setFidelityPoint(int $fidelityPoint): self
-    {
+    public function setFidelityPoint(int $fidelityPoint): self {
         $this->fidelityPoint = $fidelityPoint;
 
         return $this;
     }
 
-    public function getClientType(): string
-    {
+    public function getClientType(): string {
         return $this->clientType;
     }
 
-    public function setClientType(string $clientType): self
-    {
+    public function setClientType(string $clientType): self {
         $this->clientType = $clientType;
 
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeInterface
-    {
+    public function getCreationDate(): ?\DateTimeInterface {
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeInterface $creationDate): self
-    {
+    public function setCreationDate(\DateTimeInterface $creationDate): self {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getRoles(): array
-    {
+    public function getRoles(): array {
         $roles = $this->roles;
 
         ($roles == [] ? $roles = [SymfonyRole::USER] : true);
@@ -202,8 +184,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
+    public function setRoles(array $roles): self {
         $this->roles = $roles;
 
         return $this;
@@ -214,25 +195,21 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
      * Methods implemented by the UserInterface
      */
 
-    public function getSalt(): ?string
-    {
+    public function getSalt(): ?string {
         // you *may* need a real salt depending on your encoder
         // see section on salt below
         return null;
     }
 
-    public function getUserIdentifier(): string
-    {
+    public function getUserIdentifier(): string {
         return $this->getLogin();
     }
 
-    public function eraseCredentials()
-    {
+    public function eraseCredentials() {
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername(): string
-    {
+    public function getUsername(): string {
         return $this->getUserIdentifier();
     }
 }

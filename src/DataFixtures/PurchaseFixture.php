@@ -24,13 +24,15 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[0])
             ->setProduct($productRepository->findOneBy(["name" => "Snickers"]))
-            ->setQuantity(2);
+            ->setQuantity(2)
+            ->setPrice(1.3);
         $manager->persist($purchase);
 
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[0])
             ->setProduct($productRepository->findOneBy(["name" => "Fuze tea"]))
-            ->setQuantity(1);
+            ->setQuantity(1)
+            ->setPrice(0.8);
         $manager->persist($purchase);
 
         //--------------------------------
@@ -39,7 +41,8 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[1])
             ->setProduct($productRepository->findOneBy(["name" => "M&Ms"]))
-            ->setQuantity(1);
+            ->setQuantity(1)
+            ->setPrice(0.6);
         $manager->persist($purchase);
 
         //--------------------------------
@@ -48,13 +51,15 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[2])
             ->setProduct($productRepository->findOneBy(["name" => "Oreo"]))
-            ->setQuantity(3);
+            ->setQuantity(3)
+            ->setPrice(2.2);
         $manager->persist($purchase);
 
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[2])
             ->setProduct($productRepository->findOneBy(["name" => "Coca Cherry"]))
-            ->setQuantity(1);
+            ->setQuantity(1)
+            ->setPrice(0.4);
         $manager->persist($purchase);
 
         //--------------------------------
@@ -63,19 +68,22 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[3])
             ->setProduct($productRepository->findOneBy(["name" => "Chips"]))
-            ->setQuantity(1);
+            ->setQuantity(1)
+            ->setPrice(0.5);
         $manager->persist($purchase);
 
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[3])
             ->setProduct($productRepository->findOneBy(["name" => "Oreo"]))
-            ->setQuantity(1);
+            ->setQuantity(1)
+            ->setPrice(0.7);
         $manager->persist($purchase);
 
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[3])
             ->setProduct($productRepository->findOneBy(["name" => "CapriSun Tropical"]))
-            ->setQuantity(1);
+            ->setQuantity(1)
+            ->setPrice(0.8);
         $manager->persist($purchase);
 
         //--------------------------------
@@ -84,7 +92,8 @@ class PurchaseFixture extends Fixture implements DependentFixtureInterface
         $purchase = new Purchase();
         $purchase->setOrdered($allOrder[4])
             ->setProduct($productRepository->findOneBy(["name" => "Pepsi Max"]))
-            ->setQuantity(2);
+            ->setQuantity(2)
+            ->setPrice(0.6);
         $manager->persist($purchase);
         //--------------------------------
 

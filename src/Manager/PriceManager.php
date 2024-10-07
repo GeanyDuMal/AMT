@@ -2,7 +2,6 @@
 
 namespace App\Manager;
 
-use App\Entity\Client;
 use App\Entity\Price;
 use App\Entity\Product;
 use App\Repository\PriceRepository;
@@ -44,12 +43,12 @@ class PriceManager {
         $studentType = ClientType::ETUDIANT;
 
         $memberPrice->setClientType($memberType)
-            ->setPrice($memberPriceAmount)
-            ->setProduct($product);
+                    ->setPrice($memberPriceAmount)
+                    ->setProduct($product);
 
         $studentPrice->setClientType($studentType)
-            ->setPrice($studentPriceAmount)
-            ->setProduct($product);
+                     ->setPrice($studentPriceAmount)
+                     ->setProduct($product);
     }
 
     /**
@@ -58,39 +57,6 @@ class PriceManager {
      */
     public function verifyPrice(Price $price): bool {
         return ($price->getPrice() >= 0 && $price->getProduct() != null && $price->getClientType() != null);
-    }
-
-    /**
-     * Retourne le type de prix concerné par le type de client passé en paramètre
-     * @param Client|null $client
-     * @return string
-     */
-    public function getClientTypeUsedForPrice(?Client $client): string {
-        if ($client) {
-            switch ($client->getClientType()) {
-                case ClientType::ASSOCIATION :
-                    $clientTypeReturn = ClientType::ASSOCIATION;
-                    break;
-
-                case ClientType::COTISANT :
-                    $parameterManager = new ParameterManager(($this->manager));
-                    $parameter = $parameterManager->getParameter();
-
-                    if ($parameter->isCotisantActivated()) {
-                        $clientTypeReturn = ClientType::ASSOCIATION;
-                    } else {
-                        $clientTypeReturn = ClientType::ETUDIANT;
-                    }
-                    break;
-
-                default:
-                    $clientTypeReturn = ClientType::ETUDIANT;
-            }
-        } else {
-            $clientTypeReturn = ClientType::ETUDIANT;
-        }
-
-        return $clientTypeReturn;
     }
 
     public function getPriceByProductAndClientType(Product $product, string $clientType): float {

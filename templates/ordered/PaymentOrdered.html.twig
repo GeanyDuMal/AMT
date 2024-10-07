@@ -35,8 +35,9 @@
                             {{ purchase.product.name }}
                         </p>
                         <div>
-                            Quantité : {{ purchase.quantity }} |
-                            Prix Unitaire : {{ (montantProduct[purchase.product.id]/purchase.quantity)|number_format(2,'.')  }}€
+                            Quantité : {{ purchase.quantity }} <br>
+                            Prix Unitaire : {{ purchase.unitaryPrice|number_format(2,'.') }}€ <br>
+                            Prix : {{ (purchase.unitaryPrice * purchase.quantity)|number_format(2,'.') }}€
                         </div>
                     </div>
                 </div>

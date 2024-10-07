@@ -21,7 +21,7 @@ class  ClientTest extends TestCase
     {
         $value = '1';
 
-        $response = $this->client->setID($value);
+        $response = $this->client->setId($value);
 
         self::assertInstanceOf(Client::class, $response);
         self::assertEquals($value, $this->client->getID());
