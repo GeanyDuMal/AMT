@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Member;
 use App\Entity\Client;
-use App\Utils\Enum\MemberRole;
+use App\Utils\Enum\MemberRoleEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -17,22 +17,22 @@ class MemberFixture extends Fixture implements DependentFixtureInterface
 
         $member = new Member();
         $member->setClient($clientRepository->findOneBy(["login" => "RomainGamer57"]))
-            ->setRole(MemberRole::PRESIDENT);
+            ->setRole(MemberRoleEnum::PRESIDENT);
         $manager->persist($member);
 
         $member = new Member();
         $member->setClient($clientRepository->findOneBy(["login" => "Dhoulnoun"]))
-            ->setRole(MemberRole::TRESORIER);
+            ->setRole(MemberRoleEnum::TRESORIER);
         $manager->persist($member);
 
         $member = new Member();
         $member->setClient($clientRepository->findOneBy(["login" => "Omareee"]))
-            ->setRole(MemberRole::SECRETAIRE);
+            ->setRole(MemberRoleEnum::SECRETAIRE);
         $manager->persist($member);
 
         $member = new Member();
         $member->setClient($clientRepository->findOneBy(["login" => "LeaneLoli"]))
-            ->setRole(MemberRole::MEMBRE);
+            ->setRole(MemberRoleEnum::MEMBRE);
         $manager->persist($member);
 
         $manager->flush();

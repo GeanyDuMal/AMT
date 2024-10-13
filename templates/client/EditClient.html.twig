@@ -67,14 +67,14 @@
                 <div class="form-group" id="roles">
                     <label class="input-label">Role</label>
                     <select name="assosRoles" id="assosRoles" class="form-input">
-                        {% set memberRoleName = null %}
+                        {% set memberRole = null %}
                         {% if member %}
-                            {% set memberRoleName = member.role %}
+                            {% set memberRole = member.role %}
                         {% endif %}
 
                         {% for assosRole in assosRoles %}
-                            <option {% if client and assosRole == memberRoleName %} selected {% endif %} >
-                                {{ assosRole }}
+                            <option {% if client and assosRole == memberRole %} selected {% endif %} >
+                                {{ assosRole.value }}
                             </option>
                         {% endfor %}
                     </select>

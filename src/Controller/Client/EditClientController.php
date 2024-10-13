@@ -9,7 +9,7 @@ use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\MemberRepository;
 use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
+use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +31,9 @@ class EditClientController extends AbstractController
 
     public function __construct(UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, MemberRepository $memberRepository, ClientRepository $clientRepository) {
         $this->manager = $manager;
-        $this->parameterManager = new ParameterManager($manager);
-        $this->clientManager = new ClientManager($manager);
-        $this->memberManager = new MemberManager($manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientManager = new ClientManager($this->manager);
+        $this->memberManager = new MemberManager($this->manager);
         $this->memberRepository = $memberRepository;
         $this->clientRepository = $clientRepository;
         $this->userPasswordHasher = $userPasswordHasher;
@@ -71,13 +71,13 @@ class EditClientController extends AbstractController
                      *  if admin changed the role of a member to another role
                      *  we have to change it too in association table
                      */
-                    $this->manageMember($this->memberManager, $this->memberRepository, $client, $request->get("assosRoles"));
+                    $this->manageMember($client, MemberRoleEnum::from($request->get("assosRoles")));
                 }
 
                 $this->clientManager->persist($client);
                 if ($client->getClientType() == ClientType::ASSOCIATION) {
                     $member = $this->memberRepository->findOneBy(["client" => $client]);
-                    if ($member->getRole() == MemberRole::PRESIDENT) {
+                    if ($member->getRole() == MemberRoleEnum::PRESIDENT) {
                         $this->memberManager->removeOtherPresidents($member);
                     }
                 }
@@ -104,20 +104,18 @@ class EditClientController extends AbstractController
     }
 
     /**
-     * @param MemberManager $memberManager
-     * @param MemberRepository $memberRepository
      * @param Client $client
-     * @param string $roleAssociation
+     * @param MemberRoleEnum $roleAssociation
      * @return void
      */
-    private function manageMember(MemberManager $memberManager, MemberRepository $memberRepository, Client $client, string $roleAssociation): void {
-        $member = $memberRepository->findOneBy(["client" => $client]);
+    private function manageMember(Client $client, MemberRoleEnum $roleAssociation): void {
+        $member = $this->memberRepository->findOneBy(["client" => $client]);
 
         if ($member) {
             $member->setRole($roleAssociation);
         } else {
-            $member = $memberManager->makeMember($client, $roleAssociation);
+            $member = $this->memberManager->makeMember($client, $roleAssociation);
         }
-        $memberManager->persist($member);
+        $this->memberManager->persist($member);
     }
 }

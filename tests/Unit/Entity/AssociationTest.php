@@ -4,8 +4,8 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\Member;
 use App\Entity\Client;
-use App\Utils\Enum\MemberRole;
 use App\Utils\Enum\ClientType;
+use App\Utils\Enum\MemberRoleEnum;
 use PHPUnit\Framework\TestCase;
 
 class AssociationTest extends TestCase
@@ -20,11 +20,11 @@ class AssociationTest extends TestCase
 
     public function testGetRole()
     {
-        $role = MemberRole::MEMBRE;
+        $role = MemberRoleEnum::MEMBRE;
         $response = $this->association->setRole($role);
 
         self::assertInstanceOf(Member::class, $response);
-        self::assertContains($this->association->getRole(), MemberRole::getAll());
+        self::assertContains($this->association->getRole(), MemberRoleEnum::cases());
         self::assertEquals($role, $this->association->getRole());
     }
 

@@ -8,7 +8,7 @@ use App\Entity\Member;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
+use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use App\Utils\Exception\ApplicationException;
 use DateTime;
@@ -99,7 +99,7 @@ class ClientManager {
                ->setClientType($clientType)
                ->setRoles([SymfonyRole::USER]);
 
-        $this->setRoleForClient($client, $roleAssociationName);
+        $this->setRoleForClient($client, MemberRoleEnum::from($roleAssociationName));
         $this->fidelityPointLimitCheck($client);
 
         /*
@@ -174,10 +174,10 @@ class ClientManager {
     /**
      * Define the @SymfonyRole Corresponding to the Client
      * @param Client $client
-     * @param string|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
+     * @param MemberRoleEnum|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
      * @return void
      */
-    public function setRoleForClient(Client $client, ?string $roleAssociation): void {
+    public function setRoleForClient(Client $client, ?MemberRoleEnum $roleAssociation): void {
         /*
          * If the clientType is Association, $roleAssociation is not null
          */
@@ -185,13 +185,13 @@ class ClientManager {
             case ClientType::ASSOCIATION:
             {
                 switch ($roleAssociation) {
-                    case MemberRole::PRESIDENT:
+                    case MemberRoleEnum::PRESIDENT:
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
-                    case (MemberRole::TRESORIER || MemberRole::VICE_PRESIDENT):
+                    case (MemberRoleEnum::TRESORIER || MemberRoleEnum::VICE_PRESIDENT):
                         $client->setRoles([SymfonyRole::TRESORIER]);
                         break;
-                    case MemberRole::SECRETAIRE:
+                    case MemberRoleEnum::SECRETAIRE:
                         $client->setRoles([SymfonyRole::SECRETAIRE]);
                         break;
                     default:
@@ -288,7 +288,7 @@ class ClientManager {
             //Set the president of the association
             $member = new Member();
             $member->setClient($client)
-                   ->setRole(MemberRole::PRESIDENT);
+                   ->setRole(MemberRoleEnum::PRESIDENT);
 
             $this->manager->persist($member);
             $this->manager->flush();

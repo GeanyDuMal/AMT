@@ -15,7 +15,7 @@ use App\Repository\PasswordForgotRequestRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
+use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,6 +47,8 @@ class MenuManagementController extends AbstractController {
         $this->parameterManager = new ParameterManager($this->manager);
         $this->postManager = new PostManager($this->manager);
         $this->orderedManager = new OrderedManager($this->manager);
+        $this->productManager = new ProductManager($this->manager);
+        $this->clientManager = new ClientManager($this->manager);
         $this->passwordForgotRequestManager = new PasswordForgotRequestManager($this->manager);
         $this->productRepository = $productRepository;
         $this->clientRepository = $clientRepository;
@@ -87,7 +89,7 @@ class MenuManagementController extends AbstractController {
         if ($data->get("clearMembers") != "") {
             $listTypeAssociation = $this->clientRepository->findBy(["clientType" => ClientType::ASSOCIATION]);
 
-            $president = $this->memberRepository->findOneBy(["role" => MemberRole::PRESIDENT])->getClient();
+            $president = $this->memberRepository->findOneBy(["role" => MemberRoleEnum::PRESIDENT])->getClient();
 
             foreach ($listTypeAssociation as $client) {
                 if ($client !== $president) {
