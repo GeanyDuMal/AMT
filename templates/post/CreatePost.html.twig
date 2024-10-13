@@ -47,7 +47,7 @@
                 <label class="input-label">Type de Post</label>
                 <select name="postType"  class="form-input">
                     {% for postType in postTypes %}
-                        <option> {{ postType }} </option>
+                        <option> {{ postType.value }} </option>
                     {% endfor %}
                 </select>
             </div>

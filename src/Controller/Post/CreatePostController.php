@@ -6,7 +6,7 @@ use App\Entity\Post;
 use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
-use App\Utils\Enum\PostType;
+use App\Utils\Enum\PostTypeEnum;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CreatePostController extends AbstractController
-{
+class CreatePostController extends AbstractController {
     private EntityManagerInterface $manager;
     private PostManager $postManager;
     private ParameterManager $parameterManager;
@@ -38,17 +37,17 @@ class CreatePostController extends AbstractController
         }
 
         $data = $request->request;
-        $postTypes = PostType::getAll();
+        $postTypes = PostTypeEnum::cases();
         $postExistsError = "";
         $post = new Post();
         $message = "";
 
         if ($data->count() > 0) {
             $this->postManager->setData($post,
-                                  $data->get('postType'),
-                                  $data->get("postTitle"),
-                                  trim($data->get('postDescription')),
-                                  new DateTime("now"));
+                                        PostTypeEnum::from($data->get('postType')),
+                                        $data->get("postTitle"),
+                                        trim($data->get('postDescription')),
+                                        new DateTime("now"));
             $this->postManager->downloadPicture($post, $request->files->get("postPicture"));
 
             if ($this->postManager->verifyPost($post)) {
