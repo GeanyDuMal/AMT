@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Client;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -15,8 +15,8 @@ class ClientFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        $clientTypeAssociation = ClientType::ASSOCIATION;
-        $clientTypeEtudiant = ClientType::ETUDIANT;
+        $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
+        $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
 
         $client = new Client();
         $client->setName("NATANELIC")
@@ -26,7 +26,7 @@ class ClientFixture extends Fixture
             ->setBalance(1.50)
             ->setFidelityPoint(26)
             ->setClientType($clientTypeAssociation)
-            ->setRoles([SymfonyRole::PRESIDENT])
+            ->setRoles([SymfonyRoleEnum::PRESIDENT])
             ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
@@ -38,7 +38,7 @@ class ClientFixture extends Fixture
             ->setBalance(5)
             ->setFidelityPoint(12)
             ->setClientType($clientTypeAssociation)
-            ->setRoles([SymfonyRole::ASSOC])
+            ->setRoles([SymfonyRoleEnum::ASSOC])
             ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
@@ -50,7 +50,7 @@ class ClientFixture extends Fixture
             ->setBalance(0)
             ->setFidelityPoint(60)
             ->setClientType($clientTypeAssociation)
-            ->setRoles([SymfonyRole::TRESORIER])
+            ->setRoles([SymfonyRoleEnum::TRESORIER])
             ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
@@ -62,7 +62,7 @@ class ClientFixture extends Fixture
             ->setBalance(80)
             ->setFidelityPoint(0)
             ->setClientType($clientTypeAssociation)
-            ->setRoles([SymfonyRole::ASSOC])
+            ->setRoles([SymfonyRoleEnum::ASSOC])
             ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 
@@ -74,7 +74,7 @@ class ClientFixture extends Fixture
             ->setBalance(0)
             ->setFidelityPoint(0)
             ->setClientType($clientTypeEtudiant)
-            ->setRoles([SymfonyRole::USER])
+            ->setRoles([SymfonyRoleEnum::USER])
             ->setCreationDate(new DateTime("now"));
         $manager->persist($client);
 

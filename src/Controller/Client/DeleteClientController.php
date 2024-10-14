@@ -4,7 +4,7 @@ namespace App\Controller\Client;
 
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +25,7 @@ class DeleteClientController extends AbstractController
 
     #[Route("/admin/client/delete/{!id}", name: "deleteClient", methods: ["GET", "DELETE"])]
     public function index($id): RedirectResponse|JsonResponse {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
+        if (!$this->isGranted(SymfonyRoleEnum::SECRETAIRE->value)) {
             return $this->redirectToRoute('home');
         }
 

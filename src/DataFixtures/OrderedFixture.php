@@ -4,9 +4,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\OrderedStatus;
-use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\OrderedStatusEnum;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,18 +18,18 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
     {
         $clientRepository = $manager->getRepository(Client::class);
 
-        $paymentTypeCarte = PaymentType::CARTE_BANCAIRE;
-        $paymentTypeEspece = PaymentType::ESPECE;
-        $paymentTypeSolde = PaymentType::SOLDE;
+        $paymentTypeCarte = PaymentTypeEnum::CARTE_BANCAIRE;
+        $paymentTypeEspece = PaymentTypeEnum::ESPECE;
+        $paymentTypeSolde = PaymentTypeEnum::SOLDE;
 
-        $clientTypeEtudiant = ClientType::ETUDIANT;
-        $clientTypeCotisant = ClientType::COTISANT;
-        $clientTypeAssociation = ClientType::ASSOCIATION;
+        $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
+        $clientTypeCotisant = ClientTypeEnum::COTISANT;
+        $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
 
-        $orderedStatusPaid = OrderedStatus::PAID;
-        $orderedStatusCanceled = OrderedStatus::CANCELED;
-        $orderedStatusRefunded = OrderedStatus::REFUNDED;
-        $orderedStatusWaitingPayment = OrderedStatus::WAITING_PAYMENT;
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
+        $orderedStatusCanceled = OrderedStatusEnum::CANCELED;
+        $orderedStatusRefunded = OrderedStatusEnum::REFUNDED;
+        $orderedStatusWaitingPayment = OrderedStatusEnum::WAITING_PAYMENT;
 
         $dateNow = new DateTime("now");
 

@@ -3,7 +3,7 @@
 namespace App\Controller\Parameter;
 
 use App\Manager\ParameterManager;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class EditParameterController extends AbstractController
 
     #[Route("/parameter", name: "editParameter", methods: ["GET", "POST"])]
     public function index(Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRoleEnum::PRESIDENT->value)) {
             return $this->redirectToRoute("home");
         }
 
@@ -36,13 +36,13 @@ class EditParameterController extends AbstractController
             $associationName = $data->get("associationName");
             $associationDescription = $data->get("associationDescription");
 
-            if ($parameterManager->isDataCorrect($data->get("amountFidelityPointToExchange"), $data->get("amountBalanceToAddAfterExchange"))) {
-                $parameterManager->setData(
+            if ($this->parameterManager->isDataCorrect($data->get("amountFidelityPointToExchange"), $data->get("amountBalanceToAddAfterExchange"))) {
+                $this->parameterManager->setData(
                     $parameter,
                     $associationName,
                     $associationDescription,
-                    $parameterManager->downloadPictureHome($parameter, $request->files->get("homeImage")),
-                    $parameterManager->downloadPictureLogo($parameter, $request->files->get("associationLogo")),
+                    $this->parameterManager->downloadPictureHome($parameter, $request->files->get("homeImage")),
+                    $this->parameterManager->downloadPictureLogo($parameter, $request->files->get("associationLogo")),
                     $data->get("amountFidelityPointToExchange"),
                     $data->get("amountBalanceToAddAfterExchange"),
                     $cotisantActivated,

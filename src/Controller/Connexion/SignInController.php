@@ -5,8 +5,8 @@ namespace App\Controller\Connexion;
 use App\Entity\Client;
 use App\Manager\ClientManager;
 use App\Manager\ParameterManager;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use App\Utils\Exception\ApplicationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,15 +42,11 @@ class SignInController extends AbstractController
         $client = new Client;
         $message = "";
 
-        //Permet d'eviter le bug de la variable null a la premiere entrée sur la page
         if ($data->count() > 0) {
 
             $this->clientManager->setData($client, $this->userPasswordHasher, strtoupper(trim($data->get("name"))),
-                trim($data->get("firstName")), trim($data->get("login")),
-                trim($data->get("password")), 0, ClientType::ETUDIANT, null,
-                0);
-
-            $confirmPassword = trim($data->get("confirmPassword"));
+                                          trim($data->get("firstName")), trim($data->get("login")),
+                                          trim($data->get("password")), 0, ClientTypeEnum::ETUDIANT, null, 0);
 
             if (trim($data->get("password")) == trim($data->get("confirmPassword")) && $this->clientManager->verifyPassword(trim($data->get("password")))) {
                 try {

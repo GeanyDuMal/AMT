@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\OrderedRepository;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\OrderedStatusEnum;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,14 +34,14 @@ class Ordered {
     private ?Client $client;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", enumType=ClientTypeEnum::class)
      */
-    private string $clientTypeAtOrder;
+    private ClientTypeEnum $clientTypeAtOrder;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", enumType=PaymentTypeEnum::class)
      */
-    private ?string $paymentType;
+    private PaymentTypeEnum $paymentType;
 
     /**
      * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true, cascade={"persist", "remove"})
@@ -46,9 +49,10 @@ class Ordered {
     private Collection $purchases;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", enumType=OrderedStatusEnum::class)
      */
-    private string $status;
+    private OrderedStatusEnum $status;
+
     public function __construct() {
         $this->purchases = new ArrayCollection();
     }
@@ -77,21 +81,21 @@ class Ordered {
         return $this;
     }
 
-    public function getClientTypeAtOrder(): string {
+    public function getClientTypeAtOrder(): ClientTypeEnum {
         return $this->clientTypeAtOrder;
     }
 
-    public function setClientTypeAtOrder(string $clientTypeAtOrder): self {
+    public function setClientTypeAtOrder(ClientTypeEnum $clientTypeAtOrder): self {
         $this->clientTypeAtOrder = $clientTypeAtOrder;
 
         return $this;
     }
 
-    public function getPaymentType(): ?string {
+    public function getPaymentType(): PaymentTypeEnum {
         return $this->paymentType;
     }
 
-    public function setPaymentType(?string $paymentType): self {
+    public function setPaymentType(PaymentTypeEnum $paymentType): self {
         $this->paymentType = $paymentType;
 
         return $this;
@@ -127,22 +131,11 @@ class Ordered {
         return $this;
     }
 
-    public function removePurchase(Purchase $purchase): self {
-        if ($this->purchases->removeElement($purchase)) {
-            // set the owning side to null (unless already changed)
-            if ($purchase->getOrdered() === $this) {
-                $purchase->setOrdered(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getStatus(): string {
+    public function getStatus(): OrderedStatusEnum {
         return $this->status;
     }
 
-    public function setStatus(string $status): self {
+    public function setStatus(OrderedStatusEnum $status): self {
         $this->status = $status;
 
         return $this;

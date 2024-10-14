@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Product;
-use App\Utils\Enum\ProductType;
+use App\Utils\Enum\ProductTypeEnum;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase
@@ -39,12 +39,12 @@ class ProductTest extends TestCase
 
     public function testGetProductType()
     {
-        $value = ProductType::SNACK;
+        $value = ProductTypeEnum::SNACK;
 
         $response = $this->product->setProductType($value);
 
         self::assertInstanceOf(Product::class, $response);
-        self::assertContains($this->product->getProductType(), ProductType::getAll());
+        self::assertContains($this->product->getProductType(), ProductTypeEnum::cases());
         self::assertEquals($value, $this->product->getProductType());
 
     }

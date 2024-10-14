@@ -66,7 +66,7 @@
                 <label class="input-label">Type de produit</label>
                 <select name="productType"  class="form-input">
                     {% for productType in productTypes %}
-                        <option> {{ productType }} </option>
+                        <option> {{ productType.value }} </option>
                     {% endfor %}
                 </select>
             </div>

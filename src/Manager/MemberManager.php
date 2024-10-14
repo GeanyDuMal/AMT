@@ -5,9 +5,9 @@ namespace App\Manager;
 use App\Entity\Client;
 use App\Entity\Member;
 use App\Repository\MemberRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\MemberRoleEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MemberManager {
@@ -37,7 +37,7 @@ class MemberManager {
      * @return void
      */
     public function removeOtherPresidents(Member $associationMember): void {
-        $members = $this->memberRepository->findBy(["role" => MemberRole::PRESIDENT]);
+        $members = $this->memberRepository->findBy(["role" => MemberRoleEnum::PRESIDENT]);
 
         foreach ($members as $otherMember) {
             if ($associationMember->getClient() !== $otherMember->getClient()) {
@@ -45,8 +45,8 @@ class MemberManager {
                 $clientManager = new ClientManager($this->manager);
                 $client = $otherMember->getClient();
 
-                $client->setClientType(ClientType::ETUDIANT);
-                $client->setRoles([SymfonyRole::USER]);
+                $client->setClientType(ClientTypeEnum::ETUDIANT);
+                $client->setRoles([SymfonyRoleEnum::USER]);
 
                 $this->remove($otherMember);
                 $clientManager->persist($client);
@@ -57,13 +57,13 @@ class MemberManager {
     /**
      * Return a Member made from the Client in parameter and a Role
      * @param Client $client
-     * @param string $role
+     * @param MemberRoleEnum $role
      * @return Member
      */
-    public function makeMember(Client $client, string $role): Member {
+    public function makeMember(Client $client, MemberRoleEnum $role): Member {
         $newMember = new Member();
 
-        $client->setClientType(ClientType::ASSOCIATION);
+        $client->setClientType(ClientTypeEnum::ASSOCIATION);
         $newMember->setClient($client);
         $newMember->setRole($role);
 
@@ -73,7 +73,7 @@ class MemberManager {
     public function getLowerOrEqualAssociationRole(Client $client): array {
         $member = $this->memberRepository->findOneBy(["client" => $client]);
         $rolesReturned = [];
-        $memberRoles = MemberRole::getAll();
+        $memberRoles = MemberRoleEnum::cases();
 
         if ($member) {
             foreach ($memberRoles as $role) {
@@ -82,7 +82,7 @@ class MemberManager {
                     break;
                 }
             }
-        } else if ($client->getRoles()[0] == SymfonyRole::ADMIN) {
+        } else if ($client->getRoles()[0] == SymfonyRoleEnum::ADMIN) {
             $rolesReturned = $memberRoles;
         }
 

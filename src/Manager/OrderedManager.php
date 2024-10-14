@@ -7,9 +7,9 @@ use App\Entity\Ordered;
 use App\Entity\Price;
 use App\Entity\Purchase;
 use App\Repository\OrderedRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\OrderedStatus;
-use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\OrderedStatusEnum;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,13 +41,13 @@ class OrderedManager {
     /**
      * @param Ordered $ordered
      * @param Client|null $client
-     * @param string $paymentType
+     * @param PaymentTypeEnum $paymentType
      * @param DateTime|null $date
-     * @param string $status
-     * @param string $clientType
+     * @param OrderedStatusEnum $status
+     * @param ClientTypeEnum $clientType
      * @return void
      */
-    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date, string $status, string $clientType): void {
+    public function setData(Ordered $ordered, ?Client $client, PaymentTypeEnum $paymentType, ?DateTime $date, OrderedStatusEnum $status, ClientTypeEnum $clientType): void {
         if (!$date) {
             $date = new DateTime("now");
         }
@@ -67,7 +67,7 @@ class OrderedManager {
     public function reduceBalanceIfNecessary(Ordered $order): void {
         $clientManager = new ClientManager($this->manager);
 
-        if ($order->getPaymentType() == PaymentType::SOLDE && $order->getClient() != null) {
+        if ($order->getPaymentType() == PaymentTypeEnum::SOLDE && $order->getClient() != null) {
             $montantTotal = $this->getMontantTotal($order);
 
             $order->getClient()->setBalance($order->getClient()->getBalance() - $montantTotal);
@@ -104,44 +104,31 @@ class OrderedManager {
     }
 
     /**
-     * @param int $amountOrdered
+     * @param float $amountOrdered
      * @param Client|null $client Client
      * @return array An array of payment type that are allowed fot this Ordered
      */
     public function getAllowedPaymentType(float $amountOrdered, Client $client = null): array {
-        $paymentTypeList = PaymentType::getAll();
+        $paymentTypeList = PaymentTypeEnum::cases();
 
         foreach ($paymentTypeList as $paymentType) {
             switch ($paymentType) {
-                case "Solde" :
-                {
+                case PaymentTypeEnum::SOLDE : {
                     if ($client == null || $client->getBalance() < $amountOrdered) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
                 }
-                case "Carte Bancaire" :
-                {
+                case PaymentTypeEnum::CARTE_BANCAIRE : {
                     if ($amountOrdered < 1) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
                 }
+                default: {}
             }
         }
         return $paymentTypeList;
-    }
-
-    /**
-     * Remove the purchases from the current $ordered
-     * This method don't persist the $ordered
-     * @param Ordered $ordered
-     * @return void
-     */
-    public function clearPurchases(Ordered $ordered): void {
-        foreach ($ordered->getPurchases() as $purchase) {
-            $ordered->removePurchase($purchase);
-        }
     }
 
     public function createOrdered(?Client $client, Collection $purchases): Ordered {
@@ -151,7 +138,7 @@ class OrderedManager {
                 ->setOrderedAt(new DateTime())
                 ->setClientTypeAtOrder($this->getClientTypeUsedForOrdered($client))
                 ->setPurchases($purchases)
-                ->setStatus(OrderedStatus::WAITING_PAYMENT);
+                ->setStatus(OrderedStatusEnum::WAITING_PAYMENT);
 
 
         return $ordered;
@@ -160,31 +147,31 @@ class OrderedManager {
     /**
      * Retourne le type de prix concerné par le type de client passé en paramètre
      * @param Client|null $client
-     * @return string
+     * @return ClientTypeEnum
      */
-    public function getClientTypeUsedForOrdered(?Client $client): string {
+    public function getClientTypeUsedForOrdered(?Client $client): ClientTypeEnum {
         if ($client) {
             switch ($client->getClientType()) {
-                case ClientType::ASSOCIATION :
-                    $clientTypeReturn = ClientType::ASSOCIATION;
+                case ClientTypeEnum::ASSOCIATION :
+                    $clientTypeReturn = ClientTypeEnum::ASSOCIATION;
                     break;
 
-                case ClientType::COTISANT :
+                case ClientTypeEnum::COTISANT :
                     $parameterManager = new ParameterManager(($this->manager));
                     $parameter = $parameterManager->getParameter();
 
                     if ($parameter->isCotisantActivated()) {
-                        $clientTypeReturn = ClientType::ASSOCIATION;
+                        $clientTypeReturn = ClientTypeEnum::ASSOCIATION;
                     } else {
-                        $clientTypeReturn = ClientType::ETUDIANT;
+                        $clientTypeReturn = ClientTypeEnum::ETUDIANT;
                     }
                     break;
 
                 default:
-                    $clientTypeReturn = ClientType::ETUDIANT;
+                    $clientTypeReturn = ClientTypeEnum::ETUDIANT;
             }
         } else {
-            $clientTypeReturn = ClientType::ETUDIANT;
+            $clientTypeReturn = ClientTypeEnum::ETUDIANT;
         }
 
         return $clientTypeReturn;
@@ -195,14 +182,14 @@ class OrderedManager {
     }
 
     public function cancel(Ordered $ordered): void {
-        $ordered->setStatus(OrderedStatus::CANCELED);
+        $ordered->setStatus(OrderedStatusEnum::CANCELED);
 
         $this->persist($ordered);
     }
 
     public function refund(Ordered $ordered): void {
         if ($ordered->getClient() != null &&
-            $ordered->getPaymentType() == PaymentType::SOLDE) {
+            $ordered->getPaymentType() == PaymentTypeEnum::SOLDE) {
             $client = $ordered->getClient();
             $montantTotal = $this->getMontantTotal($ordered);
 
@@ -218,7 +205,7 @@ class OrderedManager {
             $this->purchaseManager->refund($purchase);
         }
 
-        $ordered->setStatus(OrderedStatus::REFUNDED);
+        $ordered->setStatus(OrderedStatusEnum::REFUNDED);
         $this->persist($ordered);
     }
 }

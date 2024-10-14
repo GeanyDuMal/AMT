@@ -78,7 +78,7 @@ final class Version20220703214004 extends AbstractMigration
         $this->addSql('INSERT INTO client_type (name) VALUES ("Association")');
         $this->addSql('INSERT INTO client_type (name) VALUES ("Etudiant")');
 
-        // Creation PaymentType
+        // Creation PaymentTypeEnum
         $this->addSql('CREATE TABLE payment_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, PRIMARY KEY(id)) DEFAULT ENGINE = InnoDB');
         $this->addSql('INSERT INTO payment_type (name) VALUES ("Carte Bancaire");');
         $this->addSql('INSERT INTO payment_type (name) VALUES ("Espece")');
@@ -118,7 +118,7 @@ final class Version20220703214004 extends AbstractMigration
         $this->addSql('UPDATE price SET client_type_id = (SELECT client_type.id FROM client_type, price WHERE price.client_type_id = client_type.id)');
         $this->addSql('ALTER TABLE price DROP client_type');
 
-        // Ajout du lien entre PaymentType et Ordered
+        // Ajout du lien entre PaymentTypeEnum et Ordered
         $this->addSql('ALTER TABLE ordered ADD payment_type_id INT NOT NULL');
         $this->addSql('ALTER TABLE ordered ADD CONSTRAINT FK_F5299398DC058279 FOREIGN KEY (payment_type_id) REFERENCES payment_type (id)');
         $this->addSql('CREATE INDEX IDX_C3121F99DC058279 ON ordered (payment_type_id)');

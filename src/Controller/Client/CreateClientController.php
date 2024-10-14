@@ -7,9 +7,9 @@ use App\Manager\ClientManager;
 use App\Manager\MemberManager;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\MemberRoleEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ class CreateClientController extends AbstractController {
 
     #[Route("/admin/client/create", name: "createClient", methods: ["GET", "POST"])]
     public function index(Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
+        if (!$this->isGranted(SymfonyRoleEnum::SECRETAIRE->value)) {
             return $this->redirectToRoute('home');
         }
 
@@ -49,9 +49,16 @@ class CreateClientController extends AbstractController {
 
         if ($data->count() > 0) {
             $client = new Client();
-            $this->clientManager->setData($client, $this->userPasswordHasher, $data->get("name"),
-                                          $data->get("firstName"), $data->get("login"), $data->get("password"),
-                                          $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
+            $this->clientManager->setData($client,
+                                          $this->userPasswordHasher,
+                                          $data->get("name"),
+                                          $data->get("firstName"),
+                                          $data->get("login"),
+                                          $data->get("password"),
+                                          $data->get("balance"),
+                                          ClientTypeEnum::from($data->get("clientType")),
+                                          $data->get("assosRoles"),
+                                          0);
 
             if ($this->clientManager->verifyClient($client) && $this->clientManager->verifyPassword($data->get("password"))) {
                 if ($this->clientManager->clientExists($client)) {
@@ -65,11 +72,11 @@ class CreateClientController extends AbstractController {
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if ($client->getClientType() == ClientType::ASSOCIATION) {
+                    if ($client->getClientType() == ClientTypeEnum::ASSOCIATION) {
 
-                        $newMember = $this->memberManager->makeMember($client, $request->get("assosRoles"));
+                        $newMember = $this->memberManager->makeMember($client, MemberRoleEnum::from($request->get("assosRoles")));
 
-                        if ($newMember->getRole() == MemberRole::PRESIDENT) {
+                        if ($newMember->getRole() == MemberRoleEnum::PRESIDENT) {
                             $this->memberManager->removeOtherPresidents($newMember);
                         }
                         $this->manager->persist($newMember);

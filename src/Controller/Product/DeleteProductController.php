@@ -6,7 +6,7 @@ use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +26,7 @@ class DeleteProductController extends AbstractController
     #[Route("/product/delete/{!id}", name: "deleteProduct", methods: ["GET", "DELETE"])]
     public function index($id): RedirectResponse|JsonResponse
     {
-        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
+        if (!$this->isGranted(SymfonyRoleEnum::TRESORIER->value)) {
             return $this->redirectToRoute("home");
         }
 

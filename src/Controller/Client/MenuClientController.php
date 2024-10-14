@@ -4,7 +4,7 @@ namespace App\Controller\Client;
 
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ class MenuClientController extends AbstractController
 
     #[Route("/admin/client/{message?}", name: "menuClient", methods: ["GET"])]
     public function show(?string $message): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute('home');
         }
 

@@ -37,7 +37,7 @@ class ProfileController extends AbstractController
     public function index(Request $request): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $parameter = $this->parameterManager->getParameter();
+            $parameter = $this->parameterManager->getParameter(true);
             $client = $this->clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
             $edit = false;
             $fail = false;

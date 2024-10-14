@@ -6,16 +6,15 @@ namespace App\Controller\Post;
 use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
-use App\Utils\Enum\PostType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\PostTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EditPostController extends AbstractController
-{
+class EditPostController extends AbstractController {
     private EntityManagerInterface $manager;
     private PostManager $postManager;
     private ParameterManager $parameterManager;
@@ -32,25 +31,25 @@ class EditPostController extends AbstractController
     public function index($id, Request $request): Response {
         $parameter = $this->parameterManager->getParameter();
 
-        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
         $post = $this->postRepository->find($id);
-        $postTypes = PostType::getAll();
+        $postTypes = PostTypeEnum::cases();
         $message = "";
 
         if ($data->count() > 0 && $post) {
             $this->postManager->setData($post,
-                                  $data->get('postType'),
-                                  $data->get("postTitle"),
-                                  trim($data->get('postDescription')),
-                                  $post->getCreationDate(),
-                                  $post->getImageLink());
+                                        PostTypeEnum::from($data->get('postType')),
+                                        $data->get("postTitle"),
+                                        trim($data->get('postDescription')),
+                                        $post->getCreationDate(),
+                                        $post->getImageLink());
 
             if ($this->postManager->verifyPost($post)) {
-                if ($data->get("pictureState") === "edit"){
+                if ($data->get("pictureState") === "edit") {
                     $this->postManager->downloadPicture($post, $request->files->get("postPicture"));
                 }
 

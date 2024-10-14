@@ -6,7 +6,9 @@ use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\OrderedStatusEnum;
+use App\Utils\Enum\PaymentTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +34,7 @@ class PaymentOrderedController extends AbstractController {
 
     #[Route("/ordered/payment/{!id}", name: "orderedPayment", methods: ["POST"])]
     public function index(int $id, Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute('home');
         }
 
@@ -61,8 +63,12 @@ class PaymentOrderedController extends AbstractController {
                 ]);
             }
 
-            $this->orderedManager->setData($ordered, $ordered->getClient(), $paymentTypeChose, new DateTime("now"), $ordered->getStatus(),
+            $this->orderedManager->setData($ordered, $ordered->getClient(),
+                                           PaymentTypeEnum::from($paymentTypeChose),
+                                           new DateTime("now"),
+                                           OrderedStatusEnum::PAID,
                                            $ordered->getClientTypeAtOrder());
+            $this->orderedManager->persist($ordered);
 
             $this->orderedManager->reduceBalanceIfNecessary($ordered);
             $this->orderedManager->addFidelityToClient($ordered);

@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ordered;
-use App\Utils\Enum\OrderedStatus;
+use App\Utils\Enum\OrderedStatusEnum;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -59,7 +59,7 @@ class OrderedRepository extends ServiceEntityRepository
         $thisWeek = date("W")-1;
         $thisMonth = date("m");
         $thisYear = date("Y");
-        $orderedStatusPaid = OrderedStatus::PAID;
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
 
         $query = $this->getEntityManager()->createQuery("
             SELECT Ordered
@@ -81,7 +81,7 @@ class OrderedRepository extends ServiceEntityRepository
     public function thisMonthOrdered(): array {
         $thisMonth = date("m");
         $thisYear = date("Y");
-        $orderedStatusPaid = OrderedStatus::PAID;
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
 
         $query = $this->getEntityManager()->createQuery("
             SELECT Ordered
@@ -101,7 +101,7 @@ class OrderedRepository extends ServiceEntityRepository
      */
     public function thisYearOrdered(): array {
         $thisYear = date("Y");
-        $orderedStatusPaid = OrderedStatus::PAID;
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
 
         $query = $this->getEntityManager()->createQuery("
             SELECT Ordered
@@ -122,7 +122,7 @@ class OrderedRepository extends ServiceEntityRepository
     {
         $date = new DateTime();
         $date = $date->sub(DateInterval::createFromDateString("1 Month"));
-        $orderedStatusWaitingPayment = OrderedStatus::WAITING_PAYMENT;
+        $orderedStatusWaitingPayment = OrderedStatusEnum::WAITING_PAYMENT;
 
         return $this->createQueryBuilder("o")
             ->where("o.client IS NULL")

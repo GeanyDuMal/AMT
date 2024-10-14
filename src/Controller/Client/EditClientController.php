@@ -8,9 +8,9 @@ use App\Manager\MemberManager;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\MemberRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\MemberRoleEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EditClientController extends AbstractController
-{
+class EditClientController extends AbstractController {
 
     private EntityManagerInterface $manager;
     private ClientManager $clientManager;
@@ -29,11 +28,12 @@ class EditClientController extends AbstractController
     private MemberRepository $memberRepository;
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, MemberRepository $memberRepository, ClientRepository $clientRepository) {
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, MemberRepository $memberRepository,
+        ClientRepository $clientRepository) {
         $this->manager = $manager;
-        $this->parameterManager = new ParameterManager($manager);
-        $this->clientManager = new ClientManager($manager);
-        $this->memberManager = new MemberManager($manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientManager = new ClientManager($this->manager);
+        $this->memberManager = new MemberManager($this->manager);
         $this->memberRepository = $memberRepository;
         $this->clientRepository = $clientRepository;
         $this->userPasswordHasher = $userPasswordHasher;
@@ -41,7 +41,7 @@ class EditClientController extends AbstractController
 
     #[Route("/admin/client/edit/{!id}", name: "editClient", methods: ["GET", "POST"])]
     public function index($id, Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
+        if (!$this->isGranted(SymfonyRoleEnum::SECRETAIRE->value)) {
             return $this->redirectToRoute('home');
         }
 
@@ -55,29 +55,36 @@ class EditClientController extends AbstractController
         $allowEdit = $this->isGranted($client->getRoles()[0]);
 
         if ($allowEdit && $data->count() > 0) {
-            $this->clientManager->setData($client, $this->userPasswordHasher, $data->get("name"),
-                                    $data->get("firstName"), $client->getLogin(), $data->get("password"),
-                                    $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
+            $this->clientManager->setData($client,
+                                          $this->userPasswordHasher,
+                                          $data->get("name"),
+                                          $data->get("firstName"),
+                                          $client->getLogin(),
+                                          $data->get("password"),
+                                          $data->get("balance"),
+                                          ClientTypeEnum::from($data->get("clientType")),
+                                          $data->get("assosRoles"),
+                                          $data->get("fidelityPoint"));
 
 
             // Verify the confirmity of a client and verify that the login correspond to the stored one
             if ($this->clientManager->verifyClient($client) && strcmp($client->getLogin(), $data->get('login'))) {
                 /*
-                 * If we set the ClientType Association, we need to put the client in the table Association
+                 * If we set the ClientTypeEnum Association, we need to put the client in the table Association
                  */
-                if ($data->get("clientType") == ClientType::ASSOCIATION) {
+                if ($data->get("clientType") == ClientTypeEnum::ASSOCIATION) {
 
                     /*
                      *  if admin changed the role of a member to another role
                      *  we have to change it too in association table
                      */
-                    $this->manageMember($this->memberManager, $this->memberRepository, $client, $request->get("assosRoles"));
+                    $this->manageMember($client, MemberRoleEnum::from($request->get("assosRoles")));
                 }
 
                 $this->clientManager->persist($client);
-                if ($client->getClientType() == ClientType::ASSOCIATION) {
+                if ($client->getClientType() == ClientTypeEnum::ASSOCIATION) {
                     $member = $this->memberRepository->findOneBy(["client" => $client]);
-                    if ($member->getRole() == MemberRole::PRESIDENT) {
+                    if ($member && $member->getRole() == MemberRoleEnum::PRESIDENT) {
                         $this->memberManager->removeOtherPresidents($member);
                     }
                 }
@@ -86,10 +93,12 @@ class EditClientController extends AbstractController
                     "message" => "Modification effectué avec succès"
                 ]);
             }
-        } else if (!$allowEdit) {
-            return $this->redirectToRoute('menuClient', [
-                "message" => "Vous n'avez pas l'autorisation de modifier ce client",
-            ]);
+        } else {
+            if (!$allowEdit) {
+                return $this->redirectToRoute('menuClient', [
+                    "message" => "Vous n'avez pas l'autorisation de modifier ce client",
+                ]);
+            }
         }
 
         return $this->render('client/EditClient.html.twig', [
@@ -104,20 +113,18 @@ class EditClientController extends AbstractController
     }
 
     /**
-     * @param MemberManager $memberManager
-     * @param MemberRepository $memberRepository
      * @param Client $client
-     * @param string $roleAssociation
+     * @param MemberRoleEnum $roleAssociation
      * @return void
      */
-    private function manageMember(MemberManager $memberManager, MemberRepository $memberRepository, Client $client, string $roleAssociation): void {
-        $member = $memberRepository->findOneBy(["client" => $client]);
+    private function manageMember(Client $client, MemberRoleEnum $roleAssociation): void {
+        $member = $this->memberRepository->findOneBy(["client" => $client]);
 
         if ($member) {
             $member->setRole($roleAssociation);
         } else {
-            $member = $memberManager->makeMember($client, $roleAssociation);
+            $member = $this->memberManager->makeMember($client, $roleAssociation);
         }
-        $memberManager->persist($member);
+        $this->memberManager->persist($member);
     }
 }

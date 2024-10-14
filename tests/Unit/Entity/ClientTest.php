@@ -3,8 +3,8 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Client;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use PHPUnit\Framework\TestCase;
 
 class  ClientTest extends TestCase
@@ -25,7 +25,7 @@ class  ClientTest extends TestCase
 
         self::assertInstanceOf(Client::class, $response);
         self::assertEquals($value, $this->client->getID());
-        self::assertContains(SymfonyRole::USER, $this->client->getRoles());
+        self::assertContains(SymfonyRoleEnum::USER, $this->client->getRoles());
     }
 
     public function testGetBalance(): void
@@ -48,26 +48,26 @@ class  ClientTest extends TestCase
 
     public function testGetClientType(): void
     {
-        $value = ClientType::ETUDIANT;
+        $value = ClientTypeEnum::ETUDIANT;
 
         $response = $this->client->setClientType($value);
 
         self::assertInstanceOf(Client::class, $response);
-        self::assertContains($this->client->getClientType(), ClientType::getAll());
+        self::assertContains($this->client->getClientType(), ClientTypeEnum::getAll());
         self::assertEquals($value, $this->client->getClientType());
     }
 
 
     public function testGetRole(): void
     {
-        $value = [SymfonyRole::PRESIDENT];
+        $value = [SymfonyRoleEnum::PRESIDENT];
         $response = $this->client->setRoles($value);
 
         self::assertInstanceOf(Client::class, $response);
-        self::assertContains(SymfonyRole::USER, $this->client->getRoles());
-        self::assertContains(SymfonyRole::PRESIDENT, $this->client->getRoles());
+        self::assertContains(SymfonyRoleEnum::USER, $this->client->getRoles());
+        self::assertContains(SymfonyRoleEnum::PRESIDENT, $this->client->getRoles());
         foreach ($this->client->getRoles() as $role){
-            self::assertContains($role, SymfonyRole::getAll());
+            self::assertContains($role, SymfonyRoleEnum::getAll());
         }
     }
 

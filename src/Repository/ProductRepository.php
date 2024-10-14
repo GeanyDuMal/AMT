@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
-use App\Utils\Enum\OrderedStatus;
+use App\Utils\Enum\OrderedStatusEnum;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -116,7 +116,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $thisMonth = date("m");
         $thisYear = date("Y");
-        $orderedStatusPaid = OrderedStatus::PAID;
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
 
         //Recupere tout les produits qui n"ont pas une commande de moins de 1 an et un stock vide
         $productQuery = $this->getEntityManager()->createQuery("

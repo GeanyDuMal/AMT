@@ -5,12 +5,12 @@ namespace App\Controller\Client;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\MemberRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 class ShowClientController extends AbstractController
 {
@@ -28,6 +28,10 @@ class ShowClientController extends AbstractController
 
     #[Route("/admin/client/show/{!id}", name: "showClient", methods: ["GET"])]
     public function index($id): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
+            return $this->redirectToRoute('home');
+        }
+
         $parameter = $this->parameterManager->getParameter();
         $client = $this->clientRepository->find($id);
 
