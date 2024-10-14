@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Client;
 use App\Entity\Ordered;
 use App\Utils\Enum\ClientTypeEnum;
-use App\Utils\Enum\OrderedStatus;
+use App\Utils\Enum\OrderedStatusEnum;
 use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -26,10 +26,10 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
         $clientTypeCotisant = ClientTypeEnum::COTISANT;
         $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
 
-        $orderedStatusPaid = OrderedStatus::PAID;
-        $orderedStatusCanceled = OrderedStatus::CANCELED;
-        $orderedStatusRefunded = OrderedStatus::REFUNDED;
-        $orderedStatusWaitingPayment = OrderedStatus::WAITING_PAYMENT;
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
+        $orderedStatusCanceled = OrderedStatusEnum::CANCELED;
+        $orderedStatusRefunded = OrderedStatusEnum::REFUNDED;
+        $orderedStatusWaitingPayment = OrderedStatusEnum::WAITING_PAYMENT;
 
         $dateNow = new DateTime("now");
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderedRepository;
 use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\OrderedStatusEnum;
 use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,9 +49,10 @@ class Ordered {
     private Collection $purchases;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", enumType=OrderedStatusEnum::class)
      */
-    private string $status;
+    private OrderedStatusEnum $status;
+
     public function __construct() {
         $this->purchases = new ArrayCollection();
     }
@@ -129,11 +131,11 @@ class Ordered {
         return $this;
     }
 
-    public function getStatus(): string {
+    public function getStatus(): OrderedStatusEnum {
         return $this->status;
     }
 
-    public function setStatus(string $status): self {
+    public function setStatus(OrderedStatusEnum $status): self {
         $this->status = $status;
 
         return $this;

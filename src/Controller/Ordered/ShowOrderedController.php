@@ -4,7 +4,7 @@ namespace App\Controller\Ordered;
 
 use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
-use App\Utils\Enum\OrderedStatus;
+use App\Utils\Enum\OrderedStatusEnum;
 use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,12 +44,14 @@ class ShowOrderedController extends AbstractController {
                 if ($toCancel || $toRefund) {
                     if ($toCancel) {
                         $this->orderedManager->cancel($ordered);
+                        $message = "La commande a été annulée avec succès";
                     } else {
                         $this->orderedManager->refund($ordered);
+                        $message = "La commande a été remboursée avec succès";
                     }
 
                     return $this->redirectToRoute("menuOrdered", [
-                        "message" => "La commande a été remboursée avec succès"
+                        "message" => $message
                     ]);
                 }
             } else {
@@ -64,8 +66,8 @@ class ShowOrderedController extends AbstractController {
             "ordered" => $ordered,
             "priceList" => $priceList,
             "montantTotal" => $this->orderedManager->getMontantTotal($ordered),
-            "statusPaid" => OrderedStatus::PAID,
-            "statusWaitingPayment" => OrderedStatus::WAITING_PAYMENT,
+            "statusPaid" => OrderedStatusEnum::PAID,
+            "statusWaitingPayment" => OrderedStatusEnum::WAITING_PAYMENT,
         ]);
     }
 }

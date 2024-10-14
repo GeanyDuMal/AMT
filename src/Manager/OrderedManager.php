@@ -8,7 +8,7 @@ use App\Entity\Price;
 use App\Entity\Purchase;
 use App\Repository\OrderedRepository;
 use App\Utils\Enum\ClientTypeEnum;
-use App\Utils\Enum\OrderedStatus;
+use App\Utils\Enum\OrderedStatusEnum;
 use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,11 +43,11 @@ class OrderedManager {
      * @param Client|null $client
      * @param PaymentTypeEnum $paymentType
      * @param DateTime|null $date
-     * @param string $status
+     * @param OrderedStatusEnum $status
      * @param ClientTypeEnum $clientType
      * @return void
      */
-    public function setData(Ordered $ordered, ?Client $client, PaymentTypeEnum $paymentType, ?DateTime $date, string $status, ClientTypeEnum $clientType): void {
+    public function setData(Ordered $ordered, ?Client $client, PaymentTypeEnum $paymentType, ?DateTime $date, OrderedStatusEnum $status, ClientTypeEnum $clientType): void {
         if (!$date) {
             $date = new DateTime("now");
         }
@@ -138,7 +138,7 @@ class OrderedManager {
                 ->setOrderedAt(new DateTime())
                 ->setClientTypeAtOrder($this->getClientTypeUsedForOrdered($client))
                 ->setPurchases($purchases)
-                ->setStatus(OrderedStatus::WAITING_PAYMENT);
+                ->setStatus(OrderedStatusEnum::WAITING_PAYMENT);
 
 
         return $ordered;
@@ -182,7 +182,7 @@ class OrderedManager {
     }
 
     public function cancel(Ordered $ordered): void {
-        $ordered->setStatus(OrderedStatus::CANCELED);
+        $ordered->setStatus(OrderedStatusEnum::CANCELED);
 
         $this->persist($ordered);
     }
@@ -205,7 +205,7 @@ class OrderedManager {
             $this->purchaseManager->refund($purchase);
         }
 
-        $ordered->setStatus(OrderedStatus::REFUNDED);
+        $ordered->setStatus(OrderedStatusEnum::REFUNDED);
         $this->persist($ordered);
     }
 }

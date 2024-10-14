@@ -25,7 +25,7 @@
                   Commande de type {{ ordered.clientTypeAtOrder.value }} reglé avec {{ ordered.paymentType.value }}
             </h3>
             <h3>
-                  Commande en statut {{ ordered.status }}
+                  Commande en statut {{ ordered.status.value }}
             </h3>
             <div class="list-card flex-horizontal flex-centered flex-overflow">
                   {% for purchase in ordered.purchases %}
