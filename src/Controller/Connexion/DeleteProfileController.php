@@ -4,7 +4,7 @@ namespace App\Controller\Connexion;
 
 use App\Manager\ClientManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,7 +29,7 @@ class DeleteProfileController extends AbstractController
     public function index(Request $request): RedirectResponse
     {
         // Not allowed to remove you account if you are the president or if you aren't connected
-        if ($this->isGranted(SymfonyRole::PRESIDENT) || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted(SymfonyRoleEnum::PRESIDENT->value) || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('profile', [
                 "message" => "Votre compte ne peut pas être supprimé, merci de contacter l'administrateur "
             ]);

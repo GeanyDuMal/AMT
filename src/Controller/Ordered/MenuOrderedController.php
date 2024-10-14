@@ -5,7 +5,7 @@ namespace App\Controller\Ordered;
 use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Repository\OrderedRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class MenuOrderedController extends AbstractController
     #[Route("/ordered/menu/{message?}", name: "menuOrdered", methods: ["GET", "POST"])]
     public function menu(string $message = null): Response
     {
-        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
+        if (!$this->isGranted(SymfonyRoleEnum::TRESORIER->value)) {
             return $this->redirectToRoute('home');
         }
 

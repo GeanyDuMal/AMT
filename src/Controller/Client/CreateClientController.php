@@ -9,7 +9,7 @@ use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ class CreateClientController extends AbstractController {
 
     #[Route("/admin/client/create", name: "createClient", methods: ["GET", "POST"])]
     public function index(Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
+        if (!$this->isGranted(SymfonyRoleEnum::SECRETAIRE->value)) {
             return $this->redirectToRoute('home');
         }
 

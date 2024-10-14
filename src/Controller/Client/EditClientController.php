@@ -10,7 +10,7 @@ use App\Repository\ClientRepository;
 use App\Repository\MemberRepository;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ class EditClientController extends AbstractController {
 
     #[Route("/admin/client/edit/{!id}", name: "editClient", methods: ["GET", "POST"])]
     public function index($id, Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
+        if (!$this->isGranted(SymfonyRoleEnum::SECRETAIRE->value)) {
             return $this->redirectToRoute('home');
         }
 

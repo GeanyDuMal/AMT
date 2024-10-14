@@ -10,7 +10,7 @@ use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
 use App\Repository\ClientRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,7 +41,7 @@ class CreateOrderedController extends AbstractController {
 
     #[Route("/ordered/create/{message?}", name: "createOrdered", methods: ["GET", "POST"])]
     public function index(Request $request, string $message = null): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute('home');
         }
 

@@ -9,7 +9,7 @@ use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ProductTypeEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ class CreateProductController extends AbstractController
 
     #[Route("/product/create", name: "createProduct", methods: ["GET", "POST"])]
     public function index(Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute('home');
         }
 

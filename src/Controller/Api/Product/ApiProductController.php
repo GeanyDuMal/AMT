@@ -18,7 +18,7 @@ class ApiProductController extends AbstractController
 
     public function __construct(EntityManagerInterface $manager) {
         $this->manager = $manager;
-        $this->productManager = new ProductManager($manager);
+        $this->productManager = new ProductManager($this->manager);
     }
 
     #[Route("/api/product/getAll", name: "apiProductGetAll", methods: ["GET"])]

@@ -5,7 +5,7 @@ namespace App\Controller\Ordered;
 use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Utils\Enum\OrderedStatus;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ class ShowOrderedController extends AbstractController {
 
     #[Route("/ordered/show&id={!idOrder}", name: "showOrdered", methods: ["GET", "POST"])]
     public function index($idOrder, Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
+        if (!$this->isGranted(SymfonyRoleEnum::TRESORIER->value)) {
             return $this->redirectToRoute('home');
         }
 

@@ -6,7 +6,7 @@ use App\Entity\Client;
 use App\Manager\ClientManager;
 use App\Manager\ParameterManager;
 use App\Utils\Enum\ClientTypeEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use App\Utils\Exception\ApplicationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

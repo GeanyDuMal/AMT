@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ClientRepository;
 use App\Utils\Enum\ClientTypeEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -180,7 +180,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface {
     public function getRoles(): array {
         $roles = $this->roles;
 
-        ($roles == [] ? $roles = [SymfonyRole::USER] : true);
+        ($roles == [] ? $roles = [SymfonyRoleEnum::USER] : true);
 
         return array_unique($roles);
     }

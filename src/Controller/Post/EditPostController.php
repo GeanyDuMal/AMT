@@ -7,7 +7,7 @@ use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use App\Utils\Enum\PostTypeEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class EditPostController extends AbstractController {
     public function index($id, Request $request): Response {
         $parameter = $this->parameterManager->getParameter();
 
-        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 

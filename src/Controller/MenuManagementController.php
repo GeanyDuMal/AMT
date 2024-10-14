@@ -16,7 +16,7 @@ use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +61,7 @@ class MenuManagementController extends AbstractController {
 
     #[Route("/management", name: "menuManagement", methods: ["GET", "POST"])]
     public function index(Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+        if (!$this->isGranted(SymfonyRoleEnum::PRESIDENT->value)) {
             return $this->redirectToRoute("home");
         }
 

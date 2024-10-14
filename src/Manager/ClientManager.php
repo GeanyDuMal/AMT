@@ -9,7 +9,7 @@ use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use App\Utils\Exception\ApplicationException;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,7 +43,7 @@ class ClientManager {
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
-        if (!in_array([SymfonyRole::PRESIDENT, SymfonyRole::ADMIN], $client->getRoles())) {
+        if (!in_array([SymfonyRoleEnum::PRESIDENT, SymfonyRoleEnum::ADMIN], $client->getRoles())) {
             $client->setClientType(ClientTypeEnum::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
@@ -97,7 +97,7 @@ class ClientManager {
                ->setBalance($balance)
                ->setFidelityPoint($fidelityPoint)
                ->setClientType($clientType)
-               ->setRoles([SymfonyRole::USER]);
+               ->setRoles([SymfonyRoleEnum::USER]);
 
         $this->setRoleForClient($client, MemberRoleEnum::from($roleAssociationName));
         $this->fidelityPointLimitCheck($client);
@@ -189,13 +189,13 @@ class ClientManager {
                         $client->setRoles([SymfonyRole::PRESIDENT]);
                         break;
                     case (MemberRoleEnum::TRESORIER || MemberRoleEnum::VICE_PRESIDENT):
-                        $client->setRoles([SymfonyRole::TRESORIER]);
+                        $client->setRoles([SymfonyRoleEnum::TRESORIER]);
                         break;
                     case MemberRoleEnum::SECRETAIRE:
                         $client->setRoles([SymfonyRole::SECRETAIRE]);
                         break;
                     default:
-                        $client->setRoles([SymfonyRole::ASSOC]);
+                        $client->setRoles([SymfonyRoleEnum::ASSOC]);
                         break;
                 }
                 break;

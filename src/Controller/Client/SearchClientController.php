@@ -5,7 +5,7 @@ namespace App\Controller\Client;
 use App\Manager\ClientManager;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class SearchClientController extends AbstractController
 
     #[Route("/client/ajax/searchClient", name: "ajaxSearchClient", methods: ["GET"])]
     public function show(Request $request): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->json([]);
         }
 

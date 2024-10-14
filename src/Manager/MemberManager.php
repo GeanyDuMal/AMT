@@ -7,7 +7,7 @@ use App\Entity\Member;
 use App\Repository\MemberRepository;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MemberManager {
@@ -46,7 +46,7 @@ class MemberManager {
                 $client = $otherMember->getClient();
 
                 $client->setClientType(ClientTypeEnum::ETUDIANT);
-                $client->setRoles([SymfonyRole::USER]);
+                $client->setRoles([SymfonyRoleEnum::USER]);
 
                 $this->remove($otherMember);
                 $clientManager->persist($client);
@@ -82,7 +82,7 @@ class MemberManager {
                     break;
                 }
             }
-        } else if ($client->getRoles()[0] == SymfonyRole::ADMIN) {
+        } else if ($client->getRoles()[0] == SymfonyRoleEnum::ADMIN) {
             $rolesReturned = $memberRoles;
         }
 
