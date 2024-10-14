@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderedRepository;
 use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -37,9 +38,9 @@ class Ordered {
     private ClientTypeEnum $clientTypeAtOrder;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", enumType=PaymentTypeEnum::class)
      */
-    private ?string $paymentType;
+    private PaymentTypeEnum $paymentType;
 
     /**
      * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true, cascade={"persist", "remove"})
@@ -88,11 +89,11 @@ class Ordered {
         return $this;
     }
 
-    public function getPaymentType(): ?string {
+    public function getPaymentType(): PaymentTypeEnum {
         return $this->paymentType;
     }
 
-    public function setPaymentType(?string $paymentType): self {
+    public function setPaymentType(PaymentTypeEnum $paymentType): self {
         $this->paymentType = $paymentType;
 
         return $this;

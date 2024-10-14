@@ -7,6 +7,7 @@ use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
 use App\Utils\Enum\OrderedStatus;
+use App\Utils\Enum\PaymentTypeEnum;
 use App\Utils\Enum\SymfonyRoleEnum;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,7 +64,7 @@ class PaymentOrderedController extends AbstractController {
             }
 
             $this->orderedManager->setData($ordered, $ordered->getClient(),
-                                           $paymentTypeChose,
+                                           PaymentTypeEnum::from($paymentTypeChose),
                                            new DateTime("now"),
                                            OrderedStatus::PAID,
                                            $ordered->getClientTypeAtOrder());

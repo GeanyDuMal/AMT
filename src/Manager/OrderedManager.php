@@ -9,7 +9,7 @@ use App\Entity\Purchase;
 use App\Repository\OrderedRepository;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\OrderedStatus;
-use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -41,13 +41,13 @@ class OrderedManager {
     /**
      * @param Ordered $ordered
      * @param Client|null $client
-     * @param string $paymentType
+     * @param PaymentTypeEnum $paymentType
      * @param DateTime|null $date
      * @param string $status
      * @param ClientTypeEnum $clientType
      * @return void
      */
-    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date, string $status, ClientTypeEnum $clientType): void {
+    public function setData(Ordered $ordered, ?Client $client, PaymentTypeEnum $paymentType, ?DateTime $date, string $status, ClientTypeEnum $clientType): void {
         if (!$date) {
             $date = new DateTime("now");
         }
@@ -67,7 +67,7 @@ class OrderedManager {
     public function reduceBalanceIfNecessary(Ordered $order): void {
         $clientManager = new ClientManager($this->manager);
 
-        if ($order->getPaymentType() == PaymentType::SOLDE && $order->getClient() != null) {
+        if ($order->getPaymentType() == PaymentTypeEnum::SOLDE && $order->getClient() != null) {
             $montantTotal = $this->getMontantTotal($order);
 
             $order->getClient()->setBalance($order->getClient()->getBalance() - $montantTotal);
@@ -104,29 +104,28 @@ class OrderedManager {
     }
 
     /**
-     * @param int $amountOrdered
+     * @param float $amountOrdered
      * @param Client|null $client Client
      * @return array An array of payment type that are allowed fot this Ordered
      */
     public function getAllowedPaymentType(float $amountOrdered, Client $client = null): array {
-        $paymentTypeList = PaymentType::getAll();
+        $paymentTypeList = PaymentTypeEnum::cases();
 
         foreach ($paymentTypeList as $paymentType) {
             switch ($paymentType) {
-                case "Solde" :
-                {
+                case PaymentTypeEnum::SOLDE : {
                     if ($client == null || $client->getBalance() < $amountOrdered) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
                 }
-                case "Carte Bancaire" :
-                {
+                case PaymentTypeEnum::CARTE_BANCAIRE : {
                     if ($amountOrdered < 1) {
                         unset($paymentTypeList[array_search($paymentType, $paymentTypeList, true)]);
                     }
                     break;
                 }
+                default: {}
             }
         }
         return $paymentTypeList;
@@ -190,7 +189,7 @@ class OrderedManager {
 
     public function refund(Ordered $ordered): void {
         if ($ordered->getClient() != null &&
-            $ordered->getPaymentType() == PaymentType::SOLDE) {
+            $ordered->getPaymentType() == PaymentTypeEnum::SOLDE) {
             $client = $ordered->getClient();
             $montantTotal = $this->getMontantTotal($ordered);
 

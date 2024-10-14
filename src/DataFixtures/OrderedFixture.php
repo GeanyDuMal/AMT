@@ -6,7 +6,7 @@ use App\Entity\Client;
 use App\Entity\Ordered;
 use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\OrderedStatus;
-use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,9 +18,9 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
     {
         $clientRepository = $manager->getRepository(Client::class);
 
-        $paymentTypeCarte = PaymentType::CARTE_BANCAIRE;
-        $paymentTypeEspece = PaymentType::ESPECE;
-        $paymentTypeSolde = PaymentType::SOLDE;
+        $paymentTypeCarte = PaymentTypeEnum::CARTE_BANCAIRE;
+        $paymentTypeEspece = PaymentTypeEnum::ESPECE;
+        $paymentTypeSolde = PaymentTypeEnum::SOLDE;
 
         $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
         $clientTypeCotisant = ClientTypeEnum::COTISANT;
