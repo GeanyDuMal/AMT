@@ -8,7 +8,7 @@ use App\Manager\MemberManager;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
 use App\Repository\MemberRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,8 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EditClientController extends AbstractController
-{
+class EditClientController extends AbstractController {
 
     private EntityManagerInterface $manager;
     private ClientManager $clientManager;
@@ -29,7 +28,8 @@ class EditClientController extends AbstractController
     private MemberRepository $memberRepository;
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, MemberRepository $memberRepository, ClientRepository $clientRepository) {
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager, MemberRepository $memberRepository,
+        ClientRepository $clientRepository) {
         $this->manager = $manager;
         $this->parameterManager = new ParameterManager($this->manager);
         $this->clientManager = new ClientManager($this->manager);
@@ -55,17 +55,24 @@ class EditClientController extends AbstractController
         $allowEdit = $this->isGranted($client->getRoles()[0]);
 
         if ($allowEdit && $data->count() > 0) {
-            $this->clientManager->setData($client, $this->userPasswordHasher, $data->get("name"),
-                                    $data->get("firstName"), $client->getLogin(), $data->get("password"),
-                                    $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), $data->get("fidelityPoint"));
+            $this->clientManager->setData($client,
+                                          $this->userPasswordHasher,
+                                          $data->get("name"),
+                                          $data->get("firstName"),
+                                          $client->getLogin(),
+                                          $data->get("password"),
+                                          $data->get("balance"),
+                                          ClientTypeEnum::from($data->get("clientType")),
+                                          $data->get("assosRoles"),
+                                          $data->get("fidelityPoint"));
 
 
             // Verify the confirmity of a client and verify that the login correspond to the stored one
             if ($this->clientManager->verifyClient($client) && strcmp($client->getLogin(), $data->get('login'))) {
                 /*
-                 * If we set the ClientType Association, we need to put the client in the table Association
+                 * If we set the ClientTypeEnum Association, we need to put the client in the table Association
                  */
-                if ($data->get("clientType") == ClientType::ASSOCIATION) {
+                if ($data->get("clientType") == ClientTypeEnum::ASSOCIATION) {
 
                     /*
                      *  if admin changed the role of a member to another role
@@ -75,9 +82,9 @@ class EditClientController extends AbstractController
                 }
 
                 $this->clientManager->persist($client);
-                if ($client->getClientType() == ClientType::ASSOCIATION) {
+                if ($client->getClientType() == ClientTypeEnum::ASSOCIATION) {
                     $member = $this->memberRepository->findOneBy(["client" => $client]);
-                    if ($member->getRole() == MemberRoleEnum::PRESIDENT) {
+                    if ($member && $member->getRole() == MemberRoleEnum::PRESIDENT) {
                         $this->memberManager->removeOtherPresidents($member);
                     }
                 }
@@ -86,10 +93,12 @@ class EditClientController extends AbstractController
                     "message" => "Modification effectué avec succès"
                 ]);
             }
-        } else if (!$allowEdit) {
-            return $this->redirectToRoute('menuClient', [
-                "message" => "Vous n'avez pas l'autorisation de modifier ce client",
-            ]);
+        } else {
+            if (!$allowEdit) {
+                return $this->redirectToRoute('menuClient', [
+                    "message" => "Vous n'avez pas l'autorisation de modifier ce client",
+                ]);
+            }
         }
 
         return $this->render('client/EditClient.html.twig', [

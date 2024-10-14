@@ -7,7 +7,7 @@ use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\ProductTypeEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,8 +42,8 @@ class EditProductController extends AbstractController {
         $parameter = $this->parameterManager->getParameter();
         $data = $request->request;
         $product = $this->productRepository->find($id);
-        $memberPrice = $this->priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ASSOCIATION]);
-        $studentPrice = $this->priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ETUDIANT]);
+        $memberPrice = $this->priceRepository->findOneBy(["product" => $product, "clientType" => ClientTypeEnum::ASSOCIATION]);
+        $studentPrice = $this->priceRepository->findOneBy(["product" => $product, "clientType" => ClientTypeEnum::ETUDIANT]);
         $message = "";
 
         if ($data->count() > 0) {

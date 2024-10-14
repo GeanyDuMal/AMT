@@ -22,7 +22,7 @@
                   le {{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
             </h3>
             <h3>
-                  Commande de type {{ ordered.clientTypeAtOrder }} reglé avec {{ ordered.paymentType }}
+                  Commande de type {{ ordered.clientTypeAtOrder.value }} reglé avec {{ ordered.paymentType }}
             </h3>
             <h3>
                   Commande en statut {{ ordered.status }}

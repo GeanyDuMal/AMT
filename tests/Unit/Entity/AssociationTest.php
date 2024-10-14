@@ -4,7 +4,7 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\Member;
 use App\Entity\Client;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
 use PHPUnit\Framework\TestCase;
 

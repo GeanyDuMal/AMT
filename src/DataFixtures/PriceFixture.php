@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Price;
 use App\Entity\Product;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,8 +15,8 @@ class PriceFixture extends Fixture implements DependentFixtureInterface
     {
         $productRepository = $manager->getRepository(Product::class);
 
-        $clientTypeAssociation = ClientType::ASSOCIATION;
-        $clientTypeEtudiant = ClientType::ETUDIANT;
+        $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
+        $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
 
 
         $snickers = $productRepository->findOneBy(["name" => "Snickers"]);

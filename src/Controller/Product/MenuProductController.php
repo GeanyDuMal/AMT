@@ -6,7 +6,7 @@ use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

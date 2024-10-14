@@ -14,7 +14,7 @@ use App\Repository\OrderedRepository;
 use App\Repository\PasswordForgotRequestRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,10 +73,10 @@ class MenuManagementController extends AbstractController {
          * Purge des cotisants
          */
         if ($data->get("clearCotisant") != "" && $parameter->isCotisantActivated()) {
-            $listCotisant = $this->clientRepository->findBy(["clientType" => ClientType::COTISANT]);
+            $listCotisant = $this->clientRepository->findBy(["clientType" => ClientTypeEnum::COTISANT]);
 
             foreach ($listCotisant as $cotisant) {
-                $cotisant->setClientType(ClientType::ETUDIANT);
+                $cotisant->setClientType(ClientTypeEnum::ETUDIANT);
                 $this->clientManager->persist($cotisant);
             }
 
@@ -87,13 +87,13 @@ class MenuManagementController extends AbstractController {
          * Purge de l'association
          */
         if ($data->get("clearMembers") != "") {
-            $listTypeAssociation = $this->clientRepository->findBy(["clientType" => ClientType::ASSOCIATION]);
+            $listTypeAssociation = $this->clientRepository->findBy(["clientType" => ClientTypeEnum::ASSOCIATION]);
 
             $president = $this->memberRepository->findOneBy(["role" => MemberRoleEnum::PRESIDENT])->getClient();
 
             foreach ($listTypeAssociation as $client) {
                 if ($client !== $president) {
-                    $client->setClientType(ClientType::ETUDIANT);
+                    $client->setClientType(ClientTypeEnum::ETUDIANT);
 
                     $this->clientManager->persist($client);
                 }

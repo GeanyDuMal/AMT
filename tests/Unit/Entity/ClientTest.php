@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Client;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\SymfonyRole;
 use PHPUnit\Framework\TestCase;
 
@@ -48,12 +48,12 @@ class  ClientTest extends TestCase
 
     public function testGetClientType(): void
     {
-        $value = ClientType::ETUDIANT;
+        $value = ClientTypeEnum::ETUDIANT;
 
         $response = $this->client->setClientType($value);
 
         self::assertInstanceOf(Client::class, $response);
-        self::assertContains($this->client->getClientType(), ClientType::getAll());
+        self::assertContains($this->client->getClientType(), ClientTypeEnum::getAll());
         self::assertEquals($value, $this->client->getClientType());
     }
 

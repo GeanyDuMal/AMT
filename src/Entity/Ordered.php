@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderedRepository;
+use App\Utils\Enum\ClientTypeEnum;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,9 +32,9 @@ class Ordered {
     private ?Client $client;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", enumType=ClientTypeEnum::class)
      */
-    private string $clientTypeAtOrder;
+    private ClientTypeEnum $clientTypeAtOrder;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -77,11 +78,11 @@ class Ordered {
         return $this;
     }
 
-    public function getClientTypeAtOrder(): string {
+    public function getClientTypeAtOrder(): ClientTypeEnum {
         return $this->clientTypeAtOrder;
     }
 
-    public function setClientTypeAtOrder(string $clientTypeAtOrder): self {
+    public function setClientTypeAtOrder(ClientTypeEnum $clientTypeAtOrder): self {
         $this->clientTypeAtOrder = $clientTypeAtOrder;
 
         return $this;
@@ -122,17 +123,6 @@ class Ordered {
 
         foreach ($this->purchases as $purchase) {
             $purchase->setOrdered($this);
-        }
-
-        return $this;
-    }
-
-    public function removePurchase(Purchase $purchase): self {
-        if ($this->purchases->removeElement($purchase)) {
-            // set the owning side to null (unless already changed)
-            if ($purchase->getOrdered() === $this) {
-                $purchase->setOrdered(null);
-            }
         }
 
         return $this;

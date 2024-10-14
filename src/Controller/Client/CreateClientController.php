@@ -7,7 +7,7 @@ use App\Manager\ClientManager;
 use App\Manager\MemberManager;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,9 +49,16 @@ class CreateClientController extends AbstractController {
 
         if ($data->count() > 0) {
             $client = new Client();
-            $this->clientManager->setData($client, $this->userPasswordHasher, $data->get("name"),
-                                          $data->get("firstName"), $data->get("login"), $data->get("password"),
-                                          $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
+            $this->clientManager->setData($client,
+                                          $this->userPasswordHasher,
+                                          $data->get("name"),
+                                          $data->get("firstName"),
+                                          $data->get("login"),
+                                          $data->get("password"),
+                                          $data->get("balance"),
+                                          ClientTypeEnum::from($data->get("clientType")),
+                                          $data->get("assosRoles"),
+                                          0);
 
             if ($this->clientManager->verifyClient($client) && $this->clientManager->verifyPassword($data->get("password"))) {
                 if ($this->clientManager->clientExists($client)) {
@@ -65,7 +72,7 @@ class CreateClientController extends AbstractController {
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if ($client->getClientType() == ClientType::ASSOCIATION) {
+                    if ($client->getClientType() == ClientTypeEnum::ASSOCIATION) {
 
                         $newMember = $this->memberManager->makeMember($client, MemberRoleEnum::from($request->get("assosRoles")));
 

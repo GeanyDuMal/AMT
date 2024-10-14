@@ -5,7 +5,7 @@ namespace App\Manager;
 use App\Entity\Client;
 use App\Entity\Member;
 use App\Repository\MemberRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\MemberRoleEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +45,7 @@ class MemberManager {
                 $clientManager = new ClientManager($this->manager);
                 $client = $otherMember->getClient();
 
-                $client->setClientType(ClientType::ETUDIANT);
+                $client->setClientType(ClientTypeEnum::ETUDIANT);
                 $client->setRoles([SymfonyRole::USER]);
 
                 $this->remove($otherMember);
@@ -63,7 +63,7 @@ class MemberManager {
     public function makeMember(Client $client, MemberRoleEnum $role): Member {
         $newMember = new Member();
 
-        $client->setClientType(ClientType::ASSOCIATION);
+        $client->setClientType(ClientTypeEnum::ASSOCIATION);
         $newMember->setClient($client);
         $newMember->setRole($role);
 

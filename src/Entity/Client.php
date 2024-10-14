@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\SymfonyRole;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -74,9 +75,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface {
     private int $fidelityPoint;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", enumType=ClientTypeEnum::class)
      */
-    private string $clientType;
+    private ClientTypeEnum $clientType;
 
     /**
      * @ORM\Column(type="json")
@@ -156,11 +157,11 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface {
         return $this;
     }
 
-    public function getClientType(): string {
+    public function getClientType(): ClientTypeEnum {
         return $this->clientType;
     }
 
-    public function setClientType(string $clientType): self {
+    public function setClientType(ClientTypeEnum $clientType): self {
         $this->clientType = $clientType;
 
         return $this;

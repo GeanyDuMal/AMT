@@ -6,6 +6,7 @@ use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
 use App\Manager\PriceManager;
 use App\Manager\PurchaseManager;
+use App\Utils\Enum\OrderedStatus;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,8 +62,12 @@ class PaymentOrderedController extends AbstractController {
                 ]);
             }
 
-            $this->orderedManager->setData($ordered, $ordered->getClient(), $paymentTypeChose, new DateTime("now"), $ordered->getStatus(),
+            $this->orderedManager->setData($ordered, $ordered->getClient(),
+                                           $paymentTypeChose,
+                                           new DateTime("now"),
+                                           OrderedStatus::PAID,
                                            $ordered->getClientTypeAtOrder());
+            $this->orderedManager->persist($ordered);
 
             $this->orderedManager->reduceBalanceIfNecessary($ordered);
             $this->orderedManager->addFidelityToClient($ordered);

@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Client;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -15,8 +15,8 @@ class ClientFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        $clientTypeAssociation = ClientType::ASSOCIATION;
-        $clientTypeEtudiant = ClientType::ETUDIANT;
+        $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
+        $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
 
         $client = new Client();
         $client->setName("NATANELIC")

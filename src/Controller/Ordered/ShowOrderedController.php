@@ -20,8 +20,8 @@ class ShowOrderedController extends AbstractController {
 
     public function __construct(EntityManagerInterface $manager) {
         $this->manager = $manager;
-        $this->orderedManager = new OrderedManager($manager);
-        $this->parameterManager = new ParameterManager($manager);
+        $this->orderedManager = new OrderedManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
     }
 
     #[Route("/ordered/show&id={!idOrder}", name: "showOrdered", methods: ["GET", "POST"])]

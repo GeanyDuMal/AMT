@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\OrderedStatus;
 use App\Utils\Enum\PaymentType;
 use DateTime;
@@ -22,9 +22,9 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
         $paymentTypeEspece = PaymentType::ESPECE;
         $paymentTypeSolde = PaymentType::SOLDE;
 
-        $clientTypeEtudiant = ClientType::ETUDIANT;
-        $clientTypeCotisant = ClientType::COTISANT;
-        $clientTypeAssociation = ClientType::ASSOCIATION;
+        $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
+        $clientTypeCotisant = ClientTypeEnum::COTISANT;
+        $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
 
         $orderedStatusPaid = OrderedStatus::PAID;
         $orderedStatusCanceled = OrderedStatus::CANCELED;

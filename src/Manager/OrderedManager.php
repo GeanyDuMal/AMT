@@ -7,7 +7,7 @@ use App\Entity\Ordered;
 use App\Entity\Price;
 use App\Entity\Purchase;
 use App\Repository\OrderedRepository;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use App\Utils\Enum\OrderedStatus;
 use App\Utils\Enum\PaymentType;
 use DateTime;
@@ -44,10 +44,10 @@ class OrderedManager {
      * @param string $paymentType
      * @param DateTime|null $date
      * @param string $status
-     * @param string $clientType
+     * @param ClientTypeEnum $clientType
      * @return void
      */
-    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date, string $status, string $clientType): void {
+    public function setData(Ordered $ordered, ?Client $client, string $paymentType, ?DateTime $date, string $status, ClientTypeEnum $clientType): void {
         if (!$date) {
             $date = new DateTime("now");
         }
@@ -132,18 +132,6 @@ class OrderedManager {
         return $paymentTypeList;
     }
 
-    /**
-     * Remove the purchases from the current $ordered
-     * This method don't persist the $ordered
-     * @param Ordered $ordered
-     * @return void
-     */
-    public function clearPurchases(Ordered $ordered): void {
-        foreach ($ordered->getPurchases() as $purchase) {
-            $ordered->removePurchase($purchase);
-        }
-    }
-
     public function createOrdered(?Client $client, Collection $purchases): Ordered {
         $ordered = new Ordered();
 
@@ -160,31 +148,31 @@ class OrderedManager {
     /**
      * Retourne le type de prix concerné par le type de client passé en paramètre
      * @param Client|null $client
-     * @return string
+     * @return ClientTypeEnum
      */
-    public function getClientTypeUsedForOrdered(?Client $client): string {
+    public function getClientTypeUsedForOrdered(?Client $client): ClientTypeEnum {
         if ($client) {
             switch ($client->getClientType()) {
-                case ClientType::ASSOCIATION :
-                    $clientTypeReturn = ClientType::ASSOCIATION;
+                case ClientTypeEnum::ASSOCIATION :
+                    $clientTypeReturn = ClientTypeEnum::ASSOCIATION;
                     break;
 
-                case ClientType::COTISANT :
+                case ClientTypeEnum::COTISANT :
                     $parameterManager = new ParameterManager(($this->manager));
                     $parameter = $parameterManager->getParameter();
 
                     if ($parameter->isCotisantActivated()) {
-                        $clientTypeReturn = ClientType::ASSOCIATION;
+                        $clientTypeReturn = ClientTypeEnum::ASSOCIATION;
                     } else {
-                        $clientTypeReturn = ClientType::ETUDIANT;
+                        $clientTypeReturn = ClientTypeEnum::ETUDIANT;
                     }
                     break;
 
                 default:
-                    $clientTypeReturn = ClientType::ETUDIANT;
+                    $clientTypeReturn = ClientTypeEnum::ETUDIANT;
             }
         } else {
-            $clientTypeReturn = ClientType::ETUDIANT;
+            $clientTypeReturn = ClientTypeEnum::ETUDIANT;
         }
 
         return $clientTypeReturn;
