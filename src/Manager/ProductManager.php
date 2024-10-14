@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Repository\ProductRepository;
+use App\Utils\Enum\ProductTypeEnum;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,13 +71,14 @@ class ProductManager {
 
     /**
      * @param Product $product
-     * @param String $productType
+     * @param ProductTypeEnum $productType
      * @param String $productName
      * @param int $productStock
+     * @param bool|null $isActive
      * @param String $imageLink
      * @return void
      */
-    public function setData(Product $product, string $productType, string $productName, int $productStock, ?bool $isActive, string $imageLink = ""): void {
+    public function setData(Product $product, ProductTypeEnum $productType, string $productName, int $productStock, ?bool $isActive, string $imageLink = ""): void {
         if(!$isActive) {
             $isActive = false;
         }

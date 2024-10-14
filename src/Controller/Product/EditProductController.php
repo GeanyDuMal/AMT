@@ -8,7 +8,7 @@ use App\Manager\ProductManager;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
 use App\Utils\Enum\ClientType;
-use App\Utils\Enum\ProductType;
+use App\Utils\Enum\ProductTypeEnum;
 use App\Utils\Enum\SymfonyRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,7 +49,7 @@ class EditProductController extends AbstractController {
         if ($data->count() > 0) {
 
             $this->productManager->setData($product,
-                                           $data->get("productType"),
+                                           ProductTypeEnum::from($data->get("productType")),
                                            $data->get("productName"),
                                            $data->get("productStock"),
                                            $data->get("isActive"),
@@ -81,7 +81,7 @@ class EditProductController extends AbstractController {
         }
         return $this->render("product/EditProduct.html.twig", [
             "parameter" => $parameter,
-            "productTypes" => ProductType::getAll(),
+            "productTypes" => ProductTypeEnum::cases(),
             "message" => $message,
             "product" => $product,
             "studentPrice" => $studentPrice->getPrice(),
