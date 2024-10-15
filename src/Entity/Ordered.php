@@ -39,7 +39,7 @@ class Ordered {
     private ClientTypeEnum $clientTypeAtOrder;
 
     /**
-     * @ORM\Column(type="string", enumType=PaymentTypeEnum::class)
+     * @ORM\Column(type="string", enumType=PaymentTypeEnum::class, nullable=false)
      */
     private PaymentTypeEnum $paymentType;
 
