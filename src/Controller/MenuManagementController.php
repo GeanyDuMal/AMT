@@ -120,16 +120,16 @@ class MenuManagementController extends AbstractController {
         }
 
         /**
-         * Purge des anciens produits
+         * Passage des anciens produits en inactif
          */
-        if ($data->get("clearProduct") != "") {
-            $listProduct = $this->productRepository->findProductEmptyWithoutCommandOneYear();
+        if ($data->get("unactiveProduct") != "") {
+            $listProduct = $this->productRepository->findProductEmptydWithoutCommandOneMonth();
 
             foreach ($listProduct as $product) {
-                $this->productManager->remove($product);
+                $this->productManager->setUnactive($product);
             }
 
-            $message = "Les produits sans commandes de moins de 1 an dont le stock est vide ont été supprimés";
+            $message = "Les produits sans commandes de moins de 1 mois dont le stock est vide ont été passé en inactif";
         }
 
         /**

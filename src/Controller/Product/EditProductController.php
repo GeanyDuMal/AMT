@@ -67,7 +67,7 @@ class EditProductController extends AbstractController {
                     $product->addPrice($memberPrice);
                     $product->addPrice($studentPrice);
 
-                    $this->productManager->persistCascade($product);
+                    $this->productManager->persistCascadePrice($product);
 
                     return $this->redirectToRoute("menuProduct", [
                         "message" => "Modification effectué avec succès"
