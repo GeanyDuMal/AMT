@@ -49,7 +49,7 @@ class EditParameterController extends AbstractController
                     $postActivated
                 );
 
-                $parameterManager->persist($parameter);
+                $this->parameterManager->persist($parameter);
             } else {
                 $message = "Paramêtres érronés";
             }

@@ -72,7 +72,7 @@ class EditClientController extends AbstractController {
                 /*
                  * If we set the ClientTypeEnum Association, we need to put the client in the table Association
                  */
-                if ($data->get("clientType") == ClientTypeEnum::ASSOCIATION) {
+                if ($data->get("clientType") == ClientTypeEnum::ASSOCIATION->value) {
 
                     /*
                      *  if admin changed the role of a member to another role

@@ -99,7 +99,7 @@ class ClientManager {
                ->setClientType($clientType)
                ->setRoles([SymfonyRoleEnum::USER]);
 
-        $this->setRoleForClient($client, MemberRoleEnum::from($roleAssociationName));
+        $this->setRoleForClient($client, MemberRoleEnum::tryFrom($roleAssociationName));
         $this->fidelityPointLimitCheck($client);
 
         /*
@@ -186,13 +186,13 @@ class ClientManager {
             {
                 switch ($roleAssociation) {
                     case MemberRoleEnum::PRESIDENT:
-                        $client->setRoles([SymfonyRole::PRESIDENT]);
+                        $client->setRoles([SymfonyRoleEnum::PRESIDENT]);
                         break;
                     case (MemberRoleEnum::TRESORIER || MemberRoleEnum::VICE_PRESIDENT):
                         $client->setRoles([SymfonyRoleEnum::TRESORIER]);
                         break;
                     case MemberRoleEnum::SECRETAIRE:
-                        $client->setRoles([SymfonyRole::SECRETAIRE]);
+                        $client->setRoles([SymfonyRoleEnum::SECRETAIRE]);
                         break;
                     default:
                         $client->setRoles([SymfonyRoleEnum::ASSOC]);
@@ -200,14 +200,12 @@ class ClientManager {
                 }
                 break;
             }
-            case ClientTypeEnum::ADMIN:
-            {
-                $client->setRoles([SymfonyRole::ADMIN]);
+            case ClientTypeEnum::ADMIN: {
+                $client->setRoles([SymfonyRoleEnum::ADMIN]);
                 break;
             }
-            default:
-            {
-                $client->setRoles([SymfonyRole::USER]);
+            default: {
+                $client->setRoles([SymfonyRoleEnum::USER]);
                 break;
             }
         }

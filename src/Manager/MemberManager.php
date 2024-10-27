@@ -82,7 +82,7 @@ class MemberManager {
                     break;
                 }
             }
-        } else if ($client->getRoles()[0] == SymfonyRoleEnum::ADMIN) {
+        } else if ($client->getRoles()[0] == SymfonyRoleEnum::ADMIN->value) {
             $rolesReturned = $memberRoles;
         }
 
