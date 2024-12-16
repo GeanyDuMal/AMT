@@ -10,12 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+
+    public function __construct(EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+    }
 
     #[Route("/", name: "home", methods: ["GET"])]
-    public function index(EntityManagerInterface $manager): Response
-    {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter(true);
+    public function index(): Response {
+        $parameter = $this->parameterManager->getParameter(true);
 
         return $this->render("home/Home.html.twig", [
             "parameter" => $parameter

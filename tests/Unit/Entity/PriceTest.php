@@ -4,7 +4,7 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\Price;
 use App\Entity\Product;
-use App\Utils\Enum\ClientType;
+use App\Utils\Enum\ClientTypeEnum;
 use PHPUnit\Framework\TestCase;
 
 class PriceTest extends TestCase
@@ -20,12 +20,12 @@ class PriceTest extends TestCase
 
     public function testGetClientType()
     {
-        $value = ClientType::ETUDIANT;
+        $value = ClientTypeEnum::ETUDIANT;
 
         $response = $this->price->setClientType($value);
 
         self::assertInstanceOf(Price::class, $response);
-        self::assertContains($this->price->getClientType(), ClientType::getAll());
+        self::assertContains($this->price->getClientType(), ClientTypeEnum::getAll());
         self::assertEquals($value, $this->price->getClientType());
 
     }

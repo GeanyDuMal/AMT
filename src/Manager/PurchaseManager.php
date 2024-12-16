@@ -34,15 +34,12 @@ class PurchaseManager {
      * @param Purchase $purchase
      * @return void
      */
-    public function removeWithRestore(Purchase $purchase): void {
+    public function refund(Purchase $purchase): void {
         $product = $purchase->getProduct();
         $productManager = new ProductManager($this->manager);
 
         //Restock le produit de la quantity
         $productManager->restockProduct($product, $purchase->getQuantity());
-
-        $this->manager->remove($purchase);
-        $this->manager->flush();
     }
 
     /**
@@ -89,5 +86,15 @@ class PurchaseManager {
     public function removeProductQuantity(Purchase $purchase): void {
         $product = $purchase->getProduct();
         $product->setQuantityStock($product->getQuantityStock() - $purchase->getQuantity());
+    }
+
+    public function createPurchase(Product $product, int $quantity, float $productPrice): Purchase {
+        $purchase = new Purchase();
+
+        $purchase->setProduct($product)
+                 ->setUnitaryPrice($productPrice)
+                 ->setQuantity($quantity);
+
+        return $purchase;
     }
 }

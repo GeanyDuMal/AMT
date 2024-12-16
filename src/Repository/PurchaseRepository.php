@@ -44,7 +44,7 @@ class PurchaseRepository extends ServiceEntityRepository
 
         $purchase = $this->getEntityManager()->createQuery("
             SELECT SUM(Price.price*Purchase.quantity) as revenue
-            FROM App\Entity\Price Price, App\Entity\Purchase Purchase, App\Entity\Ordered Ordered, App\Entity\ClientType ClientType
+            FROM App\Entity\Price Price, App\Entity\Purchase Purchase, App\Entity\Ordered Ordered, App\Entity\ClientTypeEnum ClientTypeEnum
             WHERE Purchase.ordered = Ordered.id
             AND Purchase.product = Price.product
             AND Price.clientType = 'Association'

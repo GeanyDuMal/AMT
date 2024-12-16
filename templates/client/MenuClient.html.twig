@@ -63,7 +63,7 @@
 				<tr id="data">
 					<td>{{ client.name }}</td>
 					<td>{{ client.firstname }}</td>
-					<td class="hide-phone">{{ client.clientType }}</td>
+					<td class="hide-phone">{{ client.clientType.value }}</td>
 					{% if is_granted('ROLE_SECRETAIRE') %}
 						<td>
 							<a href="{{ path('editClient',{id: client.id}) }}">

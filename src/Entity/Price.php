@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PriceRepository;
+use App\Utils\Enum\ClientTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -24,10 +25,10 @@ class Price
     /**
      * @Groups("price")
      * @ORM\Id
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", enumType=ClientTypeEnum::class)
      * @Assert\NotNull(message="Le type client dans prix ne doit pas etre null")
      */
-    private string $clientType;
+    private ClientTypeEnum $clientType;
 
     /**
      * @Groups("price")
@@ -48,12 +49,12 @@ class Price
         return $this;
     }
 
-    public function getClientType(): string
+    public function getClientType(): ClientTypeEnum
     {
         return $this->clientType;
     }
 
-    public function setClientType(string $clientType): self
+    public function setClientType(ClientTypeEnum $clientType): self
     {
         $this->clientType = $clientType;
 

@@ -35,14 +35,14 @@
                 <div class="show-sub-block">
                     <label class="input-label">Type</label>
                     <p>
-                        {{ client.clientType }}
+                        {{ client.clientType.value }}
                     </p>
                 </div>
                 {% if member %}
                     <div class="show-sub-block" id="roles">
                         <label class="input-label">Role</label>
                             <p>
-                                {{ member.role }}
+                                {{ member.role.value }}
                             </p>
                     </div>
                 {% endif %}

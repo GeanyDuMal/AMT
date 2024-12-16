@@ -8,52 +8,65 @@ use App\Repository\ClientRepository;
 use App\Repository\OrderedRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StatisticsController extends AbstractController
-{
+class StatisticsController extends AbstractController {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private OrderedManager $orderedManager;
+    private ClientRepository $clientRepository;
+    private PostRepository $postRepository;
+    private ProductRepository $productRepository;
+    private OrderedRepository $orderedRepository;
+
+    public function __construct(ProductRepository $productRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
+        ClientRepository $clientRepository, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->orderedManager = new OrderedManager($this->manager);
+        $this->clientRepository = $clientRepository;
+        $this->postRepository = $postRepository;
+        $this->productRepository = $productRepository;
+        $this->orderedRepository = $orderedRepository;
+    }
 
     #[Route("/statistics", name: "statistics", methods: ["GET"])]
-    public function index(ProductRepository $productRepository, PostRepository $postRepository, OrderedRepository $orderedRepository,
-                          ClientRepository $clientRepository, EntityManagerInterface $manager): Response
-    {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+    public function index(): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute("home");
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $orderedManager = new OrderedManager($manager);
-        $countThisWeeksCommands = $orderedRepository->quantityThisWeeksCommands()["number"];
+        $parameter = $this->parameterManager->getParameter();
+        $countThisWeeksCommands = $this->orderedRepository->quantityThisWeeksCommands()["number"];
         $salesRevenueThisYear = 0;
         $salesRevenueThisMonth = 0;
         $salesRevenueThisWeek = 0;
-        $yearOrderedList = $orderedRepository->thisYearOrdered();
-        $monthOrderedList = $orderedRepository->thisMonthOrdered();
-        $weekOrderedList = $orderedRepository->thisWeekOrdered();
-        $topSoldProduct = $productRepository->findTopSoldProductThisMonth();
-        $productsWarningStock = $productRepository->findAllWarningStock();
-        $productsEmptyStock = $productRepository->findAllEmptyStock();
-        $countCotisant = count($clientRepository->findBy(["clientType" => ClientType::COTISANT]));
-        $countClients = count($clientRepository->findAll());
-        $postsNumber = count($postRepository->findAll());
+        $yearOrderedList = $this->orderedRepository->thisYearOrdered();
+        $monthOrderedList = $this->orderedRepository->thisMonthOrdered();
+        $weekOrderedList = $this->orderedRepository->thisWeekOrdered();
+        $topSoldProduct = $this->productRepository->findTopSoldProductThisMonth();
+        $productsWarningStock = $this->productRepository->findAllWarningStock();
+        $productsEmptyStock = $this->productRepository->findAllEmptyStock();
+        $countCotisant = count($this->clientRepository->findBy(["clientType" => ClientTypeEnum::COTISANT]));
+        $countClients = count($this->clientRepository->findAll());
+        $postsNumber = count($this->postRepository->findAll());
 
         // Build the amount of purchase
         foreach ($yearOrderedList as $ordered) {
-            $salesRevenueThisYear += $orderedManager->montantTotal($ordered);
+            $salesRevenueThisYear += $this->orderedManager->getMontantTotal($ordered);
         }
 
         foreach ($monthOrderedList as $ordered) {
-            $salesRevenueThisMonth += $orderedManager->montantTotal($ordered);
+            $salesRevenueThisMonth += $this->orderedManager->getMontantTotal($ordered);
         }
 
         foreach ($weekOrderedList as $ordered) {
-            $salesRevenueThisWeek += $orderedManager->montantTotal($ordered);
+            $salesRevenueThisWeek += $this->orderedManager->getMontantTotal($ordered);
         }
 
         if ($countThisWeeksCommands == 0) {

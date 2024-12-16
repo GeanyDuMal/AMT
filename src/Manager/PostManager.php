@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
-use App\Utils\Enum\PostType;
+use App\Utils\Enum\PostTypeEnum;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use DateTime;
@@ -47,7 +47,7 @@ class PostManager {
      */
     public function verifyPost(Post $post): bool {
         return (
-            in_array($post->getPostType(), PostType::getAll()) &&
+            in_array($post->getPostType(), PostTypeEnum::cases()) &&
             $post->getTitle() != "" &&
             $post->getDescription() != ""
         );
@@ -55,14 +55,14 @@ class PostManager {
 
     /**
      * @param Post $post
-     * @param string $postType
+     * @param PostTypeEnum $postType
      * @param String $postTitle
      * @param String $postDescription
      * @param DateTime $creationDate
      * @param string $imageLink
      * @return void
      */
-    public function setData(Post $post, string $postType, string $postTitle, string $postDescription,
+    public function setData(Post $post, PostTypeEnum $postType, string $postTitle, string $postDescription,
         DateTime $creationDate, string $imageLink = ""): void {
         $post->setTitle($postTitle);
         $post->setDescription($postDescription);

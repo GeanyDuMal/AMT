@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use App\Utils\Enum\MemberRoleEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,9 +19,9 @@ class Member
     private Client $client;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, enumType=MemberRoleEnum::class)
      */
-    private string $role;
+    private MemberRoleEnum $role;
 
     public function getClient(): Client
     {
@@ -34,12 +35,12 @@ class Member
         return $this;
     }
 
-    public function getRole(): string
+    public function getRole(): MemberRoleEnum
     {
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(MemberRoleEnum $role): self
     {
         $this->role = $role;
 

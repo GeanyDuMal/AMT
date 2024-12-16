@@ -3,6 +3,7 @@
 namespace App\Controller\Post;
 
 use App\Manager\ParameterManager;
+use App\Manager\PostManager;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,19 +12,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuPostController extends AbstractController {
 
-    /**
-     * @Route("/post/{message?}", name="menuPost")
-     */
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
+
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
+
     #[Route("/post/{message?}", name: "menuPost", methods: ["GET"])]
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, string $message = null): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+    public function index(string $message = null): Response {
+        $parameter = $this->parameterManager->getParameter();
 
         if (!$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
-        $posts = $postRepository->findBy([], ["creationDate" => "DESC"]);
+        $posts = $this->postRepository->findBy([], ["creationDate" => "DESC"]);
 
         return $this->render('post/MenuPost.html.twig', [
             "parameter" => $parameter,

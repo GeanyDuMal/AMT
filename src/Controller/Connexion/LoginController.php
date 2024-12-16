@@ -9,9 +9,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
+    private AuthenticationUtils $authenticationUtils;
+
+    public function __construct(AuthenticationUtils $authenticationUtils) {
+        $this->authenticationUtils = $authenticationUtils;
+    }
 
     #[Route("/login", name: "login", methods: ["GET", "POST"])]
-    public function index(AuthenticationUtils $authenticationUtils): Response
+    public function index(): Response
     {
         // Redirige vers le profil si deja connecté
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -19,10 +24,10 @@ class LoginController extends AbstractController
         }
 
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $this->authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastLogin = $authenticationUtils->getLastUsername();
+        $lastLogin = $this->authenticationUtils->getLastUsername();
 
         return $this->render('connexion/Login.html.twig', [
             'lastLogin' => $lastLogin,

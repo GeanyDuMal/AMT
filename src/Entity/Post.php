@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use App\Utils\Enum\PostTypeEnum;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,9 +35,9 @@ class Post
     private string $imageLink;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", enumType=PostTypeEnum::class, length=255)
      */
-    private string $postType;
+    private PostTypeEnum $postType;
 
     /**
      * @ORM\Column(type="date")
@@ -77,11 +78,11 @@ class Post
         return $this;
     }
 
-    public function getPostType(): string {
+    public function getPostType(): PostTypeEnum {
         return $this->postType;
     }
 
-    public function setPostType(string $postType): self {
+    public function setPostType(PostTypeEnum $postType): self {
         $this->postType = $postType;
 
         return $this;
