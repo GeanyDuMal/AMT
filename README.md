@@ -18,7 +18,7 @@ Association Management Tool
 ### <ins>Usage</ins>
 Ce site est developpé avec PHP et Symfony. Voici les versions actuelles : <br>
 PHP : 8.2.4 <br>
-Symfony : 6.3 
+Symfony : 6.3.8 
 
 ### <ins>Issues</ins>
 Si vous avez un probleme, créez une issue et dans le commentaire, detaillez votre probleme. <br>

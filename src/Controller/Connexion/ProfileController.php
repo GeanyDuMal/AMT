@@ -15,18 +15,30 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private ClientManager $clientManager;
+    private ClientRepository $clientRepository;
+    private UserPasswordHasherInterface $userPasswordHasher;
+
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, ClientRepository $clientRepository, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientManager = new ClientManager($this->manager);
+        $this->clientRepository = $clientRepository;
+        $this->userPasswordHasher = $userPasswordHasher;
+
+    }
+
     /**
      * @Route("/profile", name="profile")
      */
     #[Route("/profile", name: "profile", methods: ["GET", "POST"])]
-    public function index(Request          $request, UserPasswordHasherInterface $passwordHasher,
-                          ClientRepository $clientRepository, EntityManagerInterface $manager): Response
+    public function index(Request $request): Response
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $parameterManager = new ParameterManager($manager);
-            $parameter = $parameterManager->getParameter();
-            $client = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
-            $clientManager = new ClientManager($manager);
+            $parameter = $this->parameterManager->getParameter(true);
+            $client = $this->clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
             $edit = false;
             $fail = false;
 
@@ -38,14 +50,14 @@ class ProfileController extends AbstractController
 
             // Verifie que les champs soient bien rempli et que le nouveau mot de passe et la confirmation soient différent
             if ($oldPassword && $newPassword && ($newPassword === $confirmPassword) && !($oldPassword === $newPassword) &&
-                $clientManager->verifyPassword($newPassword)) {
+                $this->clientManager->verifyPassword($newPassword)) {
                 // Verifie que l'ancien mot de passe corresponde et que le nouveau soit correct
                 if (password_verify($oldPassword, $this->getUser()->getPassword())) {
-                    $hashedPassword = $passwordHasher->hashPassword($client, $newPassword);
+                    $hashedPassword = $this->userPasswordHasher->hashPassword($client, $newPassword);
 
                     $client->setPassword($hashedPassword);
 
-                    $clientManager->persist($client);
+                    $this->clientManager->persist($client);
                     $edit = true;
                 } else {
                     $fail = true;

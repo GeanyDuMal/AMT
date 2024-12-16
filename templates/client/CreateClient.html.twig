@@ -65,7 +65,7 @@
                     <select class="form-input" name="clientType" id="clientType">
                         {% for clientType in clientTypes %}
                             <option>
-                                {{ clientType }}
+                                {{ clientType.value }}
                             </option>
                         {% endfor %}
                     </select>
@@ -75,7 +75,7 @@
                     <select name="assosRoles" id="assosRoles" class="form-input">
                         {% for assosRole in assosRoles %}
                             <option>
-                                {{ assosRole }}
+                                {{ assosRole.value }}
                             </option>
                         {% endfor %}
                     </select>

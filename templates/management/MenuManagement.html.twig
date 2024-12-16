@@ -57,19 +57,19 @@
                     </div>
                 </div>
                 <div class="flex-horizontal flex-centered block-control">
-                    <button type="submit" name="clearProduct" value="true" class="btn btn-primary disableable">
+                    <button type="submit" name="unactiveProduct" value="true" class="btn btn-primary disableable">
                         Purger les produits
                     </button>
                     <div>
-                        Supprimer les produits n'ayant plus été commandé depuis 2 an et dont le stock est vide.
+                        Mettre les produits non commandés depuis 1 mois et dont le stock est vide en inactif.
                     </div>
                 </div>
                 <div class="flex-horizontal flex-centered block-control">
-                    <button type="submit" name="clearOrder" value="true" class="btn btn-primary disableable">
+                    <button type="submit" name="clearOrderUnpaid" value="true" class="btn btn-primary disableable">
                         Purger les commandes
                     </button>
                     <div>
-                        Supprimer les commandes datant d'au moins 2 an sans client.
+                        Supprimer les commandes datant d'au moins 1 semaine et non payées.
                     </div>
                 </div>
                 {% if parameter.postActivated %}

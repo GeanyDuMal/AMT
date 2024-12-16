@@ -6,8 +6,8 @@ use App\Entity\Post;
 use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
-use App\Utils\Enum\PostType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\PostTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,38 +15,46 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CreatePostController extends AbstractController
-{
+class CreatePostController extends AbstractController {
+    private EntityManagerInterface $manager;
+    private PostManager $postManager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
+
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->postManager = new PostManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
 
     #[Route("/post/create", name: "createPost", methods: ["GET", "POST"])]
-    public function index(EntityManagerInterface $manager, PostRepository $postRepository, Request $request): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+    public function index(Request $request): Response {
+        $parameter = $this->parameterManager->getParameter();
 
-        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
-        $postTypes = PostType::getAll();
+        $postTypes = PostTypeEnum::cases();
         $postExistsError = "";
         $post = new Post();
-        $postmanager = new PostManager($manager);
         $message = "";
 
         if ($data->count() > 0) {
-            $postmanager->setData($post,
-                                  $data->get('postType'),
-                                  $data->get("postTitle"),
-                                  trim($data->get('postDescription')),
-                                  new DateTime("now"));
-            $postmanager->downloadPicture($post, $request->files->get("postPicture"));
+            $this->postManager->setData($post,
+                                        PostTypeEnum::from($data->get('postType')),
+                                        $data->get("postTitle"),
+                                        trim($data->get('postDescription')),
+                                        new DateTime("now"));
+            $this->postManager->downloadPicture($post, $request->files->get("postPicture"));
 
-            if ($postmanager->verifyPost($post)) {
-                if ($postRepository->findBy(['title' => $post->getTitle()])) {
+            if ($this->postManager->verifyPost($post)) {
+                if ($this->postRepository->findBy(['title' => $post->getTitle()])) {
                     $postExistsError = "Le post existe déjà.";
                 } else {
-                    $postmanager->persist($post);
+                    $this->postManager->persist($post);
 
                     return $this->redirectToRoute("menuPost", [
                         "message" => "Ajout avec succès"

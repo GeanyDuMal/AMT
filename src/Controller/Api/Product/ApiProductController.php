@@ -13,10 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiProductController extends AbstractController
 {
-    #[Route("/api/product/getAll", name: "apiProductGetAll", methods: ["GET"])]
-    public function index(EntityManagerInterface $manager): JsonResponse {
-        $productManager = new ProductManager($manager);
+    private EntityManagerInterface $manager;
+    private ProductManager $productManager;
 
-        return $this->json($productManager->getAllProductAvailable(), Response::HTTP_OK, [], ["groups" => ["product", "price"]]);
+    public function __construct(EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->productManager = new ProductManager($this->manager);
+    }
+
+    #[Route("/api/product/getAll", name: "apiProductGetAll", methods: ["GET"])]
+    public function index(): JsonResponse {
+
+        return $this->json($this->productManager->getAllProductAvailable(), Response::HTTP_OK, [], ["groups" => ["product", "price"]]);
     }
 }

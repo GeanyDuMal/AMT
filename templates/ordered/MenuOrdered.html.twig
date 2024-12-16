@@ -47,7 +47,7 @@
 						<th>N° </th>
 						<th class="hide-phone">Date et Heure</th>
 						<th>Nom Client</th>
-						<th>Type Client</th>
+						<th>Statut Commande</th>
 						<th>Details</th>
 					</tr>
 				</thead>
@@ -64,17 +64,14 @@
 								<td>
 									{{ ordered.client.name }} {{ ordered.client.firstName }}
 								</td>
-								<td>
-									{{ ordered.client.clientType }}
-								</td>
 							{% else %}
 								<td>
 									Client non renseigné
 								</td>
-								<td>
-									NA
-								</td>
 							{% endif %}
+							<td>
+								{{ ordered.status.value }}
+							</td>
 							<td>
 								<a href="{{ path("showOrdered",{idOrder: ordered.id}) }}">
 									<button class="btn btn-secondary">

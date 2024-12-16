@@ -7,9 +7,9 @@ use App\Entity\Client;
 use App\Entity\Member;
 use App\Entity\PasswordForgotRequest;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\MemberRoleEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use App\Utils\Exception\ApplicationException;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,8 +43,8 @@ class ClientManager {
         /**
          * @TODO Ne pas check les roles Symfony (sauf pour ADMIN)
          */
-        if (!in_array([SymfonyRole::PRESIDENT, SymfonyRole::ADMIN], $client->getRoles())) {
-            $client->setClientType(ClientType::ETUDIANT);
+        if (!in_array([SymfonyRoleEnum::PRESIDENT, SymfonyRoleEnum::ADMIN], $client->getRoles())) {
+            $client->setClientType(ClientTypeEnum::ETUDIANT);
 
             $this->removeFromAssociationIfNecessary($client);
             $this->deletePasswordForgotRequest($client);
@@ -60,7 +60,7 @@ class ClientManager {
      * @return void
      */
     public function removeFromAssociationIfNecessary(Client $client): void {
-        if ($client->getClientType() != ClientType::ASSOCIATION) {
+        if ($client->getClientType() != ClientTypeEnum::ASSOCIATION) {
             $member = $this->manager->getRepository(Member::class)->findOneBy(["client" => $client]);
             // If client is present in table Association, it's not normal, so we remove it
             if ($member) {
@@ -82,13 +82,13 @@ class ClientManager {
      * @param string $login
      * @param string|null $password
      * @param string $balance
+     * @param ClientTypeEnum $clientType
      * @param string|null $roleAssociationName
-     * @param string $clientType
      * @param int|null $fidelityPoint
      * @return void
      */
     public function setData(Client $client, UserPasswordHasherInterface $passwordHasher, string $name,
-        string $firstName, string $login, ?string $password, string $balance, string $clientType,
+        string $firstName, string $login, ?string $password, string $balance, ClientTypeEnum $clientType,
         ?string $roleAssociationName, ?int $fidelityPoint = 0): void {
 
         $client->setName(strtoupper($name))
@@ -97,9 +97,9 @@ class ClientManager {
                ->setBalance($balance)
                ->setFidelityPoint($fidelityPoint)
                ->setClientType($clientType)
-               ->setRoles([SymfonyRole::USER]);
+               ->setRoles([SymfonyRoleEnum::USER]);
 
-        $this->setRoleForClient($client, $roleAssociationName);
+        $this->setRoleForClient($client, MemberRoleEnum::tryFrom($roleAssociationName));
         $this->fidelityPointLimitCheck($client);
 
         /*
@@ -159,7 +159,7 @@ class ClientManager {
 
         return ($loginUpperFour && $passwordUpperFour && $firstNameUpperTwo
             && $nameUpperTwo && !$containsSpecialName && !$containsSpecialFirstName &&
-            in_array($client->getClientType(), ClientType::getAll()));
+            in_array($client->getClientType(), ClientTypeEnum::cases()));
     }
 
     /**
@@ -174,40 +174,38 @@ class ClientManager {
     /**
      * Define the @SymfonyRole Corresponding to the Client
      * @param Client $client
-     * @param string|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
+     * @param MemberRoleEnum|null $roleAssociation the role of the client in the association, not null if $client->clientType is Association
      * @return void
      */
-    public function setRoleForClient(Client $client, ?string $roleAssociation): void {
+    public function setRoleForClient(Client $client, ?MemberRoleEnum $roleAssociation): void {
         /*
          * If the clientType is Association, $roleAssociation is not null
          */
         switch ($client->getClientType()) {
-            case ClientType::ASSOCIATION:
+            case ClientTypeEnum::ASSOCIATION:
             {
                 switch ($roleAssociation) {
-                    case MemberRole::PRESIDENT:
-                        $client->setRoles([SymfonyRole::PRESIDENT]);
+                    case MemberRoleEnum::PRESIDENT:
+                        $client->setRoles([SymfonyRoleEnum::PRESIDENT]);
                         break;
-                    case (MemberRole::TRESORIER || MemberRole::VICE_PRESIDENT):
-                        $client->setRoles([SymfonyRole::TRESORIER]);
+                    case (MemberRoleEnum::TRESORIER || MemberRoleEnum::VICE_PRESIDENT):
+                        $client->setRoles([SymfonyRoleEnum::TRESORIER]);
                         break;
-                    case MemberRole::SECRETAIRE:
-                        $client->setRoles([SymfonyRole::SECRETAIRE]);
+                    case MemberRoleEnum::SECRETAIRE:
+                        $client->setRoles([SymfonyRoleEnum::SECRETAIRE]);
                         break;
                     default:
-                        $client->setRoles([SymfonyRole::ASSOC]);
+                        $client->setRoles([SymfonyRoleEnum::ASSOC]);
                         break;
                 }
                 break;
             }
-            case ClientType::ADMIN:
-            {
-                $client->setRoles([SymfonyRole::ADMIN]);
+            case ClientTypeEnum::ADMIN: {
+                $client->setRoles([SymfonyRoleEnum::ADMIN]);
                 break;
             }
-            default:
-            {
-                $client->setRoles([SymfonyRole::USER]);
+            default: {
+                $client->setRoles([SymfonyRoleEnum::USER]);
                 break;
             }
         }
@@ -283,12 +281,12 @@ class ClientManager {
     private function setPresidentIfNecessary(Client $client): void {
         if (!(sizeof($this->clientRepository->findAll()) > 0)) {
             $client->setRoles([SymfonyRole::PRESIDENT])
-                   ->setClientType(ClientType::ASSOCIATION);
+                   ->setClientType(ClientTypeEnum::ASSOCIATION);
 
             //Set the president of the association
             $member = new Member();
             $member->setClient($client)
-                   ->setRole(MemberRole::PRESIDENT);
+                   ->setRole(MemberRoleEnum::PRESIDENT);
 
             $this->manager->persist($member);
             $this->manager->flush();
@@ -329,10 +327,10 @@ class ClientManager {
         $parameterManager = new ParameterManager(($this->manager));
         $parameter = $parameterManager->getParameter();
 
-        $clientTypes = ClientType::getAll();
+        $clientTypes = ClientTypeEnum::cases();
 
         if (!$parameter->isCotisantActivated()) {
-            unset($clientTypes[array_search(ClientType::COTISANT, $clientTypes, true)]);
+            unset($clientTypes[array_search(ClientTypeEnum::COTISANT, $clientTypes, true)]);
         }
 
         return $clientTypes;
@@ -346,10 +344,10 @@ class ClientManager {
         $parameterManager = new ParameterManager(($this->manager));
         $parameter = $parameterManager->getParameter();
         $clientTypesReturned = [];
-        $clientTypes = ClientType::getAll();
+        $clientTypes = ClientTypeEnum::cases();
 
         if (!$parameter->isCotisantActivated()) {
-            unset($clientTypes[array_search(ClientType::COTISANT, $clientTypes, true)]);
+            unset($clientTypes[array_search(ClientTypeEnum::COTISANT, $clientTypes, true)]);
         }
 
         foreach ($clientTypes as $type) {

@@ -4,7 +4,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
-use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\OrderedStatusEnum;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -16,39 +18,59 @@ class OrderedFixture extends Fixture implements DependentFixtureInterface
     {
         $clientRepository = $manager->getRepository(Client::class);
 
-        $paymentTypeCarte = PaymentType::CARTE_BANCAIRE;
-        $paymentTypeEspece = PaymentType::ESPECE;
-        $paymentTypeSolde = PaymentType::SOLDE;
+        $paymentTypeCarte = PaymentTypeEnum::CARTE_BANCAIRE;
+        $paymentTypeEspece = PaymentTypeEnum::ESPECE;
+        $paymentTypeSolde = PaymentTypeEnum::SOLDE;
+
+        $clientTypeEtudiant = ClientTypeEnum::ETUDIANT;
+        $clientTypeCotisant = ClientTypeEnum::COTISANT;
+        $clientTypeAssociation = ClientTypeEnum::ASSOCIATION;
+
+        $orderedStatusPaid = OrderedStatusEnum::PAID;
+        $orderedStatusCanceled = OrderedStatusEnum::CANCELED;
+        $orderedStatusRefunded = OrderedStatusEnum::REFUNDED;
+        $orderedStatusWaitingPayment = OrderedStatusEnum::WAITING_PAYMENT;
+
         $dateNow = new DateTime("now");
 
         $order = new Ordered();
         $order->setClient($clientRepository->findOneBy(["name" => "NATANELIC"]))
             ->setPaymentType($paymentTypeCarte)
-            ->setOrderedAt($dateNow);
+            ->setOrderedAt($dateNow)
+            ->setClientTypeAtOrder($clientTypeAssociation)
+            ->setStatus($orderedStatusCanceled);
         $manager->persist($order);
 
         $order = new Ordered();
         $order->setClient($clientRepository->findOneBy(["name" => "MULLER"]))
             ->setPaymentType($paymentTypeEspece)
-            ->setOrderedAt($dateNow);
+            ->setOrderedAt($dateNow)
+            ->setClientTypeAtOrder($clientTypeCotisant)
+            ->setStatus($orderedStatusPaid);
         $manager->persist($order);
 
         $order = new Ordered();
         $order->setClient($clientRepository->findOneBy(["name" => "GHONIEM"]))
             ->setPaymentType($paymentTypeSolde)
-            ->setOrderedAt($dateNow);
+            ->setOrderedAt($dateNow)
+            ->setClientTypeAtOrder($clientTypeCotisant)
+            ->setStatus($orderedStatusPaid);
         $manager->persist($order);
 
         $order = new Ordered();
         $order->setClient($clientRepository->findOneBy(["name" => "TIJOU"]))
             ->setPaymentType($paymentTypeCarte)
-            ->setOrderedAt($dateNow);
+            ->setOrderedAt($dateNow)
+            ->setClientTypeAtOrder($clientTypeEtudiant)
+            ->setStatus($orderedStatusRefunded);
         $manager->persist($order);
 
         $order = new Ordered();
         $order->setClient(null)
             ->setPaymentType($paymentTypeEspece)
-            ->setOrderedAt($dateNow);
+            ->setOrderedAt($dateNow)
+            ->setClientTypeAtOrder($clientTypeEtudiant)
+            ->setStatus($orderedStatusWaitingPayment);
         $manager->persist($order);
 
         $manager->flush();
