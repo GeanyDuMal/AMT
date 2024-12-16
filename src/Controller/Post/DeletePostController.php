@@ -5,7 +5,7 @@ namespace App\Controller\Post;
 use App\Manager\ParameterManager;
 use App\Manager\PostManager;
 use App\Repository\PostRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,22 +15,31 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeletePostController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private PostManager $postManager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
+
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->postManager = new PostManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
 
     #[Route("/post/delete/{!id}", name: "deletePost", methods: ["GET", "DELETE"])]
-    public function index($id, EntityManagerInterface $manager, PostRepository $postRepository): RedirectResponse|JsonResponse
+    public function index($id): RedirectResponse|JsonResponse
     {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $this->parameterManager->getParameter();
 
-        if (!$this->isGranted(SymfonyRole::ASSOC) || !$parameter->isPostActivated()) {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value) || !$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
-        $postManager = new PostManager($manager);
-        $post = $postRepository->find($id);
+        $post = $this->postRepository->find($id);
 
         if ($post){
-            $postManager->remove($post);
+            $this->postManager->remove($post);
             return $this->redirectToRoute("menuPost");
         } else {
             return $this->redirectToRoute("home");

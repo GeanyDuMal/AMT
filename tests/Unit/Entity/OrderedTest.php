@@ -4,7 +4,7 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\Client;
 use App\Entity\Ordered;
-use App\Utils\Enum\PaymentType;
+use App\Utils\Enum\PaymentTypeEnum;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -34,12 +34,12 @@ class OrderedTest extends TestCase
 
     public function testGetPaymentType()
     {
-        $value = PaymentType::CARTE_BANCAIRE;
+        $value = PaymentTypeEnum::CARTE_BANCAIRE;
 
         $response = $this->ordered->setPaymentType($value);
 
         self::assertInstanceOf(Ordered::class, $response);
-        self::assertContains($this->ordered->getPaymentType(), PaymentType::getAll());
+        self::assertContains($this->ordered->getPaymentType(), PaymentTypeEnum::getAll());
         self::assertEquals($value, $this->ordered->getPaymentType());
     }
 

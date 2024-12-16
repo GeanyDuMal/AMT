@@ -4,7 +4,7 @@ namespace App\Controller\Client;
 
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,15 +12,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MenuClientController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private ClientRepository $clientRepository;
+
+    public function __construct(ClientRepository $clientRepository, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientRepository = $clientRepository;
+    }
+
     #[Route("/admin/client/{message?}", name: "menuClient", methods: ["GET"])]
-    public function show(ClientRepository $clientRepository, EntityManagerInterface $manager, ?string $message): Response {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+    public function show(?string $message): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute('home');
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $clients = $clientRepository->findAll();
+        $parameter = $this->parameterManager->getParameter();
+        $clients = $this->clientRepository->findAll();
 
         return $this->render("client/MenuClient.html.twig", [
             "parameter" => $parameter,

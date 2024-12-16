@@ -31,7 +31,7 @@
                 <div class="show-sub-block">
                     <label class="input-label">Type de produit</label>
                     <p>
-                        {{ product.productType }}
+                        {{ product.productType.value }}
                     </p>
                 </div>
                 <div class="show-sub-block">
@@ -51,7 +51,7 @@
             <div class="show-block flex-horizontal">
                 {% for price in product.prices %}
                     <div class="show-sub-block">
-                        <label class="input-label">Prix {{ price.clientType }}</label>
+                        <label class="input-label">Prix {{ price.clientType.value }}</label>
                         <p>
                             {{ (price.price)|number_format(2,'.') }}€
                         </p>

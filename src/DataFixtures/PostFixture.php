@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Post;
-use App\Utils\Enum\PostType;
+use App\Utils\Enum\PostTypeEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -11,8 +11,8 @@ use Doctrine\Persistence\ObjectManager;
 class PostFixture extends Fixture
 {
     public function load(ObjectManager $manager): void {
-        $postTypeEvent = PostType::EVENT;
-        $postTypeAutre = PostType::AUTRE;
+        $postTypeEvent = PostTypeEnum::EVENT;
+        $postTypeAutre = PostTypeEnum::AUTRE;
 
 
         $post = new Post();

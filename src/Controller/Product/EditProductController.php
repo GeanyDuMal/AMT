@@ -7,59 +7,67 @@ use App\Manager\PriceManager;
 use App\Manager\ProductManager;
 use App\Repository\PriceRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\ProductType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\ProductTypeEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EditProductController extends AbstractController
-{
+class EditProductController extends AbstractController {
+    private EntityManagerInterface $manager;
+    private ProductManager $productManager;
+    private PriceManager $priceManager;
+    private ParameterManager $parameterManager;
+    private ProductRepository $productRepository;
+    private PriceRepository $priceRepository;
+
+    public function __construct(ProductRepository $productRepository, EntityManagerInterface $manager, PriceRepository $priceRepository) {
+        $this->manager = $manager;
+        $this->productManager = new ProductManager($this->manager);
+        $this->priceManager = new PriceManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->productRepository = $productRepository;
+        $this->priceRepository = $priceRepository;
+    }
 
     #[Route("/product/edit/{!id}", name: "editProduct", methods: ["GET", "POST"])]
-    public function index($id, ProductRepository $productRepository, Request $request,
-                          EntityManagerInterface $manager, PriceRepository $priceRepository): Response
-    {
-        if (!$this->isGranted(SymfonyRole::ASSOC)) {
+    public function index($id, Request $request): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::ASSOC->value)) {
             return $this->redirectToRoute("home");
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $this->parameterManager->getParameter();
         $data = $request->request;
-        $product = $productRepository->find($id);
-        $memberPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ASSOCIATION]);
-        $studentPrice = $priceRepository->findOneBy(["product" => $product, "clientType" => ClientType::ETUDIANT]);
+        $product = $this->productRepository->find($id);
+        $memberPrice = $this->priceRepository->findOneBy(["product" => $product, "clientType" => ClientTypeEnum::ASSOCIATION]);
+        $studentPrice = $this->priceRepository->findOneBy(["product" => $product, "clientType" => ClientTypeEnum::ETUDIANT]);
         $message = "";
 
         if ($data->count() > 0) {
-            $productManager = new ProductManager($manager);
-            $priceManager = new PriceManager($manager);
 
-            $productManager->setData($product,
-                                     $data->get("productType"),
-                                     $data->get("productName"),
-                                     $data->get("productStock"),
-                                     $data->get("isActive"),
-                                     $product->getImageLink()
+            $this->productManager->setData($product,
+                                           ProductTypeEnum::from($data->get("productType")),
+                                           $data->get("productName"),
+                                           $data->get("productStock"),
+                                           $data->get("isActive"),
+                                           $product->getImageLink()
             );
 
-            if ($productManager->verifyProduct($product) && !$productManager->verifyEditedProductAlreadyExist($product)) {
-                if ($data->get("pictureState") === "edit"){
-                    $productManager->downloadAndApplyPicture($product, $request->files->get("productPicture"));
+            if ($this->productManager->verifyProduct($product) && !$this->productManager->verifyEditedProductAlreadyExist($product)) {
+                if ($data->get("pictureState") === "edit") {
+                    $this->productManager->downloadAndApplyPicture($product, $request->files->get("productPicture"));
                 }
 
-                $priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
+                $this->priceManager->setData($memberPrice, $studentPrice, $product, $data->get("memberPrice"), $data->get("studentPrice"));
 
-                if ($priceManager->verifyPrice($memberPrice) && $priceManager->verifyPrice($studentPrice)) {
+                if ($this->priceManager->verifyPrice($memberPrice) && $this->priceManager->verifyPrice($studentPrice)) {
                     $product->addPrice($memberPrice);
                     $product->addPrice($studentPrice);
 
-                    $productManager->persistCascade($product);
+                    $this->productManager->persistCascadePrice($product);
 
                     return $this->redirectToRoute("menuProduct", [
                         "message" => "Modification effectué avec succès"
@@ -73,7 +81,7 @@ class EditProductController extends AbstractController
         }
         return $this->render("product/EditProduct.html.twig", [
             "parameter" => $parameter,
-            "productTypes" => ProductType::getAll(),
+            "productTypes" => ProductTypeEnum::cases(),
             "message" => $message,
             "product" => $product,
             "studentPrice" => $studentPrice->getPrice(),

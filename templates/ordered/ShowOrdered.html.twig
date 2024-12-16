@@ -22,10 +22,13 @@
                   le {{ ordered.orderedAt | date('d/m/Y à H:i:s') }}
             </h3>
             <h3>
-                  Commande de type {{ clientType }} reglé avec {{ ordered.paymentType }}
+                  Commande de type {{ ordered.clientTypeAtOrder.value }} reglé avec {{ ordered.paymentType.value }}
+            </h3>
+            <h3>
+                  Commande en statut {{ ordered.status.value }}
             </h3>
             <div class="list-card flex-horizontal flex-centered flex-overflow">
-                  {% for purchase in purchaseList %}
+                  {% for purchase in ordered.purchases %}
                         <div class="card">
                               <div class="card-text">
                                     <p class="card-title">
@@ -35,10 +38,10 @@
                                           Quantité : {{ purchase.quantity }}
                                     </div>
                                     <div>
-                                          Prix unitaire : {{ (priceList[purchase.product.id].price)|number_format(2,'.') }}€
+                                          Prix unitaire : {{ purchase.unitaryPrice|number_format(2,'.') }}€
                                     </div>
                                     <div>
-                                          Prix total : {{ (priceList[purchase.product.id].price * purchase.quantity)|number_format(2,'.') }}€
+                                          Prix total : {{ (purchase.unitaryPrice * purchase.quantity)|number_format(2,'.') }}€
                                     </div>
                               </div>
                         </div>
@@ -53,8 +56,12 @@
                   </a>
                   <form method="post">
                         {% if is_granted("ROLE_TRESORIER") %}
-                              <button type="submit" class="btn btn-primary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
-                              <button type="submit" class="btn btn-primary" name="remove" value="remove" onclick="return confirmDelete()">Supprimer</button>
+                              {% if ordered.status == statusPaid or ordered.status == statusWaitingPayment %}
+                                    <button type="submit" class="btn btn-primary" name="cancel" value="cancel" onclick="return confirmCancel()">Annuler</button>
+                              {% endif %}
+                              {% if ordered.status == statusPaid %}
+                                    <button type="submit" class="btn btn-primary" name="refund" value="refund" onclick="return confirmRefund()">Rembourser</button>
+                              {% endif %}
                         {% endif %}
                   </form>
             </div>

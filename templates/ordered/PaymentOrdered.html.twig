@@ -35,8 +35,9 @@
                             {{ purchase.product.name }}
                         </p>
                         <div>
-                            Quantité : {{ purchase.quantity }} |
-                            Prix Unitaire : {{ (montantProduct[purchase.product.id]/purchase.quantity)|number_format(2,'.')  }}€
+                            Quantité : {{ purchase.quantity }} <br>
+                            Prix Unitaire : {{ purchase.unitaryPrice|number_format(2,'.') }}€ <br>
+                            Prix : {{ (purchase.unitaryPrice * purchase.quantity)|number_format(2,'.') }}€
                         </div>
                     </div>
                 </div>
@@ -48,10 +49,10 @@
         <form method="post" class="flex-horizontal flex-centered tab-button-payment" id="paymentForm"
               onsubmit="disableButtonPaymentOrdered()">
             {% for paymentType in paymentTypes %}
-                <button type="submit" name="payement_type" value="{{ paymentType }}" class="btn btn-primary"
+                <button type="submit" name="payement_type" value="{{ paymentType.value }}" class="btn btn-primary"
                         onclick="return preventPayment()">
-                    {{ paymentType }}
-                    {% if paymentType == "Carte Bancaire" %}
+                    {{ paymentType.value }}
+                    {% if paymentType.value == "Carte Bancaire" %}
                         <br> + {{ ((montantTotal//2)+1) * 5 }}cts
                     {% endif %}
                 </button>

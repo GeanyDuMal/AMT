@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\Post;
-use App\Utils\Enum\PostType;
+use App\Utils\Enum\PostTypeEnum;
 use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase
@@ -50,12 +50,12 @@ class PostTest extends TestCase
 
     public function testGetPostType()
     {
-        $value = PostType::EVENT;
+        $value = PostTypeEnum::EVENT;
 
         $response = $this->post->setPostType($value);
 
         self::assertInstanceOf(Post::class, $response);
         self::assertEquals($value, $this->post->getPostType());
-        self::assertContains($this->post->getPostType(), PostType::getAll());
+        self::assertContains($this->post->getPostType(), PostTypeEnum::getAll());
     }
 }
