@@ -76,7 +76,7 @@
                 <select name="productType"  class="form-input">
                     {% for productType in productTypes %}
                         <option {% if productType is same as(product.productType) %} selected {% endif %} >
-                            {{ productType }}
+                            {{ productType.value }}
                         </option>
                     {% endfor %}
                 </select>

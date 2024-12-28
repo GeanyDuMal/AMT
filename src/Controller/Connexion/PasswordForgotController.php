@@ -6,24 +6,31 @@ use App\Entity\PasswordForgotRequest;
 use App\Manager\ClientManager;
 use App\Manager\PasswordForgotRequestManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\SymfonyRole;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PasswordForgotController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private PasswordForgotRequestManager $passwordForgotRequestManager;
+    private ClientRepository $clientRepository;
+
+
+    public function __construct(EntityManagerInterface $manager, ClientRepository $clientRepository) {
+        $this->manager = $manager;
+        $this->passwordForgotRequestManager = new PasswordForgotRequestManager($this->manager);
+        $this->clientRepository = $clientRepository;
+    }
 
     /**
      * @Route("/profile/passwordForgot", name="passwordForgot")
      */
     #[Route("/profile/passwordForgot", name: "passwordForgot", methods: ["GET", "POST"])]
-    public function index(EntityManagerInterface $manager, ClientRepository $clientRepository, Request $request): Response
+    public function index(Request $request): Response
     {
         $message = null;
         $inputParameterBag = $request->request;
@@ -33,23 +40,22 @@ class PasswordForgotController extends AbstractController
 
         if ($clientName && $clientFirstName && $clientLogin){
 
-            $client = $clientRepository->findOneBy([
+            $client = $this->clientRepository->findOneBy([
                 "name" => trim(strtoupper($clientName)),
                 "firstName" => trim($clientFirstName),
                 "login" => trim($clientLogin)
             ]);
 
             if ($client){
-                $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
                 $passwordForgotRequest = new PasswordForgotRequest();
 
-                $passwordForgotRequestManager->removeOldIfExist($client);
+                $this->passwordForgotRequestManager->removeOldIfExist($client);
 
-                $passwordForgotRequestManager->generateCode($passwordForgotRequest);
+                $this->passwordForgotRequestManager->generateCode($passwordForgotRequest);
                 $passwordForgotRequest->setClient($client)
                     ->setDate(new DateTime('now'));
 
-                $passwordForgotRequestManager->persist($passwordForgotRequest);
+                $this->passwordForgotRequestManager->persist($passwordForgotRequest);
 
                 $message = "Votre demande de mot de passe à été créée. Voici le code à conserver : "
                     . $passwordForgotRequest->getConfirmationCode() .

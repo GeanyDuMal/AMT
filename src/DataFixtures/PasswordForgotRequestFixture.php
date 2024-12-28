@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Client;
 use App\Entity\PasswordForgotRequest;
 use App\Entity\Post;
-use App\Utils\Enum\PostType;
+use App\Utils\Enum\PostTypeEnum;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

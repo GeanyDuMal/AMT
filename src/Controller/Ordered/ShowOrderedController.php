@@ -4,61 +4,54 @@ namespace App\Controller\Ordered;
 
 use App\Manager\OrderedManager;
 use App\Manager\ParameterManager;
-use App\Manager\PriceManager;
-use App\Repository\OrderedRepository;
-use App\Repository\PriceRepository;
-use App\Repository\PurchaseRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\OrderedStatusEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ShowOrderedController extends AbstractController
-{
+class ShowOrderedController extends AbstractController {
+
+    private EntityManagerInterface $manager;
+    private OrderedManager $orderedManager;
+    private ParameterManager $parameterManager;
+
+    public function __construct(EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->orderedManager = new OrderedManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+    }
 
     #[Route("/ordered/show&id={!idOrder}", name: "showOrdered", methods: ["GET", "POST"])]
-    public function index($idOrder, EntityManagerInterface $manager, OrderedRepository $orderedRepository,
-        PurchaseRepository $purchaseRepository, PriceRepository $priceRepository, Request $request): Response
-    {
-        if (!$this->isGranted(SymfonyRole::TRESORIER)) {
+    public function index($idOrder, Request $request): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::TRESORIER->value)) {
             return $this->redirectToRoute('home');
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $orderedManager = new OrderedManager($manager);
-        $priceManager = new PriceManager($manager);
+        $parameter = $this->parameterManager->getParameter();
         $priceList = [];
         $inputParameterBag = $request->request;
         $toCancel = $inputParameterBag->get("cancel");
-        $toRemove = $inputParameterBag->get("remove");
+        $toRefund = $inputParameterBag->get("refund");
 
         if (is_numeric($idOrder)) {
-            $order = $orderedRepository->find($idOrder);
-            if ($order != null) {
-                $clientType = $priceManager->getClientTypeUsedForPrice($order->getClient());
+            $ordered = $this->orderedManager->getOrderedById($idOrder);
 
-                $purchaseList = $purchaseRepository->findBy(["ordered" => $order]);
-                //Permet de creer un tableau avec en clé les id des produits choisis et en valeur le prix
-                foreach ($purchaseList as $purchase) {
-                    $priceList = $priceList + [$purchase->getProduct()->getId() =>
-                            $priceRepository->findOneBy(["product" => $purchase->getProduct(), "clientType" => $clientType])];
-                }
-
+            if ($ordered != null) {
                 // Suppression ou annulation
-                if ($toCancel || $toRemove){
-                    $manager->initializeObject($order->getPurchases());
-                    if($toCancel){
-                        $orderedManager->removeWithRestore($order);
-
-                    } else if($toRemove){
-                        $orderedManager->remove($order);
+                if ($toCancel || $toRefund) {
+                    if ($toCancel) {
+                        $this->orderedManager->cancel($ordered);
+                        $message = "La commande a été annulée avec succès";
+                    } else {
+                        $this->orderedManager->refund($ordered);
+                        $message = "La commande a été remboursée avec succès";
                     }
+
                     return $this->redirectToRoute("menuOrdered", [
-                        "message" => "La commande a été supprimé avec succès"
+                        "message" => $message
                     ]);
                 }
             } else {
@@ -70,11 +63,11 @@ class ShowOrderedController extends AbstractController
 
         return $this->render("ordered/ShowOrdered.html.twig", [
             "parameter" => $parameter,
-            "ordered" => $order,
-            "clientType" => $clientType,
-            "purchaseList" => $purchaseList,
+            "ordered" => $ordered,
             "priceList" => $priceList,
-            "montantTotal" => $orderedManager->montantTotal($order)
+            "montantTotal" => $this->orderedManager->getMontantTotal($ordered),
+            "statusPaid" => OrderedStatusEnum::PAID,
+            "statusWaitingPayment" => OrderedStatusEnum::WAITING_PAYMENT,
         ]);
     }
 }

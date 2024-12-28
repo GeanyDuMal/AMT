@@ -3,14 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Product;
-use App\Utils\Enum\ProductType;
+use App\Utils\Enum\ProductTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class ProductFixture extends Fixture {
     public function load(ObjectManager $manager): void {
-        $productTypeBoisson = ProductType::BOISSON;
-        $productTypeSnack = ProductType::SNACK;
+        $productTypeBoisson = ProductTypeEnum::BOISSON;
+        $productTypeSnack = ProductTypeEnum::SNACK;
 
 
         $product = new Product();

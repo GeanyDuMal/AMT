@@ -7,9 +7,9 @@ use App\Manager\ClientManager;
 use App\Manager\MemberManager;
 use App\Manager\ParameterManager;
 use App\Repository\ClientRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\MemberRoleEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,33 +19,52 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreateClientController extends AbstractController {
 
+    private EntityManagerInterface $manager;
+    private MemberManager $memberManager;
+    private ParameterManager $parameterManager;
+    private ClientManager $clientManager;
+    private ClientRepository $clientRepository;
+    private UserPasswordHasherInterface $userPasswordHasher;
+
+    public function __construct(ClientRepository $clientRepository, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $manager) {
+        $this->manager = $manager;
+        $this->clientRepository = $clientRepository;
+        $this->userPasswordHasher = $userPasswordHasher;
+        $this->memberManager = new MemberManager($this->manager);
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->clientManager = new ClientManager($this->manager);
+    }
+
     #[Route("/admin/client/create", name: "createClient", methods: ["GET", "POST"])]
-    public function index(ClientRepository $clientRepository, UserPasswordHasherInterface $passwordHasher,
-        Request $request, EntityManagerInterface $manager): Response {
-        if (!$this->isGranted(SymfonyRole::SECRETAIRE)) {
+    public function index(Request $request): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::SECRETAIRE->value)) {
             return $this->redirectToRoute('home');
         }
 
         $data = $request->request;
-        $user = $clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
-        $memberManager = new MemberManager($manager);
-        $assosRoles = $memberManager->getLowerOrEqualAssociationRole($user);
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
-        $clientManager = new ClientManager($manager);
+        $user = $this->clientRepository->findOneBy(["login" => $this->getUser()->getUserIdentifier()]);
+        $assosRoles = $this->memberManager->getLowerOrEqualAssociationRole($user);
+        $parameter = $this->parameterManager->getParameter();
         $message = "";
 
         if ($data->count() > 0) {
             $client = new Client();
-            $clientManager->setData($client, $passwordHasher, $data->get("name"),
-                $data->get("firstName"), $data->get("login"), $data->get("password"),
-                $data->get("balance"), $data->get("clientType"), $data->get("assosRoles"), 0);
+            $this->clientManager->setData($client,
+                                          $this->userPasswordHasher,
+                                          $data->get("name"),
+                                          $data->get("firstName"),
+                                          $data->get("login"),
+                                          $data->get("password"),
+                                          $data->get("balance"),
+                                          ClientTypeEnum::from($data->get("clientType")),
+                                          $data->get("assosRoles"),
+                                          0);
 
-            if ($clientManager->verifyClient($client) && $clientManager->verifyPassword($data->get("password"))) {
-                if ($clientManager->clientExists($client)) {
+            if ($this->clientManager->verifyClient($client) && $this->clientManager->verifyPassword($data->get("password"))) {
+                if ($this->clientManager->clientExists($client)) {
                     $message = "Ce client existe déjà";
                 } else {
-                    $clientManager->persist($client);
+                    $this->clientManager->persist($client);
 
                     /*
                      * if the client added is a member, we have to add him in association table too.
@@ -53,15 +72,15 @@ class CreateClientController extends AbstractController {
                      * ->we didn't do a trigger because we don't have to role to insert it in assosciation table
                      *   so we have to get it from the data variable.
                      * */
-                    if ($client->getClientType() == ClientType::ASSOCIATION) {
+                    if ($client->getClientType() == ClientTypeEnum::ASSOCIATION) {
 
-                        $newMember = $memberManager->makeMember($client, $request->get("assosRoles"));
+                        $newMember = $this->memberManager->makeMember($client, MemberRoleEnum::from($request->get("assosRoles")));
 
-                        if ($newMember->getRole() == MemberRole::PRESIDENT) {
-                            $memberManager->removeOtherPresidents($newMember);
+                        if ($newMember->getRole() == MemberRoleEnum::PRESIDENT) {
+                            $this->memberManager->removeOtherPresidents($newMember);
                         }
-                        $manager->persist($newMember);
-                        $manager->flush();
+                        $this->manager->persist($newMember);
+                        $this->manager->flush();
                     }
                     return $this->redirectToRoute('menuClient', [
                         "message" => "Ajout avec succès"
@@ -76,7 +95,7 @@ class CreateClientController extends AbstractController {
             "parameter" => $parameter,
             "assosRoles" => $assosRoles,
             "message" => $message,
-            "clientTypes" => $clientManager->getLowerOrEqualClientTypes($user)
+            "clientTypes" => $this->clientManager->getLowerOrEqualClientTypes($user)
         ]);
     }
 }

@@ -14,9 +14,9 @@ use App\Repository\OrderedRepository;
 use App\Repository\PasswordForgotRequestRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
-use App\Utils\Enum\ClientType;
-use App\Utils\Enum\MemberRole;
-use App\Utils\Enum\SymfonyRole;
+use App\Utils\Enum\ClientTypeEnum;
+use App\Utils\Enum\MemberRoleEnum;
+use App\Utils\Enum\SymfonyRoleEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,21 +24,48 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MenuManagementController extends AbstractController
-{
+class MenuManagementController extends AbstractController {
+    private EntityManagerInterface $manager;
+    private OrderedManager $orderedManager;
+    private ParameterManager $parameterManager;
+    private PostManager $postManager;
+    private ProductManager $productManager;
+    private ClientManager $clientManager;
+    private PasswordForgotRequestManager $passwordForgotRequestManager;
+    private ClientRepository $clientRepository;
+    private ProductRepository $productRepository;
+    private PasswordForgotRequestRepository $passwordForgotRequestRepository;
+    private OrderedRepository $orderedRepository;
+    private PostRepository $postRepository;
+    private MemberRepository $memberRepository;
+    private UserPasswordHasherInterface $userPasswordHasher;
+
+    public function __construct(EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher, ClientRepository $clientRepository,
+        MemberRepository $memberRepository, PostRepository $postRepository, OrderedRepository $orderedRepository, ProductRepository $productRepository,
+        PasswordForgotRequestRepository $passwordForgotRequestRepository) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postManager = new PostManager($this->manager);
+        $this->orderedManager = new OrderedManager($this->manager);
+        $this->productManager = new ProductManager($this->manager);
+        $this->clientManager = new ClientManager($this->manager);
+        $this->passwordForgotRequestManager = new PasswordForgotRequestManager($this->manager);
+        $this->productRepository = $productRepository;
+        $this->clientRepository = $clientRepository;
+        $this->memberRepository = $memberRepository;
+        $this->orderedRepository = $orderedRepository;
+        $this->passwordForgotRequestRepository = $passwordForgotRequestRepository;
+        $this->postRepository = $postRepository;
+        $this->userPasswordHasher = $userPasswordHasher;
+    }
 
     #[Route("/management", name: "menuManagement", methods: ["GET", "POST"])]
-    public function index(EntityManagerInterface $manager, Request $request,
-        UserPasswordHasherInterface $passwordHasher,
-        ClientRepository $clientRepository, MemberRepository $memberRepository, PostRepository $postRepository,
-        OrderedRepository $orderedRepository, ProductRepository $productRepository,
-        PasswordForgotRequestRepository $passwordForgotRequestRepository): Response {
-        if (!$this->isGranted(SymfonyRole::PRESIDENT)) {
+    public function index(Request $request): Response {
+        if (!$this->isGranted(SymfonyRoleEnum::PRESIDENT->value)) {
             return $this->redirectToRoute("home");
         }
 
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+        $parameter = $this->parameterManager->getParameter();
         $data = $request->request;
         $message = null;
 
@@ -46,12 +73,11 @@ class MenuManagementController extends AbstractController
          * Purge des cotisants
          */
         if ($data->get("clearCotisant") != "" && $parameter->isCotisantActivated()) {
-            $clientManager = new ClientManager($manager);
-            $listCotisant = $clientRepository->findBy(["clientType" => ClientType::COTISANT]);
+            $listCotisant = $this->clientRepository->findBy(["clientType" => ClientTypeEnum::COTISANT]);
 
             foreach ($listCotisant as $cotisant) {
-                $cotisant->setClientType(ClientType::ETUDIANT);
-                $clientManager->persist($cotisant);
+                $cotisant->setClientType(ClientTypeEnum::ETUDIANT);
+                $this->clientManager->persist($cotisant);
             }
 
             $message = "Les cotisants ont été purgés.";
@@ -61,16 +87,15 @@ class MenuManagementController extends AbstractController
          * Purge de l'association
          */
         if ($data->get("clearMembers") != "") {
-            $clientManager = new ClientManager($manager);
-            $listTypeAssociation = $clientRepository->findBy(["clientType" => ClientType::ASSOCIATION]);
+            $listTypeAssociation = $this->clientRepository->findBy(["clientType" => ClientTypeEnum::ASSOCIATION]);
 
-            $president = $memberRepository->findOneBy(["role" => MemberRole::PRESIDENT])->getClient();
+            $president = $this->memberRepository->findOneBy(["role" => MemberRoleEnum::PRESIDENT])->getClient();
 
             foreach ($listTypeAssociation as $client) {
                 if ($client !== $president) {
-                    $client->setClientType(ClientType::ETUDIANT);
+                    $client->setClientType(ClientTypeEnum::ETUDIANT);
 
-                    $clientManager->persist($client);
+                    $this->clientManager->persist($client);
                 }
             }
 
@@ -81,14 +106,13 @@ class MenuManagementController extends AbstractController
          * Purge des anciens clients
          */
         if ($data->get("clearOldClient") != "") {
-            $listClient = $clientRepository->findClientWithoutOrderedTwoYears();
-            $clientManager = new ClientManager($manager);
+            $listClient = $this->clientRepository->findClientWithoutOrderedTwoYears();
 
             $actualUsername = $this->getUser()->getUsername();
 
             foreach ($listClient as $client) {
                 if ($client->getLogin() != $actualUsername) {
-                    $clientManager->remove($client);
+                    $this->clientManager->remove($client);
                 }
             }
 
@@ -96,42 +120,39 @@ class MenuManagementController extends AbstractController
         }
 
         /**
-         * Purge des anciens produits
+         * Passage des anciens produits en inactif
          */
-        if ($data->get("clearProduct") != "") {
-            $listProduct = $productRepository->findProductEmptyWithoutCommandOneYear();
-            $productManager = new ProductManager($manager);
+        if ($data->get("unactiveProduct") != "") {
+            $listProduct = $this->productRepository->findProductEmptydWithoutCommandOneMonth();
 
             foreach ($listProduct as $product) {
-                $productManager->remove($product);
+                $this->productManager->setUnactive($product);
             }
 
-            $message = "Les produits sans commandes de moins de 1 an dont le stock est vide ont été supprimés";
+            $message = "Les produits sans commandes de moins de 1 mois dont le stock est vide ont été passé en inactif";
         }
 
         /**
          * Purge des anciennes commandes sans client
          */
-        if ($data->get("clearOrder") != "") {
-            $listOrdered = $orderedRepository->findOrderWithoutClientTwoYearsOld();
-            $orderedManager = new OrderedManager($manager);
+        if ($data->get("clearOrderUnpaid") != "") {
+            $listOrdered = $this->orderedRepository->findOrderUnpaidLastMonth();
 
             foreach ($listOrdered as $ordered) {
-                $orderedManager->remove($ordered);
+                $this->orderedManager->remove($ordered);
             }
 
-            $message = "Les commandes de plus de 2 ans sans client ont été supprimées.";
+            $message = "Les commandes de plus d'une semaine non payée ont été supprimées";
         }
 
         /**
          * Purge des 3 posts les plus anciens
          */
         if ($data->get("clearPost") != "" && $parameter->isPostActivated()) {
-            $listPost = $postRepository->findBy([], ["id" => "ASC"], 3);
-            $postManager = new PostManager($manager);
+            $listPost = $this->postRepository->findBy([], ["id" => "ASC"], 3);
 
             foreach ($listPost as $post) {
-                $postManager->remove($post);
+                $this->postManager->remove($post);
             }
 
             $message = "Les 3 derniers post ont été supprimés.";
@@ -141,13 +162,12 @@ class MenuManagementController extends AbstractController
          * Reinitialisation du mot de passe d'un client
          */
         if ($data->get("resetPassword") != "") {
-            $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
             $confirmationCode = $data->get("confirmationCode");
-            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $data->get("passwordRequest")]);
+            $passwordForgotRequest = $this->passwordForgotRequestRepository->findOneBy(["client" => $data->get("passwordRequest")]);
 
 
-            if ($passwordForgotRequest && $passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)) {
-                $passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $passwordHasher);
+            if ($passwordForgotRequest && $this->passwordForgotRequestManager->verifyConfirmationCode($passwordForgotRequest, $confirmationCode)) {
+                $this->passwordForgotRequestManager->generateNewPassword($passwordForgotRequest, $this->userPasswordHasher);
 
                 $message = "Le nouveau mot de passe est \"" . $passwordForgotRequest->getConfirmationCode() . "\" Merci de le modifier à la prochaine connexion";
             }
@@ -157,18 +177,17 @@ class MenuManagementController extends AbstractController
          * Suppression d'une demande de reinitialisation de mot de passe
          */
         if ($data->get("suppressPasswordRequest") != "") {
-            $passwordForgotRequestManager = new PasswordForgotRequestManager($manager);
 
-            $passwordForgotRequest = $passwordForgotRequestRepository->findOneBy(["client" => $data->get("passwordRequest")]);
+            $passwordForgotRequest = $this->passwordForgotRequestRepository->findOneBy(["client" => $data->get("passwordRequest")]);
 
             if ($passwordForgotRequest) {
-                $passwordForgotRequestManager->remove($passwordForgotRequest);
+                $this->passwordForgotRequestManager->remove($passwordForgotRequest);
                 $message = "Le demande de reinitialisation de " . $passwordForgotRequest->getClient()->getName() . " " . $passwordForgotRequest->getClient()
                                                                                                                                                ->getFirstName() . " a été supprimé";
             }
         }
 
-        $requestList = $passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
+        $requestList = $this->passwordForgotRequestRepository->findBy([], ["date" => "DESC"]);
 
         return $this->render("management/MenuManagement.html.twig", [
             "parameter" => $parameter,

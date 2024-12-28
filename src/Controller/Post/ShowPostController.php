@@ -11,17 +11,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShowPostController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+    private ParameterManager $parameterManager;
+    private PostRepository $postRepository;
 
+    public function __construct(EntityManagerInterface $manager, PostRepository $postRepository) {
+        $this->manager = $manager;
+        $this->parameterManager = new ParameterManager($this->manager);
+        $this->postRepository = $postRepository;
+    }
     #[Route("/post/show/{!id}", name: "showPost", methods: ["GET"])]
-    public function index(EntityManagerInterface $manager, int $id, PostRepository $postRepository): Response {
-        $parameterManager = new ParameterManager($manager);
-        $parameter = $parameterManager->getParameter();
+    public function index(int $id): Response {
+        $parameter = $this->parameterManager->getParameter();
 
         if (!$parameter->isPostActivated()) {
             return $this->redirectToRoute('home');
         }
 
-        $post = $postRepository->find($id);
+        $post = $this->postRepository->find($id);
 
         if ($post) {
             return $this->render("post/ShowPost.html.twig", [

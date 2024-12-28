@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Repository\ProductRepository;
+use App\Utils\Enum\ProductTypeEnum;
 use App\Utils\PictureUtils;
 use App\Utils\RandomUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,11 +29,11 @@ class ProductManager {
     }
 
     /**
-     * A utiliser uniquement lors d'une update
+     *
      * @param Product $product
      * @return void
      */
-    public function persistCascade(Product $product): void {
+    public function persistCascadePrice(Product $product): void {
         $this->persist($product);
         $priceManager = new PriceManager($this->manager);
 
@@ -41,42 +42,22 @@ class ProductManager {
         }
     }
 
-    /**
-     * Remove the Product and all the Purchase linked
-     * @param Product $product
-     * @return void
-     */
-    public function remove(Product $product): void {
-        $purchaseRepository = $this->manager->getRepository(Purchase::class);
-        $purchaseManager = new PurchaseManager($this->manager);
-        $priceManager = new PriceManager($this->manager);
-        $purchaseLinked = $purchaseRepository->findBy(["product" => $product]);
-        $pictureUtils = new PictureUtils();
+    public function setUnactive(Product $product): void {
+        $product->setActive(false);
 
-        $pictureUtils->deletePicture($product->getImageLink());
-
-        //On supprime les achats liés au produit supprimé
-        foreach ($purchaseLinked as $purchase) {
-            $purchaseManager->remove($purchase);
-        }
-
-        foreach ($product->getPrices() as $price) {
-            $priceManager->remove($price);
-        }
-
-        $this->manager->remove($product);
-        $this->manager->flush();
+        $this->persist($product);
     }
 
     /**
      * @param Product $product
-     * @param String $productType
+     * @param ProductTypeEnum $productType
      * @param String $productName
      * @param int $productStock
+     * @param bool|null $isActive
      * @param String $imageLink
      * @return void
      */
-    public function setData(Product $product, string $productType, string $productName, int $productStock, ?bool $isActive, string $imageLink = ""): void {
+    public function setData(Product $product, ProductTypeEnum $productType, string $productName, int $productStock, ?bool $isActive, string $imageLink = ""): void {
         if(!$isActive) {
             $isActive = false;
         }

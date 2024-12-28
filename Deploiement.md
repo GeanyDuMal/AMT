@@ -4,7 +4,7 @@
 Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracteres :
 - Dans config/packages/doctrine.yaml, rajouter cette ligne en dessous de 'url'
   ```YAML
-    charset: UTF8
+  charset: UTF8
   ```
 - Il faudra supprimer le fichier config/packages/doctrine_migration.yaml 
 - Il faudra créer une base de données (ou utiliser celle proposé par l'hebergeur) et importer le script db_empty.sql
@@ -53,3 +53,12 @@ Nous, du fait de notre hebergeur, nous avons du modifier l'encodage des caracter
 Actuellement, l'hebergeur ne permet pas de faire de migration via les lignes de commandes comme le permet Symfony.
 Il faudra prendre la migration puis conserver unqiuement le SQL et le saisir ligne par ligne afin de s'assurer qu'il ne plante pas lors de la saisie
 Il faudra également recuperer la ligne inseré en base de données de test pour la table doctrine-migration dans le cas d'un changement d'hebergeur un jour.
+
+### Transfert des fichiers de dépendances
+
+Dans le dossier vendor se trouvent des fichiers qui correspondent aux dépendances ajoutées dans le composer.json
+Pour compresser et extraire uniquement les fichiers utiles, il faut faire la commande
+
+```bash
+composer install --no-dev --optimize-autoloader
+```
