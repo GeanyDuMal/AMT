@@ -23,9 +23,10 @@ final class Version330 extends AbstractMigration {
         $this->addSql('UPDATE ordered o
                            SET o.client_type_at_order = "Etudiant";');
         $this->addSql('UPDATE ordered o
+                           SET o.status = "Paye";');
+        $this->addSql('UPDATE ordered o
                            LEFT JOIN client c ON o.client_id = c.id
-                           SET o.status = "Paye",
-                               o.client_type_at_order = c.client_type
+                           SET o.client_type_at_order = c.client_type
                            WHERE NOT(o.client_id IS NULL);');
         $this->addSql('UPDATE purchase pu
                            LEFT JOIN price pr ON pu.product_id = pr.product_id
