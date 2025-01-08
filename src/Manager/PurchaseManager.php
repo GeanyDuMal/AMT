@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Ordered;
 use App\Entity\Product;
 use App\Entity\Purchase;
+use App\Utils\Enum\OrderedStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PurchaseManager {
@@ -16,7 +17,9 @@ class PurchaseManager {
 
     public function persist(Purchase $purchase): void {
         if ($this->verifyDisponibilityProduct($purchase)) {
-            $this->removeProductQuantity($purchase);
+            if ($purchase->getOrdered()->getStatus() == OrderedStatusEnum::PAID) {
+                $this->removeProductQuantity($purchase);
+            }
 
             $this->manager->persist($purchase);
             $this->manager->flush();
