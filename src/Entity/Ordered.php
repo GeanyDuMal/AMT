@@ -39,9 +39,9 @@ class Ordered {
     private ClientTypeEnum $clientTypeAtOrder;
 
     /**
-     * @ORM\Column(type="string", enumType=PaymentTypeEnum::class, nullable=false)
+     * @ORM\Column(type="string", enumType=PaymentTypeEnum::class, nullable=true)
      */
-    private PaymentTypeEnum $paymentType;
+    private ?PaymentTypeEnum $paymentType;
 
     /**
      * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true, cascade={"persist", "remove"})
@@ -91,7 +91,7 @@ class Ordered {
         return $this;
     }
 
-    public function getPaymentType(): PaymentTypeEnum {
+    public function getPaymentType(): ?PaymentTypeEnum {
         return $this->paymentType;
     }
 
