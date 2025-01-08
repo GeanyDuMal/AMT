@@ -30,6 +30,11 @@ class OrderedManager {
 
     public function persist(Ordered $ordered): void {
         $this->manager->persist($ordered);
+
+        foreach ($ordered->getPurchases() as $purchase) {
+            $this->purchaseManager->persist($purchase);
+        }
+
         $this->manager->flush();
     }
 
@@ -139,7 +144,6 @@ class OrderedManager {
                 ->setClientTypeAtOrder($this->getClientTypeUsedForOrdered($client))
                 ->setPurchases($purchases)
                 ->setStatus(OrderedStatusEnum::WAITING_PAYMENT);
-
 
         return $ordered;
     }

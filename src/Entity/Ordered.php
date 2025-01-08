@@ -44,7 +44,7 @@ class Ordered {
     private ?PaymentTypeEnum $paymentType;
 
     /**
-     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Purchase::class, mappedBy="ordered", orphanRemoval=true, cascade={"remove"})
      */
     private Collection $purchases;
 
