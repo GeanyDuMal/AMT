@@ -12,7 +12,4 @@ $(document).mousemove(function (event) {
   xAxis = -mouseX * 100 - 100;
 
   $('.box-ghost-eyes').css({ 'transform': 'translate(' + xAxis + '%,-' + yAxis + '%)' });
-
-  //console.log('X: ' + xAxis);
-
 });

@@ -121,8 +121,5 @@ function setIdClient(id) {
 }
 
 function verifyDisplayList(list) {
-    console.log(list.childElementCount)
     list.hidden = list.childElementCount === 0;
-
-    console.log(list)
 }
